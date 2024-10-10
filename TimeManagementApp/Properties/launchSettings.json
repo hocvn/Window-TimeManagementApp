@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TimeManagementApp (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "TimeManagementApp (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
