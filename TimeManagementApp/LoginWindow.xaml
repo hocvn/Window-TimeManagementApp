@@ -126,7 +126,7 @@
                 x:Name="errorMessage" 
                 FontSize="16" 
                 Foreground="Red" 
-                Text="hellooooooooooooooooo" 
+                Text="" 
                 HorizontalAlignment="Center" 
                 Margin="10, 20, 10, 20">
             </TextBlock>
