@@ -23,6 +23,7 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class RegisterWindow : Window
     {
+        private Window m_window;
         public RegisterWindow()
         {
             this.InitializeComponent();
@@ -42,9 +43,17 @@ namespace TimeManagementApp
                 errorMessage.Text = errorMess;
                 return;
             }
+
+            // Sign up successfully
             errorMessage.Text = "";
+            user.SaveCredential(username, password, email);
+        }
 
-
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            m_window = new LoginWindow();
+            m_window.Activate();
+            this.Close();
         }
 
         public (bool, string) checkInfomationUserEnter(string username, string email, string password,
@@ -58,14 +67,13 @@ namespace TimeManagementApp
                 return (false, errorMess);
             }
 
-            if (String.IsNullOrEmpty(email))
+            // Check email is in right format
+            (bool isOk, string mess) = user.IsValidEmail(email);
+            if (!isOk)
             {
-                errorMess = "Please fill out your email.";
+                errorMess = mess;
                 return (false, errorMess);
             }
-
-            // Check email is in right format
-
 
             if (String.IsNullOrEmpty(password))
             {
@@ -73,7 +81,7 @@ namespace TimeManagementApp
                 return (false, errorMess);
             }
 
-            (bool isOk, string mess) = user.isValidPassword(password);
+            (isOk, mess) = user.IsValidPassword(password);
             if (isOk == false)
             {
                 errorMess = mess;
@@ -82,13 +90,13 @@ namespace TimeManagementApp
 
             if (String.IsNullOrEmpty(passwordConfirmed))
             {
-                errorMess = "Please fill out your password confirmed.";
+                errorMess = "Please fill out your password confirmation.";
                 return (false, errorMess);
             }
 
             if (password != passwordConfirmed)
             {
-                errorMess = "Password and password confirmed must be in same";
+                errorMess = "Password confirmation doesn't match the password";
                 return (false, errorMess);
             }
 

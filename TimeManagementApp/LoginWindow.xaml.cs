@@ -31,18 +31,18 @@ namespace TimeManagementApp
         {
             this.InitializeComponent();
             // Store the user credentials
-            localSettings.Values.Remove("admin");
-            var username = "admin";
-            var passwordRaw = "123456";
-            var email = "admin@gmail.com";
-            user.saveCredential(username, passwordRaw, email);
+            //localSettings.Values.Remove("admin");
+            //var username = "admin";
+            //var passwordRaw = "123456";
+            //var email = "admin@gmail.com";
+            //user.SaveCredential(username, passwordRaw, email);
 
             var rememberUsername = localSettings.Values["rememberUsername"] as string;
             if (!String.IsNullOrEmpty(rememberUsername))
             {
                 // Automatically fill in the username and password
                 usernameTextBox.Text = rememberUsername;
-                var rememberPassword = user.getPassword(rememberUsername);
+                var rememberPassword = user.GetPassword(rememberUsername);
 
                 if (rememberPassword == null)
                 {
@@ -64,7 +64,7 @@ namespace TimeManagementApp
                 errorMessage.Text = "Please enter both username and password.";
                 return;
             }
-            if (user.checkCredentials(username, password) == false)
+            if (user.CheckCredentials(username, password) == false)
             {
                 errorMessage.Text = "Invalid username or password.";
                 return;
@@ -75,7 +75,7 @@ namespace TimeManagementApp
             m_window.Activate();
             this.Close();
         }
-
+    
         private void rememberCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             var username = usernameTextBox.Text;
