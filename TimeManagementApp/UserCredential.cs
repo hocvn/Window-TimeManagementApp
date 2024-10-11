@@ -15,34 +15,37 @@ namespace TimeManagementApp
     {
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
-        public class EncrypedPasswordInfo
+        public class UserInfo
         {
+            public string email { get; set; }
             public string password { get; set; }
             public string entropy { get; set; }
 
-            public EncrypedPasswordInfo(string password, string entropy)
+            public UserInfo(string password, string entropy, string email)
             {
                 this.password = password;
                 this.entropy = entropy;
+                this.email = email;
             }
         }
-        public void saveCredential(string username, string password)
+        public void saveCredential(string username, string password, string email)
         {
             // Retrieve existing users data or create a new dictionary
             var usersDataJson = localSettings.Values["usersData"] as string;
-            Dictionary<string, EncrypedPasswordInfo> usersData;
+            Dictionary<string, UserInfo> usersData;
 
             if (String.IsNullOrEmpty(usersDataJson))
             {
-                usersData = new Dictionary<string, EncrypedPasswordInfo>();
+                usersData = new Dictionary<string, UserInfo>();
             }
             else
             {
-                usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, EncrypedPasswordInfo>>(usersDataJson);
+                usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
             }
 
             // Encrypt the password
-            EncrypedPasswordInfo encryptedPasswordInfo = EncryptPassword(password);
+            (string encryptedPasswordBase64, string entropyInBase64) = EncryptPassword(password);
+            UserInfo encryptedPasswordInfo = new UserInfo(encryptedPasswordBase64, entropyInBase64, email);
 
             // Save the user's encrypted password and entropy
             usersData[username] = encryptedPasswordInfo;
@@ -53,7 +56,7 @@ namespace TimeManagementApp
             // Store the JSON string in local settings
             localSettings.Values["usersData"] = usersDataJson;
         }
-        private EncrypedPasswordInfo EncryptPassword(string password)
+        private (string, string) EncryptPassword(string password)
         {
             // Encrypt the password
             var passwordInBytes = Encoding.UTF8.GetBytes(password);
@@ -73,27 +76,27 @@ namespace TimeManagementApp
             var encryptedPasswordBase64 = Convert.ToBase64String(encryptedPasswordInBytes);
             var entropyInBase64 = Convert.ToBase64String(entropyInBytes);
 
-            return new EncrypedPasswordInfo(encryptedPasswordBase64, entropyInBase64);
+            return (encryptedPasswordBase64, entropyInBase64);
         }
         public string getPassword(string username)
         {
             // Retrieve existing users data or create a new dictionary
             var usersDataJson = localSettings.Values["usersData"] as string;
-            Dictionary<string, EncrypedPasswordInfo> usersData;
+            Dictionary<string, UserInfo> usersData;
 
             if (String.IsNullOrEmpty(usersDataJson))
             {
                 return null; // There is no data stored for any user
             }
 
-            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, EncrypedPasswordInfo>>(usersDataJson);
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
 
             // Retrieve the encrypted password and entropy
             if (usersData.ContainsKey(username))
             {
-                var EncrypedPasswordInfo = usersData[username];
-                var encryptedPasswordBase64 = EncrypedPasswordInfo.password;
-                var entropyBase64 = EncrypedPasswordInfo.entropy;
+                var UserInfo = usersData[username];
+                var encryptedPasswordBase64 = UserInfo.password;
+                var entropyBase64 = UserInfo.entropy;
 
                 if (encryptedPasswordBase64 == null || entropyBase64 == null)
                 {
@@ -119,7 +122,7 @@ namespace TimeManagementApp
             // Compare the decrypted password with the entered password
             return decryptedPassword == password;
         }
-        private (bool, string) isValidPassword(string password)
+        public (bool, string) isValidPassword(string password)
         {
             if (password.Length < 6)
             {

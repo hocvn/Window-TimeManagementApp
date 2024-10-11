@@ -34,7 +34,8 @@ namespace TimeManagementApp
             localSettings.Values.Remove("admin");
             var username = "admin";
             var passwordRaw = "123456";
-            user.saveCredential(username, passwordRaw);
+            var email = "admin@gmail.com";
+            user.saveCredential(username, passwordRaw, email);
 
             var rememberUsername = localSettings.Values["rememberUsername"] as string;
             if (!String.IsNullOrEmpty(rememberUsername))
@@ -60,12 +61,12 @@ namespace TimeManagementApp
 
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
             {
-                errorMessage.Text = "Please enter both username and password";
+                errorMessage.Text = "Please enter both username and password.";
                 return;
             }
             if (user.checkCredentials(username, password) == false)
             {
-                errorMessage.Text = "Invalid username or password";
+                errorMessage.Text = "Invalid username or password.";
                 return;
             }
             // Username and password are correct
@@ -105,7 +106,9 @@ namespace TimeManagementApp
 
         private void registerHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
-
+            m_window = new RegisterWindow();
+            m_window.Activate();
+            this.Close();
         }
     }
 
