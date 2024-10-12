@@ -31,12 +31,6 @@ namespace TimeManagementApp
         public LoginWindow()
         {
             this.InitializeComponent();
-            // Store the user credentials
-            //localSettings.Values.Remove("admin");
-            //var username = "admin";
-            //var passwordRaw = "123456";
-            //var email = "admin@gmail.com";
-            //user.SaveCredential(username, passwordRaw, email);
 
             var rememberUsername = localSettings.Values["rememberUsername"] as string;
             if (!String.IsNullOrEmpty(rememberUsername))
@@ -101,9 +95,9 @@ namespace TimeManagementApp
         }
         private void forgotPasswordHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
-            //m_window = new ForgotPasswordWindow();
-            //m_window.Activate();
-            //this.Close();
+            m_window = new ForgotPasswordWindow();
+            m_window.Activate();
+            this.Close();
             // This feature is not working for now
         }
 

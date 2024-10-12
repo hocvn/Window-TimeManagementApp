@@ -33,25 +33,23 @@ namespace TimeManagementApp.Login.ForgotPassword
             string email = emailTextBox.Text as string;
             (bool isOk, string mess) = user.CheckEmailFormat(email);
 
-            //if (!isOk)
-            //{
-            //    errorMessage.Text = mess;
-            //    return;
-            //}
+            if (!isOk)
+            {
+                errorMessage.Text = mess;
+                return;
+            }
 
-            //if (!user.IsEmailInUse(email))
-            //{
-            //    errorMessage.Text = "Email you entered have not registered yet.";
-            //    return;
-            //}
-            Frame.Navigate(typeof(ForgotPasswordPage2));
+            if (!user.IsEmailInUse(email))
+            {
+                errorMessage.Text = "Email you entered have not registered yet.";
+                return;
+            }
+            Frame.Navigate(typeof(ForgotPasswordPage2), email);
         }
 
         private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             errorMessage.Text = "";
         }
-
     }
-
 }

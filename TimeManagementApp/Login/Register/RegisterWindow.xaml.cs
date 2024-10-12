@@ -1,5 +1,6 @@
 using System;
 using Microsoft.UI.Xaml;
+using Windows.Storage;
 
 namespace TimeManagementApp
 {
@@ -9,6 +10,8 @@ namespace TimeManagementApp
     public sealed partial class RegisterWindow : Window
     {
         private Window m_window;
+
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public RegisterWindow()
         {
             this.InitializeComponent();
@@ -32,6 +35,7 @@ namespace TimeManagementApp
             // Sign up successfully
             errorMessage.Text = "";
             user.SaveCredential(username, password, email);
+            localSettings.Values.Remove("rememberUsername");
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

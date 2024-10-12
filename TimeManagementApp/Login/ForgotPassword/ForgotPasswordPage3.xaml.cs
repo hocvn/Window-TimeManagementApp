@@ -1,6 +1,9 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
+using Windows.Storage;
 using System;
+using System.Diagnostics;
 using Windows.Services.Maps;
 using Windows.System;
 
@@ -12,9 +15,22 @@ namespace TimeManagementApp.Login.ForgotPassword
     /// </summary>
     public sealed partial class ForgotPasswordPage3 : Page
     {
+        public string Email { get; set; }
+
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public ForgotPasswordPage3()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            string email = e.Parameter as string;
+            if (!string.IsNullOrEmpty(email))
+            {
+                this.Email = email;
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -55,6 +71,17 @@ namespace TimeManagementApp.Login.ForgotPassword
 
             errorMessage.Text = "";
 
+            // Get username
+            try
+            {
+                string username = user.GetUsername(this.Email);
+                user.SaveCredential(username, password, this.Email);
+                localSettings.Values.Remove("rememberUsername");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Exception caught: {ex.Message}");
+            }
         }
     }
 }

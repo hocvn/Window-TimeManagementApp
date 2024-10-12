@@ -125,9 +125,9 @@ namespace TimeManagementApp
         }
         public (bool, string) IsValidPassword(string password)
         {
-            if (password.Length < 6)
+            if (password.Length < 8)
             {
-                return (false, "Password must be at least 6 characters long");
+                return (false, "Password must be at least 8 characters long");
             }
             if (!password.Any(char.IsUpper))
             {
@@ -186,6 +186,29 @@ namespace TimeManagementApp
             }
 
             return false;
+        }
+
+        public string GetUsername(string email)
+        {
+            var usersDataJson = localSettings.Values["usersData"] as string;
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return null; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Value.email == email)
+                {
+                    return usersData.ElementAt(i).Key;
+                }
+            }
+
+            return null;
         }
     }
 }

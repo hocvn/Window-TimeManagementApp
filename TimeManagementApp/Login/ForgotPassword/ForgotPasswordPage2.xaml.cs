@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using System;
 
 namespace TimeManagementApp.Login.ForgotPassword
@@ -9,9 +10,20 @@ namespace TimeManagementApp.Login.ForgotPassword
     /// </summary>
     public sealed partial class ForgotPasswordPage2 : Page
     {
+        public string Email { get; set; }
         public ForgotPasswordPage2()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            string email = e.Parameter as string;
+            if (!string.IsNullOrEmpty(email))
+            {
+                this.Email = email;
+            }
         }
 
         //public string GenerateOtp(int length)
@@ -32,7 +44,7 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ForgotPasswordPage3));
+            Frame.Navigate(typeof(ForgotPasswordPage3), this.Email);
         }
 
         private void OtpTextBox_Focus(object sender, RoutedEventArgs e)
