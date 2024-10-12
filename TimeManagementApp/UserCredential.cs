@@ -143,7 +143,7 @@ namespace TimeManagementApp
             }
             return (true, "");
         }
-        public (bool, string) IsValidEmail(string email)
+        public (bool, string) CheckEmailFormat(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -159,12 +159,6 @@ namespace TimeManagementApp
             if (!regex.IsMatch(email))
             {
                 return (false, "Please fill out a valid email address format.");
-            }
-
-            // Check if the email is already in use
-            if (IsEmailInUse(email))
-            {
-                return (false, "This email is already in use.");
             }
 
             return (true, "");

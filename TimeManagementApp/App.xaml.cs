@@ -16,9 +16,6 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace TimeManagementApp
 {
     /// <summary>
@@ -45,6 +42,6 @@ namespace TimeManagementApp
             m_window.Activate();
         }
 
-        private Window m_window;
+        public Window m_window;
     }
 }

@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System.Security.Cryptography;
 using System.Text;
 using Windows.Storage;
+using TimeManagementApp.Login.ForgotPassword;
 
 namespace TimeManagementApp
 {
@@ -98,10 +99,12 @@ namespace TimeManagementApp
         {
             errorMessage.Text = "";
         }
-
         private void forgotPasswordHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //m_window = new ForgotPasswordWindow();
+            //m_window.Activate();
+            //this.Close();
+            // This feature is not working for now
         }
 
         private void registerHyperLinkButton_Click(object sender, RoutedEventArgs e)
