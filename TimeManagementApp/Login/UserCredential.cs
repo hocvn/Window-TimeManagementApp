@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Popups;
-using static TimeManagementApp.LoginWindow;
 
-namespace TimeManagementApp
+namespace TimeManagementApp.Login
 {
     internal class UserCredential
     {
@@ -35,7 +31,7 @@ namespace TimeManagementApp
             var usersDataJson = localSettings.Values["usersData"] as string;
             Dictionary<string, UserInfo> usersData;
 
-            if (String.IsNullOrEmpty(usersDataJson))
+            if (string.IsNullOrEmpty(usersDataJson))
             {
                 usersData = new Dictionary<string, UserInfo>();
             }
@@ -85,7 +81,7 @@ namespace TimeManagementApp
             var usersDataJson = localSettings.Values["usersData"] as string;
             Dictionary<string, UserInfo> usersData;
 
-            if (String.IsNullOrEmpty(usersDataJson))
+            if (string.IsNullOrEmpty(usersDataJson))
             {
                 return null; // There is no data stored for any user
             }
@@ -119,7 +115,7 @@ namespace TimeManagementApp
         }
         public bool CheckCredentials(string username, string password)
         {
-            string decryptedPassword = this.GetPassword(username);
+            string decryptedPassword = GetPassword(username);
             // Compare the decrypted password with the entered password
             return decryptedPassword == password;
         }
@@ -170,7 +166,7 @@ namespace TimeManagementApp
             var usersDataJson = localSettings.Values["usersData"] as string;
             Dictionary<string, UserInfo> usersData;
 
-            if (String.IsNullOrEmpty(usersDataJson))
+            if (string.IsNullOrEmpty(usersDataJson))
             {
                 return false; // There is no data stored for any user
             }
@@ -193,7 +189,7 @@ namespace TimeManagementApp
             var usersDataJson = localSettings.Values["usersData"] as string;
             Dictionary<string, UserInfo> usersData;
 
-            if (String.IsNullOrEmpty(usersDataJson))
+            if (string.IsNullOrEmpty(usersDataJson))
             {
                 return null; // There is no data stored for any user
             }

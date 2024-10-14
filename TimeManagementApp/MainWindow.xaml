@@ -8,11 +8,100 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock 
-            FontSize="20"
-            Text="Main window"
-            Margin="10">
-        </TextBlock>
-    </StackPanel>
+    <NavigationView 
+        x:Name="MainNavigationView"
+        RequestedTheme="Light"
+        Background="AntiqueWhite"
+
+        Grid.Row="1"
+        PaneDisplayMode="Left"
+        IsSettingsVisible="True"
+        IsBackButtonVisible="Collapsed"
+        IsBackEnabled="False"
+        IsTabStop="false"
+        
+        
+        SelectionChanged="NavigationView_SelectionChanged8">
+        
+        <NavigationView.MenuItems>
+            <NavigationViewItem 
+                Content="Home" 
+                Icon="Home" 
+                ToolTipService.ToolTip="Home"/>
+            
+            <NavigationViewItem 
+                Content="Notes" 
+                Icon="Edit" 
+                ToolTipService.ToolTip="Account" 
+                Tag="SamplePage2">
+                
+                <NavigationViewItem.MenuItems>
+                    <NavigationViewItem 
+                        Content="Mail" 
+                        Icon="Mail" 
+                        ToolTipService.ToolTip="Mail" 
+                        Tag="SamplePage3"/>
+                    
+                    <NavigationViewItem 
+                        Content="Calendar" 
+                        Icon="Calendar" 
+                        ToolTipService.ToolTip="Calendar" 
+                        Tag="SamplePage4"/>
+                    
+                </NavigationViewItem.MenuItems>
+            </NavigationViewItem>
+
+            <NavigationViewItem 
+                Content="Todo"
+                Icon="Accept"
+                ToolTipService.ToolTip="Todo"/>
+
+            <NavigationViewItem 
+                Content="Time"
+                Icon="Clock"
+                ToolTipService.ToolTip="Time"/>
+
+            <NavigationViewItem 
+                Content="Calendar"
+                Icon="Calendar"
+                ToolTipService.ToolTip="Calendar"/>
+
+            <NavigationViewItem 
+                Content="Group" 
+                Icon="People" 
+                ToolTipService.ToolTip="Document options" 
+                SelectsOnInvoked="False">
+                
+                <NavigationViewItem.MenuItems>
+                    <NavigationViewItem 
+                        Content="Group1" 
+                        Icon="NewFolder" 
+                        ToolTipService.ToolTip="Group1" 
+                        Tag="SamplePage5"/>
+                    
+                    <NavigationViewItem 
+                        Content="Group2" 
+                        Icon="OpenLocal" 
+                        ToolTipService.ToolTip="Group2" 
+                        Tag="SamplePage6"/>
+                </NavigationViewItem.MenuItems>
+            </NavigationViewItem>
+
+            <NavigationViewItem 
+                Content="Statistics"
+                Icon="PreviewLink"
+                ToolTipService.ToolTip="Statistics"/>
+
+        </NavigationView.MenuItems>
+
+        <NavigationView.AutoSuggestBox>
+            <AutoSuggestBox 
+                QueryIcon="Find" 
+                AutomationProperties.Name="Search"
+                PlaceholderText="Search"/>
+        </NavigationView.AutoSuggestBox>
+
+
+        <Frame x:Name="mainFrame" />
+    </NavigationView>
 </Window>
