@@ -57,6 +57,7 @@
                 ToolTipService.ToolTip="Todo"/>
 
             <NavigationViewItem 
+                x:Name="NavItem_Timer"
                 Content="Time"
                 Icon="Clock"
                 ToolTipService.ToolTip="Time"/>
