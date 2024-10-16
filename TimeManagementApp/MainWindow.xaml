@@ -12,46 +12,48 @@
         x:Name="MainNavigationView"
         RequestedTheme="Light"
         Background="AntiqueWhite"
-
+        
         Grid.Row="1"
         PaneDisplayMode="Left"
+        OpenPaneLength="250"
+
         IsSettingsVisible="True"
         IsBackButtonVisible="Collapsed"
         IsBackEnabled="False"
         IsTabStop="false"
         
-        
-        SelectionChanged="NavigationView_SelectionChanged8">
-        
+        SelectionChanged="NavigationView_SelectionChanged">
+
         <NavigationView.MenuItems>
             <NavigationViewItem 
                 Content="Home" 
                 Icon="Home" 
                 ToolTipService.ToolTip="Home"/>
-            
+
             <NavigationViewItem 
                 Content="Notes" 
                 Icon="Edit" 
                 ToolTipService.ToolTip="Account" 
                 Tag="SamplePage2">
-                
+
                 <NavigationViewItem.MenuItems>
                     <NavigationViewItem 
                         Content="Mail" 
                         Icon="Mail" 
                         ToolTipService.ToolTip="Mail" 
                         Tag="SamplePage3"/>
-                    
+
                     <NavigationViewItem 
                         Content="Calendar" 
                         Icon="Calendar" 
                         ToolTipService.ToolTip="Calendar" 
                         Tag="SamplePage4"/>
-                    
+
                 </NavigationViewItem.MenuItems>
             </NavigationViewItem>
 
             <NavigationViewItem 
+                x:Name="NavItem_ToDo" 
                 Content="Todo"
                 Icon="Accept"
                 ToolTipService.ToolTip="Todo"/>
@@ -72,14 +74,14 @@
                 Icon="People" 
                 ToolTipService.ToolTip="Document options" 
                 SelectsOnInvoked="False">
-                
+
                 <NavigationViewItem.MenuItems>
                     <NavigationViewItem 
                         Content="Group1" 
                         Icon="NewFolder" 
                         ToolTipService.ToolTip="Group1" 
                         Tag="SamplePage5"/>
-                    
+
                     <NavigationViewItem 
                         Content="Group2" 
                         Icon="OpenLocal" 
