@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,9 +23,12 @@ namespace TimeManagementApp.ToDo
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainToDoPage : Page
+    public sealed partial class MainToDoPage : Page, INotifyPropertyChanged
     {
         public MyTaskViewModel ViewModel { get; set; }
+        public MyTask CurrentSelectTask { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainToDoPage()
         {
@@ -32,7 +36,7 @@ namespace TimeManagementApp.ToDo
             ViewModel = new MyTaskViewModel();
         }
 
-        private void AddTask_Click(object sender, RoutedEventArgs e)
+        private void InsertTask_Click(object sender, RoutedEventArgs e)
         {
             var startDateTime = new DateTime(
                 NewTaskStartTime.Date.Year,
@@ -60,15 +64,59 @@ namespace TimeManagementApp.ToDo
                 EndTime = endDateTime
             };
 
-            ViewModel.AddTask(newTask);
+            ViewModel.InsertTask(newTask);
+
+            MyComboBox.SelectedItem = null;
+            InsertStackPanel.Visibility = Visibility.Collapsed;
         }
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            var selectedTask = myTasksListView.SelectedItem as MyTask;
-            if (selectedTask != null)
+            if (CurrentSelectTask != null)
             {
-                ViewModel.DeleteTask(selectedTask);
+                ViewModel.DeleteTask(CurrentSelectTask);
+                CurrentSelectTask = null;
+
+                MyComboBox.SelectedItem = null;
+                DeleteStackPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void UpdateTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSelectTask != null)
+            {
+                var startDateTime = new DateTime(
+                    UpdateTaskStartTime.Date.Year,
+                    UpdateTaskStartTime.Date.Month,
+                    UpdateTaskStartTime.Date.Day,
+                    UpdateTaskStartTimeTime.Time.Hours,
+                    UpdateTaskStartTimeTime.Time.Minutes,
+                    UpdateTaskStartTimeTime.Time.Seconds
+                );
+
+                var endDateTime = new DateTime(
+                    UpdateTaskEndTime.Date.Year,
+                    UpdateTaskEndTime.Date.Month,
+                    UpdateTaskEndTime.Date.Day,
+                    UpdateTaskEndTimeTime.Time.Hours,
+                    UpdateTaskEndTimeTime.Time.Minutes,
+                    UpdateTaskEndTimeTime.Time.Seconds
+                );
+
+                var newTask = new MyTask
+                {
+                    TaskName = UpdateTaskName.Text,
+                    TaskDescription = UpdateTaskDescription.Text,
+                    StartTime = startDateTime,
+                    EndTime = endDateTime
+                };
+
+                ViewModel.UpdateTask(CurrentSelectTask, newTask);
+                CurrentSelectTask = null;
+
+                MyComboBox.SelectedItem = null;
+                UpdateStackPanel.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -77,24 +125,16 @@ namespace TimeManagementApp.ToDo
             var selectedComboBoxItem = MyComboBox.SelectedItem as ComboBoxItem;
             if (selectedComboBoxItem != null)
             {
-                string selectedContent = selectedComboBoxItem.Content.ToString();
-                string selectedTag = selectedComboBoxItem.Tag.ToString();
-
-                if (selectedTag == "1")
-                {
-                    InsertStackPanel.Visibility = Visibility.Visible;
-                    DeleteStackPanel.Visibility = Visibility.Collapsed;
-                }
-                else if (selectedTag == "2")
-                {
-                    InsertStackPanel.Visibility = Visibility.Collapsed;
-                    DeleteStackPanel.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    // update
-                }
+                var selectedTag = selectedComboBoxItem.Tag.ToString();
+                InsertStackPanel.Visibility = selectedTag == "InsertTag" ? Visibility.Visible : Visibility.Collapsed;
+                DeleteStackPanel.Visibility = selectedTag == "DeleteTag" ? Visibility.Visible : Visibility.Collapsed;
+                UpdateStackPanel.Visibility = selectedTag == "UpdateTag" ? Visibility.Visible : Visibility.Collapsed;
             }
+        }
+
+        private void MyTasksListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentSelectTask = myTasksListView.SelectedItem as MyTask;
         }
     }
 }

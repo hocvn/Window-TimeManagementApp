@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:TimeManagementApp.ToDo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -18,7 +18,8 @@
         <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0">
             <ListView x:Name="myTasksListView" 
                       ItemsSource="{x:Bind ViewModel.Tasks, Mode=OneWay}"
-                      HorizontalAlignment="Left">
+                      HorizontalAlignment="Left"
+                      SelectionChanged="MyTasksListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:MyTask">
                         <StackPanel Orientation="Horizontal" Margin="6">
@@ -41,24 +42,36 @@
                       SelectionChanged="MyComboBox_SelectionChanged"
                       HorizontalAlignment="Left"
                       VerticalAlignment ="Top" Margin="0,20,0,0">
-                <ComboBoxItem Content="Insert" Tag="1"/>
-                <ComboBoxItem Content="Delete" Tag="2"/>
-                <ComboBoxItem Content="Update" Tag="3"/>
+                <ComboBoxItem Content="Insert" Tag="InsertTag"/>
+                <ComboBoxItem Content="Delete" Tag="DeleteTag"/>
+                <ComboBoxItem Content="Update" Tag="UpdateTag"/>
             </ComboBox>
 
             <StackPanel x:Name="InsertStackPanel" Margin="20" Visibility="Collapsed">
+                <TextBlock Text="Fill the space and click insert" Margin="0,0,0,10"/>
                 <TextBox x:Name="NewTaskName" PlaceholderText="Task Name" Margin="0,0,0,10"/>
                 <TextBox x:Name="NewTaskDescription" PlaceholderText="Task Description" Margin="0,0,0,10"/>
                 <DatePicker x:Name="NewTaskStartTime" Margin="0,0,0,10"/>
                 <TimePicker x:Name="NewTaskStartTimeTime" Margin="0,0,0,10"/>
                 <DatePicker x:Name="NewTaskEndTime" Margin="0,0,0,10"/>
                 <TimePicker x:Name="NewTaskEndTimeTime" Margin="0,0,0,10"/>
-                <Button Content="Add Task" Click="AddTask_Click" Margin="0,0,0,10"/>
+                <Button Content="Insert Task" Click="InsertTask_Click" Margin="0,0,0,10"/>
             </StackPanel>
 
             <StackPanel x:Name="DeleteStackPanel" Margin="20" Visibility="Collapsed">
                 <TextBlock Text="Choose task on the list and click Delete" Margin="0,0,0,10"/>
                 <Button Content="Delete Task" Click="DeleteTask_Click" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel x:Name="UpdateStackPanel" Margin="20" Visibility="Collapsed">
+                <TextBlock Text="Choose task on the list and update information" Margin="0,0,0,10"/>
+                <TextBox x:Name="UpdateTaskName" Text="{x:Bind CurrentSelectTask.TaskName, Mode=OneWay}" PlaceholderText="Task Name" Margin="0,0,0,10"/>
+                <TextBox x:Name="UpdateTaskDescription" Text="{x:Bind CurrentSelectTask.TaskDescription, Mode=OneWay}" PlaceholderText="Task Description" Margin="0,0,0,10"/>
+                <DatePicker x:Name="UpdateTaskStartTime" Date="{x:Bind CurrentSelectTask.StartTime.Date, Mode=OneWay}" Margin="0,0,0,10"/>
+                <TimePicker x:Name="UpdateTaskStartTimeTime" Time="{x:Bind CurrentSelectTask.StartTime.TimeOfDay, Mode=OneWay}" Margin="0,0,0,10"/>
+                <DatePicker x:Name="UpdateTaskEndTime" Date="{x:Bind CurrentSelectTask.EndTime.Date, Mode=OneWay}" Margin="0,0,0,10"/>
+                <TimePicker x:Name="UpdateTaskEndTimeTime" Time="{x:Bind CurrentSelectTask.EndTime.TimeOfDay, Mode=OneWay}" Margin="0,0,0,10"/>
+                <Button Content="Update Task" Click="UpdateTask_Click" Margin="0,0,0,10"/>
             </StackPanel>
         </StackPanel>
     </Grid>

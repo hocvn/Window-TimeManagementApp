@@ -13,15 +13,16 @@ namespace TimeManagementApp.ToDo
     {
         public ObservableCollection<MyTask> Tasks = new ObservableCollection<MyTask>();
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public MyTaskViewModel()
         {
             IDao dao = new MockDao();
             Tasks = dao.GetAllTasks();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void AddTask(MyTask newTask)
+        public void InsertTask(MyTask newTask)
         {
             Tasks.Add(newTask);
         }
@@ -29,6 +30,12 @@ namespace TimeManagementApp.ToDo
         public void DeleteTask(MyTask selectedTask)
         {
             Tasks.Remove(selectedTask);
+        }
+
+        public void UpdateTask(MyTask oldTask, MyTask newTask)
+        {
+            var index = Tasks.IndexOf(oldTask);
+            Tasks[index] = newTask;
         }
     }
 }
