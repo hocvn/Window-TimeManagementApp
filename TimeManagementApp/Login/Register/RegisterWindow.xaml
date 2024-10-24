@@ -6,10 +6,17 @@
     xmlns:local="using:TimeManagementApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Closed="Window_Closed">
+    mc:Ignorable="d">
 
-    <Grid RequestedTheme="Light" Background="AntiqueWhite">
+    <Grid RequestedTheme="Light">
+
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="AliceBlue" Offset="0.0" />
+                <GradientStop Color="AntiqueWhite" Offset="1.5" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -21,6 +28,19 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <Button 
+            Grid.Column="0" 
+            Grid.Row="0"
+            x:Name="BackButton" 
+            Content="Back" 
+            Width="80" 
+            Height="30" 
+            Background="GhostWhite"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Margin="10" 
+            Click="BackButton_Click"/>
 
         <StackPanel
             Grid.Column="1" 

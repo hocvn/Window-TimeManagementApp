@@ -18,7 +18,7 @@ namespace TimeManagementApp.Login.ForgotPassword
         }
         UserCredential user = new UserCredential();
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Activate();

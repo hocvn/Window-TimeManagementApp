@@ -98,10 +98,11 @@ namespace TimeManagementApp
             return (true, "");
         }
 
-        private void Window_Closed(object sender, WindowEventArgs args)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Activate();
+            m_window = new LoginWindow();
+            m_window.Activate();
+            this.Close();
         }
     }
 }

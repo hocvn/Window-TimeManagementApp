@@ -33,7 +33,7 @@ namespace TimeManagementApp.Login.ForgotPassword
             }
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(ForgotPasswordPage2));
         }
