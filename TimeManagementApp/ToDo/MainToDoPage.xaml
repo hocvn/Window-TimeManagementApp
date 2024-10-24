@@ -6,15 +6,17 @@
     xmlns:local="using:TimeManagementApp.ToDo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="340"/>
+            <ColumnDefinition Width="330"/>
         </Grid.ColumnDefinitions>
         
+        <!--Area for ToDoListView-->
         <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0">
             <ListView x:Name="myTasksListView" 
                       ItemsSource="{x:Bind ViewModel.Tasks, Mode=OneWay}"
@@ -36,43 +38,189 @@
             </ListView>
         </StackPanel>
 
+        <!--Area for Insert, Delete, Remove features-->
         <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <ComboBox x:Name="MyComboBox" Width="200"
-                      Header="TaskList Management"
-                      SelectionChanged="MyComboBox_SelectionChanged"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment ="Top" Margin="0,20,0,0">
-                <ComboBoxItem Content="Insert" Tag="InsertTag"/>
-                <ComboBoxItem Content="Delete" Tag="DeleteTag"/>
-                <ComboBoxItem Content="Update" Tag="UpdateTag"/>
-            </ComboBox>
 
-            <StackPanel x:Name="InsertStackPanel" Margin="20" Visibility="Collapsed">
-                <TextBlock Text="Fill the space and click insert" Margin="0,0,0,10"/>
-                <TextBox x:Name="NewTaskName" PlaceholderText="Task Name" Margin="0,0,0,10"/>
-                <TextBox x:Name="NewTaskDescription" PlaceholderText="Task Description" Margin="0,0,0,10"/>
-                <DatePicker x:Name="NewTaskStartTime" Margin="0,0,0,10"/>
-                <TimePicker x:Name="NewTaskStartTimeTime" Margin="0,0,0,10"/>
-                <DatePicker x:Name="NewTaskEndTime" Margin="0,0,0,10"/>
-                <TimePicker x:Name="NewTaskEndTimeTime" Margin="0,0,0,10"/>
-                <Button Content="Insert Task" Click="InsertTask_Click" Margin="0,0,0,10"/>
-            </StackPanel>
+            <!--Expander for Insert Task-->
+            <controls:SettingsExpander>
+                <controls:SettingsExpander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE710;" Margin="0,0,10,0"/>
+                        <TextBlock Text="Insert Task"/>
+                    </StackPanel>
+                </controls:SettingsExpander.Header>
 
-            <StackPanel x:Name="DeleteStackPanel" Margin="20" Visibility="Collapsed">
-                <TextBlock Text="Choose task on the list and click Delete" Margin="0,0,0,10"/>
-                <Button Content="Delete Task" Click="DeleteTask_Click" Margin="0,0,0,10"/>
-            </StackPanel>
+                <controls:SettingsExpander.ItemsHeader>
+                    <InfoBar
+                        IsClosable="False"
+                        IsIconVisible="True"
+                        IsOpen="True"
+                        Severity="Success">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Fill the space and click" Margin="0,5,0,0"/>
+                            <Button Content="Insert Task" Click="InsertTask_Click" Margin="35,0,0,0"/>
+                        </StackPanel>
+                    </InfoBar>
+                </controls:SettingsExpander.ItemsHeader>
 
-            <StackPanel x:Name="UpdateStackPanel" Margin="20" Visibility="Collapsed">
-                <TextBlock Text="Choose task on the list and update information" Margin="0,0,0,10"/>
-                <TextBox x:Name="UpdateTaskName" Text="{x:Bind CurrentSelectTask.TaskName, Mode=OneWay}" PlaceholderText="Task Name" Margin="0,0,0,10"/>
-                <TextBox x:Name="UpdateTaskDescription" Text="{x:Bind CurrentSelectTask.TaskDescription, Mode=OneWay}" PlaceholderText="Task Description" Margin="0,0,0,10"/>
-                <DatePicker x:Name="UpdateTaskStartTime" Date="{x:Bind CurrentSelectTask.StartTime.Date, Mode=OneWay}" Margin="0,0,0,10"/>
-                <TimePicker x:Name="UpdateTaskStartTimeTime" Time="{x:Bind CurrentSelectTask.StartTime.TimeOfDay, Mode=OneWay}" Margin="0,0,0,10"/>
-                <DatePicker x:Name="UpdateTaskEndTime" Date="{x:Bind CurrentSelectTask.EndTime.Date, Mode=OneWay}" Margin="0,0,0,10"/>
-                <TimePicker x:Name="UpdateTaskEndTimeTime" Time="{x:Bind CurrentSelectTask.EndTime.TimeOfDay, Mode=OneWay}" Margin="0,0,0,10"/>
-                <Button Content="Update Task" Click="UpdateTask_Click" Margin="0,0,0,10"/>
-            </StackPanel>
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Task name:" Grid.Column="0" VerticalAlignment="Center" Margin="-20,0,55,0"/>
+                            <TextBox x:Name="InsertTaskName" PlaceholderText="Task Name" Grid.Column="1"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Task description:" Grid.Column="0" VerticalAlignment="Center" Margin="-20,-10,20,0"/>
+                            <TextBox x:Name="InsertTaskDescription" PlaceholderText="Task Description" Grid.Column="1" Margin="0,-10,0,0"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard>
+                        <Grid Margin="-20,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Start time:" Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
+                            <CalendarDatePicker x:Name="InsertTaskStartDate" Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"/>
+                            <TimePicker x:Name="InsertTaskStartTime" Grid.Row="1" Margin="0,5,0,0"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard>
+                        <Grid Margin="-20,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="End time:" Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
+                            <CalendarDatePicker x:Name="InsertTaskEndDate" Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"/>
+                            <TimePicker x:Name="InsertTaskEndTime" Grid.Row="1" Margin="0,5,0,0"/>
+                        </Grid>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+
+            <!--Expander for Delete Task-->
+            <controls:SettingsExpander>
+                <controls:SettingsExpander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE74D;" Margin="0,0,10,0"/>
+                        <TextBlock Text="Delete Task"/>
+                    </StackPanel>
+                </controls:SettingsExpander.Header>
+
+                <controls:SettingsExpander.ItemsHeader>
+                    <InfoBar
+                        IsClosable="False"
+                        IsIconVisible="True"
+                        IsOpen="True"
+                        Severity="Success">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Select a task and click" Margin="0,5,0,0"/>
+                            <Button Content="Delete Task" Click="DeleteTask_Click" Margin="35,0,0,0"/>
+                        </StackPanel>
+                    </InfoBar>
+                </controls:SettingsExpander.ItemsHeader>
+            </controls:SettingsExpander>
+
+            <!--Expander for Update Task-->
+            <controls:SettingsExpander>
+                <controls:SettingsExpander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE777;" Margin="0,0,10,0"/>
+                        <TextBlock Text="Update Task"/>
+                    </StackPanel>
+                </controls:SettingsExpander.Header>
+
+                <controls:SettingsExpander.ItemsHeader>
+                    <InfoBar
+                        IsClosable="False"
+                        IsIconVisible="True"
+                        IsOpen="True"
+                        Severity="Success">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Select a task and update" Margin="0,5,0,0"/>
+                            <Button Content="Update Task" Click="UpdateTask_Click" Margin="15,0,0,0"/>
+                        </StackPanel>
+                    </InfoBar>
+                </controls:SettingsExpander.ItemsHeader>
+
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Task name:" Grid.Column="0" VerticalAlignment="Center" Margin="-20,0,55,0"/>
+                            <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" Grid.Column="1"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Task description:" Grid.Column="0" VerticalAlignment="Center" Margin="-20,-10,20,0"/>
+                            <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Task Description" Grid.Column="1" Margin="0,-10,0,0"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard>
+                        <Grid Margin="-20,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Start time:" Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
+                            <CalendarDatePicker x:Name="UpdateTaskStartDate" Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"/>
+                            <TimePicker x:Name="UpdateTaskStartTime" Grid.Row="1" Margin="0,5,0,0"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard>
+                        <Grid Margin="-20,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="End time:" Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
+                            <CalendarDatePicker x:Name="UpdateTaskEndDate" Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"/>
+                            <TimePicker x:Name="UpdateTaskEndTime" Grid.Row="1" Margin="0,5,0,0"/>
+                        </Grid>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
         </StackPanel>
     </Grid>
 </Page>

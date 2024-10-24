@@ -9,8 +9,5 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="COMING SOON" FontSize="25"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-    </Grid>
+
 </Page>

@@ -36,38 +36,43 @@ namespace TimeManagementApp.ToDo
             ViewModel = new MyTaskViewModel();
         }
 
+        private void MyTasksListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentSelectTask = myTasksListView.SelectedItem as MyTask;
+        }
+
+
         private void InsertTask_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: handle empty input
+
             var startDateTime = new DateTime(
-                NewTaskStartTime.Date.Year,
-                NewTaskStartTime.Date.Month,
-                NewTaskStartTime.Date.Day,
-                NewTaskStartTimeTime.Time.Hours,
-                NewTaskStartTimeTime.Time.Minutes,
-                NewTaskStartTimeTime.Time.Seconds
+                InsertTaskStartDate.Date.Value.Year,
+                InsertTaskStartDate.Date.Value.Month,
+                InsertTaskStartDate.Date.Value.Day,
+                InsertTaskStartTime.Time.Hours,
+                InsertTaskStartTime.Time.Minutes,
+                InsertTaskStartTime.Time.Seconds
             );
 
             var endDateTime = new DateTime(
-                NewTaskEndTime.Date.Year,
-                NewTaskEndTime.Date.Month,
-                NewTaskEndTime.Date.Day,
-                NewTaskEndTimeTime.Time.Hours,
-                NewTaskEndTimeTime.Time.Minutes,
-                NewTaskEndTimeTime.Time.Seconds
+                InsertTaskEndDate.Date.Value.Year,
+                InsertTaskEndDate.Date.Value.Month,
+                InsertTaskEndDate.Date.Value.Day,
+                InsertTaskEndTime.Time.Hours,
+                InsertTaskEndTime.Time.Minutes,
+                InsertTaskEndTime.Time.Seconds
             );
 
             var newTask = new MyTask
             {
-                TaskName = NewTaskName.Text,
-                TaskDescription = NewTaskDescription.Text,
+                TaskName = InsertTaskName.Text,
+                TaskDescription = InsertTaskDescription.Text,
                 StartTime = startDateTime,
                 EndTime = endDateTime
             };
 
             ViewModel.InsertTask(newTask);
-
-            MyComboBox.SelectedItem = null;
-            InsertStackPanel.Visibility = Visibility.Collapsed;
         }
 
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
@@ -76,9 +81,6 @@ namespace TimeManagementApp.ToDo
             {
                 ViewModel.DeleteTask(CurrentSelectTask);
                 CurrentSelectTask = null;
-
-                MyComboBox.SelectedItem = null;
-                DeleteStackPanel.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -86,22 +88,24 @@ namespace TimeManagementApp.ToDo
         {
             if (CurrentSelectTask != null)
             {
+                // TODO: handle empty input
+
                 var startDateTime = new DateTime(
-                    UpdateTaskStartTime.Date.Year,
-                    UpdateTaskStartTime.Date.Month,
-                    UpdateTaskStartTime.Date.Day,
-                    UpdateTaskStartTimeTime.Time.Hours,
-                    UpdateTaskStartTimeTime.Time.Minutes,
-                    UpdateTaskStartTimeTime.Time.Seconds
+                    UpdateTaskStartDate.Date.Value.Year,
+                    UpdateTaskStartDate.Date.Value.Month,
+                    UpdateTaskStartDate.Date.Value.Day,
+                    UpdateTaskStartTime.Time.Hours,
+                    UpdateTaskStartTime.Time.Minutes,
+                    UpdateTaskStartTime.Time.Seconds
                 );
 
                 var endDateTime = new DateTime(
-                    UpdateTaskEndTime.Date.Year,
-                    UpdateTaskEndTime.Date.Month,
-                    UpdateTaskEndTime.Date.Day,
-                    UpdateTaskEndTimeTime.Time.Hours,
-                    UpdateTaskEndTimeTime.Time.Minutes,
-                    UpdateTaskEndTimeTime.Time.Seconds
+                    UpdateTaskEndDate.Date.Value.Year,
+                    UpdateTaskEndDate.Date.Value.Month,
+                    UpdateTaskEndDate.Date.Value.Day,
+                    UpdateTaskEndTime.Time.Hours,
+                    UpdateTaskEndTime.Time.Minutes,
+                    UpdateTaskEndTime.Time.Seconds
                 );
 
                 var newTask = new MyTask
@@ -114,27 +118,7 @@ namespace TimeManagementApp.ToDo
 
                 ViewModel.UpdateTask(CurrentSelectTask, newTask);
                 CurrentSelectTask = null;
-
-                MyComboBox.SelectedItem = null;
-                UpdateStackPanel.Visibility = Visibility.Collapsed;
             }
-        }
-
-        private void MyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedComboBoxItem = MyComboBox.SelectedItem as ComboBoxItem;
-            if (selectedComboBoxItem != null)
-            {
-                var selectedTag = selectedComboBoxItem.Tag.ToString();
-                InsertStackPanel.Visibility = selectedTag == "InsertTag" ? Visibility.Visible : Visibility.Collapsed;
-                DeleteStackPanel.Visibility = selectedTag == "DeleteTag" ? Visibility.Visible : Visibility.Collapsed;
-                UpdateStackPanel.Visibility = selectedTag == "UpdateTag" ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
-
-        private void MyTasksListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            CurrentSelectTask = myTasksListView.SelectedItem as MyTask;
         }
     }
 }

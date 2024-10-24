@@ -7,21 +7,6 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
-    <Page Update="Timer\MainTimerPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Login\ForgotPassword\ForgotPasswordPage3.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Login\ForgotPassword\ForgotPasswordWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Login\ForgotPassword\ForgotPasswordPage2.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Login\ForgotPassword\ForgotPasswordPage1.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <None Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </None>

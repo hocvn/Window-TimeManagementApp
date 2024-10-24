@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -42,11 +41,8 @@ namespace TimeManagementApp
             Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;
 
-            if (selectedItem.Name == NavItem_Timer.Name)
-            {
-                pageType = typeof(MainTimerPage);
-            }
-            else if (selectedItem.Name == NavItem_ToDo.Name)
+
+            if (selectedItem.Name == NavItem_ToDo.Name)
             {
                 pageType = typeof(MainToDoPage);
             }
