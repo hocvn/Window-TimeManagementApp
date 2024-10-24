@@ -26,13 +26,12 @@ namespace TimeManagementApp.Login.ForgotPassword
         }
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            forgotPasswordFrame.Navigate(typeof(ForgotPasswordPage1));
+            forgotPasswordFrame.Navigate(typeof(ForgotPasswordPage1), this);
         }
 
-        private void Window_Closed(object sender, WindowEventArgs args)
+        private void CloseWindow(object sender, WindowEventArgs args)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Activate();
+            this.Close();
         }
     }
 }

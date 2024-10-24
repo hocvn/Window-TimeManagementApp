@@ -13,7 +13,7 @@
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="AntiqueWhite" Offset="1.5" />
+                <GradientStop Color="CornflowerBlue" Offset="1.5" />
             </LinearGradientBrush>
         </Grid.Background>
         
@@ -48,15 +48,16 @@
         </StackPanel>
 
         <RelativePanel
-            BorderBrush="Brown" 
-            BorderThickness="2"
+            BorderBrush="DarkBlue" 
+            BorderThickness="1"
             CornerRadius="20"
-            Padding="10"
+            Padding="16 16 16 20"
+            Background="WhiteSmoke"
             Grid.Column="1" 
             Grid.Row="1" 
             Grid.RowSpan="1">
 
-            <TextBox 
+             <TextBox 
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 x:Name="usernameTextBox" 
                 Width="280" 
@@ -85,9 +86,10 @@
                 HorizontalAlignment="Stretch"
                 x:Name="loginButton" 
                 Content="SIGN IN" 
+                FontWeight="Bold"
                 Height="36"
                 Width="280"
-                Background="MediumBlue" 
+                Background="Blue" 
                 Foreground="white" 
                 Click="loginButton_Click" 
                 Margin="0 20 0 10">

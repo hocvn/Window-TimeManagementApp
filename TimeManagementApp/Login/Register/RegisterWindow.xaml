@@ -13,10 +13,10 @@
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="AntiqueWhite" Offset="1.5" />
+                <GradientStop Color="CornflowerBlue" Offset="1.5" />
             </LinearGradientBrush>
         </Grid.Background>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -62,11 +62,11 @@
         </StackPanel>
 
         <RelativePanel
-            BorderBrush="Brown" 
+            BorderBrush="DarkBlue" 
             BorderThickness="2"
             CornerRadius="20"
-            Padding="10"
-            Grid.Column="1" 
+            Padding="16 16 16 20"
+            Background="WhiteSmoke"
             Grid.Row="1" 
             Grid.RowSpan="1">
 

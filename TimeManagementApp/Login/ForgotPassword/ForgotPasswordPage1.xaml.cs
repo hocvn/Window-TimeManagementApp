@@ -11,21 +11,26 @@ namespace TimeManagementApp.Login.ForgotPassword
     /// </summary>
     public sealed partial class ForgotPasswordPage1 : Page
     {
+        Window _window = null;
+        UserCredential user = new UserCredential();
         public ForgotPasswordPage1()
         {
             this.InitializeComponent();
             this.NavigationCacheMode = Microsoft.UI.Xaml.Navigation.NavigationCacheMode.Required;
         }
-        UserCredential user = new UserCredential();
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            _window = e.Parameter as Window;
+        }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Activate();
 
-            // var window = (Application.Current as App)?.m_window as ForgotPasswordWindow;
-
-            // this code is not working for now
+            _window.Close();
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
