@@ -11,18 +11,21 @@
     <NavigationView 
         x:Name="MainNavigationView"
         RequestedTheme="Light"
-        Background="AntiqueWhite"
-
         Grid.Row="1"
         PaneDisplayMode="Left"
         IsSettingsVisible="True"
         IsBackButtonVisible="Collapsed"
         IsBackEnabled="False"
         IsTabStop="false"
-        
-        
-        SelectionChanged="NavigationView_SelectionChanged8">
-        
+        SelectionChanged="NavigationView_SelectionChanged">
+
+        <NavigationView.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="AliceBlue" Offset="0.0" />
+                <GradientStop Color="CornflowerBlue" Offset="1.5" />
+            </LinearGradientBrush>
+        </NavigationView.Background>
+
         <NavigationView.MenuItems>
             <NavigationViewItem 
                 Content="Home" 
@@ -30,10 +33,11 @@
                 ToolTipService.ToolTip="Home"/>
             
             <NavigationViewItem 
+                x:Name="NavItem_Note"
                 Content="Notes" 
                 Icon="Edit" 
-                ToolTipService.ToolTip="Account" 
-                Tag="SamplePage2">
+                ToolTipService.ToolTip="Note" 
+                Tag="NotePage">
                 
                 <NavigationViewItem.MenuItems>
                     <NavigationViewItem 
