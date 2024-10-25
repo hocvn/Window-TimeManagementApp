@@ -1,9 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using System.Net;
-using System.Net.Mail;
-using System.Security.Cryptography;
 using System;
 
 namespace TimeManagementApp.Login.ForgotPassword
@@ -14,7 +11,6 @@ namespace TimeManagementApp.Login.ForgotPassword
     public sealed partial class ForgotPasswordPage2 : Page
     {
         public string Email { get; set; }
-        public string Otp { get; set; }
         public ForgotPasswordPage2()
         {
             this.InitializeComponent();
@@ -30,45 +26,16 @@ namespace TimeManagementApp.Login.ForgotPassword
             }
         }
 
-        void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            Otp = GenerateOtp(6);
-            myTextBlock.Text = $"Please enter this code '{Otp}' below.";
-            //SendOtpEmail(this.Email, Otp);
-        }
-
-        public string GenerateOtp(int length)
-        {
-            Random random = new Random();
-            string otp = "";
-            for (int i = 0; i < length; i++)
-            {
-                otp += random.Next(0, 10).ToString();
-            }
-            return otp;
-        }
-
-        public void SendOtpEmail(string recipientEmail, string otp)
-        {
-            var smtpClient = new SmtpClient("smtp.gmail.com")
-            {
-                Port = 587,
-                Credentials = new NetworkCredential("hocdothai2004@gmail.com", "your-app-password"),
-                EnableSsl = true,
-            };
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress("hocdothai2004@gmail.com"),
-                Subject = "Your OTP Code",
-                Body = $"Your OTP code is: {otp}",
-                IsBodyHtml = true,
-            };
-            mailMessage.To.Add(recipientEmail);
-
-            smtpClient.Send(mailMessage);
-        }
-
+        //public string GenerateOtp(int length)
+        //{
+        //    Random random = new Random();
+        //    string otp = "";
+        //    for (int i = 0; i < length; i++)
+        //    {
+        //        otp += random.Next(0, 10).ToString();
+        //    }
+        //    return otp;
+        //}
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
@@ -77,14 +44,7 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            if (otpTextBox.Text == Otp)
-            {
-                Frame.Navigate(typeof(ForgotPasswordPage3), this.Email);
-            }
-            else
-            {
-                errorMessage.Text = "Invalid OTP code";
-            }
+            Frame.Navigate(typeof(ForgotPasswordPage3), this.Email);
         }
 
         private void OtpTextBox_Focus(object sender, RoutedEventArgs e)

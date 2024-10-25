@@ -2,8 +2,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Net.Mail;
-using System.Net;
 using Windows.ApplicationModel;
 
 namespace TimeManagementApp.Login.ForgotPassword
