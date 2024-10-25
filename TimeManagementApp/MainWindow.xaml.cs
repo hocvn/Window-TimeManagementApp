@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
+using TimeManagementApp.ToDo;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -39,22 +40,28 @@ namespace TimeManagementApp
                 navOptions.IsNavigationStackEnabled = false;
             }
 
+            Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;
 
+
+            if (selectedItem.Name == NavItem_ToDo.Name)
+            {
+                pageType = typeof(MainToDoPage);
+            }
             if (selectedItem.Name == NavItem_Timer.Name)
             {
-                Type pageType = typeof(MainTimerPage);
-                _ = mainFrame.Navigate(pageType);
+                pageType = typeof(MainTimerPage);
             }
             else if (selectedItem.Name == NavItem_Note.Name)
             {
-                Type pageType = typeof(NotePage);
-                _ = mainFrame.Navigate(pageType);
+                pageType = typeof(NotePage);
+                
             }
             else 
             {
                 // other nav
             }
+            _ = mainFrame.Navigate(pageType);
         }
     }
 }

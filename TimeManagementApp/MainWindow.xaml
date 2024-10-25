@@ -13,6 +13,8 @@
         RequestedTheme="Light"
         Grid.Row="1"
         PaneDisplayMode="Left"
+        OpenPaneLength="250"
+
         IsSettingsVisible="True"
         IsBackButtonVisible="Collapsed"
         IsBackEnabled="False"
@@ -31,7 +33,7 @@
                 Content="Home" 
                 Icon="Home" 
                 ToolTipService.ToolTip="Home"/>
-            
+
             <NavigationViewItem 
                 x:Name="NavItem_Note"
                 Content="Notes" 
@@ -45,17 +47,18 @@
                         Icon="Mail" 
                         ToolTipService.ToolTip="Mail" 
                         Tag="SamplePage3"/>
-                    
+
                     <NavigationViewItem 
                         Content="Calendar" 
                         Icon="Calendar" 
                         ToolTipService.ToolTip="Calendar" 
                         Tag="SamplePage4"/>
-                    
+
                 </NavigationViewItem.MenuItems>
             </NavigationViewItem>
 
             <NavigationViewItem 
+                x:Name="NavItem_ToDo" 
                 Content="Todo"
                 Icon="Accept"
                 ToolTipService.ToolTip="Todo"/>
@@ -76,14 +79,14 @@
                 Icon="People" 
                 ToolTipService.ToolTip="Document options" 
                 SelectsOnInvoked="False">
-                
+
                 <NavigationViewItem.MenuItems>
                     <NavigationViewItem 
                         Content="Group1" 
                         Icon="NewFolder" 
                         ToolTipService.ToolTip="Group1" 
                         Tag="SamplePage5"/>
-                    
+
                     <NavigationViewItem 
                         Content="Group2" 
                         Icon="OpenLocal" 
