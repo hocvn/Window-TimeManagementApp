@@ -68,6 +68,7 @@
             Padding="16 16 16 20"
             Background="WhiteSmoke"
             Grid.Row="1" 
+            Grid.Column="1"
             Grid.RowSpan="1">
 
             <TextBox 
