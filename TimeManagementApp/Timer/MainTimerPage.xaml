@@ -10,6 +10,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="AliceBlue" Offset="0.0" />
+                <GradientStop Color="WhiteSmoke" Offset="1.5" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        
         <Button x:Name="SettingsButton" 
                 Content="Settings" FontSize="12" 
                 Width="80" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" 

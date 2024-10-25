@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -28,7 +29,7 @@ namespace TimeManagementApp
             this.InitializeComponent();
         }
 
-        private void NavigationView_SelectionChanged8(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             FrameNavigationOptions navOptions = new FrameNavigationOptions();
             navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
@@ -45,7 +46,12 @@ namespace TimeManagementApp
                 Type pageType = typeof(MainTimerPage);
                 _ = mainFrame.Navigate(pageType);
             }
-            else
+            else if (selectedItem.Name == NavItem_Note.Name)
+            {
+                Type pageType = typeof(NotePage);
+                _ = mainFrame.Navigate(pageType);
+            }
+            else 
             {
                 // other nav
             }
