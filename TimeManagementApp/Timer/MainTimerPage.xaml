@@ -17,9 +17,8 @@
             </LinearGradientBrush>
         </Grid.Background>
         
-        <Button x:Name="SettingsButton" 
-                Content="Settings" FontSize="12" 
-                Width="80" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" 
+        <AppBarButton x:Name="SettingsButton" Icon="Setting"
+                Width="60" Height="60" HorizontalAlignment="Right" VerticalAlignment="Top" 
                 Click="SettingsButton_Click"/>
 
         <StackPanel x:Name="SettingsPanel" 
@@ -29,30 +28,36 @@
             <TextBlock Text="General Settings" FontSize="20" FontWeight="Bold" 
                        Margin="0,0,0,20"/>
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+            <!--<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
                 <TextBlock Text="Dark Mode" VerticalAlignment="Center"/>
                 <ToggleSwitch Margin="10,0,0,0"/>
-            </StackPanel>
+            </StackPanel>-->
 
             <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
                 <TextBlock Text="FocusTime Minutes" VerticalAlignment="Center"/>
-                <Slider x:Name ="FocusTimeSlider" Minimum="0" Maximum="60" Margin="10,0,0,0" Width="200"/>
+                <Slider x:Name ="FocusTimeSlider" 
+                        Value="{x:Bind ViewModel.CurrentSettings.FocusTimeMinutes, Mode=OneWay}"
+                        Minimum="1" Maximum="60" Margin="10,0,0,0" Width="200"/>
             </StackPanel>
 
             <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
                 <TextBlock Text="ShortBreak Minutes" VerticalAlignment="Center"/>
-                <Slider x:Name ="ShortBreakSlider" Minimum="0" Maximum="60" Margin="10,0,0,0" Width="200"/>
+                <Slider x:Name ="ShortBreakSlider" 
+                        Value="{x:Bind ViewModel.CurrentSettings.ShortBreakMinutes, Mode=OneWay}"
+                        Minimum="1" Maximum="60" Margin="10,0,0,0" Width="200"/>
             </StackPanel>
 
             <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
                 <TextBlock Text="LongBreak Minutes" VerticalAlignment="Center"/>
-                <Slider x:Name ="LongBreakSlider" Minimum="0" Maximum="60" Margin="10,0,0,0" Width="200"/>
+                <Slider x:Name ="LongBreakSlider" 
+                        Value="{x:Bind ViewModel.CurrentSettings.LongBreakMinutes, Mode=OneWay}"
+                        Minimum="1" Maximum="60" Margin="10,0,0,0" Width="200"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+            <!--<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
                 <TextBlock Text="Notification" VerticalAlignment="Center"/>
                 <ToggleSwitch Margin="10,0,0,0"/>
-            </StackPanel>
+            </StackPanel>-->
             
             <Button Content="Save" Click="SaveButton_Click"
                     HorizontalAlignment="Center" VerticalAlignment="Bottom" 
@@ -62,7 +67,17 @@
         <StackPanel x:Name="TimerPanel" 
                     HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Width="200" Height="200">
-                <Ellipse Stroke="Black" StrokeThickness="6"/>
+                <Ellipse Stroke="{x:Bind ViewModel.StrokeColor, Mode=OneWay}"
+                         StrokeThickness="{x:Bind ViewModel.StrokeThickness}"/>
+
+                <Ellipse Stroke="White" StrokeThickness="{x:Bind ViewModel.StrokeThickness}"
+                         StrokeDashArray="{x:Bind ViewModel.StrokeDashArray, Mode=OneWay}"
+                         RenderTransformOrigin="0.5,0.5">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="-90"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+
                 <TextBlock Text="{x:Bind ViewModel.TimerText, Mode=OneWay}" FontSize="48" 
                            HorizontalAlignment="Center" Margin="0,50,0,0"/>
                 <TextBlock Text="{x:Bind ViewModel.CurrentType, Mode=OneWay}" FontSize="20" 
@@ -71,13 +86,13 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,20,0,0"
                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Start" Click="StartButton_Click" Margin="0,0,0,0"/>
-                <Button Content="Pause" Click="PauseButton_Click" Margin="5,0,0,0"/>
-                <Button Content="Reset" Click="ResetButton_Click" Margin="5,0,0,0"/>
+                <AppBarButton Icon="Play" Label="Start" Click="StartButton_Click"/>
+                <AppBarButton Icon="Pause" Label="Pause" Click="PauseButton_Click"/>
+                <AppBarButton Icon="Refresh" Label="Reset" Click="ResetButton_Click"/>
             </StackPanel>
 
-            <Button Content="Skip this session" Click="SkipButton_Click" 
-                    HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            <AppBarButton Icon="Forward" Label="Skip this session" Click="SkipButton_Click"
+                  HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Page>
