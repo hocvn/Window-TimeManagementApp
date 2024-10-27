@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using ABI.Windows.UI;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +22,51 @@ namespace TimeManagementApp.Timer
         public Settings CurrentSettings { get; set; }
         public TimerType CurrentType { get; set; }
         public string TimerText => $"{Minutes:D2} : {Seconds:D2}";
+
+        public int SecondLeft => Minutes * 60 + Seconds;
+        public int TotalSecond {
+            get
+            {
+                switch (CurrentType)
+                {
+                    case TimerType.FocusTime:
+                        return CurrentSettings.FocusTimeMinutes * 60;
+                    case TimerType.ShortBreak:
+                        return CurrentSettings.ShortBreakMinutes * 60;
+                    default:
+                        return CurrentSettings.LongBreakMinutes * 60;
+                }
+            }
+        }
+
+        public int StrokeThickness = 5;
+
+        public DoubleCollection StrokeDashArray
+        {
+            get
+            {
+                double adjustedPerimeter = 1.0 * 628 / StrokeThickness;
+                double filledPart = adjustedPerimeter * (1 - 1.0 * SecondLeft / TotalSecond);
+                double emptyPart = adjustedPerimeter - filledPart;
+                return new DoubleCollection { filledPart, emptyPart };
+            }
+        }
+
+        public Brush StrokeColor
+        {
+            get
+            {
+                switch (CurrentType)
+                {
+                    case TimerType.FocusTime:
+                        return new SolidColorBrush(Colors.Red);
+                    case TimerType.ShortBreak:
+                        return new SolidColorBrush(Colors.Blue);
+                    default:
+                        return new SolidColorBrush(Colors.Green);
+                }
+            }
+        }
 
         public PomodoroTimer(Settings settings, TimerType type)
         {

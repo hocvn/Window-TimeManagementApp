@@ -14,9 +14,9 @@ namespace TimeManagementApp.Timer
 
         public Settings()
         {
-            FocusTimeMinutes = 25;
-            ShortBreakMinutes = 5;
-            LongBreakMinutes = 10;
+            FocusTimeMinutes = 2;
+            ShortBreakMinutes = 3;
+            LongBreakMinutes = 5;
         }
     }
 
