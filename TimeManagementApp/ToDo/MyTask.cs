@@ -11,8 +11,8 @@ namespace TimeManagementApp.ToDo
     {
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime DueDateTime { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
