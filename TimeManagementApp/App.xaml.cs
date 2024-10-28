@@ -33,16 +33,18 @@ namespace TimeManagementApp
             this.InitializeComponent();
         }
 
+        public static Window LoginWindow { get; private set; }
+        public static Window RegisterWindow { get; private set; }
+        public static Window MainWindow { get; private set; }
+
         /// <summary>
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            m_window = new LoginWindow();
-            m_window.Activate();
+            LoginWindow = new LoginWindow();
+            LoginWindow.Activate();
         }
-
-        public Window m_window;
     }
 }

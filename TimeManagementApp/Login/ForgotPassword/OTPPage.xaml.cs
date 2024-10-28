@@ -11,13 +11,14 @@ namespace TimeManagementApp.Login.ForgotPassword
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ForgotPasswordPage2 : Page
+    public sealed partial class OTPPage : Page
     {
         public string Email { get; set; }
         public string Otp { get; set; }
-        public ForgotPasswordPage2()
+        public OTPPage()
         {
             this.InitializeComponent();
+            Otp = GenerateOtp(6);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -32,8 +33,8 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            Otp = GenerateOtp(6);
-            myTextBlock.Text = $"Please enter this code '{Otp}' below.";
+            //Otp = GenerateOtp(6);
+            //myTextBlock.Text = $"Please enter this code '{Otp}' below.";
             //SendOtpEmail(this.Email, Otp);
         }
 
@@ -72,14 +73,15 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ForgotPasswordPage1));
+            //Frame.Navigate(typeof(ForgotPasswordPage1));
+            Frame.GoBack();
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             if (otpTextBox.Text == Otp)
             {
-                Frame.Navigate(typeof(ForgotPasswordPage3), this.Email);
+                Frame.Navigate(typeof(ResetPasswordPage), this.Email);
             }
             else
             {
