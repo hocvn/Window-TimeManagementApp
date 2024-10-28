@@ -2,6 +2,8 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -102,9 +104,6 @@ namespace TimeManagementApp.Timer
 
         public void ResetTimer()
         {
-            IsRunning = false;
-            Timer.Stop();
-
             SetTimerType();
         }
 
@@ -114,9 +113,35 @@ namespace TimeManagementApp.Timer
             {
                 if (Minutes == 0)
                 {
-                    Timer.Stop();
-                    IsRunning = false;
+                    if (CurrentSettings.IsNotificationOn == true)
+                    {
+                        string title = "Pomodoro Completed!";
+                        string message = "Time for a break!";
 
+                        if (CurrentType != TimerType.FocusTime)
+                        {
+                            title = "Break time ended!";
+                            message = "Time to focus!";
+                        }
+
+                        string toastXml = $@"
+                            <toast>
+                                <visual>
+                                    <binding template='ToastGeneric'>
+                                        <text>{title}</text>
+                                        <text>{message}</text>
+                                    </binding>
+                                </visual>
+                                <audio src='ms-appx:///Assets/notification.wav'/>
+                            </toast>";
+
+                        var toastDoc = new Windows.Data.Xml.Dom.XmlDocument();
+                        toastDoc.LoadXml(toastXml);
+
+                        var toast = new Windows.UI.Notifications.ToastNotification(toastDoc);
+                        Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier().Show(toast);
+                    }
+                    
                     SwitchToNextTimerType();
                     return;
                 }
@@ -132,6 +157,9 @@ namespace TimeManagementApp.Timer
 
         public void SetTimerType()
         {
+            IsRunning = false;
+            Timer.Stop();
+
             switch (CurrentType)
             {
                 case TimerType.FocusTime:

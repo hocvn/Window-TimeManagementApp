@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.Windows.AppNotifications;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Timer
 {
@@ -29,17 +31,13 @@ namespace TimeManagementApp.Timer
             ViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
+
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             if (SettingsPanel.Visibility == Visibility.Collapsed)
             {
                 SettingsPanel.Visibility = Visibility.Visible;
                 TimerPanel.Margin = new Thickness(-200, 0, 0, 0);
-            }
-            else
-            {
-                SettingsPanel.Visibility = Visibility.Collapsed;
-                TimerPanel.Margin = new Thickness(0, 0, 0, 0);
             }
         }
 
@@ -51,7 +49,15 @@ namespace TimeManagementApp.Timer
 
             ViewModel.ResetTimer();
 
-            // TODO: Dark Mode, Sound, other settings ...
+            ViewModel.CurrentSettings.IsNotificationOn = NotificationToggleSwitch.IsOn;
+
+            // todo: show dialog
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsPanel.Visibility = Visibility.Collapsed;
+            TimerPanel.Margin = new Thickness(0, 0, 0, 0);
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)

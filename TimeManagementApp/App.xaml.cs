@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
+using Microsoft.Windows.AppNotifications;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +41,17 @@ namespace TimeManagementApp
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new LoginWindow();
+
+            // initialize notifications
+            AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
+            AppNotificationManager.Default.Register();
+
             m_window.Activate();
+        }
+
+        private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
+        {
+            throw new NotImplementedException();
         }
 
         public Window m_window;
