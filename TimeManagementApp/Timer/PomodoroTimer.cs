@@ -10,11 +10,16 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Notifications;
 
 namespace TimeManagementApp.Timer
 {
     public class PomodoroTimer : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Basic properties
+
         private DispatcherTimer Timer { get; set; }
         private bool IsRunning { get; set; }
         private int Minutes { get; set; }
@@ -41,15 +46,38 @@ namespace TimeManagementApp.Timer
             }
         }
 
+
+        // constructor with settings and type
+        public PomodoroTimer(Settings settings, TimerType type)
+        {
+            CurrentType = type;
+            CurrentSettings = settings;
+
+            CountFocusSessions = 0;
+
+            Timer = new DispatcherTimer();
+            Timer.Interval = TimeSpan.FromSeconds(1);
+            Timer.Tick += Timer_Tick;
+
+            ResetTimer();
+        }
+
+        // Design Timer's stroke
+
         public int StrokeThickness = 5;
 
         public DoubleCollection StrokeDashArray
         {
             get
             {
-                double adjustedPerimeter = 1.0 * 628 / StrokeThickness;
+                // 628: perimerter of an circle with diameter 200
+                // StrokeDashArray: a double collection of filledPart and emptyPart
+                // use for more visualization when timer run
+
+                double adjustedPerimeter = 1.0 * 628 / StrokeThickness; 
                 double filledPart = adjustedPerimeter * (1 - 1.0 * SecondLeft / TotalSecond);
                 double emptyPart = adjustedPerimeter - filledPart;
+
                 return new DoubleCollection { filledPart, emptyPart };
             }
         }
@@ -70,19 +98,7 @@ namespace TimeManagementApp.Timer
             }
         }
 
-        public PomodoroTimer(Settings settings, TimerType type)
-        {
-            CurrentType = type;
-            CurrentSettings = settings;
-
-            CountFocusSessions = 0;
-
-            Timer = new DispatcherTimer();
-            Timer.Interval = TimeSpan.FromSeconds(1);
-            Timer.Tick += Timer_Tick;
-
-            ResetTimer();
-        }
+        // start, pause, reset the timer
 
         public void StartTimer()
         {
@@ -107,14 +123,20 @@ namespace TimeManagementApp.Timer
             SetTimerType();
         }
 
+
+        // handle event occurs after a second tick
         private void Timer_Tick(object sender, object e)
         {
             if (Seconds == 0)
             {
                 if (Minutes == 0)
                 {
+                    // timer end
+
                     if (CurrentSettings.IsNotificationOn == true)
                     {
+                        // show notifications toast & sound
+
                         string title = "Pomodoro Completed!";
                         string message = "Time for a break!";
 
@@ -138,8 +160,8 @@ namespace TimeManagementApp.Timer
                         var toastDoc = new Windows.Data.Xml.Dom.XmlDocument();
                         toastDoc.LoadXml(toastXml);
 
-                        var toast = new Windows.UI.Notifications.ToastNotification(toastDoc);
-                        Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        var toast = new ToastNotification(toastDoc);
+                        ToastNotificationManager.CreateToastNotifier().Show(toast);
                     }
                     
                     SwitchToNextTimerType();
@@ -153,6 +175,30 @@ namespace TimeManagementApp.Timer
             {
                 Seconds--;
             }
+        }
+
+        public void SwitchToNextTimerType()
+        {
+            if (CurrentType == TimerType.FocusTime)
+            {
+                CountFocusSessions++;
+
+                // normal pomodoro timer has longbreak after three shortbreaks
+                if (CountFocusSessions % 4 == 0)
+                {
+                    CurrentType = TimerType.LongBreak;
+                }
+                else
+                {
+                    CurrentType = TimerType.ShortBreak;
+                }
+            }
+            else
+            {
+                CurrentType = TimerType.FocusTime;
+            }
+
+            SetTimerType();
         }
 
         public void SetTimerType()
@@ -176,31 +222,5 @@ namespace TimeManagementApp.Timer
                     break;
             }
         }
-
-        public void SwitchToNextTimerType()
-        {
-            if (CurrentType == TimerType.FocusTime)
-            {
-                CountFocusSessions++;
-
-                if (CountFocusSessions % 4 == 0)
-                {
-                    CurrentType = TimerType.LongBreak;
-                }
-                else
-                {
-                    CurrentType = TimerType.ShortBreak;
-                }
-            }
-            else
-            {
-                CurrentType = TimerType.FocusTime;
-            }
-
-            SetTimerType();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
-
 }

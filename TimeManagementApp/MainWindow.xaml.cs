@@ -24,7 +24,7 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        public PomodoroTimer TimerViewModel { get; set; }
+        public PomodoroTimer TimerViewModel { get; set; } // use for passing timer between navigations
 
         public MainWindow()
         {
