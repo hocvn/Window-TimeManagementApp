@@ -24,10 +24,13 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public PomodoroTimer TimerViewModel { get; set; }
 
         public MainWindow()
         {
             this.InitializeComponent();
+
+            TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -61,7 +64,8 @@ namespace TimeManagementApp
             {
                 // other nav
             }
-            _ = mainFrame.Navigate(pageType);
+
+            mainFrame.NavigateToType(pageType, TimerViewModel, navOptions);
         }
     }
 }

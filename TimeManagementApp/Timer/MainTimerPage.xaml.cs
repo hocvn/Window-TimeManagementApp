@@ -31,6 +31,17 @@ namespace TimeManagementApp.Timer
             ViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e) 
+        { 
+            if (e.Parameter is PomodoroTimer viewModel) 
+            { 
+                ViewModel = viewModel; 
+                DataContext = ViewModel; 
+            }
+            
+            base.OnNavigatedTo(e); 
+        }
+
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
