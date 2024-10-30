@@ -12,7 +12,8 @@ namespace TimeManagementApp.Dao
     interface IDao
     {
         ObservableCollection<MyNote> GetAllNote();
-        MyNote GetNote();
+
+        void SaveNotes(ObservableCollection<MyNote> notes);
 
         void SaveRtf(RichEditBox editor, MyNote note);
 

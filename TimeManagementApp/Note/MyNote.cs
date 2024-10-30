@@ -10,7 +10,13 @@ namespace TimeManagementApp.Note
 {
     public partial class MyNote : INotifyPropertyChanged
     {
-        public string Id { get; set; }
+        public MyNote(string id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public String Id { get; set; }
         public String Name { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;

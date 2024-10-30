@@ -23,31 +23,36 @@
                     <Setter Property="Background" Value="Transparent"/>
                 </Style>
             </RelativePanel.Resources>
-            <Button x:Name="openFileButton" Click="OpenButton_Click" AutomationProperties.Name="Open file" ToolTipService.ToolTip="Open file">
+            <Button x:Name="BackButton" Click="BackButton_Click" AutomationProperties.Name="Back" ToolTipService.ToolTip="Back">
                 <Button.Content>
-                    <FontIcon Glyph="&#xE8E5;"/>
+                    <FontIcon Glyph="&#xE72B;"/>
                 </Button.Content>
             </Button>
-            <Button Click="SaveButton_Click" AutomationProperties.Name="Save file" ToolTipService.ToolTip="Save file"
-            RelativePanel.RightOf="openFileButton">
+            <Button Click="SaveButton_Click" AutomationProperties.Name="Save" ToolTipService.ToolTip="Save" RelativePanel.RightOf="BackButton">
                 <Button.Content>
                     <FontIcon Glyph="&#xE74E;"/>
                 </Button.Content>
             </Button>
-            <Button AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click"
-            RelativePanel.LeftOf="italicButton" >
+
+            <Button AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click" RelativePanel.LeftOf="ItalicButton" >
                 <Button.Content>
                     <FontIcon Glyph="&#xE8DD;"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="italicButton" Click="ItalicButton_Click" AutomationProperties.Name="Italic" ToolTipService.ToolTip="Italic"
-            RelativePanel.LeftOf="fontColorButton">
+            <Button x:Name="ItalicButton" Click="ItalicButton_Click" AutomationProperties.Name="Italic" ToolTipService.ToolTip="Italic"
+            RelativePanel.LeftOf="UnderlineButton">
                 <Button.Content>
                     <FontIcon Glyph="&#xE8DB;"/>
                 </Button.Content>
             </Button>
+            <Button x:Name="UnderlineButton" AutomationProperties.Name="UnderlineButton" ToolTipService.ToolTip="Underline" Click="UnderlineButton_Click"
+            RelativePanel.LeftOf="FontColorButton" >
+                <Button.Content>
+                    <FontIcon Glyph="&#xE8DC;"/>
+                </Button.Content>
+            </Button>
 
-            <DropDownButton x:Name="fontColorButton" AutomationProperties.Name="Font color"
+            <DropDownButton x:Name="FontColorButton" AutomationProperties.Name="Font color"
                                 BorderThickness="0" ToolTipService.ToolTip="Font color"
                                 Background="Transparent"
                                 RelativePanel.AlignRightWithPanel="True">
@@ -123,7 +128,7 @@
             </DropDownButton>
         </RelativePanel>
 
-        <RichEditBox x:Name="Editor"  Grid.Row="1"        
+        <RichEditBox x:Name="Editor" Grid.Row="1"        
                     IsSpellCheckEnabled="False"
                     ScrollViewer.VerticalScrollMode="Auto"
                     TextChanged="Editor_TextChanged"

@@ -1,11 +1,12 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Navigation;
 using TimeManagementApp.Dao;
-
+using System.Diagnostics;
+using System;
 
 namespace TimeManagementApp.Note
 {
@@ -27,23 +28,21 @@ namespace TimeManagementApp.Note
         {
             base.OnNavigatedTo(e);
             Note = e.Parameter as MyNote;
+            IDao dao = new MockDao();
+            dao.OpenRtf(Editor, Note);
         }
 
-        private void OpenButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Note != null) {
-                IDao dao = new MockDao();
-                dao.OpenRtf(Editor, Note);
-            }
+            IDao dao = new MockDao();
+            dao.SaveRtf(Editor, Note);
+            Frame.GoBack();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Note != null)
-            {
-                IDao dao = new MockDao();
-                dao.SaveRtf(Editor, Note);
-            }
+            IDao dao = new MockDao();
+            dao.SaveRtf(Editor, Note);
         }
 
         private void BoldButton_Click(object sender, RoutedEventArgs e)
@@ -56,6 +55,12 @@ namespace TimeManagementApp.Note
             Editor.Document.Selection.CharacterFormat.Italic = FormatEffect.Toggle;
         }
 
+        private void UnderlineButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selection = Editor.Document.Selection;
+            selection.CharacterFormat.Underline = selection.CharacterFormat.Underline == UnderlineType.None ? UnderlineType.Single : UnderlineType.None;
+        }
+
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {
             // Extract the color of the button that was clicked.
@@ -65,39 +70,10 @@ namespace TimeManagementApp.Note
 
             Editor.Document.Selection.CharacterFormat.ForegroundColor = color;
 
-            fontColorButton.Flyout.Hide();
+            FontColorButton.Flyout.Hide();
             Editor.Focus(FocusState.Keyboard);
             currentColor = color;
         }
-
-        //private void FindBoxHighlightMatches()
-        //{
-        //    FindBoxRemoveHighlights();
-
-        //    Windows.UI.Color highlightBackgroundColor = (Windows.UI.Color)App.Current.Resources["SystemColorHighlightColor"];
-        //    Windows.UI.Color highlightForegroundColor = (Windows.UI.Color)App.Current.Resources["SystemColorHighlightTextColor"];
-
-        //    string textToFind = findBox.Text;
-        //    if (textToFind != null)
-        //    {
-        //        ITextRange searchRange = editor.Document.GetRange(0, 0);
-        //        while (searchRange.FindText(textToFind, TextConstants.MaxUnitCount, FindOptions.None) > 0)
-        //        {
-        //            searchRange.CharacterFormat.BackgroundColor = highlightBackgroundColor;
-        //            searchRange.CharacterFormat.ForegroundColor = highlightForegroundColor;
-        //        }
-        //    }
-        //}
-
-        //private void FindBoxRemoveHighlights()
-        //{
-        //    ITextRange documentRange = editor.Document.GetRange(0, TextConstants.MaxUnitCount);
-        //    SolidColorBrush defaultBackground = editor.Background as SolidColorBrush;
-        //    SolidColorBrush defaultForeground = editor.Foreground as SolidColorBrush;
-
-        //    documentRange.CharacterFormat.BackgroundColor = defaultBackground.Color;
-        //    documentRange.CharacterFormat.ForegroundColor = defaultForeground.Color;
-        //}
 
         private void Editor_GotFocus(object sender, RoutedEventArgs e)
         {

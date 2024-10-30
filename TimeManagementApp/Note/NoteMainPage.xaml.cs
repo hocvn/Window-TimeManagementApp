@@ -16,6 +16,8 @@ using TimeManagementApp.Dao;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TimeManagementApp.Helper;
+using Windows.ApplicationModel.Preview.Notes;
+using Windows.Media.PlayTo;
 
 namespace TimeManagementApp.Note
 {
@@ -57,27 +59,55 @@ namespace TimeManagementApp.Note
             ViewModel.Init();
         }
 
-        private void NewNoteButton_Click(object sender, ItemClickEventArgs e)
+        private async void NewNoteButton_Click(object sender, RoutedEventArgs e)
         {
             string newNoteName = NewNoteNameTextBox.Text;
+            // Check error when user add a new note
+            string errorMess = "";
             if (newNoteName.Length == 0)
             {
+                errorMess = "Please enter a name for the new note";
+            }
+            foreach (MyNote note in ViewModel.Notes)
+            {
+                if (note.Name == newNoteName)
+                {
+                    errorMess = "This note name already exists";
+                    break;
+                }
+            }
+            // Display error message
+            if (errorMess.Length > 0)
+            {
+                var dialog = new ContentDialog()
+                {
+                    Title = "Error",
+                    Content = errorMess,
+                    CloseButtonText = "Ok",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
                 return;
             }
-            //
-            MyNote newNote = new MyNote();
+
+            // Create a new note
             String currentTime = TimeHelper.GetTime();
-            // Remove all spaces
+            // Remove all spaces of the current time
             var tokens = currentTime.Split(' ');
             currentTime = tokens[0] + tokens[1] + tokens[2] + tokens[3] + tokens[4] + tokens[5];
 
-            newNote.Id = currentTime;
-            newNote.Name = newNoteName;
+            MyNote newNote = new MyNote(currentTime, newNoteName);
+            RichEditBox editor = new RichEditBox();
+            // Update the note list
+            ViewModel.Notes.Add(newNote);
+            IDao dao = new MockDao();
+            dao.SaveRtf(editor, newNote);
+            dao.SaveNotes(ViewModel.Notes);
         }
 
         private void Note_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var clickedItem = e.ClickedItem as MyNote;
+            MyNote clickedItem = e.ClickedItem as MyNote;
             if (clickedItem != null)
             {
                 Frame.Navigate(typeof(NotePage), clickedItem);
