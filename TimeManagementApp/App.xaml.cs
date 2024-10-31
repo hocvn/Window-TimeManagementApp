@@ -34,26 +34,18 @@ namespace TimeManagementApp
             this.InitializeComponent();
         }
 
+        public static Window LoginWindow { get; private set; }
+        public static Window RegisterWindow { get; private set; }
+        public static Window MainWindow { get; private set; }
+
         /// <summary>
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            m_window = new LoginWindow();
-
-            // initialize notifications
-            AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
-            AppNotificationManager.Default.Register();
-
-            m_window.Activate();
+            LoginWindow = new LoginWindow();
+            LoginWindow.Activate();
         }
-
-        private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Window m_window;
     }
 }
