@@ -9,14 +9,14 @@ namespace TimeManagementApp.Login.ForgotPassword
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ForgotPasswordPage1 : Page
+    public sealed partial class EmailPage : Page
     {
         Window _window = null;
         UserCredential user = new UserCredential();
-        public ForgotPasswordPage1()
+        public EmailPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = Microsoft.UI.Xaml.Navigation.NavigationCacheMode.Required;
+            this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -49,7 +49,7 @@ namespace TimeManagementApp.Login.ForgotPassword
                 errorMessage.Text = "Email you entered have not registered yet.";
                 return;
             }
-            Frame.Navigate(typeof(ForgotPasswordPage2), email);
+            Frame.Navigate(typeof(OTPPage), email);
         }
 
         private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e)

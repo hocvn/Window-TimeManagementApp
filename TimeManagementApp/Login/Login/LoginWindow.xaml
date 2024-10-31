@@ -36,7 +36,7 @@
             <Image 
                 Height="100"
                 Width="100"
-                Margin="0 100 0 0"
+                Margin="0 80 0 0"
                 Source="/Assets/Login2.png">
             </Image>
             <TextBlock 

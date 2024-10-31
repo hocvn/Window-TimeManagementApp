@@ -13,12 +13,12 @@ namespace TimeManagementApp.Login.ForgotPassword
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ForgotPasswordPage3 : Page
+    public sealed partial class ResetPasswordPage : Page
     {
         public string Email { get; set; }
 
-        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        public ForgotPasswordPage3()
+        private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        public ResetPasswordPage()
         {
             this.InitializeComponent();
         }
@@ -35,7 +35,8 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ForgotPasswordPage2));
+            //Frame.Navigate(typeof(ForgotPasswordPage2));
+            Frame.GoBack();
         }
 
         UserCredential user = new UserCredential();

@@ -36,7 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="LoginWindow.xaml" />
-    <None Remove="Note\NotePage.xaml" />
+    <None Remove="Login\ForgotPassword\EmailPage.xaml" />
+    <None Remove="Login\ForgotPassword\ForgotPasswordWindow.xaml" />
+    <None Remove="Login\ForgotPassword\OTPPage.xaml" />
+    <None Remove="Login\ForgotPassword\ResetPasswordPage.xaml" />
     <None Remove="RegisterWindow.xaml" />
   </ItemGroup>
 
@@ -84,12 +87,26 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Timer\MainTimerPage.xaml">
+    <Folder Include="Login\Login\" />
+    <Folder Include="Login\Register\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Login\ForgotPassword\ResetPasswordPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Note\NotePage.xaml">
+    <Page Update="Login\ForgotPassword\ForgotPasswordWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Login\ForgotPassword\OTPPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Login\ForgotPassword\EmailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
