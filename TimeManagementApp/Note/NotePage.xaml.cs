@@ -59,6 +59,26 @@ namespace TimeManagementApp.Note
             MyColorPicker.Color = ((SolidColorBrush)ViewModel.CurrentColor).Color;
         }
 
+        protected override async void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            var dialog = new ContentDialog
+            {
+                Title = "Save your note.",
+                Content = "Would you like to save the recent note?",
+                PrimaryButtonText = "Yes",
+                SecondaryButtonText = "No",
+                XamlRoot = this.XamlRoot
+            };
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                IDao dao = new MockDao();
+                dao.SaveNote(Editor, ViewModel.Note);
+            }
+        }
+
         private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new ContentDialog
@@ -107,14 +127,12 @@ namespace TimeManagementApp.Note
             }
         }
 
-        // This function get from winui3 sample
         private void BoldButton_Click(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.Bold = FormatEffect.Toggle;
             ViewModel.IsBold = !ViewModel.IsBold;
         }
 
-        // This function get from winui3 sample
         private void ItalicButton_Click(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.Italic = FormatEffect.Toggle;
@@ -128,27 +146,11 @@ namespace TimeManagementApp.Note
             ViewModel.IsUnderline = !ViewModel.IsUnderline;
         }
 
-        // This function get from winui3 sample
-
         private void MyColorPicker_ColorChanged(object sender, ColorChangedEventArgs args)
         {
             // Assign the selected color to a variable to use outside the popup.
             ViewModel.CurrentColor = new SolidColorBrush(MyColorPicker.Color);
         }
-        //private void ColorButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Extract the color of the button that was clicked.
-        //    Button clickedColor = (Button)sender;
-        //    var rectangle = (Microsoft.UI.Xaml.Shapes.Rectangle)clickedColor.Content;
-        //    var color = ((SolidColorBrush)rectangle.Fill).Color;
-
-        //    // Set the color of the selected text to the color of the button that was clicked.
-        //    Editor.Document.Selection.CharacterFormat.ForegroundColor = color;
-        //    ViewModel.CurrentColor = new SolidColorBrush(color);
-
-        //    FontColorButton.Flyout.Hide();
-        //    Editor.Focus(FocusState.Keyboard);
-        //}
 
         // This function get from winui3 sample
         private void Editor_GotFocus(object sender, RoutedEventArgs e)
