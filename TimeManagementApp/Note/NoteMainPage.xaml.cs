@@ -14,7 +14,7 @@ namespace TimeManagementApp.Note
     /// </summary>
     public sealed partial class NoteMainPage : Page
     {
-        public partial class NoteViewModel : INotifyPropertyChanged
+        public partial class NoteListViewModel : INotifyPropertyChanged
         {
             public ObservableCollection<MyNote> Notes { get; set; }
 
@@ -44,7 +44,7 @@ namespace TimeManagementApp.Note
                 IDao dao = new MockDao();
                 dao.SaveNote(editor, newNote);
                 // Update the note list
-                Notes.Add(newNote);
+                Notes.Insert(0, newNote);
                 dao.SaveNotes(Notes);
                 // Update ViewModel
                 TotalItems++;
@@ -59,7 +59,7 @@ namespace TimeManagementApp.Note
             }
         }
 
-        public NoteViewModel ViewModel { get; set; } = new NoteViewModel();
+        public NoteListViewModel ViewModel { get; set; } = new NoteListViewModel();
 
         public NoteMainPage()
         {

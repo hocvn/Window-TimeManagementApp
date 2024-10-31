@@ -1,19 +1,12 @@
 ﻿using Microsoft.UI.Text;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using TimeManagementApp.Note;
-using Windows.Data.Xml.Dom;
 using Windows.Storage;
-using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 
 
@@ -46,7 +39,7 @@ namespace TimeManagementApp.Dao
         {
             try
             {
-                string fileName = note.Id + ".txt";
+                string fileName = note.Id + ".rtf";
 
                 // Check if file exists
                 StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName) as StorageFile;
@@ -61,14 +54,14 @@ namespace TimeManagementApp.Dao
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error loading file: {ex.Message}"); 
+                Debug.WriteLine($"Error loading file: {ex.Message}");
             }
         }
 
         // Save the content of RichEditBox to a file in local folder
         public async void SaveNote(RichEditBox editor, MyNote note)
         {
-            string fileName = note.Id + ".txt";
+            string fileName = note.Id + ".rtf";
             StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
             // Save the content of RichEditBox to a stream and write to file
@@ -79,11 +72,22 @@ namespace TimeManagementApp.Dao
         // Delete a file which store note in local folder
         public async void DeleteNote(MyNote note)
         {
-            string fileName = note.Id + ".txt";
-            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            try
+            {
+                string fileName = note.Id + ".rtf";
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName) as StorageFile;
 
-            // Delete the file
-            await file.DeleteAsync();
+                // Delete the file
+                await file.DeleteAsync();
+            }
+            catch (FileNotFoundException)
+            {
+                Debug.WriteLine("File not found.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error deleting file: {ex.Message}");
+            }
         }
 
         public void RenameNote(MyNote note)

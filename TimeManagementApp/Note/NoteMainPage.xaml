@@ -50,15 +50,20 @@
         </Style>
     </Page.Resources>
 
-    <StackPanel Orientation="Vertical">
-        <StackPanel.Background>
+    <Grid>
+        <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="AliceBlue" Offset="0.0" />
                 <GradientStop Color="CornflowerBlue" Offset="8" />
             </LinearGradientBrush>
-        </StackPanel.Background>
+        </Grid.Background>
 
-        <RelativePanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <RelativePanel Grid.Row="0">
             <TextBlock
             x:Name="NumberOfNote"
             RelativePanel.AlignTopWithPanel="True"
@@ -89,17 +94,16 @@
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"/>
         </RelativePanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListView
-                x:Name="NoteListView"
+
+        <ListView
+                x:Name="NoteListView" Grid.Row="1"
                 Margin="20 12"
                 IsItemClickEnabled="True"
-                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                ScrollViewer.VerticalScrollBarVisibility="auto"
                 ItemClick="Note_ItemClick"
                 ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}"
                 ItemTemplate="{StaticResource NoteViewFormat}"
                 ItemContainerStyle="{StaticResource ListViewItemStyle}">
-            </ListView>
-        </ScrollViewer>
-    </StackPanel>
+        </ListView>
+    </Grid>
 </Page>

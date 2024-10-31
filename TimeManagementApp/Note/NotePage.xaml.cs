@@ -7,6 +7,8 @@ using Microsoft.UI.Xaml.Navigation;
 using TimeManagementApp.Dao;
 using System.Diagnostics;
 using System;
+using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace TimeManagementApp.Note
 {
@@ -15,18 +17,32 @@ namespace TimeManagementApp.Note
     /// </summary>
     public sealed partial class NotePage : Page
     {
-        private Windows.UI.Color currentColor = Colors.Black;
-
-        public class NoteViewModel
+        public partial class NoteViewModel : INotifyPropertyChanged
         {
             public MyNote Note { get; set; }
+            public Brush CurrentColor { get; set; } = new SolidColorBrush(Colors.Black);
+
+            public bool IsBold { get; set; }
+            public bool IsItalic { get; set; }
+            public bool IsUnderline { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public void RenameNote(string newName)
+            {
+                Note.Name = newName;
+                // Update note name in the list
+                IDao dao = new MockDao();
+                dao.RenameNote(Note);
+            }
         }
 
-        public NoteViewModel ViewModel = new NoteViewModel();
+        public NoteViewModel ViewModel { get; set; } 
 
         public NotePage()
         {
             this.InitializeComponent();
+            ViewModel = new NoteViewModel();
             Editor.SelectionChanged += Editor_SelectionChanged;
         }
 
@@ -34,15 +50,36 @@ namespace TimeManagementApp.Note
         {
             base.OnNavigatedTo(e);
             ViewModel.Note = e.Parameter as MyNote;
+        }
+
+        private void NotePage_Loaded(object sender, RoutedEventArgs e)
+        {
             IDao dao = new MockDao();
             dao.OpenNote(Editor, ViewModel.Note);
         }
 
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            IDao dao = new MockDao();
-            dao.SaveNote(Editor, ViewModel.Note);
-            Frame.GoBack();
+            var dialog = new ContentDialog
+            {
+                Title = "Exit",
+                Content = "Do you want to save?",
+                PrimaryButtonText = "Yes",
+                SecondaryButtonText = "No",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.XamlRoot
+            };
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                IDao dao = new MockDao();
+                dao.SaveNote(Editor, ViewModel.Note);
+                Frame.GoBack();
+            }
+            else if (result == ContentDialogResult.Secondary)
+            {
+                Frame.GoBack();
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -73,18 +110,21 @@ namespace TimeManagementApp.Note
         private void BoldButton_Click(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.Bold = FormatEffect.Toggle;
+            ViewModel.IsBold = !ViewModel.IsBold;
         }
 
         // This function get from winui3 sample
         private void ItalicButton_Click(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.Italic = FormatEffect.Toggle;
+            ViewModel.IsItalic = !ViewModel.IsItalic;
         }
 
         private void UnderlineButton_Click(object sender, RoutedEventArgs e)
         {
             var selection = Editor.Document.Selection;
             selection.CharacterFormat.Underline = selection.CharacterFormat.Underline == UnderlineType.None ? UnderlineType.Single : UnderlineType.None;
+            ViewModel.IsUnderline = !ViewModel.IsUnderline;
         }
 
         // This function get from winui3 sample
@@ -95,12 +135,12 @@ namespace TimeManagementApp.Note
             var rectangle = (Microsoft.UI.Xaml.Shapes.Rectangle)clickedColor.Content;
             var color = ((SolidColorBrush)rectangle.Fill).Color;
 
+            // Set the color of the selected text to the color of the button that was clicked.
             Editor.Document.Selection.CharacterFormat.ForegroundColor = color;
-            RecColor.Fill = new SolidColorBrush(color);
+            ViewModel.CurrentColor = new SolidColorBrush(color);
 
             FontColorButton.Flyout.Hide();
             Editor.Focus(FocusState.Keyboard);
-            currentColor = color;
         }
 
         // This function get from winui3 sample
@@ -129,10 +169,7 @@ namespace TimeManagementApp.Note
 
         private void Editor_TextChanged(object sender, RoutedEventArgs e)
         {
-            if (Editor.Document.Selection.CharacterFormat.ForegroundColor != currentColor)
-            {
-                Editor.Document.Selection.CharacterFormat.ForegroundColor = currentColor;
-            }
+            Editor.Document.Selection.CharacterFormat.ForegroundColor = ((SolidColorBrush)ViewModel.CurrentColor).Color;
         }
 
         private void NoteName_LostFocus(object sender, RoutedEventArgs e)
@@ -148,10 +185,7 @@ namespace TimeManagementApp.Note
 
             if (name != ViewModel.Note.Name)
             {
-                ViewModel.Note.Name = name;
-                // Update note name in the list
-                IDao dao = new MockDao();
-                dao.RenameNote(ViewModel.Note);
+                ViewModel.RenameNote(name);
             }
         }
     }
