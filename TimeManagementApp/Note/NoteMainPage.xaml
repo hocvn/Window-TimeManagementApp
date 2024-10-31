@@ -65,27 +65,15 @@
 
         <RelativePanel Grid.Row="0">
             <TextBlock
-            x:Name="NumberOfNote"
-            RelativePanel.AlignTopWithPanel="True"
-            RelativePanel.AlignHorizontalCenterWithPanel="True"
-            Margin="28 16">
+            x:Name="NumberOfNote" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="28 16">
             Total notes: <Run Text="{x:Bind ViewModel.TotalItems, Mode=OneWay}"/>
             </TextBlock>
 
-            <TextBox x:Name="NewNoteNameTextBox"
-            RelativePanel.Below="NumberOfNote"
-            RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.LeftOf="NewNoteButton"
-            Margin="22 8 12 12"
-            PlaceholderText="Add a note"/>
-            <Button x:Name="NewNoteButton" 
-            RelativePanel.AlignRightWithPanel="True"
-            RelativePanel.Below="NumberOfNote"
-            Margin="4 8 22 12"
-            Click="NewNoteButton_Click" 
-            Content="Add"
-            ToolTipService.ToolTip="New note">
-            </Button>
+            <TextBox x:Name="NewNoteNameTextBox" RelativePanel.Below="NumberOfNote" RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.LeftOf="NewNoteButton" Margin="22 8 12 12" PlaceholderText="Add a note"/>
+            <Button x:Name="NewNoteButton" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="NumberOfNote"
+            Margin="4 8 22 12" Click="NewNoteButton_Click" Content="Add" ToolTipService.ToolTip="New note"/>
+
             <Rectangle
             Height="2"                            
             Fill="SteelBlue"

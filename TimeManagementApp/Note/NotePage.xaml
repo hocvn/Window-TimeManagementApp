@@ -218,115 +218,60 @@
                 </Button.Content>
             </Button>
 
-            <TextBox x:Name="NoteNameTextBox" 
-                     Margin="20 0"
-                     RelativePanel.RightOf="DeleteButton"
-                     RelativePanel.LeftOf="BoldButton"
-                     RelativePanel.AlignHorizontalCenterWithPanel="True"
-                     LostFocus="NoteName_LostFocus"
+            <TextBox x:Name="NoteNameTextBox" Margin="20 0" RelativePanel.RightOf="DeleteButton" LostFocus="NoteName_LostFocus"
+                     RelativePanel.LeftOf="BoldButton" RelativePanel.AlignHorizontalCenterWithPanel="True"
                      Text="{x:Bind ViewModel.Note.Name, Mode=TwoWay}"/>
 
             <ToggleButton x:Name="BoldButton" AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click"
-                          RelativePanel.LeftOf="ItalicButton" Style="{StaticResource ToggleButtonStyle}">
+                          RelativePanel.LeftOf="ItalicButton" Style="{StaticResource ToggleButtonStyle}" Margin="0 4">
                 <ToggleButton.Content>
                     <FontIcon Glyph="&#xE8DD;" FontSize="16"/>
                 </ToggleButton.Content>
             </ToggleButton>
             <ToggleButton x:Name="ItalicButton" Click="ItalicButton_Click" AutomationProperties.Name="Italic" ToolTipService.ToolTip="Italic"
-                RelativePanel.LeftOf="UnderlineButton" Style="{StaticResource ToggleButtonStyle}">
+                RelativePanel.LeftOf="UnderlineButton" Style="{StaticResource ToggleButtonStyle}" Margin="2 4">
                 <ToggleButton.Content>
                     <FontIcon Glyph="&#xE8DB;" FontSize="16"/>
                 </ToggleButton.Content>
             </ToggleButton>
-            <ToggleButton x:Name="UnderlineButton" AutomationProperties.Name="UnderlineButton" ToolTipService.ToolTip="Underline" Click="UnderlineButton_Click"
-                RelativePanel.LeftOf="FontColorButton" Style="{StaticResource ToggleButtonStyle}">
+            <ToggleButton x:Name="UnderlineButton" AutomationProperties.Name="UnderlineButton" ToolTipService.ToolTip="Underline" Height="27"
+                Click="UnderlineButton_Click" RelativePanel.LeftOf="FontColorButton" Style="{StaticResource ToggleButtonStyle}" Margin="0 4" >
                 <ToggleButton.Content>
-                    <FontIcon Glyph="&#xE8DC;" FontSize="16"/>
+                    <FontIcon Glyph="&#xE8DC;" FontSize="18"/>
                 </ToggleButton.Content>
             </ToggleButton>
 
-            <DropDownButton x:Name="FontColorButton" AutomationProperties.Name="Font color"
-                                BorderThickness="0" ToolTipService.ToolTip="Font color"
-                                Background="Transparent"
-                                RelativePanel.AlignRightWithPanel="True">
+            <DropDownButton x:Name="FontColorButton" AutomationProperties.Name="Font color" BorderThickness="0" ToolTipService.ToolTip="Font color"
+                                Background="Transparent" RelativePanel.AlignRightWithPanel="True" Margin="0 4">
                 <SymbolIcon Symbol="FontColor"/>
                 <DropDownButton.Flyout>
                     <Flyout Placement="Bottom">
-                        <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
-                            <VariableSizedWrapGrid.Resources>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="Width" Value="24"/>
-                                    <Setter Property="Height" Value="24"/>
-                                </Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Padding" Value="0"/>
-                                    <Setter Property="MinWidth" Value="0"/>
-                                    <Setter Property="MinHeight" Value="0"/>
-                                    <Setter Property="Margin" Value="4"/>
-                                </Style>
-                            </VariableSizedWrapGrid.Resources>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Red">
-                                <Button.Content>
-                                    <Rectangle Fill="Red"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Orange">
-                                <Button.Content>
-                                    <Rectangle Fill="Orange"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Yellow">
-                                <Button.Content>
-                                    <Rectangle Fill="Yellow"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Green">
-                                <Button.Content>
-                                    <Rectangle Fill="Green"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Blue">
-                                <Button.Content>
-                                    <Rectangle Fill="Blue"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Indigo">
-                                <Button.Content>
-                                    <Rectangle Fill="Indigo"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Violet">
-                                <Button.Content>
-                                    <Rectangle Fill="Violet"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Gray">
-                                <Button.Content>
-                                    <Rectangle Fill="Gray"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Gray">
-                                <Button.Content>
-                                    <Rectangle Fill="Black"/>
-                                </Button.Content>
-                            </Button>
-                            <Button Click="ColorButton_Click" AutomationProperties.Name="Gray">
-                                <Button.Content>
-                                    <Rectangle Fill="White"/>
-                                </Button.Content>
-                            </Button>
-                        </VariableSizedWrapGrid>
+                        <ColorPicker
+                            x:Name="MyColorPicker"
+                            ColorChanged="MyColorPicker_ColorChanged"
+                            ColorSpectrumShape="Ring"
+                            IsMoreButtonVisible="False"
+                            IsColorSliderVisible="True"
+                            IsColorChannelTextInputVisible="False"
+                            IsHexInputVisible="False"
+                            IsAlphaEnabled="False"
+                            IsAlphaSliderVisible="True"
+                            IsAlphaTextInputVisible="True"/>
                     </Flyout>
                 </DropDownButton.Flyout>
             </DropDownButton>
 
             <Rectangle x:Name="RecColor" RadiusX="2" RadiusY="2"
                 Width="18" Height="8"
-                Fill="{x:Bind ViewModel.CurrentColor, Mode=OneWay}" Margin="0 17 32 0"
-                RelativePanel.AlignRightWithPanel="True"/>
+                Margin="0 21 32 0"
+                RelativePanel.AlignRightWithPanel="True">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{x:Bind MyColorPicker.Color, Mode=OneWay}"/>
+                </Rectangle.Fill>
+            </Rectangle>
         </RelativePanel>
 
-        <RichEditBox x:Name="Editor" Grid.Row="1"        
+        <RichEditBox x:Name="Editor" Grid.Row="1"     
                     IsSpellCheckEnabled="False"
                     ScrollViewer.VerticalScrollMode="Auto"
                     TextChanged="Editor_TextChanged"

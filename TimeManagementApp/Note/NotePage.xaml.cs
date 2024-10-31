@@ -56,6 +56,7 @@ namespace TimeManagementApp.Note
         {
             IDao dao = new MockDao();
             dao.OpenNote(Editor, ViewModel.Note);
+            MyColorPicker.Color = ((SolidColorBrush)ViewModel.CurrentColor).Color;
         }
 
         private async void BackButton_Click(object sender, RoutedEventArgs e)
@@ -128,20 +129,26 @@ namespace TimeManagementApp.Note
         }
 
         // This function get from winui3 sample
-        private void ColorButton_Click(object sender, RoutedEventArgs e)
+
+        private void MyColorPicker_ColorChanged(object sender, ColorChangedEventArgs args)
         {
-            // Extract the color of the button that was clicked.
-            Button clickedColor = (Button)sender;
-            var rectangle = (Microsoft.UI.Xaml.Shapes.Rectangle)clickedColor.Content;
-            var color = ((SolidColorBrush)rectangle.Fill).Color;
-
-            // Set the color of the selected text to the color of the button that was clicked.
-            Editor.Document.Selection.CharacterFormat.ForegroundColor = color;
-            ViewModel.CurrentColor = new SolidColorBrush(color);
-
-            FontColorButton.Flyout.Hide();
-            Editor.Focus(FocusState.Keyboard);
+            // Assign the selected color to a variable to use outside the popup.
+            ViewModel.CurrentColor = new SolidColorBrush(MyColorPicker.Color);
         }
+        //private void ColorButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Extract the color of the button that was clicked.
+        //    Button clickedColor = (Button)sender;
+        //    var rectangle = (Microsoft.UI.Xaml.Shapes.Rectangle)clickedColor.Content;
+        //    var color = ((SolidColorBrush)rectangle.Fill).Color;
+
+        //    // Set the color of the selected text to the color of the button that was clicked.
+        //    Editor.Document.Selection.CharacterFormat.ForegroundColor = color;
+        //    ViewModel.CurrentColor = new SolidColorBrush(color);
+
+        //    FontColorButton.Flyout.Hide();
+        //    Editor.Focus(FocusState.Keyboard);
+        //}
 
         // This function get from winui3 sample
         private void Editor_GotFocus(object sender, RoutedEventArgs e)
