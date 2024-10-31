@@ -15,11 +15,12 @@ namespace TimeManagementApp.Timer
 
         public bool IsNotificationOn { get; set; }
 
+        // default settings
         public Settings()
         {
-            FocusTimeMinutes = 2;
-            ShortBreakMinutes = 3;
-            LongBreakMinutes = 5;
+            FocusTimeMinutes = 25;
+            ShortBreakMinutes = 5;
+            LongBreakMinutes = 10;
 
             IsNotificationOn = true;
         }

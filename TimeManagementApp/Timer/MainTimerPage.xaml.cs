@@ -27,11 +27,22 @@ namespace TimeManagementApp.Timer
         public MainTimerPage()
         {
             this.InitializeComponent();
-
-            ViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
+        // passing view model between navigations,
+        // so that timer can still run & notify when we are working on other features
+        protected override void OnNavigatedTo(NavigationEventArgs e) 
+        { 
+            if (e.Parameter is PomodoroTimer viewModel) 
+            { 
+                ViewModel = viewModel; 
+                DataContext = ViewModel; 
+            }
+            
+            base.OnNavigatedTo(e); 
+        }
 
+        // open settings panel
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             if (SettingsPanel.Visibility == Visibility.Collapsed)
@@ -41,6 +52,7 @@ namespace TimeManagementApp.Timer
             }
         }
 
+        // currently save settings on hard code, will save to files later
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.CurrentSettings.FocusTimeMinutes = (int)FocusTimeSlider.Value;
@@ -50,15 +62,16 @@ namespace TimeManagementApp.Timer
             ViewModel.ResetTimer();
 
             ViewModel.CurrentSettings.IsNotificationOn = NotificationToggleSwitch.IsOn;
-
-            // todo: show dialog
         }
 
+        // close settings panel
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsPanel.Visibility = Visibility.Collapsed;
             TimerPanel.Margin = new Thickness(0, 0, 0, 0);
         }
+
+        // start, pause and reset timer
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
@@ -75,6 +88,7 @@ namespace TimeManagementApp.Timer
             ViewModel.ResetTimer();
         }
 
+        // skip session
         private void SkipButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.SwitchToNextTimerType();
