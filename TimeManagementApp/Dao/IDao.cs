@@ -15,9 +15,12 @@ namespace TimeManagementApp.Dao
 
         void SaveNotes(ObservableCollection<MyNote> notes);
 
-        void SaveRtf(RichEditBox editor, MyNote note);
+        void SaveNote(RichEditBox editor, MyNote note);
 
-        void OpenRtf(RichEditBox editor, MyNote note);
+        void OpenNote(RichEditBox editor, MyNote note);
 
+        void DeleteNote(MyNote note);
+
+        void RenameNote(MyNote note);
     }
 }

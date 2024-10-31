@@ -8,7 +8,7 @@ using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace TimeManagementApp.Note
 {
-    public partial class MyNote : INotifyPropertyChanged
+    public partial class MyNote 
     {
         public MyNote(string id, string name)
         {
@@ -16,9 +16,12 @@ namespace TimeManagementApp.Note
             Name = name;
         }
 
+        public MyNote() {
+            Id = "";
+            Name = "";
+        }
+
         public String Id { get; set; }
         public String Name { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

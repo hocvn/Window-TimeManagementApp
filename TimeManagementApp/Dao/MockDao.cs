@@ -42,16 +42,16 @@ namespace TimeManagementApp.Dao
         }
 
         // Open a file in local folder and load its content to RichEditBox
-        public async void OpenRtf(RichEditBox editor, MyNote note)
+        public async void OpenNote(RichEditBox editor, MyNote note)
         {
             try
             {
                 string fileName = note.Id + ".txt";
 
-                // Kiểm tra file có tồn tại không
+                // Check if file exists
                 StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName) as StorageFile;
 
-                // Mở file và tải nội dung vào RichEditBox
+                // Open file and load its content to RichEditBox
                 using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
                 editor.Document.LoadFromStream(TextSetOptions.FormatRtf, stream);
             }
@@ -66,14 +66,50 @@ namespace TimeManagementApp.Dao
         }
 
         // Save the content of RichEditBox to a file in local folder
-        public async void SaveRtf(RichEditBox editor, MyNote note)
+        public async void SaveNote(RichEditBox editor, MyNote note)
         {
             string fileName = note.Id + ".txt";
             StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
-            // Lưu nội dung từ RichEditBox vào stream và ghi vào file
+            // Save the content of RichEditBox to a stream and write to file
             using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite);
             editor.Document.SaveToStream(TextGetOptions.FormatRtf, stream);
+        }
+
+        // Delete a file which store note in local folder
+        public async void DeleteNote(MyNote note)
+        {
+            string fileName = note.Id + ".txt";
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            // Delete the file
+            await file.DeleteAsync();
+
+            // Update the note list
+            ObservableCollection<MyNote> notes = GetAllNote();
+            foreach (var item in notes)
+            {
+                if (item.Id == note.Id)
+                {
+                    notes.Remove(item);
+                    break;
+                }
+            }
+            SaveNotes(notes);
+        }
+
+        public void RenameNote(MyNote note)
+        {
+            ObservableCollection <MyNote> notes = GetAllNote();
+            foreach (MyNote item in notes)
+            {
+                if (item.Id == note.Id)
+                {
+                    item.Name = note.Name;
+                    break;
+                }
+            }
+            SaveNotes(notes);
         }
     }
 }

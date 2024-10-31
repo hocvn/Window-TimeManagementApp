@@ -1,23 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using TimeManagementApp.Dao;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using TimeManagementApp.Helper;
-using Windows.ApplicationModel.Preview.Notes;
-using Windows.Media.PlayTo;
+using System.ComponentModel;
 
 namespace TimeManagementApp.Note
 {
@@ -26,7 +14,7 @@ namespace TimeManagementApp.Note
     /// </summary>
     public sealed partial class NoteMainPage : Page
     {
-        public class NoteViewModel
+        public partial class NoteViewModel : INotifyPropertyChanged
         {
             public ObservableCollection<MyNote> Notes { get; set; }
 
@@ -34,28 +22,57 @@ namespace TimeManagementApp.Note
 
             public int TotalPages { get; set; }
 
-            public int RowsPerPage { get; set; }
+            public int RowsPerPage { get; set; } = 10;
 
-            public int CurrentPage { get; set; }
+            public int CurrentPage { get; set; } = 1;
+
+            public event PropertyChangedEventHandler PropertyChanged;
 
             public void Init()
             {
                 IDao dao = new MockDao();
                 Notes = dao.GetAllNote();
 
-                CurrentPage = 1;
                 TotalItems = Notes.Count;
-                RowsPerPage = 10;
                 TotalPages = (TotalItems / RowsPerPage) + (TotalItems % RowsPerPage == 0 ? 0 : 1);
+            }
+
+            public void AddNote(String newNoteName)
+            {
+                // Create a new note with id is the time when user create it
+                String currentTime = TimeHelper.GetTime();
+                // Remove all spaces of the current time
+                var tokens = currentTime.Split(' ');
+                currentTime = tokens[0] + tokens[1] + tokens[2] + tokens[3] + tokens[4] + tokens[5];
+
+                MyNote newNote = new MyNote(currentTime, newNoteName);
+                RichEditBox editor = new RichEditBox();
+
+                IDao dao = new MockDao();
+                dao.SaveNote(editor, newNote);
+                // Update the note list
+                Notes.Add(newNote);
+                dao.SaveNotes(Notes);
+                // Update ViewModel
+                TotalItems++;
+                TotalPages = (TotalItems / RowsPerPage) + (TotalItems % RowsPerPage == 0 ? 0 : 1);
+            }
+
+            public void DeleteNote(MyNote note)
+            {
+                Notes.Remove(note);
+                TotalItems--;
+                TotalPages = (TotalItems / RowsPerPage) + (TotalItems % RowsPerPage == 0 ? 0 : 1);
+                IDao dao = new MockDao();
+                dao.SaveNotes(Notes);
             }
         }
 
-        public NoteViewModel ViewModel { get; set; }
+        public NoteViewModel ViewModel { get; set; } = new NoteViewModel();
 
         public NoteMainPage()
         {
             this.InitializeComponent();
-            ViewModel = new NoteViewModel();
             ViewModel.Init();
         }
 
@@ -63,26 +80,12 @@ namespace TimeManagementApp.Note
         {
             string newNoteName = NewNoteNameTextBox.Text;
             // Check error when user add a new note
-            string errorMess = "";
             if (newNoteName.Length == 0)
-            {
-                errorMess = "Please enter a name for the new note";
-            }
-            foreach (MyNote note in ViewModel.Notes)
-            {
-                if (note.Name == newNoteName)
-                {
-                    errorMess = "This note name already exists";
-                    break;
-                }
-            }
-            // Display error message
-            if (errorMess.Length > 0)
             {
                 var dialog = new ContentDialog()
                 {
                     Title = "Error",
-                    Content = errorMess,
+                    Content = "Please enter a name for the new note",
                     CloseButtonText = "Ok",
                     XamlRoot = this.Content.XamlRoot
                 };
@@ -90,19 +93,7 @@ namespace TimeManagementApp.Note
                 return;
             }
 
-            // Create a new note
-            String currentTime = TimeHelper.GetTime();
-            // Remove all spaces of the current time
-            var tokens = currentTime.Split(' ');
-            currentTime = tokens[0] + tokens[1] + tokens[2] + tokens[3] + tokens[4] + tokens[5];
-
-            MyNote newNote = new MyNote(currentTime, newNoteName);
-            RichEditBox editor = new RichEditBox();
-            // Update the note list
-            ViewModel.Notes.Add(newNote);
-            IDao dao = new MockDao();
-            dao.SaveRtf(editor, newNote);
-            dao.SaveNotes(ViewModel.Notes);
+            ViewModel.AddNote(newNoteName);
         }
 
         private void Note_ItemClick(object sender, ItemClickEventArgs e)
@@ -112,6 +103,30 @@ namespace TimeManagementApp.Note
             {
                 Frame.Navigate(typeof(NotePage), clickedItem);
             }
+        }
+
+        private async void DeleteNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Delete Note",
+                Content = "Are you sure you want to delete this note?",
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel",
+                XamlRoot = this.XamlRoot
+            };
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                var button = sender as Button;
+                MyNote note = button.DataContext as MyNote;
+
+                if (note != null)
+                {
+                    ViewModel.DeleteNote(note);
+                }
+            }
+            return;
         }
     }
 }
