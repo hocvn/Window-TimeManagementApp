@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="TimeManagementApp.Login.ForgotPassword.ForgotPasswordPage2"
+    x:Class="TimeManagementApp.Login.ForgotPassword.OTPPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:TimeManagementApp.Login.ForgotPassword"
@@ -57,12 +57,12 @@
             Grid.RowSpan="1">
 
             <TextBlock
-                x:Name="myTextBlock"
-                Text="We have sent an OTP code to your email, please enter it."
+                x:Name="myTextBlock"                
                 TextWrapping="Wrap"
                 Width="300"
                 HorizontalTextAlignment="Center"
                 Margin="16 0">
+                Please enter this code <Run FontSize="16" FontWeight="Bold" Text="{x:Bind Otp, Mode=OneWay}"/> below.
             </TextBlock>
 
             <TextBox 

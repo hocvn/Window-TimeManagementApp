@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
+using TimeManagementApp.ToDo;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -24,11 +25,13 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public PomodoroTimer TimerViewModel { get; set; } // use for passing timer between navigations
 
         public MainWindow()
         {
             this.InitializeComponent();
             SetWindowSize();
+            TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
         private void SetWindowSize()
@@ -57,12 +60,17 @@ namespace TimeManagementApp
                 navOptions.IsNavigationStackEnabled = false;
             }
 
+            Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;
 
+
+            if (selectedItem.Name == NavItem_ToDo.Name)
+            {
+                pageType = typeof(MainToDoPage);
+            }
             if (selectedItem.Name == NavItem_Timer.Name)
             {
-                Type pageType = typeof(MainTimerPage);
-                _ = mainFrame.Navigate(pageType);
+                pageType = typeof(MainTimerPage);
             }
             else if (selectedItem.Name == NavItem_Note.Name)
             {
@@ -73,6 +81,8 @@ namespace TimeManagementApp
             {
                 // other nav
             }
+
+            mainFrame.NavigateToType(pageType, TimerViewModel, navOptions);
         }
     }
 }

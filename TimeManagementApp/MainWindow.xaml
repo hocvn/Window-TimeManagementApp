@@ -13,6 +13,8 @@
         RequestedTheme="Light"
         Grid.Row="1"
         PaneDisplayMode="Left"
+        OpenPaneLength="250"
+
         IsSettingsVisible="True"
         IsBackButtonVisible="Collapsed"
         IsBackEnabled="False"
@@ -41,6 +43,7 @@
             </NavigationViewItem>
 
             <NavigationViewItem 
+                x:Name="NavItem_ToDo" 
                 Content="Todo"
                 Icon="Accept"
                 ToolTipService.ToolTip="Todo"/>
@@ -61,14 +64,14 @@
                 Icon="People" 
                 ToolTipService.ToolTip="Document options" 
                 SelectsOnInvoked="False">
-                
+
                 <NavigationViewItem.MenuItems>
                     <NavigationViewItem 
                         Content="Group1" 
                         Icon="NewFolder" 
                         ToolTipService.ToolTip="Group1" 
                         Tag="SamplePage5"/>
-                    
+
                     <NavigationViewItem 
                         Content="Group2" 
                         Icon="OpenLocal" 

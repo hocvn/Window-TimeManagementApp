@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.Windows.AppNotifications;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Timer
 {
@@ -25,10 +27,22 @@ namespace TimeManagementApp.Timer
         public MainTimerPage()
         {
             this.InitializeComponent();
-
-            ViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
+        // passing view model between navigations,
+        // so that timer can still run & notify when we are working on other features
+        protected override void OnNavigatedTo(NavigationEventArgs e) 
+        { 
+            if (e.Parameter is PomodoroTimer viewModel) 
+            { 
+                ViewModel = viewModel; 
+                DataContext = ViewModel; 
+            }
+            
+            base.OnNavigatedTo(e); 
+        }
+
+        // open settings panel
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             if (SettingsPanel.Visibility == Visibility.Collapsed)
@@ -36,13 +50,9 @@ namespace TimeManagementApp.Timer
                 SettingsPanel.Visibility = Visibility.Visible;
                 TimerPanel.Margin = new Thickness(-200, 0, 0, 0);
             }
-            else
-            {
-                SettingsPanel.Visibility = Visibility.Collapsed;
-                TimerPanel.Margin = new Thickness(0, 0, 0, 0);
-            }
         }
 
+        // currently save settings on hard code, will save to files later
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.CurrentSettings.FocusTimeMinutes = (int)FocusTimeSlider.Value;
@@ -51,8 +61,17 @@ namespace TimeManagementApp.Timer
 
             ViewModel.ResetTimer();
 
-            // TODO: Dark Mode, Sound, other settings ...
+            ViewModel.CurrentSettings.IsNotificationOn = NotificationToggleSwitch.IsOn;
         }
+
+        // close settings panel
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsPanel.Visibility = Visibility.Collapsed;
+            TimerPanel.Margin = new Thickness(0, 0, 0, 0);
+        }
+
+        // start, pause and reset timer
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
@@ -69,6 +88,7 @@ namespace TimeManagementApp.Timer
             ViewModel.ResetTimer();
         }
 
+        // skip session
         private void SkipButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.SwitchToNextTimerType();

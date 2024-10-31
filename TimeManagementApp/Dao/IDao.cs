@@ -22,5 +22,8 @@ namespace TimeManagementApp.Dao
         void DeleteNote(MyNote note);
 
         void RenameNote(MyNote note);
+      
+        ObservableCollection<MyTask> GetAllTasks();
     }
 }
+

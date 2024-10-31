@@ -9,7 +9,6 @@ using TimeManagementApp.Note;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-
 namespace TimeManagementApp.Dao
 {
     class MockDao : IDao
@@ -54,7 +53,8 @@ namespace TimeManagementApp.Dao
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error loading file: {ex.Message}");
+                Debug.WriteLine($"Error loading file: {ex.Message}");
+
             }
         }
 
@@ -103,5 +103,34 @@ namespace TimeManagementApp.Dao
             }
             SaveNotes(notes);
         }
+        
+        public ObservableCollection<MyTask> GetAllTasks()
+        {
+            return new ObservableCollection<MyTask>()
+            {
+                new MyTask()
+                {
+                    TaskName = "Task 01",
+                    TaskDescription = "Description 01",
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 02",
+                    TaskDescription = "Description 02",
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 03",
+                    TaskDescription = "Description 03",
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddHours(3),
+                },
+            };
+        }
     }
 }
+
