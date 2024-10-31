@@ -21,7 +21,6 @@ namespace TimeManagementApp.Note
         {
             public MyNote Note { get; set; }
             public Brush CurrentColor { get; set; } = new SolidColorBrush(Colors.Black);
-
             public bool IsBold { get; set; }
             public bool IsItalic { get; set; }
             public bool IsUnderline { get; set; }
@@ -38,6 +37,7 @@ namespace TimeManagementApp.Note
         }
 
         public NoteViewModel ViewModel { get; set; } 
+        bool BackButton_Clicked = false;
 
         public NotePage()
         {
@@ -62,6 +62,10 @@ namespace TimeManagementApp.Note
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
+            if (BackButton_Clicked == true)
+            {
+                return;
+            }
 
             var dialog = new ContentDialog
             {
@@ -81,6 +85,7 @@ namespace TimeManagementApp.Note
 
         private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            BackButton_Clicked = true;
             var dialog = new ContentDialog
             {
                 Title = "Exit",
@@ -101,6 +106,7 @@ namespace TimeManagementApp.Note
             {
                 Frame.GoBack();
             }
+            BackButton_Clicked = false;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)

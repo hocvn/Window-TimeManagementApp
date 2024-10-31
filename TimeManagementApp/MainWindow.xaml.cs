@@ -74,7 +74,7 @@ namespace TimeManagementApp
             }
             else if (selectedItem.Name == NavItem_Note.Name)
             {
-                Type pageType = typeof(NoteMainPage);
+                pageType = typeof(NoteMainPage);
                 _ = mainFrame.Navigate(pageType);
             }
             else 
