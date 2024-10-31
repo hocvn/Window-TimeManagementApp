@@ -20,12 +20,6 @@ namespace TimeManagementApp.Note
 
             public int TotalItems { get; set; }
 
-            public int TotalPages { get; set; }
-
-            public int RowsPerPage { get; set; } = 10;
-
-            public int CurrentPage { get; set; } = 1;
-
             public event PropertyChangedEventHandler PropertyChanged;
 
             public void Init()
@@ -34,7 +28,6 @@ namespace TimeManagementApp.Note
                 Notes = dao.GetAllNote();
 
                 TotalItems = Notes.Count;
-                TotalPages = (TotalItems / RowsPerPage) + (TotalItems % RowsPerPage == 0 ? 0 : 1);
             }
 
             public void AddNote(String newNoteName)
@@ -55,14 +48,12 @@ namespace TimeManagementApp.Note
                 dao.SaveNotes(Notes);
                 // Update ViewModel
                 TotalItems++;
-                TotalPages = (TotalItems / RowsPerPage) + (TotalItems % RowsPerPage == 0 ? 0 : 1);
             }
 
             public void DeleteNote(MyNote note)
             {
                 Notes.Remove(note);
                 TotalItems--;
-                TotalPages = (TotalItems / RowsPerPage) + (TotalItems % RowsPerPage == 0 ? 0 : 1);
                 IDao dao = new MockDao();
                 dao.SaveNotes(Notes);
             }
@@ -74,6 +65,15 @@ namespace TimeManagementApp.Note
         {
             this.InitializeComponent();
             ViewModel.Init();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter is MyNote note)
+            {
+                ViewModel.DeleteNote(note);
+            }
         }
 
         private async void NewNoteButton_Click(object sender, RoutedEventArgs e)

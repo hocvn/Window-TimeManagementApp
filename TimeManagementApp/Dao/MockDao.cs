@@ -84,18 +84,6 @@ namespace TimeManagementApp.Dao
 
             // Delete the file
             await file.DeleteAsync();
-
-            // Update the note list
-            ObservableCollection<MyNote> notes = GetAllNote();
-            foreach (var item in notes)
-            {
-                if (item.Id == note.Id)
-                {
-                    notes.Remove(item);
-                    break;
-                }
-            }
-            SaveNotes(notes);
         }
 
         public void RenameNote(MyNote note)

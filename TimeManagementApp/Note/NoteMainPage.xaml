@@ -57,53 +57,49 @@
                 <GradientStop Color="CornflowerBlue" Offset="8" />
             </LinearGradientBrush>
         </StackPanel.Background>
-        
+
         <RelativePanel>
             <TextBlock
-                x:Name="NumberOfNote"
-                RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignLeftWithPanel="True"
-                Margin="28 16">
-                Notes: <Run Text="{x:Bind ViewModel.TotalItems, Mode=OneWay}"/>
-            </TextBlock>
-            <TextBlock
-                RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                Margin="16">
-                Page: <Run Text="{x:Bind ViewModel.CurrentPage, Mode=OneTime}"/>
+            x:Name="NumberOfNote"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            Margin="28 16">
+            Total notes: <Run Text="{x:Bind ViewModel.TotalItems, Mode=OneWay}"/>
             </TextBlock>
 
             <TextBox x:Name="NewNoteNameTextBox"
-                RelativePanel.Below="NumberOfNote"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.LeftOf="NewNoteButton"
-                Margin="22 8 12 12"
-                PlaceholderText="Add a note"/>
+            RelativePanel.Below="NumberOfNote"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.LeftOf="NewNoteButton"
+            Margin="22 8 12 12"
+            PlaceholderText="Add a note"/>
             <Button x:Name="NewNoteButton" 
-                RelativePanel.AlignRightWithPanel="True"
-                RelativePanel.Below="NumberOfNote"
-                Margin="4 8 22 12"
-                Click="NewNoteButton_Click" 
-                Content="Add"
-                ToolTipService.ToolTip="New note">
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.Below="NumberOfNote"
+            Margin="4 8 22 12"
+            Click="NewNoteButton_Click" 
+            Content="Add"
+            ToolTipService.ToolTip="New note">
             </Button>
             <Rectangle
-                Height="2"                            
-                Fill="SteelBlue"
-                Margin="24 0 23 0"
-                RelativePanel.AlignBottomWithPanel="True"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True"/>
+            Height="2"                            
+            Fill="SteelBlue"
+            Margin="24 0 23 0"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"/>
         </RelativePanel>
-
-        <ListView
-            x:Name="NoteListView"
-            Margin="20 12"
-            IsItemClickEnabled="True"
-            ItemClick="Note_ItemClick"
-            ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}"
-            ItemTemplate="{StaticResource NoteViewFormat}"
-            ItemContainerStyle="{StaticResource ListViewItemStyle}">
-        </ListView>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ListView
+                x:Name="NoteListView"
+                Margin="20 12"
+                IsItemClickEnabled="True"
+                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                ItemClick="Note_ItemClick"
+                ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}"
+                ItemTemplate="{StaticResource NoteViewFormat}"
+                ItemContainerStyle="{StaticResource ListViewItemStyle}">
+            </ListView>
+        </ScrollViewer>
     </StackPanel>
 </Page>

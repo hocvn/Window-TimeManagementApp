@@ -64,8 +64,7 @@ namespace TimeManagementApp.Note
             var result = await dialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                IDao dao = new MockDao();
-                dao.DeleteNote(ViewModel.Note);
+                // Send note back to NoteMainPage to delete
                 Frame.Navigate(typeof(NoteMainPage), ViewModel.Note);
             }
         }
