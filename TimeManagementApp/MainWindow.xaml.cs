@@ -1,3 +1,4 @@
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -27,6 +28,23 @@ namespace TimeManagementApp
         public MainWindow()
         {
             this.InitializeComponent();
+            SetWindowSize();
+        }
+
+        private void SetWindowSize()
+        {
+            var displayArea = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary);
+            var screenWidth = displayArea.WorkArea.Width;
+            var screenHeight = displayArea.WorkArea.Height;
+
+            int width = (int)(screenWidth * 0.8);
+            int height = (int)(screenHeight * 0.8);
+
+            // Center the window
+            int middleX = (int)(screenWidth - width) / 2;
+            int middleY = (int)(screenHeight - height) / 2;
+
+            this.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(middleX, Math.Max(middleY - 100, 0), width, height));
         }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
