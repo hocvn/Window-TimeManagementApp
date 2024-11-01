@@ -21,9 +21,6 @@ namespace TimeManagementApp.Note
         {
             public MyNote Note { get; set; }
             public Brush CurrentColor { get; set; } = new SolidColorBrush(Colors.Black);
-            public bool IsBold { get; set; }
-            public bool IsItalic { get; set; }
-            public bool IsUnderline { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
@@ -136,20 +133,17 @@ namespace TimeManagementApp.Note
         private void BoldButton_Click(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.Bold = FormatEffect.Toggle;
-            ViewModel.IsBold = !ViewModel.IsBold;
         }
 
         private void ItalicButton_Click(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.Italic = FormatEffect.Toggle;
-            ViewModel.IsItalic = !ViewModel.IsItalic;
         }
 
         private void UnderlineButton_Click(object sender, RoutedEventArgs e)
         {
             var selection = Editor.Document.Selection;
             selection.CharacterFormat.Underline = selection.CharacterFormat.Underline == UnderlineType.None ? UnderlineType.Single : UnderlineType.None;
-            ViewModel.IsUnderline = !ViewModel.IsUnderline;
         }
 
         private void MyColorPicker_ColorChanged(object sender, ColorChangedEventArgs args)

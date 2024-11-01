@@ -17,6 +17,7 @@ namespace TimeManagementApp
         public RegisterWindow()
         {
             this.InitializeComponent();
+            this.Title = "Time management";
             SetWindowSize();
         }
 
@@ -37,7 +38,7 @@ namespace TimeManagementApp
         }
 
         UserCredential user = new UserCredential();
-        private async void registerButton_Click(object sender, RoutedEventArgs e)
+        private async void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameTextBox.Text;
             string email = emailTextBox.Text;
@@ -75,7 +76,7 @@ namespace TimeManagementApp
             this.Close();
         }
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             m_window = new LoginWindow();
             m_window.Activate();
@@ -90,6 +91,12 @@ namespace TimeManagementApp
             if (String.IsNullOrEmpty(username))
             {
                 errorMess = "Please fill out your username.";
+                return (false, errorMess);
+            }
+
+            if (user.IsUsernameInUse(username))
+            {
+                errorMess = "Username have existed.";
                 return (false, errorMess);
             }
 

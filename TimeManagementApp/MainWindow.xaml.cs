@@ -31,6 +31,7 @@ namespace TimeManagementApp
         {
             this.InitializeComponent();
             SetWindowSize();
+            this.Title = "Time management";
             TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
