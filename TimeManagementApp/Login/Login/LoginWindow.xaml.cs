@@ -12,12 +12,13 @@ namespace TimeManagementApp
     public sealed partial class LoginWindow : Window
     {
         private Window m_window;
-        UserCredential user = new UserCredential();
-        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        private UserCredential user = new UserCredential();
+        private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
         public LoginWindow()
         {
             this.InitializeComponent();
+            this.Title = "Time management";
 
             var rememberUsername = localSettings.Values["rememberUsername"] as string;
             if (!String.IsNullOrEmpty(rememberUsername))
@@ -56,7 +57,7 @@ namespace TimeManagementApp
         }
 
 
-        private void loginButton_Click(object sender, RoutedEventArgs e)
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameTextBox.Text;
             string password = passwordBox.Password;
@@ -78,29 +79,29 @@ namespace TimeManagementApp
             this.Close();
         }
 
-        private void rememberCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void RememberCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             var username = usernameTextBox.Text;
             localSettings.Values["rememberUsername"] = username;
         }
 
-        private void rememberCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void RememberCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             // Remove the stored username
             localSettings.Values.Remove("rememberUsername");
         }
 
         // Hide error message when user starts typing
-        private void usernameTextBox_Focus(object sender, RoutedEventArgs e)
+        private void UsernameTextBox_Focus(object sender, RoutedEventArgs e)
         {
             errorMessage.Text = "";
         }
 
-        private void passwordBox_Focus(object sender, RoutedEventArgs e)
+        private void PasswordBox_Focus(object sender, RoutedEventArgs e)
         {
             errorMessage.Text = "";
         }
-        private void forgotPasswordHyperLinkButton_Click(object sender, RoutedEventArgs e)
+        private void ForgotPasswordHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
             m_window = new ForgotPasswordWindow();
             m_window.Activate();
@@ -108,7 +109,7 @@ namespace TimeManagementApp
             // This feature is not working for now
         }
 
-        private void registerHyperLinkButton_Click(object sender, RoutedEventArgs e)
+        private void RegisterHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
             m_window = new RegisterWindow();
             m_window.Activate();

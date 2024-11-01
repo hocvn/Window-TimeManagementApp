@@ -24,6 +24,7 @@ namespace TimeManagementApp.Login.ForgotPassword
         public ForgotPasswordWindow()
         {
             this.InitializeComponent();
+            this.Title = "Time management";
             SetWindowSize();
         }
 
@@ -44,8 +45,6 @@ namespace TimeManagementApp.Login.ForgotPassword
         }
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            //var name = "EmailPage";
-            //var type = typeof(name);
             rootFrame.Navigate(typeof(EmailPage), this);
         }
     }

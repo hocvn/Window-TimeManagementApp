@@ -124,7 +124,7 @@
                 Width="300"
                 Background="MediumBlue" 
                 Foreground="white" 
-                Click="registerButton_Click" 
+                Click="RegisterButton_Click" 
                 Margin="0 20 0 10">
             </Button>
 
