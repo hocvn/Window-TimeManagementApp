@@ -40,19 +40,27 @@ namespace TimeManagementApp.ToDo
         }
 
 
-        private void CloseDetailInformationButton_Click(object sender, RoutedEventArgs e)
+        private void TaskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DetailInformationArea.Visibility = Visibility.Collapsed;
+            CurrentSelectTask = MyTasksListBox.SelectedItem as MyTask;
         }
 
+
+        // currently use visibility to control, will use frame navigation later
         private void TaskItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (MyTasksListBox.SelectedItem != null)
             {
-                DetailInformationArea.Visibility = Visibility.Visible;
+                DeleteUpdateArea.Visibility = Visibility.Visible;
             }
         }
+        private void CloseArea_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteUpdateArea.Visibility = Visibility.Collapsed;
+        }
 
+
+        // insert new task when press Enter on textbox
         private async void InsertTask_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
@@ -86,11 +94,13 @@ namespace TimeManagementApp.ToDo
 
                 ViewModel.InsertTask(newTask);
 
-                DetailInformationArea.Visibility = Visibility.Collapsed;
+                DeleteUpdateArea.Visibility = Visibility.Collapsed;
                 await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, "OK");
             }
         }
 
+
+        // delete a task
         private async void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
             var selectedTask = MyTasksListBox.SelectedItem as MyTask;
@@ -103,7 +113,7 @@ namespace TimeManagementApp.ToDo
                 {
                     ViewModel.DeleteTask(selectedTask);
 
-                    DetailInformationArea.Visibility = Visibility.Collapsed;
+                    DeleteUpdateArea.Visibility = Visibility.Collapsed;
                     await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, "OK");
                 }
                 else
@@ -113,6 +123,8 @@ namespace TimeManagementApp.ToDo
             }
         }
 
+
+        // update a task
         private async void UpdateTask_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentSelectTask != null)
@@ -157,14 +169,9 @@ namespace TimeManagementApp.ToDo
 
                 ViewModel.UpdateTask(CurrentSelectTask, newTask);
 
-                DetailInformationArea.Visibility = Visibility.Collapsed;
+                DeleteUpdateArea.Visibility = Visibility.Collapsed;
                 await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, "OK");
             }
-        }
-
-        private void TaskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            CurrentSelectTask = MyTasksListBox.SelectedItem as MyTask;
         }
     }
 }
