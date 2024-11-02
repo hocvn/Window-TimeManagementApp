@@ -29,6 +29,7 @@ namespace TimeManagementApp.ToDo
     public sealed partial class MainToDoPage : Page, INotifyPropertyChanged
     {
         public MyTaskViewModel ViewModel { get; set; }
+        public MyTask CurrentSelectTask { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -112,60 +113,58 @@ namespace TimeManagementApp.ToDo
             }
         }
 
+        private async void UpdateTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSelectTask != null)
+            {
+                if (String.IsNullOrEmpty(UpdateTaskName.Text))
+                {
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    return;
+                }
 
+                if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskDueDate.Date.HasValue)
+                {
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    return;
+                }
+
+                var startDateTime = new DateTime(
+                    UpdateTaskStartDate.Date.Value.Year,
+                    UpdateTaskStartDate.Date.Value.Month,
+                    UpdateTaskStartDate.Date.Value.Day,
+                    UpdateTaskStartTime.Time.Hours,
+                    UpdateTaskStartTime.Time.Minutes,
+                    UpdateTaskStartTime.Time.Seconds
+                );
+
+                var dueDateTime = new DateTime(
+                    UpdateTaskDueDate.Date.Value.Year,
+                    UpdateTaskDueDate.Date.Value.Month,
+                    UpdateTaskDueDate.Date.Value.Day,
+                    UpdateTaskDueTime.Time.Hours,
+                    UpdateTaskDueTime.Time.Minutes,
+                    UpdateTaskDueTime.Time.Seconds
+                );
+
+                var newTask = new MyTask
+                {
+                    TaskName = UpdateTaskName.Text,
+                    TaskDescription = UpdateTaskDescription.Text,
+                    StartDateTime = startDateTime,
+                    DueDateTime = dueDateTime
+                };
+
+                ViewModel.UpdateTask(CurrentSelectTask, newTask);
+
+                DetailInformationArea.Visibility = Visibility.Collapsed;
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, "OK");
+            }
+        }
+
+        private void TaskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentSelectTask = MyTasksListBox.SelectedItem as MyTask;
+        }
     }
 }
-
-           
-            //private async void UpdateTask_Click(object sender, RoutedEventArgs e)
-            //{
-            //    if (CurrentSelectTask == null)
-            //    {
-            //        await Dialog.ShowContent(this.XamlRoot, "Error", "Please select a task!");
-            //        return;
-            //    }
-
-            //    if (String.IsNullOrEmpty(UpdateTaskName.Text))
-            //    {
-            //        await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!");
-            //        return;
-            //    }
-
-            //    if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskEndDate.Date.HasValue)
-            //    {
-            //        await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!");
-            //        return;
-            //    }
-
-            //    var startDateTime = new DateTime(
-            //        UpdateTaskStartDate.Date.Value.Year,
-            //        UpdateTaskStartDate.Date.Value.Month,
-            //        UpdateTaskStartDate.Date.Value.Day,
-            //        UpdateTaskStartTime.Time.Hours,
-            //        UpdateTaskStartTime.Time.Minutes,
-            //        UpdateTaskStartTime.Time.Seconds
-            //    );
-
-            //    var endDateTime = new DateTime(
-            //        UpdateTaskEndDate.Date.Value.Year,
-            //        UpdateTaskEndDate.Date.Value.Month,
-            //        UpdateTaskEndDate.Date.Value.Day,
-            //        UpdateTaskEndTime.Time.Hours,
-            //        UpdateTaskEndTime.Time.Minutes,
-            //        UpdateTaskEndTime.Time.Seconds
-            //    );
-
-            //    var newTask = new MyTask
-            //    {
-            //        TaskName = UpdateTaskName.Text,
-            //        TaskDescription = UpdateTaskDescription.Text,
-            //        StartTime = startDateTime,
-            //        EndTime = endDateTime
-            //    };
-
-            //    ViewModel.UpdateTask(CurrentSelectTask, newTask);
-            //    CurrentSelectTask = null;
-
-            //    IsUpdateExpanderExpanded = false;
-            //    await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task successfully!");
-            //}
