@@ -10,17 +10,20 @@ namespace TimeManagementApp.Helper
 {
     public class Dialog
     {
-        public static async Task ShowContent(XamlRoot root, string title, string message)
+        public static async Task<ContentDialogResult> ShowContent
+            (XamlRoot root, string title, string content, string primaryButtonText, string closeButtonText)
         {
-            ContentDialog errorDialog = new ContentDialog
+            ContentDialog contentDialog = new ContentDialog
             {
                 XamlRoot = root,
                 Title = title,
-                Content = message,
-                CloseButtonText = "OK"
+                Content = content,
+                PrimaryButtonText = primaryButtonText,
+                CloseButtonText = closeButtonText,
             };
 
-            await errorDialog.ShowAsync();
+            ContentDialogResult result = await contentDialog.ShowAsync();
+            return result;
         }
     }
 }

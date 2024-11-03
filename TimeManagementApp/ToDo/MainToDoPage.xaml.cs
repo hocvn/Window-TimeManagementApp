@@ -15,6 +15,8 @@ using System.Security.Principal;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using TimeManagementApp.Helper;
+using System.Diagnostics;
+using CommunityToolkit.WinUI.Controls;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,11 +31,6 @@ namespace TimeManagementApp.ToDo
         public MyTaskViewModel ViewModel { get; set; }
         public MyTask CurrentSelectTask { get; set; }
 
-        public bool IsInsertExpanderExpanded { get; set; } = false;
-        public bool IsDeleteExpanderExpanded { get; set; } = false;
-        public bool IsUpdateExpanderExpanded { get; set; } = false;
-
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainToDoPage()
@@ -42,124 +39,139 @@ namespace TimeManagementApp.ToDo
             ViewModel = new MyTaskViewModel();
         }
 
-        private void MyTasksListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void TaskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CurrentSelectTask = myTasksListView.SelectedItem as MyTask;
+            CurrentSelectTask = MyTasksListBox.SelectedItem as MyTask;
         }
 
 
-        private async void InsertTask_Click(object sender, RoutedEventArgs e)
+        // currently use visibility to control, will use frame navigation later
+        private void TaskItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(InsertTaskName.Text))
+            if (MyTasksListBox.SelectedItem != null)
             {
-                await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!");
-                return;
+                DeleteUpdateArea.Visibility = Visibility.Visible;
             }
-            
-            if (!InsertTaskStartDate.Date.HasValue || !InsertTaskEndDate.Date.HasValue)
-            {
-                await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!");
-                return;
-            }
-
-            var startDateTime = new DateTime(
-                InsertTaskStartDate.Date.Value.Year,
-                InsertTaskStartDate.Date.Value.Month,
-                InsertTaskStartDate.Date.Value.Day,
-                InsertTaskStartTime.Time.Hours,
-                InsertTaskStartTime.Time.Minutes,
-                InsertTaskStartTime.Time.Seconds
-            );
-
-            var endDateTime = new DateTime(
-                InsertTaskEndDate.Date.Value.Year,
-                InsertTaskEndDate.Date.Value.Month,
-                InsertTaskEndDate.Date.Value.Day,
-                InsertTaskEndTime.Time.Hours,
-                InsertTaskEndTime.Time.Minutes,
-                InsertTaskEndTime.Time.Seconds
-            );
-
-            var newTask = new MyTask
-            {
-                TaskName = InsertTaskName.Text,
-                TaskDescription = InsertTaskDescription.Text,
-                StartTime = startDateTime,
-                EndTime = endDateTime
-            };
-
-            ViewModel.InsertTask(newTask);
-
-            IsInsertExpanderExpanded = false;
-            await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task successfully!");
+        }
+        private void CloseArea_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteUpdateArea.Visibility = Visibility.Collapsed;
         }
 
+
+        // insert new task when press Enter on textbox
+        private async void InsertTask_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                if (String.IsNullOrEmpty(InsertTaskName.Text))
+                {
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    return;
+                }
+
+                if (!InsertTaskDueDateTime.Date.HasValue)
+                {
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    return;
+                }
+
+                var startDateTime = DateTime.Now;
+
+                var dueDateTime = new DateTime(
+                    InsertTaskDueDateTime.Date.Value.Year, InsertTaskDueDateTime.Date.Value.Month, InsertTaskDueDateTime.Date.Value.Day,
+                    23, 59, 00
+                );
+
+                var newTask = new MyTask
+                {
+                    TaskName = InsertTaskName.Text,
+                    TaskDescription = "My Description",
+                    StartDateTime = startDateTime,
+                    DueDateTime = dueDateTime
+                };
+
+                ViewModel.InsertTask(newTask);
+
+                DeleteUpdateArea.Visibility = Visibility.Collapsed;
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, "OK");
+            }
+        }
+
+
+        // delete a task
         private async void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentSelectTask == null)
+            var selectedTask = MyTasksListBox.SelectedItem as MyTask;
+
+            if (selectedTask != null)
             {
-                await Dialog.ShowContent(this.XamlRoot, "Error", "Please select a task!");
-                return;
+                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", "Cancel");
+
+                if (result == ContentDialogResult.Primary)
+                {
+                    ViewModel.DeleteTask(selectedTask);
+
+                    DeleteUpdateArea.Visibility = Visibility.Collapsed;
+                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, "OK");
+                }
+                else
+                {
+                    // do nothing
+                }
             }
-
-            ViewModel.DeleteTask(CurrentSelectTask);
-            CurrentSelectTask = null;
-
-            IsDeleteExpanderExpanded = false;
-            await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task successfully!");
         }
 
+
+        // update a task
         private async void UpdateTask_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentSelectTask == null)
+            if (CurrentSelectTask != null)
             {
-                await Dialog.ShowContent(this.XamlRoot, "Error", "Please select a task!");
-                return;
+                if (String.IsNullOrEmpty(UpdateTaskName.Text))
+                {
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    return;
+                }
+
+                if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskDueDate.Date.HasValue)
+                {
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    return;
+                }
+
+                var startDateTime = new DateTime(
+                    UpdateTaskStartDate.Date.Value.Year,
+                    UpdateTaskStartDate.Date.Value.Month,
+                    UpdateTaskStartDate.Date.Value.Day,
+                    UpdateTaskStartTime.Time.Hours,
+                    UpdateTaskStartTime.Time.Minutes,
+                    UpdateTaskStartTime.Time.Seconds
+                );
+
+                var dueDateTime = new DateTime(
+                    UpdateTaskDueDate.Date.Value.Year,
+                    UpdateTaskDueDate.Date.Value.Month,
+                    UpdateTaskDueDate.Date.Value.Day,
+                    UpdateTaskDueTime.Time.Hours,
+                    UpdateTaskDueTime.Time.Minutes,
+                    UpdateTaskDueTime.Time.Seconds
+                );
+
+                var newTask = new MyTask
+                {
+                    TaskName = UpdateTaskName.Text,
+                    TaskDescription = UpdateTaskDescription.Text,
+                    StartDateTime = startDateTime,
+                    DueDateTime = dueDateTime
+                };
+
+                ViewModel.UpdateTask(CurrentSelectTask, newTask);
+
+                DeleteUpdateArea.Visibility = Visibility.Collapsed;
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, "OK");
             }
-
-            if (String.IsNullOrEmpty(UpdateTaskName.Text))
-            {
-                await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!");
-                return;
-            }
-            
-            if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskEndDate.Date.HasValue)
-            {
-                await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!");
-                return;
-            }
-
-            var startDateTime = new DateTime(
-                UpdateTaskStartDate.Date.Value.Year,
-                UpdateTaskStartDate.Date.Value.Month,
-                UpdateTaskStartDate.Date.Value.Day,
-                UpdateTaskStartTime.Time.Hours,
-                UpdateTaskStartTime.Time.Minutes,
-                UpdateTaskStartTime.Time.Seconds
-            );
-
-            var endDateTime = new DateTime(
-                UpdateTaskEndDate.Date.Value.Year,
-                UpdateTaskEndDate.Date.Value.Month,
-                UpdateTaskEndDate.Date.Value.Day,
-                UpdateTaskEndTime.Time.Hours,
-                UpdateTaskEndTime.Time.Minutes,
-                UpdateTaskEndTime.Time.Seconds
-            );
-
-            var newTask = new MyTask
-            {
-                TaskName = UpdateTaskName.Text,
-                TaskDescription = UpdateTaskDescription.Text,
-                StartTime = startDateTime,
-                EndTime = endDateTime
-            };
-
-            ViewModel.UpdateTask(CurrentSelectTask, newTask);
-            CurrentSelectTask = null;
-
-            IsUpdateExpanderExpanded = false;
-            await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task successfully!");
         }
     }
 }
