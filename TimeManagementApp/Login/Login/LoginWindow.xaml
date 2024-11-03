@@ -36,7 +36,7 @@
             <Image 
                 Height="100"
                 Width="100"
-                Margin="0 100 0 0"
+                Margin="0 80 0 0"
                 Source="/Assets/Login2.png">
             </Image>
             <TextBlock 
@@ -64,7 +64,7 @@
                 Height="36" 
                 VerticalAlignment="Center" 
                 PlaceholderText="Username" 
-                GotFocus="usernameTextBox_Focus" 
+                GotFocus="UsernameTextBox_Focus" 
                 Margin="16 20">
             </TextBox>
 
@@ -76,7 +76,7 @@
                 Height="36" 
                 VerticalAlignment="Center" 
                 PlaceholderText="Password" 
-                GotFocus="passwordBox_Focus" 
+                GotFocus="PasswordBox_Focus" 
                 AutomationProperties.Name="Simple PasswordBox">
             </PasswordBox>
 
@@ -91,7 +91,7 @@
                 Width="280"
                 Background="Blue" 
                 Foreground="white" 
-                Click="loginButton_Click" 
+                Click="LoginButton_Click" 
                 Margin="0 20 0 10">
             </Button>
 
@@ -100,10 +100,10 @@
                 RelativePanel.AlignLeftWith="loginButton"
                 x:Name="rememberCheckBox" 
                 Content="Remember me" 
-                Checked="rememberCheckBox_Checked" 
-                Unchecked="rememberCheckBox_Unchecked" 
+                Checked="RememberCheckBox_Checked" 
+                Unchecked="RememberCheckBox_Unchecked" 
                 Margin="0 10 0 0"
-                GotFocus="passwordBox_Focus">
+                GotFocus="PasswordBox_Focus">
             </CheckBox>
 
             <HyperlinkButton 
@@ -111,7 +111,7 @@
                 RelativePanel.Below="loginButton"
                 RelativePanel.AlignRightWith="loginButton"
                 Content="Forgot password?" 
-                Click="forgotPasswordHyperLinkButton_Click" 
+                Click="ForgotPasswordHyperLinkButton_Click" 
                 Margin="0 10 0 0"
                 Padding="0 4">
             </HyperlinkButton>
@@ -127,7 +127,7 @@
                 x:Name="registerHyperLinkButton"
                 Content="Create new account" 
                 HorizontalAlignment="Center"
-                Click="registerHyperLinkButton_Click" 
+                Click="RegisterHyperLinkButton_Click" 
                 Margin="0 4 0 20"
                 Padding="0 4">
             </HyperlinkButton>

@@ -24,7 +24,7 @@
         <NavigationView.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="1.5" />
+                <GradientStop Color="CornflowerBlue" Offset="2.5" />
             </LinearGradientBrush>
         </NavigationView.Background>
 
@@ -39,22 +39,7 @@
                 Content="Notes" 
                 Icon="Edit" 
                 ToolTipService.ToolTip="Note" 
-                Tag="NotePage">
-                
-                <NavigationViewItem.MenuItems>
-                    <NavigationViewItem 
-                        Content="Mail" 
-                        Icon="Mail" 
-                        ToolTipService.ToolTip="Mail" 
-                        Tag="SamplePage3"/>
-
-                    <NavigationViewItem 
-                        Content="Calendar" 
-                        Icon="Calendar" 
-                        ToolTipService.ToolTip="Calendar" 
-                        Tag="SamplePage4"/>
-
-                </NavigationViewItem.MenuItems>
+                Tag="NoteMainPage">
             </NavigationViewItem>
 
             <NavigationViewItem 

@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
-using static TimeManagementApp.LoginWindow;
 
 namespace TimeManagementApp
 {
@@ -16,18 +15,11 @@ namespace TimeManagementApp
     {
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
-        public class UserInfo
+        public class UserInfo(string password, string entropy, string email)
         {
-            public string email { get; set; }
-            public string password { get; set; }
-            public string entropy { get; set; }
-
-            public UserInfo(string password, string entropy, string email)
-            {
-                this.password = password;
-                this.entropy = entropy;
-                this.email = email;
-            }
+            public string Email { get; set; } = email;
+            public string Password { get; set; } = password;
+            public string Entropy { get; set; } = entropy;
         }
         public void SaveCredential(string username, string password, string email)
         {
@@ -96,8 +88,8 @@ namespace TimeManagementApp
             if (usersData.ContainsKey(username))
             {
                 var UserInfo = usersData[username];
-                var encryptedPasswordBase64 = UserInfo.password;
-                var entropyBase64 = UserInfo.entropy;
+                var encryptedPasswordBase64 = UserInfo.Password;
+                var entropyBase64 = UserInfo.Entropy;
 
                 if (encryptedPasswordBase64 == null || entropyBase64 == null)
                 {
@@ -179,7 +171,31 @@ namespace TimeManagementApp
 
             for (int i = 0; i < usersData.Count; i++)
             {
-                if (usersData.ElementAt(i).Value.email == email)
+                if (usersData.ElementAt(i).Value.Email == email)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsUsernameInUse(string username)
+        {
+            // Retrieve existing users data or create a new dictionary
+            var usersDataJson = localSettings.Values["usersData"] as string;
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return false; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Key == username)
                 {
                     return true;
                 }
@@ -202,7 +218,7 @@ namespace TimeManagementApp
 
             for (int i = 0; i < usersData.Count; i++)
             {
-                if (usersData.ElementAt(i).Value.email == email)
+                if (usersData.ElementAt(i).Value.Email == email)
                 {
                     return usersData.ElementAt(i).Key;
                 }

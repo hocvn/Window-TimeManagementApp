@@ -1,23 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TimeManagementApp.Timer
 {
-    public class Settings
+    public class Settings : INotifyPropertyChanged
     {
         public int FocusTimeMinutes { get; set; }
         public int ShortBreakMinutes { get; set; }
         public int LongBreakMinutes { get; set; }
 
+        public bool IsNotificationOn { get; set; }
+
+        // default settings
         public Settings()
         {
             FocusTimeMinutes = 25;
             ShortBreakMinutes = 5;
             LongBreakMinutes = 10;
+
+            IsNotificationOn = true;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     public enum TimerType
@@ -26,5 +34,4 @@ namespace TimeManagementApp.Timer
         ShortBreak,
         LongBreak,
     }
-
 }

@@ -1,5 +1,7 @@
 using System;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
 
 namespace TimeManagementApp
@@ -15,16 +17,34 @@ namespace TimeManagementApp
         public RegisterWindow()
         {
             this.InitializeComponent();
+            this.Title = "Time management";
+            SetWindowSize();
+        }
+
+        private void SetWindowSize()
+        {
+            var displayArea = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary);
+            var screenWidth = displayArea.WorkArea.Width;
+            var screenHeight = displayArea.WorkArea.Height;
+
+            int width = (int)(screenWidth * 0.8);
+            int height = (int)(screenHeight * 0.8);
+
+            // Center the window
+            int middleX = (int)(screenWidth - width) / 2;
+            int middleY = (int)(screenHeight - height) / 2;
+
+            this.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(middleX, Math.Max(middleY - 100, 0), width, height));
         }
 
         UserCredential user = new UserCredential();
-        private void registerButton_Click(object sender, RoutedEventArgs e)
+        private async void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameTextBox.Text;
             string email = emailTextBox.Text;
             string password = passwordBox.Password;
             string passwordConfirmed = passwordConfirmedBox.Password;
-            (bool isOk, string errorMess) = checkInfomationUserEnter(username, email, password, passwordConfirmed);
+            (bool isOk, string errorMess) = CheckInfomationUserEnter(username, email, password, passwordConfirmed);
 
             if (!isOk)
             {
@@ -36,16 +56,34 @@ namespace TimeManagementApp
             errorMessage.Text = "";
             user.SaveCredential(username, password, email);
             localSettings.Values.Remove("rememberUsername");
+
+            // Display notification dialog
+            ContentDialog dialog = new ContentDialog()
+            {
+                Title = "SUCCESSFUL",
+                Content = "Your account have been created",
+                PrimaryButtonText = "Login",
+                XamlRoot = ((FrameworkElement)sender).XamlRoot // Set the XamlRoot property
+            };
+            dialog.PrimaryButtonClick += Dialog_PrimaryButtonClick;
+            await dialog.ShowAsync();
         }
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        private void Dialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             m_window = new LoginWindow();
             m_window.Activate();
             this.Close();
         }
 
-        public (bool, string) checkInfomationUserEnter(string username, string email, string password,
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            m_window = new LoginWindow();
+            m_window.Activate();
+            this.Close();
+        }
+
+        public (bool, string) CheckInfomationUserEnter(string username, string email, string password,
                 string passwordConfirmed)
         {
             string errorMess = "";
@@ -53,6 +91,12 @@ namespace TimeManagementApp
             if (String.IsNullOrEmpty(username))
             {
                 errorMess = "Please fill out your username.";
+                return (false, errorMess);
+            }
+
+            if (user.IsUsernameInUse(username))
+            {
+                errorMess = "Username have existed.";
                 return (false, errorMess);
             }
 

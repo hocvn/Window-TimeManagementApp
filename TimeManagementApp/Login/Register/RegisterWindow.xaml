@@ -45,11 +45,10 @@
         <StackPanel
             Grid.Column="1" 
             Grid.Row="0">
-
             <Image 
                 Height="100"
                 Width="100"
-                Margin="0 100 0 0"
+                Margin="0 80 0 0"
                 Source="/Assets/Login2.png">
             </Image>
 
@@ -125,34 +124,8 @@
                 Width="300"
                 Background="MediumBlue" 
                 Foreground="white" 
-                Click="registerButton_Click" 
+                Click="RegisterButton_Click" 
                 Margin="0 20 0 10">
-
-                <Button.Flyout>
-                    <Flyout>
-                        <StackPanel
-                            Orientation="Vertical"
-                            HorizontalAlignment="Center"
-                            Height="200"
-                            Width="300">
-                            <TextBlock 
-                                Style="{ThemeResource BaseTextBlockStyle}" 
-                                Text="Sign up successfully." 
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="24"
-                                FontWeight="Bold"
-                                Margin="0,40,0,20" />
-                            <Button 
-                                Click="cancelButton_Click" 
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="16"
-                                Content="Sign in" />
-                        </StackPanel>
-                    </Flyout>
-                </Button.Flyout>
-
             </Button>
 
         </RelativePanel>

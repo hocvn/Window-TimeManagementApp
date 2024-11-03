@@ -16,68 +16,104 @@
                 <GradientStop Color="WhiteSmoke" Offset="1.5" />
             </LinearGradientBrush>
         </Grid.Background>
-        
-        <Button x:Name="SettingsButton" 
-                Content="Settings" FontSize="12" 
-                Width="80" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" 
-                Click="SettingsButton_Click"/>
 
-        <StackPanel x:Name="SettingsPanel" 
-                    HorizontalAlignment="Right" VerticalAlignment="Top" 
-                    Padding="20"
-                    Visibility="Collapsed">
-            <TextBlock Text="General Settings" FontSize="20" FontWeight="Bold" 
-                       Margin="0,0,0,20"/>
-
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
-                <TextBlock Text="Dark Mode" VerticalAlignment="Center"/>
-                <ToggleSwitch Margin="10,0,0,0"/>
-            </StackPanel>
-
-            <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
-                <TextBlock Text="FocusTime Minutes" VerticalAlignment="Center"/>
-                <Slider x:Name ="FocusTimeSlider" Minimum="0" Maximum="60" Margin="10,0,0,0" Width="200"/>
-            </StackPanel>
-
-            <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
-                <TextBlock Text="ShortBreak Minutes" VerticalAlignment="Center"/>
-                <Slider x:Name ="ShortBreakSlider" Minimum="0" Maximum="60" Margin="10,0,0,0" Width="200"/>
-            </StackPanel>
-
-            <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
-                <TextBlock Text="LongBreak Minutes" VerticalAlignment="Center"/>
-                <Slider x:Name ="LongBreakSlider" Minimum="0" Maximum="60" Margin="10,0,0,0" Width="200"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
-                <TextBlock Text="Notification" VerticalAlignment="Center"/>
-                <ToggleSwitch Margin="10,0,0,0"/>
-            </StackPanel>
-            
-            <Button Content="Save" Click="SaveButton_Click"
-                    HorizontalAlignment="Center" VerticalAlignment="Bottom" 
-                    Width="100" Margin="0,20,0,0"/>
-        </StackPanel>
-
+        <!--Area for PomodoroTimer-->
         <StackPanel x:Name="TimerPanel" 
                     HorizontalAlignment="Center" VerticalAlignment="Center">
+            
             <Grid Width="200" Height="200">
-                <Ellipse Stroke="Black" StrokeThickness="6"/>
+                <!--first ellipse with stroke color base on current type-->
+                <Ellipse Stroke="{x:Bind ViewModel.StrokeColor, Mode=OneWay}"
+                         StrokeThickness="{x:Bind ViewModel.StrokeThickness}"/>
+
+                <!--second ellipse with white stroke that have empty parts base on time left-->
+                <Ellipse Stroke="White" 
+                         StrokeThickness="{x:Bind ViewModel.StrokeThickness}"
+                         StrokeDashArray="{x:Bind ViewModel.StrokeDashArray, Mode=OneWay}"
+                         RenderTransformOrigin="0.5,0.5">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform Angle="-90"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+
+                <!--binding current time and type-->
                 <TextBlock Text="{x:Bind ViewModel.TimerText, Mode=OneWay}" FontSize="48" 
                            HorizontalAlignment="Center" Margin="0,50,0,0"/>
                 <TextBlock Text="{x:Bind ViewModel.CurrentType, Mode=OneWay}" FontSize="20" 
                            HorizontalAlignment="Center" Margin="0,120,0,0"/>
             </Grid>
 
+            <!--play, pause, reset timer features-->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,0"
                         HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="Start" Click="StartButton_Click" Margin="0,0,0,0"/>
-                <Button Content="Pause" Click="PauseButton_Click" Margin="5,0,0,0"/>
-                <Button Content="Reset" Click="ResetButton_Click" Margin="5,0,0,0"/>
+                <AppBarButton Icon="Play" Label="Start" Click="StartButton_Click"/>
+                <AppBarButton Icon="Pause" Label="Pause" Click="PauseButton_Click"/>
+                <AppBarButton Icon="Refresh" Label="Reset" Click="ResetButton_Click"/>
             </StackPanel>
 
-            <Button Content="Skip this session" Click="SkipButton_Click" 
-                    HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            <!--settings & skip session-->
+            <StackPanel Orientation="Horizontal" Margin="0,-10,0,0"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <AppBarButton Icon="Forward" Label="Skip this session" Click="SkipButton_Click"/>
+                <AppBarButton x:Name="SettingsButton" 
+                              Icon="Setting" Label="Settings" Click="SettingsButton_Click"/>
+            </StackPanel>
+            
+        </StackPanel>
+
+        <!--Area for SettingsPanel 
+        (currently use visibility controls, will use frame navigation later)-->
+        <StackPanel x:Name="SettingsPanel" 
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Padding="20"
+                    Visibility="Collapsed">
+            
+            <!--title-->
+            <TextBlock Text="General Settings" 
+                       FontSize="18" FontWeight="Bold" 
+                       Margin="0,0,0,20"/>
+
+            <!--sliders for user to adjust focus time, break time-->
+            
+            <StackPanel VerticalAlignment="Center" Margin="0,10,0,10">
+                <TextBlock Text="FocusTime Minutes" VerticalAlignment="Center"/>
+                
+                <Slider x:Name ="FocusTimeSlider" 
+                        Value="{x:Bind ViewModel.CurrentSettings.FocusTimeMinutes, Mode=OneWay}"
+                        Minimum="1" Maximum="60" 
+                        Margin="10,0,0,0" Width="200"/>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
+                <TextBlock Text="ShortBreak Minutes" VerticalAlignment="Center"/>
+                
+                <Slider x:Name ="ShortBreakSlider" 
+                        Value="{x:Bind ViewModel.CurrentSettings.ShortBreakMinutes, Mode=OneWay}"
+                        Minimum="1" Maximum="60" 
+                        Margin="10,0,0,0" Width="200"/>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
+                <TextBlock Text="LongBreak Minutes" VerticalAlignment="Center"/>
+                
+                <Slider x:Name ="LongBreakSlider" 
+                        Value="{x:Bind ViewModel.CurrentSettings.LongBreakMinutes, Mode=OneWay}"
+                        Minimum="1" Maximum="60" 
+                        Margin="10,0,0,0" Width="200"/>
+            </StackPanel>
+
+            <!--choose notifications on or off-->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                <TextBlock Text="Notification" VerticalAlignment="Center"/>
+                <ToggleSwitch x:Name="NotificationToggleSwitch" Margin="10,0,0,0" IsOn="True"/>
+            </StackPanel>
+
+            <!--save settings or close panel-->
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <AppBarButton Icon="Save" Label="Save" Click="SaveButton_Click"/>
+                <AppBarButton Icon="Cancel" Label="Close" Click="CloseButton_Click"/>
+            </StackPanel>
+            
         </StackPanel>
     </Grid>
 </Page>
