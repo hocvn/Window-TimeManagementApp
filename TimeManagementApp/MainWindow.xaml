@@ -8,7 +8,93 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <NavigationView 
+        x:Name="MainNavigationView"
+        RequestedTheme="Light"
+        Grid.Row="1"
+        PaneDisplayMode="Left"
+        OpenPaneLength="250"
+
+        IsSettingsVisible="True"
+        IsBackButtonVisible="Collapsed"
+        IsBackEnabled="False"
+        IsTabStop="false"
+        SelectionChanged="NavigationView_SelectionChanged">
+
+        <NavigationView.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="AliceBlue" Offset="0.0" />
+                <GradientStop Color="CornflowerBlue" Offset="2.5" />
+            </LinearGradientBrush>
+        </NavigationView.Background>
+
+        <NavigationView.MenuItems>
+            <NavigationViewItem 
+                Content="Home" 
+                Icon="Home" 
+                ToolTipService.ToolTip="Home"/>
+
+            <NavigationViewItem 
+                x:Name="NavItem_Note"
+                Content="Notes" 
+                Icon="Edit" 
+                ToolTipService.ToolTip="Note" 
+                Tag="NoteMainPage">
+            </NavigationViewItem>
+
+            <NavigationViewItem 
+                x:Name="NavItem_ToDo" 
+                Content="Todo"
+                Icon="Accept"
+                ToolTipService.ToolTip="Todo"/>
+
+            <NavigationViewItem 
+                x:Name="NavItem_Timer"
+                Content="Time"
+                Icon="Clock"
+                ToolTipService.ToolTip="Time"/>
+
+            <NavigationViewItem 
+                Content="Calendar"
+                Icon="Calendar"
+                ToolTipService.ToolTip="Calendar"/>
+
+            <NavigationViewItem 
+                Content="Group" 
+                Icon="People" 
+                ToolTipService.ToolTip="Document options" 
+                SelectsOnInvoked="False">
+
+                <NavigationViewItem.MenuItems>
+                    <NavigationViewItem 
+                        Content="Group1" 
+                        Icon="NewFolder" 
+                        ToolTipService.ToolTip="Group1" 
+                        Tag="SamplePage5"/>
+
+                    <NavigationViewItem 
+                        Content="Group2" 
+                        Icon="OpenLocal" 
+                        ToolTipService.ToolTip="Group2" 
+                        Tag="SamplePage6"/>
+                </NavigationViewItem.MenuItems>
+            </NavigationViewItem>
+
+            <NavigationViewItem 
+                Content="Statistics"
+                Icon="PreviewLink"
+                ToolTipService.ToolTip="Statistics"/>
+
+        </NavigationView.MenuItems>
+
+        <NavigationView.AutoSuggestBox>
+            <AutoSuggestBox 
+                QueryIcon="Find" 
+                AutomationProperties.Name="Search"
+                PlaceholderText="Search"/>
+        </NavigationView.AutoSuggestBox>
+
+
+        <Frame x:Name="mainFrame" />
+    </NavigationView>
 </Window>
