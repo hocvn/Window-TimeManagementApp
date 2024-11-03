@@ -123,7 +123,7 @@
                      IsIconVisible="True"
                      IsOpen="True"
                      Severity="Warning"
-                     Margin="5,10,5,0">
+                     Margin="24,10,5,0">
                 
                 <InfoBar.IconSource>
                     <SymbolIconSource Symbol="Add"/>
