@@ -19,12 +19,11 @@ namespace TimeManagementApp.Timer
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Basic properties
-
-        private DispatcherTimer Timer { get; set; }
-        private bool IsRunning { get; set; }
-        private int Minutes { get; set; }
-        private int Seconds { get; set; }
-        private int CountFocusSessions { get; set; }
+        public DispatcherTimer Timer { get; set; }
+        public bool IsRunning { get; set; }
+        public int Minutes { get; set; }
+        public int Seconds { get; set; }
+        public int CountFocusSessions { get; set; }
 
         public Settings CurrentSettings { get; set; }
         public TimerType CurrentType { get; set; }

@@ -16,7 +16,7 @@ using TimeManagementApp.ToDo;
 
 namespace TimeManagementApp.Dao
 {
-    class MockDao : IDao
+    public class MockDao : IDao
     {
 
         public ObservableCollection<MyNote> GetAllNote()
