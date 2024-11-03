@@ -10,7 +10,7 @@ using TimeManagementApp.ToDo;
 
 namespace TimeManagementApp.Dao
 {
-    interface IDao
+    public interface IDao
     {
         ObservableCollection<MyNote> GetAllNote();
 

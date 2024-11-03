@@ -53,7 +53,7 @@ namespace TimeManagementApp.Timer
         }
 
         // currently save settings on hard code, will save to files later
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        public void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.CurrentSettings.FocusTimeMinutes = (int)FocusTimeSlider.Value;
             ViewModel.CurrentSettings.ShortBreakMinutes = (int)ShortBreakSlider.Value;
@@ -65,7 +65,7 @@ namespace TimeManagementApp.Timer
         }
 
         // close settings panel
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        public void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsPanel.Visibility = Visibility.Collapsed;
             TimerPanel.Margin = new Thickness(0, 0, 0, 0);
@@ -73,23 +73,23 @@ namespace TimeManagementApp.Timer
 
         // start, pause and reset timer
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        public void StartButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.StartTimer();
         }
 
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        public void PauseButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.PauseTimer();
         }
 
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        public void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.ResetTimer();
         }
 
         // skip session
-        private void SkipButton_Click(object sender, RoutedEventArgs e)
+        public void SkipButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.SwitchToNextTimerType();
         }
