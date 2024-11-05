@@ -24,7 +24,7 @@
                     <TextBlock Text="{x:Bind Name}" FontSize="12" Margin="16 0 12 16"/>
                 </StackPanel>
 
-                <Image Grid.Column="1" Width="32" Height="32" Source="ms-appx:///Assets/icons/note-taking.png">
+                <Image Grid.Column="1" Width="32" Height="32" Source="{StaticResource NoteImage}">
                 </Image>
             </Grid>
         </DataTemplate>
@@ -41,7 +41,7 @@
                     <TextBlock Text="{x:Bind TaskName}" FontSize="12" Margin="16 0 12 16"/>
                 </StackPanel>
 
-                <Image Grid.Column="1" Width="32" Height="32" Source="ms-appx:///Assets/icons/tasks.png">
+                <Image Grid.Column="1" Width="32" Height="32" Source="{StaticResource TaskImage}">
                 </Image>
             </Grid>
         </DataTemplate>

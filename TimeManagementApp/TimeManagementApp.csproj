@@ -45,6 +45,7 @@
     <None Remove="Login\ForgotPassword\OTPPage.xaml" />
     <None Remove="Login\ForgotPassword\ResetPasswordPage.xaml" />
     <None Remove="RegisterWindow.xaml" />
+    <None Remove="Resources\ImageResources.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,13 +91,13 @@
     <Content Update="Assets\icons\morning.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Assets\icons\night.png">
+    <Content Update="Assets\icons\evening.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Assets\icons\note-taking.png">
+    <Content Update="Assets\icons\note.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Assets\icons\tasks.png">
+    <Content Update="Assets\icons\task.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\notification.wav">
@@ -117,6 +118,11 @@
     <Folder Include="Login\Login\" />
     <Folder Include="Login\Register\" />
     <Folder Include="UserControlls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Resources\ImageResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Home\HomePage.xaml">

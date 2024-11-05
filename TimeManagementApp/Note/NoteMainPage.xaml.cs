@@ -20,13 +20,14 @@ namespace TimeManagementApp.Note
 
             public int TotalItems { get; set; }
 
+            private IDao Dao { get; set; }
+
             public event PropertyChangedEventHandler PropertyChanged;
 
             public void Init()
             {
-                IDao dao = new MockDao();
-                Notes = dao.GetAllNote();
-
+                Dao = new MockDao();
+                Notes = Dao.GetAllNote();
                 TotalItems = Notes.Count;
             }
 
@@ -70,9 +71,10 @@ namespace TimeManagementApp.Note
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is MyNote note)
+            MyNote myNote = e.Parameter as MyNote;
+            if (myNote != null)
             {
-                ViewModel.DeleteNote(note);
+                ViewModel.DeleteNote(myNote);
             }
         }
 

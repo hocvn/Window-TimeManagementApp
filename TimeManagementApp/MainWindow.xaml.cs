@@ -27,7 +27,6 @@ namespace TimeManagementApp
             WindowInitHelper.SetTitle(this, "Time management");
 
             TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
-            mainFrame.Navigate(typeof(HomePage));
         }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -40,7 +39,7 @@ namespace TimeManagementApp
                 navOptions.IsNavigationStackEnabled = false;
             }
 
-            Type pageType = typeof(BlankPage);
+            Type pageType = null;
             var selectedItem = (NavigationViewItem)args.SelectedItem;
 
             if (selectedItem.Name == NavItem_Home.Name)
@@ -65,6 +64,11 @@ namespace TimeManagementApp
             }
 
             mainFrame.NavigateToType(pageType, TimerViewModel, navOptions);
+        }
+
+        private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            MainNavigationView.SelectedItem = NavItem_Home;
         }
     }
 }

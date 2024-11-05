@@ -4,6 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Update="App.xaml" />
+    <Page Update="Resources\ImageResources.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Home\HomePage.xaml">
       <SubType>Designer</SubType>
     </Page>

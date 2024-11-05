@@ -56,15 +56,15 @@ namespace TimeManagementApp.Home
 
                 if (timeOfDay == "Morning")
                 {
-                    Icon = new BitmapImage(new Uri("ms-appx:///Assets/icons/morning.png"));
+                    Icon = (BitmapImage)Application.Current.Resources["MorningImage"];
                 }
                 else if (timeOfDay == "Afternoon")
                 {
-                    Icon = new BitmapImage(new Uri("ms-appx:///Assets/icons/afternoon.png"));
+                    Icon = (BitmapImage)Application.Current.Resources["AfternoonImage"];
                 }
                 else if (timeOfDay == "Evening")
                 {
-                    Icon = new BitmapImage(new Uri("ms-appx:///Assets/icons/night.png"));
+                    Icon = (BitmapImage)Application.Current.Resources["EveningImage"];
                 }
             }
 

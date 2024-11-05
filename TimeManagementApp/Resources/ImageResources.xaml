@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="MorningImage" UriSource="ms-appx:///Assets/icons/morning.png" />
+    <BitmapImage x:Key="AfternoonImage" UriSource="ms-appx:///Assets/icons/afternoon.png" />
+    <BitmapImage x:Key="EveningImage" UriSource="ms-appx:///Assets/icons/evening.png" />
+    
+    <BitmapImage x:Key="NoteImage" UriSource="ms-appx:///Assets/icons/note.png" />
+    <BitmapImage x:Key="TaskImage" UriSource="ms-appx:///Assets/icons/task.png" />
+    
+</ResourceDictionary>

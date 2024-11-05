@@ -21,15 +21,21 @@ namespace TimeManagementApp.Note
         public partial class NoteViewModel : INotifyPropertyChanged
         {
             public MyNote Note { get; set; }
-            public Brush CurrentColor { get; set; } = new SolidColorBrush(Colors.Black);
+            public Brush CurrentColor { get; set; } 
 
             public event PropertyChangedEventHandler PropertyChanged;
+            
+            private IDao dao { get; set; } 
 
+            public void Init()
+            {
+                dao = new MockDao();
+                CurrentColor = new SolidColorBrush(Colors.Black);
+            }
             public void RenameNote(string newName)
             {
                 Note.Name = newName;
                 // Update note name in the list
-                IDao dao = new MockDao();
                 dao.RenameNote(Note);
             }
         }
@@ -41,6 +47,7 @@ namespace TimeManagementApp.Note
         {
             this.InitializeComponent();
             ViewModel = new NoteViewModel();
+            ViewModel.Init();
             Editor.SelectionChanged += Editor_SelectionChanged;
         }
 
@@ -80,11 +87,11 @@ namespace TimeManagementApp.Note
             {
                 IDao dao = new MockDao();
                 dao.SaveNote(Editor, ViewModel.Note);
-                Frame.GoBack();
+                Frame.Navigate(typeof(NoteMainPage), null);
             }
             else if (result == ContentDialogResult.Secondary)
             {
-                Frame.GoBack();
+                Frame.Navigate(typeof(NoteMainPage), null);
             }
             BackButton_Clicked = false;
         }

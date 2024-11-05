@@ -6,6 +6,7 @@
     xmlns:local="using:TimeManagementApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Activated="MainWindow_Activated"
     mc:Ignorable="d">
 
     <NavigationView 
@@ -58,33 +59,21 @@
             <NavigationViewItem 
                 Content="Calendar"
                 Icon="Calendar"
-                ToolTipService.ToolTip="Calendar"/>
+                ToolTipService.ToolTip="Calendar"
+                SelectsOnInvoked="False"/>
 
             <NavigationViewItem 
                 Content="Group" 
                 Icon="People" 
                 ToolTipService.ToolTip="Document options" 
                 SelectsOnInvoked="False">
-
-                <NavigationViewItem.MenuItems>
-                    <NavigationViewItem 
-                        Content="Group1" 
-                        Icon="NewFolder" 
-                        ToolTipService.ToolTip="Group1" 
-                        Tag="SamplePage5"/>
-
-                    <NavigationViewItem 
-                        Content="Group2" 
-                        Icon="OpenLocal" 
-                        ToolTipService.ToolTip="Group2" 
-                        Tag="SamplePage6"/>
-                </NavigationViewItem.MenuItems>
             </NavigationViewItem>
 
             <NavigationViewItem 
                 Content="Statistics"
                 Icon="PreviewLink"
-                ToolTipService.ToolTip="Statistics"/>
+                ToolTipService.ToolTip="Statistics"
+                SelectsOnInvoked="False"/>
 
         </NavigationView.MenuItems>
 
