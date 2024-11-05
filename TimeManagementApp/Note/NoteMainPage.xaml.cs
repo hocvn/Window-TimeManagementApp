@@ -82,14 +82,7 @@ namespace TimeManagementApp.Note
             // Check error when user add a new note
             if (newNoteName.Length == 0)
             {
-                var dialog = new ContentDialog()
-                {
-                    Title = "Error",
-                    Content = "Please enter a name for the new note",
-                    CloseButtonText = "Ok",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
+                await Dialog.ShowContent(this.XamlRoot, "Error", "Note Name cannot be empty!", null, null, "OK");
                 return;
             }
 
@@ -107,15 +100,7 @@ namespace TimeManagementApp.Note
 
         private async void DeleteNoteButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog
-            {
-                Title = "Delete Note",
-                Content = "Are you sure you want to delete this note?",
-                PrimaryButtonText = "Delete",
-                CloseButtonText = "Cancel",
-                XamlRoot = this.XamlRoot
-            };
-            var result = await dialog.ShowAsync();
+            var result = await Dialog.ShowContent(this.XamlRoot, "Remove Note", "Are you sure you want to remove this note?", "Yes", null, "No");
             if (result == ContentDialogResult.Primary)
             {
                 var button = sender as Button;

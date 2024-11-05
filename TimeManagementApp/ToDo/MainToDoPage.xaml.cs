@@ -67,13 +67,13 @@ namespace TimeManagementApp.ToDo
             {
                 if (String.IsNullOrEmpty(InsertTaskName.Text))
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, null, "OK");
                     return;
                 }
 
                 if (!InsertTaskDueDateTime.Date.HasValue)
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, null, "OK");
                     return;
                 }
 
@@ -95,7 +95,7 @@ namespace TimeManagementApp.ToDo
                 ViewModel.InsertTask(newTask);
 
                 DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, "OK");
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, null, "OK");
             }
         }
 
@@ -107,14 +107,14 @@ namespace TimeManagementApp.ToDo
 
             if (selectedTask != null)
             {
-                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", "Cancel");
+                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", null, "Cancel");
 
                 if (result == ContentDialogResult.Primary)
                 {
                     ViewModel.DeleteTask(selectedTask);
 
                     DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, null, "OK");
                 }
                 else
                 {

@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Home\HomePage.xaml" />
     <None Remove="LoginWindow.xaml" />
     <None Remove="Note\NoteMainPage.xaml" />
     <None Remove="Note\NotePage.xaml" />
@@ -83,6 +84,12 @@
     <Page Update="Note\NoteMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Content Update="Assets\icons\note-taking.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\icons\tasks.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\notification.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -100,6 +107,12 @@
   <ItemGroup>
     <Folder Include="Login\Login\" />
     <Folder Include="Login\Register\" />
+    <Folder Include="UserControlls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Home\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Login\ForgotPassword\ResetPasswordPage.xaml">

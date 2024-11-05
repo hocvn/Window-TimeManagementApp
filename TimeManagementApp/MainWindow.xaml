@@ -30,6 +30,7 @@
 
         <NavigationView.MenuItems>
             <NavigationViewItem 
+                x:Name="NavItem_Home"
                 Content="Home" 
                 Icon="Home" 
                 ToolTipService.ToolTip="Home"/>

@@ -1,22 +1,13 @@
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Printing;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using TimeManagementApp.Home;
+using System.Security.AccessControl;
 
 namespace TimeManagementApp
 {
@@ -33,6 +24,7 @@ namespace TimeManagementApp
             SetWindowSize();
             this.Title = "Time management"; // app
             TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
+            mainFrame.Navigate(typeof(HomePage));
         }
 
         private void SetWindowSize()
@@ -64,7 +56,11 @@ namespace TimeManagementApp
             Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;
 
-
+            if (selectedItem.Name == NavItem_Home.Name)
+            {
+                pageType = typeof(HomePage);
+            }
+            else
             if (selectedItem.Name == NavItem_ToDo.Name)
             {
                 pageType = typeof(MainToDoPage);
@@ -76,7 +72,6 @@ namespace TimeManagementApp
             else if (selectedItem.Name == NavItem_Note.Name)
             {
                 pageType = typeof(NoteMainPage);
-                _ = mainFrame.Navigate(pageType);
             }
             else 
             {
