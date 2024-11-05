@@ -62,14 +62,27 @@
             </LinearGradientBrush>
         </StackPanel.Background>
         
-        <TextBlock Text="Home" FontSize="28" FontWeight="Bold" Margin="28 20"/>
+        <!-- Title -->
+        <StackPanel Orientation="Horizontal" Margin="28 20">
+            <FontIcon Glyph="&#xE80F;" Margin="0 4 12 0" FontSize="24"/>
+            <TextBlock Text="Home" FontSize="28" FontWeight="Bold"/>
+        </StackPanel>
+        
+        <!-- Separator -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Rectangle Fill="SteelBlue" Height="1" Margin="28 0"/>
         </Grid>
-
+        
+        <!-- Greeting -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{x:Bind ViewModel.Greeting}" Height="40" Margin="28 20 0 0" FontSize="30" Foreground="RoyalBlue" FontWeight="Bold"/>
+            <Image Width="40" Height="40" Source="{x:Bind ViewModel.Icon, Mode=OneWay}" Margin="12 24 28 0"/>
+        </StackPanel>
+        
+        <!-- Task -->
         <StackPanel Orientation="Horizontal" Margin="28 20">
             <TextBlock Text="Today tasks" FontSize="20" FontWeight="Bold" Margin="0 0 12 0" Height="30" VerticalAlignment="Center"/>
 
@@ -88,6 +101,7 @@
             ItemClick="GridViewTaskItem_Click">
         </GridView>
 
+        <!-- Note -->
         <StackPanel Orientation="Horizontal" Margin="28 20">
             <TextBlock Text="Note" FontSize="20" FontWeight="Bold" Margin="0 0 12 0" Height="30" VerticalAlignment="Center"/>
 

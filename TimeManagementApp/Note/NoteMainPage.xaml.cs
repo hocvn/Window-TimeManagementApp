@@ -33,7 +33,7 @@ namespace TimeManagementApp.Note
             public void AddNote(String newNoteName)
             {
                 // Create a new note with id is the time when user create it
-                String currentTime = TimeHelper.GetTime();
+                String currentTime = TimeHelper.GetTimeString();
                 // Remove all spaces of the current time
                 var tokens = currentTime.Split(' ');
                 currentTime = tokens[0] + tokens[1] + tokens[2] + tokens[3] + tokens[4] + tokens[5];

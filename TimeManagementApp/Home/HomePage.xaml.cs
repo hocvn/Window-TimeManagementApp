@@ -16,7 +16,10 @@ using System.Collections.ObjectModel;
 using TimeManagementApp.Dao;
 using TimeManagementApp.ToDo;
 using TimeManagementApp.Note;
+using TimeManagementApp.Helper;
 using System.Collections.Specialized;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System.ComponentModel;
 
 
 namespace TimeManagementApp.Home
@@ -26,35 +29,54 @@ namespace TimeManagementApp.Home
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        public class HomeViewModel : INotifyCollectionChanged
+        public partial class HomeViewModel : INotifyPropertyChanged
         {
-            public ObservableCollection<MyNote> NoteList { get; set; } = [];
-            public ObservableCollection<MyTask> TodayTask { get; set; } = [];
+            public String Greeting { get; set; }
+            public ImageSource Icon { get; set; }
+            public ObservableCollection<MyNote> NoteList { get; set; }
+            public ObservableCollection<MyTask> TodayTask { get; set; }
 
-            IDao dao = new MockDao();
+            private IDao dao = new MockDao();
 
             public void Init()
             {
                 NoteList = dao.GetAllNote();
 
-                TodayTask = new ObservableCollection<MyTask>
-                {
+                TodayTask =
+                [
                     new MyTask { TaskName = "Task 1", TaskDescription = "Description 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now },
                     new MyTask { TaskName = "Task 2", TaskDescription = "Description 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now },
                     new MyTask { TaskName = "Task 3", TaskDescription = "Description 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now },
                     new MyTask { TaskName = "Task 4", TaskDescription = "Description 4", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now },
                     new MyTask { TaskName = "Task 5", TaskDescription = "Description 5", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now }
-                };
+                ];
+
+                string timeOfDay = TimeHelper.GetTimesOfDay();
+                Greeting = $"Good {timeOfDay}";
+
+                if (timeOfDay == "Morning")
+                {
+                    Icon = new BitmapImage(new Uri("ms-appx:///Assets/icons/morning.png"));
+                }
+                else if (timeOfDay == "Afternoon")
+                {
+                    Icon = new BitmapImage(new Uri("ms-appx:///Assets/icons/afternoon.png"));
+                }
+                else if (timeOfDay == "Evening")
+                {
+                    Icon = new BitmapImage(new Uri("ms-appx:///Assets/icons/night.png"));
+                }
             }
 
-            public event NotifyCollectionChangedEventHandler CollectionChanged;
+            public event PropertyChangedEventHandler PropertyChanged;
         }
 
-        HomeViewModel ViewModel = new HomeViewModel();
+        public HomeViewModel ViewModel { get; set; }
 
         public HomePage()
         {
             this.InitializeComponent();
+            ViewModel = new HomeViewModel();
             ViewModel.Init();
         }
 

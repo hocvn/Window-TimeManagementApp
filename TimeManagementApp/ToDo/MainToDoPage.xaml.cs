@@ -131,13 +131,13 @@ namespace TimeManagementApp.ToDo
             {
                 if (String.IsNullOrEmpty(UpdateTaskName.Text))
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, null, "OK"); 
                     return;
                 }
 
                 if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskDueDate.Date.HasValue)
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, null, "OK");
                     return;
                 }
 
@@ -170,7 +170,7 @@ namespace TimeManagementApp.ToDo
                 ViewModel.UpdateTask(CurrentSelectTask, newTask);
 
                 DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, "OK");
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, null, "OK");
             }
         }
     }
