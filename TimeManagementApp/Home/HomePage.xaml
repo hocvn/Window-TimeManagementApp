@@ -88,14 +88,14 @@
 
             <Border CornerRadius="20" Background="RoyalBlue" Width="32" Height="32" Padding="2 0 2 2"
                     VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="{x:Bind ViewModel.TodayTask.Count}" FontSize="16" FontWeight="Bold" Foreground="White"
+                <TextBlock Text="{x:Bind ViewModel.TodayTasksTotal}" FontSize="16" FontWeight="Bold" Foreground="White"
                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
         </StackPanel>
 
         <GridView 
             Margin="28 0"
-            ItemsSource="{x:Bind ViewModel.TodayTask, Mode=OneWay}" 
+            ItemsSource="{x:Bind ViewModel.TodayTasks, Mode=OneWay}" 
             ItemTemplate="{StaticResource TodayTaskFormat}" 
             ItemContainerStyle="{StaticResource GridViewItemStyle}"
             ItemClick="GridViewTaskItem_Click">
@@ -107,7 +107,7 @@
 
             <Border CornerRadius="20" Background="RoyalBlue" Width="32" Height="32" Padding="2 0 2 2"
             VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="{x:Bind ViewModel.NoteList.Count}" FontSize="16" FontWeight="Bold" Foreground="White"
+                <TextBlock Text="{x:Bind ViewModel.NotesTotal}" FontSize="16" FontWeight="Bold" Foreground="White"
                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
         </StackPanel>

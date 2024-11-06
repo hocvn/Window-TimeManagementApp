@@ -1,4 +1,3 @@
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -8,7 +7,7 @@ using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
 using TimeManagementApp.Home;
 using TimeManagementApp.Helper;
-using System.Security.AccessControl;
+using TimeManagementApp.Services;
 
 namespace TimeManagementApp
 {
@@ -17,12 +16,15 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public static NavigationService NavigationService { get; set; } = new NavigationService();
+
         public PomodoroTimer TimerViewModel { get; set; } // use for passing timer between navigations
 
         public MainWindow()
         {
             this.InitializeComponent();
 
+            NavigationService.Initialize(mainFrame);
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
 
@@ -31,7 +33,7 @@ namespace TimeManagementApp
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            FrameNavigationOptions navOptions = new FrameNavigationOptions();
+            FrameNavigationOptions navOptions = new();
             navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
 
             if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
@@ -58,12 +60,13 @@ namespace TimeManagementApp
             {
                 pageType = typeof(NoteMainPage);
             }
-            else 
+            else
             {
                 // other nav
             }
 
-            mainFrame.NavigateToType(pageType, TimerViewModel, navOptions);
+            NavigationService.Navigate(pageType, TimerViewModel);
+            //mainFrame.NavigateToType(pageType, TimerViewModel, navOptions);
         }
 
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)

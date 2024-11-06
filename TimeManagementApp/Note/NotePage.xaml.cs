@@ -5,11 +5,10 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Navigation;
 using TimeManagementApp.Dao;
-using System.Diagnostics;
 using System;
 using System.ComponentModel;
-using System.Xml.Linq;
 using TimeManagementApp.Helper;
+using TimeManagementApp.Services;
 
 namespace TimeManagementApp.Note
 {
@@ -87,11 +86,19 @@ namespace TimeManagementApp.Note
             {
                 IDao dao = new MockDao();
                 dao.SaveNote(Editor, ViewModel.Note);
-                Frame.Navigate(typeof(NoteMainPage), null);
+                //Frame.Navigate(typeof(NoteMainPage), null);
+                if (Frame.CanGoBack)
+                {
+                    MainWindow.NavigationService.GoBack();
+                }
             }
             else if (result == ContentDialogResult.Secondary)
             {
-                Frame.Navigate(typeof(NoteMainPage), null);
+                //Frame.Navigate(typeof(NoteMainPage), null);
+                if (Frame.CanGoBack)
+                {
+                    MainWindow.NavigationService.GoBack();
+                }
             }
             BackButton_Clicked = false;
         }
@@ -108,7 +115,8 @@ namespace TimeManagementApp.Note
             if (result == ContentDialogResult.Primary)
             {
                 // Send note back to NoteMainPage to delete
-                Frame.Navigate(typeof(NoteMainPage), ViewModel.Note);
+                // Frame.Navigate(typeof(NoteMainPage), ViewModel.Note);
+                MainWindow.NavigationService.Navigate(typeof(NoteMainPage), ViewModel.Note);
             }
         }
 

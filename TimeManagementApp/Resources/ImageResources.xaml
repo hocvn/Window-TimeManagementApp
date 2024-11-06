@@ -9,5 +9,8 @@
     
     <BitmapImage x:Key="NoteImage" UriSource="ms-appx:///Assets/icons/note.png" />
     <BitmapImage x:Key="TaskImage" UriSource="ms-appx:///Assets/icons/task.png" />
-    
+
+    <BitmapImage x:Key="LoginImage" UriSource="ms-appx:///Assets/icons/Login.png" />
+    <BitmapImage x:Key="LogoImage" UriSource="ms-appx:///Assets/icons/Logo.png" />
+
 </ResourceDictionary>

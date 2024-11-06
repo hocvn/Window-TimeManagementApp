@@ -6,6 +6,8 @@ using TimeManagementApp.Dao;
 using System.Collections.ObjectModel;
 using TimeManagementApp.Helper;
 using System.ComponentModel;
+using System.Security.AccessControl;
+using TimeManagementApp.Services;
 
 namespace TimeManagementApp.Note
 {
@@ -71,8 +73,7 @@ namespace TimeManagementApp.Note
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            MyNote myNote = e.Parameter as MyNote;
-            if (myNote != null)
+            if (e.Parameter is MyNote myNote)
             {
                 ViewModel.DeleteNote(myNote);
             }
@@ -93,10 +94,10 @@ namespace TimeManagementApp.Note
 
         private void Note_ItemClick(object sender, ItemClickEventArgs e)
         {
-            MyNote clickedItem = e.ClickedItem as MyNote;
-            if (clickedItem != null)
+            if (e.ClickedItem is MyNote clickedItem)
             {
-                Frame.Navigate(typeof(NotePage), clickedItem);
+                //Frame.Navigate(typeof(NotePage), clickedItem);
+                MainWindow.NavigationService.Navigate(typeof(NotePage), clickedItem);
             }
         }
 
@@ -106,9 +107,8 @@ namespace TimeManagementApp.Note
             if (result == ContentDialogResult.Primary)
             {
                 var button = sender as Button;
-                MyNote note = button.DataContext as MyNote;
 
-                if (note != null)
+                if (button.DataContext is MyNote note)
                 {
                     ViewModel.DeleteNote(note);
                 }

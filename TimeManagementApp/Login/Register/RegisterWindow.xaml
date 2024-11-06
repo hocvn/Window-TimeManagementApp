@@ -42,22 +42,9 @@
             Margin="10" 
             Click="BackButton_Click"/>
 
-        <StackPanel
-            Grid.Column="1" 
-            Grid.Row="0">
-            <Image 
-                Height="100"
-                Width="100"
-                Margin="0 80 0 0"
-                Source="/Assets/Login2.png">
-            </Image>
-
-            <TextBlock 
-                Text="SIGN UP" 
-                FontSize="36" 
-                Margin="20, 10, 20, 50" 
-                TextAlignment="Center">
-            </TextBlock>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <Image Height="100" Width="100" Margin="0 80 0 0" Source="{StaticResource LoginImage}"/>
+            <TextBlock Text="SIGN UP" FontSize="36" Margin="20, 10, 20, 50" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel

@@ -12,9 +12,8 @@
     <NavigationView 
         x:Name="MainNavigationView"
         RequestedTheme="Light"
-        Grid.Row="1"
         PaneDisplayMode="Left"
-        OpenPaneLength="250"
+        OpenPaneLength="200"
 
         IsSettingsVisible="True"
         IsBackButtonVisible="Collapsed"
