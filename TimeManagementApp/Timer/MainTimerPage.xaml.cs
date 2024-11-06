@@ -13,8 +13,9 @@ namespace TimeManagementApp.Timer
         public MainTimerPage()
         {
             this.InitializeComponent();
-            ViewModel = App.TimerViewModel;
-            DataContext = ViewModel;
+            ViewModel = PomodoroTimer.Instance;
+            // ViewModel = App.TimerViewModel;
+            // DataContext = ViewModel;
         }
 
         // passing view model between navigations,

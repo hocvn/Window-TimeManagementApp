@@ -42,7 +42,7 @@ namespace TimeManagementApp.Note
         public NotePage()
         {
             this.InitializeComponent();
-            DataContext = App.TimerViewModel;
+            // DataContext = App.TimerViewModel;
             ViewModel = new NoteViewModel();
             ViewModel.Init();
             Editor.SelectionChanged += Editor_SelectionChanged;

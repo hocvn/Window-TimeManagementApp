@@ -14,11 +14,11 @@ namespace TimeManagementApp
         /// </summary>
         /// 
 
-        public static PomodoroTimer TimerViewModel { get; private set; } // TimerViewModel Singleton
+        // public static PomodoroTimer TimerViewModel { get; private set; } // TimerViewModel Singleton
         public App()
         {
             this.InitializeComponent();
-            TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
+            // TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
         public static Window LoginWindow { get; private set; }
