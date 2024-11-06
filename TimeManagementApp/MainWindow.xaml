@@ -82,8 +82,7 @@
                 AutomationProperties.Name="Search"
                 PlaceholderText="Search"/>
         </NavigationView.AutoSuggestBox>
-
-
+        
         <Frame x:Name="mainFrame" />
     </NavigationView>
 </Window>

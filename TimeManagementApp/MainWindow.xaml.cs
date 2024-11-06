@@ -18,7 +18,7 @@ namespace TimeManagementApp
     {
         public static NavigationService NavigationService { get; set; } = new NavigationService();
 
-        public PomodoroTimer TimerViewModel { get; set; } // use for passing timer between navigations
+        //public PomodoroTimer TimerViewModel { get; set; } // use for passing timer between navigations
 
         public MainWindow()
         {
@@ -28,7 +28,12 @@ namespace TimeManagementApp
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
 
-            TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
+            //TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
+        }
+
+        private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            MainNavigationView.SelectedItem = NavItem_Home;
         }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -64,14 +69,7 @@ namespace TimeManagementApp
             {
                 // other nav
             }
-
-            NavigationService.Navigate(pageType, TimerViewModel);
-            //mainFrame.NavigateToType(pageType, TimerViewModel, navOptions);
-        }
-
-        private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
-        {
-            MainNavigationView.SelectedItem = NavItem_Home;
+            NavigationService.Navigate(pageType);
         }
     }
 }

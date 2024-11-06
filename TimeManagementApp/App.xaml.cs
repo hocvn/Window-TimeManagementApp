@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using TimeManagementApp.Timer;
 
 namespace TimeManagementApp
 {
@@ -12,14 +13,20 @@ namespace TimeManagementApp
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         /// 
+
+        public static PomodoroTimer TimerViewModel { get; private set; } // TimerViewModel Singleton
         public App()
         {
             this.InitializeComponent();
+            TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
         public static Window LoginWindow { get; private set; }
         public static Window RegisterWindow { get; private set; }
         public static Window MainWindow { get; private set; }
+        public static Window ForgotPasswordWindow { get; private set; }
+
+
 
         /// <summary>
         /// Invoked when the application is launched.

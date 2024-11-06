@@ -21,6 +21,7 @@ namespace TimeManagementApp.ToDo
         public MainToDoPage()
         {
             this.InitializeComponent();
+            DataContext = App.TimerViewModel;
             ViewModel = new MyTaskViewModel();
         }
 

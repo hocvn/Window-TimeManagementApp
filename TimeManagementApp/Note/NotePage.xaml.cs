@@ -5,10 +5,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Navigation;
 using TimeManagementApp.Dao;
-using System;
 using System.ComponentModel;
 using TimeManagementApp.Helper;
-using TimeManagementApp.Services;
 
 namespace TimeManagementApp.Note
 {
@@ -24,11 +22,10 @@ namespace TimeManagementApp.Note
 
             public event PropertyChangedEventHandler PropertyChanged;
             
-            private IDao dao { get; set; } 
+            private IDao dao = new MockDao();
 
             public void Init()
             {
-                dao = new MockDao();
                 CurrentColor = new SolidColorBrush(Colors.Black);
             }
             public void RenameNote(string newName)
@@ -45,6 +42,7 @@ namespace TimeManagementApp.Note
         public NotePage()
         {
             this.InitializeComponent();
+            DataContext = App.TimerViewModel;
             ViewModel = new NoteViewModel();
             ViewModel.Init();
             Editor.SelectionChanged += Editor_SelectionChanged;
@@ -86,7 +84,6 @@ namespace TimeManagementApp.Note
             {
                 IDao dao = new MockDao();
                 dao.SaveNote(Editor, ViewModel.Note);
-                //Frame.Navigate(typeof(NoteMainPage), null);
                 if (Frame.CanGoBack)
                 {
                     MainWindow.NavigationService.GoBack();
@@ -94,7 +91,6 @@ namespace TimeManagementApp.Note
             }
             else if (result == ContentDialogResult.Secondary)
             {
-                //Frame.Navigate(typeof(NoteMainPage), null);
                 if (Frame.CanGoBack)
                 {
                     MainWindow.NavigationService.GoBack();
