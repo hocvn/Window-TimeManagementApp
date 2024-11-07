@@ -8,6 +8,8 @@ using TimeManagementApp.Helper;
 using Windows.System;
 using System;
 using System.Threading.Tasks;
+using Windows.UI;
+using System.ComponentModel;
 
 namespace TimeManagementApp.Note
 {
@@ -16,7 +18,7 @@ namespace TimeManagementApp.Note
     /// </summary>
     public sealed partial class NotePage : Page
     {
-        private string _originalContent;
+        private string _originalContentWithFormat;
 
         public NoteViewModel ViewModel { get; set; } = new NoteViewModel();
 
@@ -25,7 +27,6 @@ namespace TimeManagementApp.Note
             this.InitializeComponent();
             ViewModel.Init();
             MyColorPicker.Color = ((SolidColorBrush)ViewModel.CurrentColor).Color;
-            Editor.SelectionChanged += Editor_SelectionChanged;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -38,7 +39,8 @@ namespace TimeManagementApp.Note
         {
             await ViewModel.Load(Editor);
             UnsavedSign.Fill = new SolidColorBrush(Colors.Transparent);
-            Editor.Document.GetText(TextGetOptions.None, out _originalContent);
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out _originalContentWithFormat);
+            Editor.SelectionChanged += Editor_SelectionChanged;
         }
 
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
@@ -48,7 +50,7 @@ namespace TimeManagementApp.Note
             {
                 return;
             }
-            if (HasUnsavedChanges() == false)
+            if (ViewModel.HasUnsavedChanged == false)
             {
                 return;
             }
@@ -62,8 +64,7 @@ namespace TimeManagementApp.Note
         private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.BackButton_Clicked = true;
-            // Note has no changes
-            if (HasUnsavedChanges() == false)
+            if (ViewModel.HasUnsavedChanged == false)
             {
                 if (Frame.CanGoBack)
                 {
@@ -90,16 +91,24 @@ namespace TimeManagementApp.Note
             ViewModel.BackButton_Clicked = false;
         }
 
-        private bool HasUnsavedChanges()
+        private void CheckChanged()
         {
-            Editor.Document.GetText(TextGetOptions.None, out string currentContent);
-            return !string.Equals(_originalContent, currentContent, StringComparison.Ordinal);
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out string currentContent);
+            ViewModel.HasUnsavedChanged = !string.Equals(_originalContentWithFormat, currentContent, StringComparison.Ordinal);
+            if (ViewModel.HasUnsavedChanged)
+            {
+                UnsavedSign.Fill = new SolidColorBrush(Colors.Blue);
+            }
+            else
+            {
+                UnsavedSign.Fill = new SolidColorBrush(Colors.Transparent);
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Save(Editor);
-            Editor.Document.GetText(TextGetOptions.None, out _originalContent);
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out _originalContentWithFormat);
             UnsavedSign.Fill = new SolidColorBrush(Colors.Transparent);
         }
 
@@ -126,16 +135,13 @@ namespace TimeManagementApp.Note
 
         private void MyColorPicker_ColorChanged(object sender, ColorChangedEventArgs args)
         {
-            // Assign the selected color to a variable to use outside the popup.
-            ViewModel.CurrentColor = new SolidColorBrush(MyColorPicker.Color);
+            ViewModel.CurrentColor = new SolidColorBrush(args.NewColor);
         }
 
-        // This function get from winui3 sample
         private void Editor_GotFocus(object sender, RoutedEventArgs e)
         {
             Editor.Document.GetText(TextGetOptions.UseCrlf, out _);
 
-            // reset colors to correct defaults for Focused state
             ITextRange documentRange = Editor.Document.GetRange(0, TextConstants.MaxUnitCount);
             SolidColorBrush background = new(Colors.White);
 
@@ -147,25 +153,22 @@ namespace TimeManagementApp.Note
 
         private void Editor_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            if (Editor.Document.Selection.Length == 0)
+            var selection = Editor.Document.Selection;
+            if (selection.Length == 0)
             {
                 var documentRange = Editor.Document.GetRange(0, TextConstants.MaxUnitCount);
                 documentRange.CharacterFormat.BackgroundColor = Colors.Transparent;
+            }
+            else
+            {
+                CheckChanged();
             }
         }
 
         private void Editor_TextChanged(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.ForegroundColor = ((SolidColorBrush)ViewModel.CurrentColor).Color;
-
-            if (HasUnsavedChanges() == true)
-            {
-                UnsavedSign.Fill = new SolidColorBrush(Colors.Blue);
-            }
-            else
-            {
-                UnsavedSign.Fill = new SolidColorBrush(Colors.Transparent);
-            }
+            CheckChanged();
         }
 
         private void NoteName_LostFocus(object sender, RoutedEventArgs e)
@@ -178,8 +181,8 @@ namespace TimeManagementApp.Note
             if (e.Key == VirtualKey.Enter)
             {
                 ViewModel.Rename((TextBox)sender);
-                Editor.Focus(FocusState.Programmatic); // Shift focus to RichEditBox
-                e.Handled = true; // Mark the event as handled
+                Editor.Focus(FocusState.Programmatic);
+                e.Handled = true;
             }
         }
     }

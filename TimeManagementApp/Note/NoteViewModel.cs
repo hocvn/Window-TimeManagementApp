@@ -14,8 +14,7 @@ namespace TimeManagementApp.Note
     {
         public MyNote Note { get; set; }
         public Brush CurrentColor { get; set; }
-
-
+        public bool HasUnsavedChanged { get; set; }
         public bool BackButton_Clicked { get; set; }
 
         private IDao _dao = new MockDao();
