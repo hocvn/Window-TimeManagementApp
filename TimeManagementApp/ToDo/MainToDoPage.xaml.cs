@@ -1,25 +1,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Principal;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using TimeManagementApp.Helper;
-using System.Diagnostics;
-using CommunityToolkit.WinUI.Controls;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace TimeManagementApp.ToDo
 {
@@ -67,13 +52,13 @@ namespace TimeManagementApp.ToDo
             {
                 if (String.IsNullOrEmpty(InsertTaskName.Text))
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, null, "OK");
                     return;
                 }
 
                 if (!InsertTaskDueDateTime.Date.HasValue)
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, null, "OK");
                     return;
                 }
 
@@ -95,7 +80,7 @@ namespace TimeManagementApp.ToDo
                 ViewModel.InsertTask(newTask);
 
                 DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, "OK");
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, null, "OK");
             }
         }
 
@@ -107,14 +92,14 @@ namespace TimeManagementApp.ToDo
 
             if (selectedTask != null)
             {
-                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", "Cancel");
+                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", null, "Cancel");
 
                 if (result == ContentDialogResult.Primary)
                 {
                     ViewModel.DeleteTask(selectedTask);
 
                     DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, null, "OK");
                 }
                 else
                 {
@@ -131,13 +116,13 @@ namespace TimeManagementApp.ToDo
             {
                 if (String.IsNullOrEmpty(UpdateTaskName.Text))
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, null, "OK"); 
                     return;
                 }
 
                 if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskDueDate.Date.HasValue)
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, null, "OK");
                     return;
                 }
 
@@ -170,7 +155,7 @@ namespace TimeManagementApp.ToDo
                 ViewModel.UpdateTask(CurrentSelectTask, newTask);
 
                 DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, "OK");
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, null, "OK");
             }
         }
     }

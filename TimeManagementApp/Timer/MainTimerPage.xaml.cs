@@ -1,19 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.Windows.AppNotifications;
-using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Timer
 {
@@ -27,20 +13,23 @@ namespace TimeManagementApp.Timer
         public MainTimerPage()
         {
             this.InitializeComponent();
+            ViewModel = PomodoroTimer.Instance;
+            // ViewModel = App.TimerViewModel;
+            // DataContext = ViewModel;
         }
 
         // passing view model between navigations,
         // so that timer can still run & notify when we are working on other features
-        protected override void OnNavigatedTo(NavigationEventArgs e) 
-        { 
-            if (e.Parameter is PomodoroTimer viewModel) 
-            { 
-                ViewModel = viewModel; 
-                DataContext = ViewModel; 
-            }
+        //protected override void OnNavigatedTo(NavigationEventArgs e) 
+        //{ 
+        //    if (e.Parameter is PomodoroTimer viewModel) 
+        //    { 
+        //        ViewModel = viewModel; 
+        //        DataContext = ViewModel; 
+        //    }
             
-            base.OnNavigatedTo(e); 
-        }
+        //    base.OnNavigatedTo(e); 
+        //}
 
         // open settings panel
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

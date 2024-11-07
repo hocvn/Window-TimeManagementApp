@@ -11,8 +11,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="NoteViewFormat" x:DataType="local:MyNote">
-            <Grid HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>

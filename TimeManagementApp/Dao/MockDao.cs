@@ -136,6 +136,19 @@ namespace TimeManagementApp.Dao
                 },
             };
         }
+
+        public ObservableCollection<MyTask> GetTodayTask()
+        {
+            ObservableCollection<MyTask> todayTasks = new();
+            foreach (MyTask task in GetAllTasks())
+            {
+                if (task.DueDateTime.Date == DateTime.Now.Date)
+                {
+                    todayTasks.Add(task);
+                }
+            }
+            return todayTasks;
+        }
     }
 }
 

@@ -31,28 +31,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel
-            Grid.Column="0" 
-            Grid.Row="0"
-            Grid.ColumnSpan="3">
-
-            <Image 
-                Height="100"
-                Width="100"
-                Margin="0 100 0 0"
-                Source="/Assets/Login2.png">
-            </Image>
-
-            <TextBlock 
-                Text="RECOVER YOUR ACCOUNT" 
-                FontSize="36" 
-                Margin="20, 10, 20, 50" 
-                TextAlignment="Center">
-            </TextBlock>
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+            <Image Height="100" Width="100" Margin="0 100 0 0" Source="{StaticResource LoginImage}"/>
+            <TextBlock Text="RECOVER YOUR ACCOUNT" FontSize="36" Margin="20, 10, 20, 50" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel
-
             Padding="10"
             Grid.Column="1" 
             Grid.Row="1" 
@@ -65,7 +49,6 @@
                 Width="300"
                 HorizontalTextAlignment="Center"
                 Margin="16 0">
-
             </TextBlock>
 
             <TextBox 

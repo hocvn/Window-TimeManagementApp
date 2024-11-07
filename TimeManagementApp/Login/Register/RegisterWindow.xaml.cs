@@ -2,6 +2,7 @@ using System;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using TimeManagementApp.Helper;
 using Windows.Storage;
 
 namespace TimeManagementApp
@@ -17,24 +18,9 @@ namespace TimeManagementApp
         public RegisterWindow()
         {
             this.InitializeComponent();
-            this.Title = "Time management";
-            SetWindowSize();
-        }
-
-        private void SetWindowSize()
-        {
-            var displayArea = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary);
-            var screenWidth = displayArea.WorkArea.Width;
-            var screenHeight = displayArea.WorkArea.Height;
-
-            int width = (int)(screenWidth * 0.8);
-            int height = (int)(screenHeight * 0.8);
-
-            // Center the window
-            int middleX = (int)(screenWidth - width) / 2;
-            int middleY = (int)(screenHeight - height) / 2;
-
-            this.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(middleX, Math.Max(middleY - 100, 0), width, height));
+            // Set the window size
+            WindowInitHelper.SetWindowSize(this);
+            WindowInitHelper.SetTitle(this, "Time management");
         }
 
         UserCredential user = new UserCredential();

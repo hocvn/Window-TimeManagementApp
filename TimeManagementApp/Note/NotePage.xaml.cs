@@ -5,10 +5,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Navigation;
 using TimeManagementApp.Dao;
-using System.Diagnostics;
-using System;
 using System.ComponentModel;
-using System.Xml.Linq;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Note
 {
@@ -20,15 +18,20 @@ namespace TimeManagementApp.Note
         public partial class NoteViewModel : INotifyPropertyChanged
         {
             public MyNote Note { get; set; }
-            public Brush CurrentColor { get; set; } = new SolidColorBrush(Colors.Black);
+            public Brush CurrentColor { get; set; } 
 
             public event PropertyChangedEventHandler PropertyChanged;
+            
+            private IDao dao = new MockDao();
 
+            public void Init()
+            {
+                CurrentColor = new SolidColorBrush(Colors.Black);
+            }
             public void RenameNote(string newName)
             {
                 Note.Name = newName;
                 // Update note name in the list
-                IDao dao = new MockDao();
                 dao.RenameNote(Note);
             }
         }
@@ -40,6 +43,7 @@ namespace TimeManagementApp.Note
         {
             this.InitializeComponent();
             ViewModel = new NoteViewModel();
+            ViewModel.Init();
             Editor.SelectionChanged += Editor_SelectionChanged;
         }
 
@@ -63,16 +67,7 @@ namespace TimeManagementApp.Note
             {
                 return;
             }
-
-            var dialog = new ContentDialog
-            {
-                Title = "Save your note.",
-                Content = "Would you like to save the recent note?",
-                PrimaryButtonText = "Yes",
-                SecondaryButtonText = "No",
-                XamlRoot = this.XamlRoot
-            };
-            var result = await dialog.ShowAsync();
+            var result = await Dialog.ShowContent(this.XamlRoot, "Save", "Would you like to save the recent note?", "Yes", "No", null);
             if (result == ContentDialogResult.Primary)
             {
                 IDao dao = new MockDao();
@@ -83,25 +78,22 @@ namespace TimeManagementApp.Note
         private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
             BackButton_Clicked = true;
-            var dialog = new ContentDialog
-            {
-                Title = "Exit",
-                Content = "Do you want to save?",
-                PrimaryButtonText = "Yes",
-                SecondaryButtonText = "No",
-                CloseButtonText = "Cancel",
-                XamlRoot = this.XamlRoot
-            };
-            var result = await dialog.ShowAsync();
+            var result = await Dialog.ShowContent(this.XamlRoot, "Exit", "Would you like to save?", "Yes", "No", "Cancel");
             if (result == ContentDialogResult.Primary)
             {
                 IDao dao = new MockDao();
                 dao.SaveNote(Editor, ViewModel.Note);
-                Frame.GoBack();
+                if (Frame.CanGoBack)
+                {
+                    MainWindow.NavigationService.GoBack();
+                }
             }
             else if (result == ContentDialogResult.Secondary)
             {
-                Frame.GoBack();
+                if (Frame.CanGoBack)
+                {
+                    MainWindow.NavigationService.GoBack();
+                }
             }
             BackButton_Clicked = false;
         }
@@ -114,19 +106,12 @@ namespace TimeManagementApp.Note
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog
-            {
-                Title = "Delete Note",
-                Content = "Are you sure you want to delete this note?",
-                PrimaryButtonText = "Delete",
-                CloseButtonText = "Cancel",
-                XamlRoot = this.XamlRoot
-            };
-            var result = await dialog.ShowAsync();
+            var result = await Dialog.ShowContent(this.XamlRoot, "Remove Note", "Are you sure you want to remove this note?", "Yes", null, "No");
             if (result == ContentDialogResult.Primary)
             {
                 // Send note back to NoteMainPage to delete
-                Frame.Navigate(typeof(NoteMainPage), ViewModel.Note);
+                // Frame.Navigate(typeof(NoteMainPage), ViewModel.Note);
+                MainWindow.NavigationService.Navigate(typeof(NoteMainPage), ViewModel.Note);
             }
         }
 
