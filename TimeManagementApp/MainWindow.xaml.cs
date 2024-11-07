@@ -17,8 +17,7 @@ namespace TimeManagementApp
     public sealed partial class MainWindow : Window
     {
         public static NavigationService NavigationService { get; set; } = new NavigationService();
-
-        //public PomodoroTimer TimerViewModel { get; set; } // use for passing timer between navigations
+        private bool _isFirstActivation = true;
 
         public MainWindow()
         {
@@ -27,25 +26,38 @@ namespace TimeManagementApp
             NavigationService.Initialize(mainFrame);
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
-
-            //TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
+
+        // fix a bug when MainWindow lost focus, it navigates back to HomePage
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
-            MainNavigationView.SelectedItem = NavItem_Home;
+            if (_isFirstActivation)
+            {
+                _isFirstActivation = false;
+                MainNavigationView.SelectedItem = NavItem_Home;
+                NavigationService.Navigate(typeof(HomePage));
+            }
+            else if (args.WindowActivationState == WindowActivationState.CodeActivated
+                || args.WindowActivationState == WindowActivationState.PointerActivated)
+            {
+                // Restore the last navigated page if the window is activated
+                if (NavigationService.LastNavigatedPage != null 
+                    && mainFrame.CurrentSourcePageType != NavigationService.LastNavigatedPage)
+                {
+                    NavigationService.Navigate(NavigationService.LastNavigatedPage);
+                }
+            }
         }
+
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            FrameNavigationOptions navOptions = new();
-
-            navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
-
-            if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
+            FrameNavigationOptions navOptions = new()
             {
-                navOptions.IsNavigationStackEnabled = false;
-            }
+                TransitionInfoOverride = args.RecommendedNavigationTransitionInfo,
+                IsNavigationStackEnabled = sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top ? false : true
+            };
 
             Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;

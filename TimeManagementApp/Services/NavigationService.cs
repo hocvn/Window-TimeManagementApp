@@ -10,6 +10,7 @@ namespace TimeManagementApp.Services
     public class NavigationService
     {
         private Frame _mainFrame;
+        public Type LastNavigatedPage { get; private set; }
 
         public void Initialize(Frame frame)
         {
@@ -18,7 +19,11 @@ namespace TimeManagementApp.Services
 
         public void Navigate(Type pageType, object parameter = null)
         {
-            _mainFrame?.Navigate(pageType, parameter);
+            if (_mainFrame != null && _mainFrame.CurrentSourcePageType != pageType)
+            {
+                _mainFrame.Navigate(pageType, parameter);
+                LastNavigatedPage = pageType;
+            }
         }
 
         public void GoBack()
@@ -26,7 +31,9 @@ namespace TimeManagementApp.Services
             if (_mainFrame?.CanGoBack == true)
             {
                 _mainFrame.GoBack();
+                LastNavigatedPage = _mainFrame.CurrentSourcePageType;
             }
         }
     }
+
 }
