@@ -28,8 +28,6 @@ namespace TimeManagementApp
             WindowInitHelper.SetTitle(this, "Time management");
         }
 
-
-        // fix a bug when MainWindow lost focus, it navigates back to HomePage
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
             if (_isFirstActivation)
