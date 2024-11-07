@@ -17,6 +17,7 @@ namespace TimeManagementApp
     public sealed partial class MainWindow : Window
     {
         public static NavigationService NavigationService { get; set; } = new NavigationService();
+        private bool _isFirstActivation = true;
 
         public MainWindow()
         {
@@ -25,24 +26,24 @@ namespace TimeManagementApp
             NavigationService.Initialize(mainFrame);
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
-
-            this.Activated += MainWindow_Activated;
         }
 
 
         // fix a bug when MainWindow lost focus, it navigates back to HomePage
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
-            if (args.WindowActivationState == WindowActivationState.Deactivated)
+            if (_isFirstActivation)
             {
-                // Do nothing when the window is deactivated
+                _isFirstActivation = false;
+                MainNavigationView.SelectedItem = NavItem_Home;
+                NavigationService.Navigate(typeof(HomePage));
             }
-            else if (args.WindowActivationState == WindowActivationState.CodeActivated ||
-                     args.WindowActivationState == WindowActivationState.PointerActivated)
+            else if (args.WindowActivationState == WindowActivationState.CodeActivated
+                || args.WindowActivationState == WindowActivationState.PointerActivated)
             {
                 // Restore the last navigated page if the window is activated
-                if (NavigationService.LastNavigatedPage != null &&
-                    mainFrame.CurrentSourcePageType != NavigationService.LastNavigatedPage)
+                if (NavigationService.LastNavigatedPage != null 
+                    && mainFrame.CurrentSourcePageType != NavigationService.LastNavigatedPage)
                 {
                     NavigationService.Navigate(NavigationService.LastNavigatedPage);
                 }
