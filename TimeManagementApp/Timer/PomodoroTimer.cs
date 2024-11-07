@@ -179,8 +179,11 @@ namespace TimeManagementApp.Timer
                         var toastDoc = new Windows.Data.Xml.Dom.XmlDocument();
                         toastDoc.LoadXml(toastXml);
 
-                        var toast = new ToastNotification(toastDoc);
-                        ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        //var toast = new ToastNotification(toastDoc);
+                        //ToastNotificationManager.CreateToastNotifier().Show(toast);
+
+                        var notification = new AppNotification(toastDoc.GetXml());
+                        AppNotificationManager.Default.Show(notification);
                     }
                     
                     SwitchToNextTimerType();
