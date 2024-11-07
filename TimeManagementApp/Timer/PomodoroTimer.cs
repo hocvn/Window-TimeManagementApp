@@ -16,6 +16,26 @@ namespace TimeManagementApp.Timer
 {
     public class PomodoroTimer : INotifyPropertyChanged
     {
+        // singleton
+        private static PomodoroTimer _instance;
+        private static readonly object _lock = new object();
+
+        public static PomodoroTimer Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new PomodoroTimer(new Settings(), TimerType.FocusTime);
+                    }
+                    return _instance;
+                }
+            }
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Basic properties
