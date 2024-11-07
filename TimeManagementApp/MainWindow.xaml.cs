@@ -39,6 +39,7 @@ namespace TimeManagementApp
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             FrameNavigationOptions navOptions = new();
+
             navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
 
             if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
@@ -46,7 +47,7 @@ namespace TimeManagementApp
                 navOptions.IsNavigationStackEnabled = false;
             }
 
-            Type pageType = null;
+            Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;
 
             if (selectedItem.Name == NavItem_Home.Name)

@@ -67,7 +67,6 @@ namespace TimeManagementApp.Note
         public NoteMainPage()
         {
             this.InitializeComponent();
-            DataContext = App.TimerViewModel;
             ViewModel.Init();
         }
 
