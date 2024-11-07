@@ -1,4 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppNotifications;
+using System;
 using TimeManagementApp.Timer;
 
 namespace TimeManagementApp
@@ -14,11 +16,9 @@ namespace TimeManagementApp
         /// </summary>
         /// 
 
-        // public static PomodoroTimer TimerViewModel { get; private set; } // TimerViewModel Singleton
         public App()
         {
             this.InitializeComponent();
-            // TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
         }
 
         public static Window LoginWindow { get; private set; }
@@ -35,7 +35,16 @@ namespace TimeManagementApp
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             LoginWindow = new LoginWindow();
+
+            AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
+            AppNotificationManager.Default.Register();
+
             LoginWindow.Activate();
+        }
+
+        private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
+        {
+            throw new NotImplementedException();
         }
     }
 }
