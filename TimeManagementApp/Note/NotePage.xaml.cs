@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Navigation;
 using TimeManagementApp.Helper;
 using Windows.System;
 using System;
+using System.Threading.Tasks;
 
 namespace TimeManagementApp.Note
 {
@@ -23,6 +24,7 @@ namespace TimeManagementApp.Note
         {
             this.InitializeComponent();
             ViewModel.Init();
+            MyColorPicker.Color = ((SolidColorBrush)ViewModel.CurrentColor).Color;
             Editor.SelectionChanged += Editor_SelectionChanged;
         }
 
@@ -32,9 +34,9 @@ namespace TimeManagementApp.Note
             ViewModel.Note = e.Parameter as MyNote;
         }
 
-        private void NotePage_Loaded(object sender, RoutedEventArgs e)
+        private async void NotePage_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.Load(Editor);
+            await ViewModel.Load(Editor);
             UnsavedSign.Fill = new SolidColorBrush(Colors.Transparent);
             Editor.Document.GetText(TextGetOptions.None, out _originalContent);
         }

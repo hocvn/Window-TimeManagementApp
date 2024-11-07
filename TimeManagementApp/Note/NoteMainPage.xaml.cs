@@ -6,8 +6,6 @@ using TimeManagementApp.Dao;
 using System.Collections.ObjectModel;
 using TimeManagementApp.Helper;
 using System.ComponentModel;
-using System.Security.AccessControl;
-using TimeManagementApp.Services;
 
 namespace TimeManagementApp.Note
 {
@@ -22,14 +20,14 @@ namespace TimeManagementApp.Note
 
             public int TotalItems { get; set; }
 
-            private IDao Dao { get; set; }
+            private IDao _dao { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
             public void Init()
             {
-                Dao = new MockDao();
-                Notes = Dao.GetAllNote();
+                _dao = new MockDao();
+                Notes = _dao.GetAllNote();
                 TotalItems = Notes.Count;
             }
 

@@ -34,28 +34,13 @@ namespace TimeManagementApp
             {
                 _isFirstActivation = false;
                 MainNavigationView.SelectedItem = NavItem_Home;
-                NavigationService.Navigate(typeof(HomePage));
-            }
-            else if (args.WindowActivationState == WindowActivationState.CodeActivated
-                || args.WindowActivationState == WindowActivationState.PointerActivated)
-            {
-                // Restore the last navigated page if the window is activated
-                if (NavigationService.LastNavigatedPage != null 
-                    && mainFrame.CurrentSourcePageType != NavigationService.LastNavigatedPage)
-                {
-                    NavigationService.Navigate(NavigationService.LastNavigatedPage);
-                }
             }
         }
 
-
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            FrameNavigationOptions navOptions = new()
-            {
-                TransitionInfoOverride = args.RecommendedNavigationTransitionInfo,
-                IsNavigationStackEnabled = sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top ? false : true
-            };
+            FrameNavigationOptions navOptions = new();
+            navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
 
             Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;

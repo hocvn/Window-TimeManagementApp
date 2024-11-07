@@ -39,7 +39,7 @@ namespace TimeManagementApp.Dao
         }
 
         // Open a file in local folder and load its content to RichEditBox
-        public async void OpenNote(RichEditBox editor, MyNote note)
+        public async Task OpenNote(RichEditBox editor, MyNote note)
         {
             try
             {

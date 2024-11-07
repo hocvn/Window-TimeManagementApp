@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 using TimeManagementApp.Helper;
 using Microsoft.UI.Xaml;
 using Quartz.Util;
+using System.Threading.Tasks;
 
 namespace TimeManagementApp.Note
 {
@@ -28,9 +29,9 @@ namespace TimeManagementApp.Note
             BackButton_Clicked = false;
         }
 
-        internal void Load(RichEditBox Editor)
+        internal async Task Load(RichEditBox Editor)
         {
-            _dao.OpenNote(Editor, Note);
+            await _dao.OpenNote(Editor, Note);
         }
 
         internal void Save(RichEditBox Editor)

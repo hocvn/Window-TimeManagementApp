@@ -41,8 +41,7 @@
                     <TextBlock Text="{x:Bind TaskName}" FontSize="12" Margin="16 0 12 16"/>
                 </StackPanel>
 
-                <Image Grid.Column="1" Width="32" Height="32" Source="{StaticResource TaskImage}">
-                </Image>
+                <Image Grid.Column="1" Width="32" Height="32" Source="{StaticResource TaskImage}"/>
             </Grid>
         </DataTemplate>
 
@@ -115,10 +114,10 @@
         <GridView 
             Margin="28 0"
             IsItemClickEnabled="True"
+            ItemClick="GridViewNoteItem_Click"
             ItemsSource="{x:Bind ViewModel.NoteList, Mode=OneWay}" 
             ItemTemplate="{StaticResource NoteItemFormat}" 
-            ItemContainerStyle="{StaticResource GridViewItemStyle}"
-            ItemClick="GridViewNoteItem_Click">
+            ItemContainerStyle="{StaticResource GridViewItemStyle}">
         </GridView>
     </StackPanel>
 </Page>

@@ -199,9 +199,6 @@
                     <Setter Property="Background" Value="Transparent"/>
                 </Style>
             </RelativePanel.Resources>
-            
-            <!-- Dummy button -->
-            <Button x:Name="DummyButton" Visibility="Collapsed"/>
             <!-- Back -->
             <Button x:Name="BackButton" Click="BackButton_Click" AutomationProperties.Name="Back" 
                     Margin="0 4" ToolTipService.ToolTip="Back">

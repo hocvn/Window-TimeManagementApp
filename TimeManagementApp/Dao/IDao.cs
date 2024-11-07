@@ -18,7 +18,7 @@ namespace TimeManagementApp.Dao
 
         void SaveNote(RichEditBox editor, MyNote note);
 
-        void OpenNote(RichEditBox editor, MyNote note);
+        Task OpenNote(RichEditBox editor, MyNote note);
 
         void DeleteNote(MyNote note);
 
