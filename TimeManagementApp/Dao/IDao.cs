@@ -12,6 +12,7 @@ namespace TimeManagementApp.Dao
 {
     public interface IDao
     {
+        // Notes -------------------------------------------------
         ObservableCollection<MyNote> GetAllNote();
 
         void SaveNotes(ObservableCollection<MyNote> notes);
@@ -24,8 +25,18 @@ namespace TimeManagementApp.Dao
 
         void RenameNote(MyNote note);
       
+        
+        // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
         ObservableCollection<MyTask> GetTodayTask();
+
+
+        // TImer ----------------------------------------------
+        //public void SaveValue(string key, string value);
+        //public string LoadValue(string key);
+        //public void RemoveValue(string key);
+        public TimeSpan LoadTimeSpan(string key);
+        public void SaveTimeSpan(string key, TimeSpan timeSpan);
     }
 }
 

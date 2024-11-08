@@ -149,6 +149,31 @@ namespace TimeManagementApp.Dao
             }
             return todayTasks;
         }
+
+        public void SaveValue(string key, string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string LoadValue(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveValue(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TimeSpan LoadTimeSpan(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveTimeSpan(string key, TimeSpan timeSpan)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

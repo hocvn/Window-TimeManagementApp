@@ -17,6 +17,14 @@
             </LinearGradientBrush>
         </Grid.Background>
 
+        
+        <!--Statistics Textblock-->
+        <TextBlock x:Name="StatisticsTextBlock"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Text="{x:Bind TotalFocusTime, Mode=OneWay}"/>
+
+
         <!--Area for PomodoroTimer-->
         <StackPanel x:Name="TimerPanel" 
                     HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -106,6 +114,18 @@
                 <TextBlock Text="Notification" VerticalAlignment="Center"/>
                 <ToggleSwitch x:Name="NotificationToggleSwitch" Margin="10,0,0,0" IsOn="True"/>
             </StackPanel>
+
+
+            <!--tag selection combo box-->
+            <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
+                <TextBlock Text="Select Tag" VerticalAlignment="Center"/>
+                <ComboBox x:Name="TagComboBox">
+                    <ComboBoxItem Content="Working"/>
+                    <ComboBoxItem Content="Studying"/>
+                    <ComboBoxItem Content="Reading"/>
+                </ComboBox>
+            </StackPanel>
+
 
             <!--save settings or close panel-->
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0"
