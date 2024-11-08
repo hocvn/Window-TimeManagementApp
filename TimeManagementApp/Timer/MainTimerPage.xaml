@@ -18,12 +18,6 @@
         </Grid.Background>
 
         
-        <!--Statistics Textblock-->
-        <TextBlock x:Name="StatisticsTextBlock"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Text="{x:Bind TotalFocusTime, Mode=OneWay}"/>
-
 
         <!--Area for PomodoroTimer-->
         <StackPanel x:Name="TimerPanel" 
@@ -44,11 +38,13 @@
                     </Ellipse.RenderTransform>
                 </Ellipse>
 
-                <!--binding current time and type-->
+                <!--binding current time, type and tag-->
                 <TextBlock Text="{x:Bind ViewModel.TimerText, Mode=OneWay}" FontSize="48" 
-                           HorizontalAlignment="Center" Margin="0,50,0,0"/>
+                           HorizontalAlignment="Center" Margin="0,60,0,0"/>
                 <TextBlock Text="{x:Bind ViewModel.CurrentType, Mode=OneWay}" FontSize="20" 
-                           HorizontalAlignment="Center" Margin="0,120,0,0"/>
+                           HorizontalAlignment="Center" Margin="0,130,0,0"/>
+                <TextBlock Text="{x:Bind ViewModel.CurrentSettings.Tag, Mode=OneWay}" FontSize="14" 
+                           HorizontalAlignment="Center" Margin="0,40,0,0"/>
             </Grid>
 
             <!--play, pause, reset timer features-->
@@ -67,6 +63,16 @@
                               Icon="Setting" Label="Settings" Click="SettingsButton_Click"/>
             </StackPanel>
             
+            
+            <!--statistics-->
+            <StackPanel Orientation="Horizontal" Margin="0,-10,0,0"
+                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                <AppBarButton x:Name="StatisticsButton" Margin="0,10,0,0"
+                              Icon="Calculator" Label="Statistics" Click="StatisticsButton_Click"/>
+                <TextBlock Text="This Statistics button work as when you navigate to Statistics page"
+                           Margin="0,30,0,0"/>
+            </StackPanel>
+
         </StackPanel>
 
         <!--Area for SettingsPanel 
@@ -117,9 +123,11 @@
 
 
             <!--tag selection combo box-->
-            <StackPanel VerticalAlignment="Center" Margin="0,0,0,10">
-                <TextBlock Text="Select Tag" VerticalAlignment="Center"/>
-                <ComboBox x:Name="TagComboBox">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                <TextBlock Text="Select Tag" 
+                           Margin="0,5,20,0"/>
+                <ComboBox x:Name="TagComboBox"
+                          SelectedIndex="{x:Bind ViewModel.TagComboBoxIndex, Mode=OneWay}">
                     <ComboBoxItem Content="Working"/>
                     <ComboBoxItem Content="Studying"/>
                     <ComboBoxItem Content="Reading"/>
@@ -135,5 +143,15 @@
             </StackPanel>
             
         </StackPanel>
+        
+        
+        <!--Area for statistics-->
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    x:Name="StatisticsPanel" Visibility="Collapsed">
+            <TextBlock x:Name="StatisticsTextBlock"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"/>
+        </StackPanel>
+        
     </Grid>
 </Page>

@@ -30,11 +30,8 @@ namespace TimeManagementApp.Dao
         ObservableCollection<MyTask> GetAllTasks();
         ObservableCollection<MyTask> GetTodayTask();
 
-
-        // TImer ----------------------------------------------
-        //public void SaveValue(string key, string value);
-        //public string LoadValue(string key);
-        //public void RemoveValue(string key);
+        
+        // Timer ----------------------------------------------
         public TimeSpan LoadTimeSpan(string key);
         public void SaveTimeSpan(string key, TimeSpan timeSpan);
     }

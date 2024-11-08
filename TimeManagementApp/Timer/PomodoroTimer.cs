@@ -17,10 +17,6 @@ namespace TimeManagementApp.Timer
 {
     public class PomodoroTimer : INotifyPropertyChanged
     {
-        private IDao _dao;
-        public string Tag { get; set; }
-
-
         // singleton
         private static PomodoroTimer _instance;
         private static readonly object _lock = new object();
@@ -78,8 +74,6 @@ namespace TimeManagementApp.Timer
             CurrentSettings = settings;
 
             CountFocusSessions = 0;
-
-            _dao = new LocalSettingsDao();
 
             Timer = new DispatcherTimer();
             Timer.Interval = TimeSpan.FromSeconds(1);
@@ -151,8 +145,6 @@ namespace TimeManagementApp.Timer
 
 
         // handle event occurs after a second tick
-        public event EventHandler TimerEnded;
-
         private void Timer_Tick(object sender, object e)
         {
             if (Seconds == 0)
@@ -171,8 +163,6 @@ namespace TimeManagementApp.Timer
                     {
                         SaveFocusTime(TimeSpan.FromMinutes(CurrentSettings.FocusTimeMinutes));
                     }
-
-                    TimerEnded?.Invoke(this, EventArgs.Empty); // Raise event when timer ends
 
                     SwitchToNextTimerType();
                     return;
@@ -263,18 +253,33 @@ namespace TimeManagementApp.Timer
         }
 
 
+        // Save focus time to LocalSettings with a tag
         // currently saving focus time when timer ends
         private void SaveFocusTime(TimeSpan focusTime)
         {
-            string tag = Tag ?? "Default";
+            IDao _dao = new LocalSettingsDao();
+
+            string tag = CurrentSettings.Tag;
             TimeSpan totalFocusedTime = _dao.LoadTimeSpan($"totalFocusedTime_{tag}");
+            
             totalFocusedTime += focusTime;
             _dao.SaveTimeSpan($"totalFocusedTime_{tag}", totalFocusedTime);
         }
 
-        public TimeSpan GetTotalFocusedTime(string tag)
+        public int TagComboBoxIndex
         {
-            return _dao.LoadTimeSpan($"totalFocusedTime_{tag}");
+            get
+            {
+                switch (CurrentSettings.Tag)
+                {
+                    case "Working":
+                        return 0;
+                    case "Studying":
+                        return 1;
+                    default:
+                        return 2;
+                }
+            }
         }
     }
 }

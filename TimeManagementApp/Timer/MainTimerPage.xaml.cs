@@ -1,37 +1,27 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
+using TimeManagementApp.Dao;
+using Windows.Foundation;
 
 namespace TimeManagementApp.Timer
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainTimerPage : Page, INotifyPropertyChanged
+    public sealed partial class MainTimerPage : Page
     {
         public PomodoroTimer ViewModel { get; set; }
-        public string TotalFocusTime { get; set; }
 
         public MainTimerPage()
         {
             this.InitializeComponent();
             ViewModel = PomodoroTimer.Instance;
-
-            ViewModel.Tag = "Studying";
-            TagComboBox.SelectedIndex = 1;
-
-            ViewModel.TimerEnded += OnTimerEnded;
-
-            RefreshStatistics();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnTimerEnded(object sender, EventArgs e)
-        {
-            RefreshStatistics();
-        }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -42,16 +32,39 @@ namespace TimeManagementApp.Timer
             }
         }
 
+        private void StatisticsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (StatisticsPanel.Visibility == Visibility.Collapsed)
+            {
+                StatisticsTextBlock.Text = ReadStatisticsFromLocalSettings();
+                StatisticsPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                StatisticsPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private string ReadStatisticsFromLocalSettings()
+        {
+            var tags = new List<string> { "Working", "Studying", "Reading" };
+            var statsBuilder = new StringBuilder();
+
+            IDao _dao = new LocalSettingsDao();
+
+            foreach (var tag in tags)
+            {
+                var focusTime = _dao.LoadTimeSpan($"totalFocusedTime_{tag}");
+                statsBuilder.AppendLine($"Total Focus Time for {tag}: {focusTime}");
+            }
+
+            return statsBuilder.ToString();
+        }
+
 
         // currently save settings on hard code, will save to files later
         public void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (TagComboBox.SelectedItem is ComboBoxItem selectedItem)
-            {
-                ViewModel.Tag = selectedItem.Content.ToString();
-            }
-
-
             ViewModel.CurrentSettings.FocusTimeMinutes = (int)FocusTimeSlider.Value;
             ViewModel.CurrentSettings.ShortBreakMinutes = (int)ShortBreakSlider.Value;
             ViewModel.CurrentSettings.LongBreakMinutes = (int)LongBreakSlider.Value;
@@ -60,7 +73,10 @@ namespace TimeManagementApp.Timer
 
             ViewModel.CurrentSettings.IsNotificationOn = NotificationToggleSwitch.IsOn;
 
-            RefreshStatistics();
+            if (TagComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                ViewModel.CurrentSettings.Tag = selectedItem.Content.ToString();
+            }
         }
 
         // close settings panel
@@ -91,14 +107,6 @@ namespace TimeManagementApp.Timer
         public void SkipButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.SwitchToNextTimerType();
-        }
-
-
-        // refresh the statistics when saving settings or first navigating to timer page
-        public void RefreshStatistics()
-        {
-            var totalFocusedTime = ViewModel.GetTotalFocusedTime(ViewModel.Tag);
-            TotalFocusTime = $"Total Focus Time for {ViewModel.Tag}: {totalFocusedTime}";
         }
     }
 }

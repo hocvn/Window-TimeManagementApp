@@ -16,25 +16,6 @@ namespace TimeManagementApp.Dao
         // Timer ---------------------------------------------------------------------------
         private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
-        public void SaveValue(string key, string value)
-        {
-            localSettings.Values[key] = value;
-        }
-
-        public string LoadValue(string key)
-        {
-            if (localSettings.Values.ContainsKey(key))
-            {
-                return localSettings.Values[key] as string;
-            }
-            return null;
-        }
-
-        public void RemoveValue(string key)
-        {
-            localSettings.Values.Remove(key);
-        }
-
         public TimeSpan LoadTimeSpan(string key)
         {
             if (localSettings.Values[key] is string timeSpanString)
