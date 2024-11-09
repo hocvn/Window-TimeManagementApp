@@ -28,7 +28,7 @@ namespace TimeManagementApp.Timer
             if (SettingsPanel.Visibility == Visibility.Collapsed)
             {
                 SettingsPanel.Visibility = Visibility.Visible;
-                TimerPanel.Margin = new Thickness(-200, 0, 0, 0);
+                //TimerPanel.Margin = new Thickness(-200, 0, 0, 0);
             }
         }
 
@@ -45,6 +45,8 @@ namespace TimeManagementApp.Timer
             }
         }
 
+
+        // read directly to the local settings, no need to binding the TimerViewModel
         private string ReadStatisticsFromLocalSettings()
         {
             var tags = new List<string> { "Working", "Studying", "Reading" };
@@ -54,12 +56,49 @@ namespace TimeManagementApp.Timer
 
             foreach (var tag in tags)
             {
-                var focusTime = _dao.LoadTimeSpan($"totalFocusedTime_{tag}");
-                statsBuilder.AppendLine($"Total Focus Time for {tag}: {focusTime}");
+                var totalFocusTime = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.MaxValue);
+                var focusTimeLastMonth = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.FromDays(30));
+                var focusTimeLastWeek = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.FromDays(7));
+                var focusTimeLastDay = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.FromDays(1));
+
+                statsBuilder.AppendLine($"Total Focus Time for {tag}: {totalFocusTime}");
+                statsBuilder.AppendLine($"Total Focus Time for {tag} in the last month: {focusTimeLastMonth}");
+                statsBuilder.AppendLine($"Total Focus Time for {tag} in the last week: {focusTimeLastWeek}");
+                statsBuilder.AppendLine($"Total Focus Time for {tag} in the last day: {focusTimeLastDay}");
+                statsBuilder.AppendLine();
             }
 
             return statsBuilder.ToString();
         }
+
+        private TimeSpan CalculateFocusTimeForTag(List<FocusSession> sessions, TimeSpan timeFrame)
+        {
+            DateTime cutoffDate;
+
+            try
+            {
+                cutoffDate = DateTime.UtcNow - timeFrame;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // If the timeFrame is too large, set cutoffDate to DateTime.MinValue
+                cutoffDate = DateTime.MinValue;
+            }
+
+            var totalFocusTime = new TimeSpan();
+
+            foreach (var session in sessions)
+            {
+                if (session.Timestamp >= cutoffDate)
+                {
+                    totalFocusTime += session.Duration;
+                }
+            }
+
+            return totalFocusTime;
+        }
+
+
 
 
         // currently save settings on hard code, will save to files later

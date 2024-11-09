@@ -253,18 +253,16 @@ namespace TimeManagementApp.Timer
         }
 
 
-        // Save focus time to LocalSettings with a tag
         // currently saving focus time when timer ends
         private void SaveFocusTime(TimeSpan focusTime)
         {
             IDao _dao = new LocalSettingsDao();
+            string tag = CurrentSettings.Tag ?? "Default";
 
-            string tag = CurrentSettings.Tag;
-            TimeSpan totalFocusedTime = _dao.LoadTimeSpan($"totalFocusedTime_{tag}");
-            
-            totalFocusedTime += focusTime;
-            _dao.SaveTimeSpan($"totalFocusedTime_{tag}", totalFocusedTime);
+            // Save the session with timestamp
+            _dao.SaveSession($"focusSessions_{tag}", focusTime);
         }
+
 
         public int TagComboBoxIndex
         {

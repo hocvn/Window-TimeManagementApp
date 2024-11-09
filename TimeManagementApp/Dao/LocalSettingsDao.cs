@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TimeManagementApp.Note;
 using TimeManagementApp.ToDo;
 using Windows.Storage;
+using Windows.UI.Shell;
 
 namespace TimeManagementApp.Dao
 {
@@ -16,19 +18,39 @@ namespace TimeManagementApp.Dao
         // Timer ---------------------------------------------------------------------------
         private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
-        public TimeSpan LoadTimeSpan(string key)
+        public void SaveSession(string key, TimeSpan sessionTime)
         {
-            if (localSettings.Values[key] is string timeSpanString)
-            {
-                return TimeSpan.Parse(timeSpanString);
-            }
-            return TimeSpan.Zero;
+            var sessions = LoadSessions(key);
+            sessions.Add(new Timer.FocusSession { Duration = sessionTime, Timestamp = DateTime.UtcNow });
+            
+            localSettings.Values[key] = JsonSerializer.Serialize(sessions);
         }
 
-        public void SaveTimeSpan(string key, TimeSpan timeSpan)
+        public List<Timer.FocusSession> LoadSessions(string key)
         {
-            localSettings.Values[key] = timeSpan.ToString();
+            if (localSettings.Values.ContainsKey(key))
+            {
+                var sessionsJson = localSettings.Values[key] as string;
+                return JsonSerializer.Deserialize<List<Timer.FocusSession>>(sessionsJson) ?? new List<Timer.FocusSession>();
+            }
+
+            return new List<Timer.FocusSession>();
         }
+
+
+        //public TimeSpan LoadTimeSpan(string key)
+        //{
+        //    if (localSettings.Values[key] is string timeSpanString)
+        //    {
+        //        return TimeSpan.Parse(timeSpanString);
+        //    }
+        //    return TimeSpan.Zero;
+        //}
+
+        //public void SaveTimeSpan(string key, TimeSpan timeSpan)
+        //{
+        //    localSettings.Values[key] = timeSpan.ToString();
+        //}
 
 
         // Notes -------------------------------------------------------
@@ -73,5 +95,6 @@ namespace TimeManagementApp.Dao
         {
             throw new NotImplementedException();
         }
+
     }
 }
