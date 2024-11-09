@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="TimeManagementApp.ToDo.EditToDoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimeManagementApp.ToDo"
+    xmlns:helper="using:TimeManagementApp.Helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <helper:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
+    </Page.Resources>
+    
+    
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="AliceBlue" Offset="0.0" />
+                <GradientStop Color="CornflowerBlue" Offset="8" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        
+        <!--Area for update task-->
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Padding="20" >
+
+            <!--Expander for Update Task-->
+            <controls:SettingsExpander>
+                <controls:SettingsExpander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon Glyph="&#xE777;" Margin="0,0,10,0"/>
+                        <TextBlock Text="Update Task"/>
+                    </StackPanel>
+                </controls:SettingsExpander.Header>
+
+                <!--update task button-->
+                <controls:SettingsExpander.ItemsHeader>
+                    <InfoBar
+                IsClosable="False"
+                IsIconVisible="True"
+                IsOpen="True"
+                Severity="Success">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Select a task and update" Margin="0,5,0,0"/>
+                            <Button Content="Update Task" Click="UpdateTask_Click" Margin="15,0,0,0"/>
+                        </StackPanel>
+                    </InfoBar>
+                </controls:SettingsExpander.ItemsHeader>
+
+
+                <controls:SettingsExpander.Items>
+                    <!--update task name-->
+                    <controls:SettingsCard>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Task name:" 
+                                Grid.Column="0" VerticalAlignment="Center" Margin="-20,0,55,0"/>
+
+                            <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
+                              Grid.Column="1"
+                              Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <!--update task description-->
+                    <controls:SettingsCard>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Task description:" 
+                                Grid.Column="0" VerticalAlignment="Center" Margin="-20,-10,20,0"/>
+
+                            <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Task Description" 
+                              Grid.Column="1" Margin="0,-10,0,0"
+                              Text="{x:Bind SelectedTask.TaskDescription, Mode=OneWay}"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <!--update start date time-->
+                    <controls:SettingsCard>
+                        <Grid Margin="-20,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Start time:" 
+                                Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
+
+                            <CalendarDatePicker x:Name="UpdateTaskStartDate" 
+                                         Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"
+                                         Date="{x:Bind SelectedTask.StartDateTime, Mode=OneWay, 
+                                               Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"/>
+
+                            <TimePicker x:Name="UpdateTaskStartTime" 
+                                 Grid.Row="1" Margin="0,5,0,0"
+                                 Time="{x:Bind SelectedTask.StartDateTime.TimeOfDay, Mode=OneWay}"/>
+                        </Grid>
+                    </controls:SettingsCard>
+
+                    <!--update due date time-->
+                    <controls:SettingsCard>
+                        <Grid Margin="-20,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="End time:" 
+                                Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
+
+                            <CalendarDatePicker x:Name="UpdateTaskDueDate" 
+                                         Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"
+                                         Date="{x:Bind SelectedTask.DueDateTime, Mode=OneWay, 
+                                                Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"/>
+
+                            <TimePicker x:Name="UpdateTaskDueTime" Grid.Row="1" Margin="0,5,0,0"
+                                 Time="{x:Bind SelectedTask.DueDateTime.TimeOfDay, Mode=OneWay}"/>
+                        </Grid>
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+
+        </StackPanel>
+    </Grid>
+</Page>

@@ -6,42 +6,32 @@
     xmlns:local="using:TimeManagementApp.ToDo"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <local:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
-    </Page.Resources>
     
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="WhiteSmoke" Offset="8" />
+                <GradientStop Color="CornflowerBlue" Offset="8" />
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        
         
         <!--Area for ToDoListBox-->
-        <StackPanel Grid.Column="0" VerticalAlignment="Top" Padding="20">
+        <StackPanel VerticalAlignment="Top" Padding="20">
             <StackPanel Orientation="Horizontal" Padding="5">
                 <SymbolIcon Symbol="Home" Margin="0,5,20,0"/>
                 <TextBlock Text="Tasks" FontSize="25" FontWeight="Bold"/>
             </StackPanel>
 
+            
             <ListBox x:Name="MyTasksListBox" 
                      ItemsSource="{x:Bind ViewModel.Tasks, Mode=OneWay}"
                      Background="Transparent"
-                     Margin="20,20,0,0"
-                     SelectionChanged="TaskList_SelectionChanged">
+                     Margin="20,20,0,0">
 
-                
                 <!--design visual style for an item in listbox-->
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
@@ -50,8 +40,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <Grid Background="{TemplateBinding Background}"
-                                          Tapped="TaskItem_Tapped">
+                                    <Grid Background="{TemplateBinding Background}">
 
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
@@ -99,12 +88,14 @@
                             
                             <SymbolIcon Symbol="Calendar" Margin="0,0,20,0" Grid.Column="0"/>
                             
-                            <StackPanel Grid.Column="1">
+                            <StackPanel Grid.Column="1" 
+                                        Tapped="TaskItem_Tapped">
                                 <TextBlock Text="{x:Bind TaskName}" FontWeight="Bold"/>
                                 <TextBlock Text="{x:Bind TaskDescription}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="2" Margin="0,0,10,0">
+                            <StackPanel Grid.Column="2" Margin="0,0,10,0"
+                                        Tapped="TaskItem_Tapped">
                                 <TextBlock>
                                     Start: <Run Text="{x:Bind StartDateTime}"/>
                                 </TextBlock>
@@ -145,136 +136,5 @@
             </InfoBar>
         </StackPanel>
 
-        
-        <!--Area for update, delete task-->
-        <StackPanel x:Name="DeleteUpdateArea" Grid.Column="1"
-                    VerticalAlignment="Top" HorizontalAlignment="Right"
-                    Padding="20" Visibility="Collapsed">
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <AppBarButton Icon="Cancel" Label="Close" 
-                              Click="CloseArea_Click" />
-
-                <!--delete task-->
-                <AppBarButton Icon="Delete" Label="Delete Task" 
-                              Click="DeleteTask_Click" />
-            </StackPanel>
-
-
-            <!--Expander for Update Task-->
-            <controls:SettingsExpander>
-                <controls:SettingsExpander.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE777;" Margin="0,0,10,0"/>
-                        <TextBlock Text="Update Task"/>
-                    </StackPanel>
-                </controls:SettingsExpander.Header>
-
-                <!--update task button-->
-                <controls:SettingsExpander.ItemsHeader>
-                    <InfoBar
-                       IsClosable="False"
-                       IsIconVisible="True"
-                       IsOpen="True"
-                       Severity="Success">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Select a task and update" Margin="0,5,0,0"/>
-                            <Button Content="Update Task" Click="UpdateTask_Click" Margin="15,0,0,0"/>
-                        </StackPanel>
-                    </InfoBar>
-                </controls:SettingsExpander.ItemsHeader>
-
-                
-                <controls:SettingsExpander.Items>
-                    <!--update task name-->
-                    <controls:SettingsCard>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <TextBlock Text="Task name:" 
-                                       Grid.Column="0" VerticalAlignment="Center" Margin="-20,0,55,0"/>
-                            
-                            <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
-                                     Grid.Column="1"
-                                     Text="{x:Bind CurrentSelectTask.TaskName, Mode=OneWay}"/>
-                        </Grid>
-                    </controls:SettingsCard>
-
-                    <!--update task description-->
-                    <controls:SettingsCard>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <TextBlock Text="Task description:" 
-                                       Grid.Column="0" VerticalAlignment="Center" Margin="-20,-10,20,0"/>
-                            
-                            <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Task Description" 
-                                     Grid.Column="1" Margin="0,-10,0,0"
-                                     Text="{x:Bind CurrentSelectTask.TaskDescription, Mode=OneWay}"/>
-                        </Grid>
-                    </controls:SettingsCard>
-
-                    <!--update start date time-->
-                    <controls:SettingsCard>
-                        <Grid Margin="-20,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <TextBlock Text="Start time:" 
-                                       Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
-                            
-                            <CalendarDatePicker x:Name="UpdateTaskStartDate" 
-                                                Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"
-                                                Date="{x:Bind CurrentSelectTask.StartDateTime, Mode=OneWay, 
-                                                      Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"/>
-                            
-                            <TimePicker x:Name="UpdateTaskStartTime" 
-                                        Grid.Row="1" Margin="0,5,0,0"
-                                        Time="{x:Bind CurrentSelectTask.StartDateTime.TimeOfDay, Mode=OneWay}"/>
-                        </Grid>
-                    </controls:SettingsCard>
-
-                    <!--update due date time-->
-                    <controls:SettingsCard>
-                        <Grid Margin="-20,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <TextBlock Text="End time:" 
-                                       Grid.Column="0" Grid.Row="0" Margin="0,5,0,0"/>
-                            
-                            <CalendarDatePicker x:Name="UpdateTaskDueDate" 
-                                                Grid.Column="1" Grid.Row="0" Margin="-120,0,0,0"
-                                                Date="{x:Bind CurrentSelectTask.DueDateTime, Mode=OneWay, 
-                                                       Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"/>
-                            
-                            <TimePicker x:Name="UpdateTaskDueTime" Grid.Row="1" Margin="0,5,0,0"
-                                        Time="{x:Bind CurrentSelectTask.DueDateTime.TimeOfDay, Mode=OneWay}"/>
-                        </Grid>
-                    </controls:SettingsCard>
-                </controls:SettingsExpander.Items>
-            </controls:SettingsExpander>
-            
-        </StackPanel>
     </Grid>
 </Page>
