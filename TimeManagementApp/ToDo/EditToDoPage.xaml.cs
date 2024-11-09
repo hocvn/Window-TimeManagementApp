@@ -93,7 +93,7 @@ namespace TimeManagementApp.ToDo
                     MainWindow.NavigationService.Navigate(typeof(MainToDoPage), newTask);
                 }
 
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, null, "OK");
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task successfully!", null, null, "OK");
             }
         }
     }
