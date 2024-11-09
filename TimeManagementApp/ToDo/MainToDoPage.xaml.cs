@@ -31,9 +31,9 @@ namespace TimeManagementApp.ToDo
 
 
         // navigate to the EditPage when an task is tapped
-        private void TaskItem_Tapped(object sender, TappedRoutedEventArgs e)
+        private void TaskItem_Click(object sender, ItemClickEventArgs e)
         {
-            CurrentSelectTask = MyTasksListBox.SelectedItem as MyTask;
+            CurrentSelectTask = e.ClickedItem as MyTask;
             MainWindow.NavigationService.Navigate(typeof(EditToDoPage), CurrentSelectTask);
         }
 
@@ -88,26 +88,25 @@ namespace TimeManagementApp.ToDo
         }
 
 
-        //// delete a task
-        //private async void DeleteTask_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var selectedTask = MyTasksListBox.SelectedItem as MyTask;
 
-        //    if (selectedTask != null)
-        //    {
-        //        var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", null, "Cancel");
+        // delete a task
+        private async void DeleteTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is AppBarButton button && button.CommandParameter is MyTask taskToDelete)
+            {
+                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", null, "Cancel");
 
-        //        if (result == ContentDialogResult.Primary)
-        //        {
-        //            ViewModel.DeleteTask(selectedTask);
+                if (result == ContentDialogResult.Primary)
+                {
+                    ViewModel.DeleteTask(taskToDelete);
 
-        //            await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, null, "OK");
-        //        }
-        //        else
-        //        {
-        //            // do nothing
-        //        }
-        //    }
-        //}
+                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, null, "OK");
+                }
+                else
+                {
+                    // do nothing
+                }
+            }
+        }
     }
 }
