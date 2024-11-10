@@ -108,5 +108,26 @@ namespace TimeManagementApp.ToDo
                 }
             }
         }
+
+
+        private void PreviousPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.CurrentPage > 1)
+            {
+                ViewModel.CurrentPage--;
+                ViewModel.LoadCurrentPage();
+            }
+        }
+
+        private void NextPage_Click(object sender, RoutedEventArgs e)
+        {
+            int maxPage = (int)Math.Ceiling((double)ViewModel.Tasks.Count / MyTaskViewModel.PageSize);
+
+            if (ViewModel.CurrentPage < maxPage)
+            {
+                ViewModel.CurrentPage++;
+                ViewModel.LoadCurrentPage();
+            }
+        }
     }
 }

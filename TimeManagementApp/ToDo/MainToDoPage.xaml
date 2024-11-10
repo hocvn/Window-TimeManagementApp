@@ -18,17 +18,36 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        
+
         <!--Area for ToDoListView-->
         <StackPanel VerticalAlignment="Top" Padding="20">
-            <StackPanel Orientation="Horizontal" Padding="5">
-                <SymbolIcon Symbol="Home" Margin="0,5,20,0"/>
-                <TextBlock Text="Tasks" FontSize="25" FontWeight="Bold"/>
-            </StackPanel>
-
             
+            <!--Header-->
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <SymbolIcon Symbol="Home" 
+                            Grid.Column="0" Margin="0,3,0,0"/>
+
+                <TextBlock Text="Tasks" FontSize="25" FontWeight="Bold" 
+                           Grid.Column="1" Margin="20,0,0,0"/>
+
+                <!-- Paging controls -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                    <Button Content="Previous" Click="PreviousPage_Click"/>
+                    <TextBlock Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" 
+                               VerticalAlignment="Center" Margin="10,0,10,0"/>
+                    <Button Content="Next" Click="NextPage_Click"/>
+                </StackPanel>
+            </Grid>
+
+    
             <ListView x:Name="MyTasksListView" 
-                     ItemsSource="{x:Bind ViewModel.Tasks, Mode=OneWay}"
+                     ItemsSource="{x:Bind ViewModel.PagedTasks, Mode=OneWay}"
                      Background="Transparent"
                      Margin="20,20,0,0"
                      IsItemClickEnabled="True"

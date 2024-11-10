@@ -19,9 +19,28 @@ namespace TimeManagementApp.ToDo
         public static MyTaskViewModel Instance => _instance;
 
 
-        public ObservableCollection<MyTask> Tasks = new ObservableCollection<MyTask>();
-
+        public ObservableCollection<MyTask> Tasks;
+        
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        // paging setup
+        public const int PageSize = 7;
+        public int CurrentPage { get; set; } = 1;
+
+        public ObservableCollection<MyTask> PagedTasks { get; private set; }
+
+        public void LoadCurrentPage()
+        {
+            PagedTasks.Clear();
+            var pagedTasks = Tasks.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+
+            foreach (var task in pagedTasks)
+            {
+                PagedTasks.Add(task);
+            }
+        }
+
 
         public MyTaskViewModel()
         {
@@ -30,23 +49,31 @@ namespace TimeManagementApp.ToDo
 
             IDao dao = new MockDao();
             Tasks = dao.GetAllTasks();
+
+            PagedTasks = new ObservableCollection<MyTask>();
+            LoadCurrentPage();
         }
 
 
+        // todo: are there any solution for insert, delete, update task
+        // that dont need to reread all tasks (no LoadCurrentPage) ?
         public void InsertTask(MyTask newTask)
         {
             Tasks.Add(newTask);
+            LoadCurrentPage();
         }
 
         public void DeleteTask(MyTask selectedTask)
         {
             Tasks.Remove(selectedTask);
+            LoadCurrentPage();
         }
 
         public void UpdateTask(MyTask oldTask, MyTask newTask)
         {
             var index = Tasks.IndexOf(oldTask);
             Tasks[index] = newTask;
+            LoadCurrentPage();
         }
     }
 }
