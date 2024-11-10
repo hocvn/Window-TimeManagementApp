@@ -76,7 +76,7 @@ namespace TimeManagementApp.ToDo
                 var newTask = new MyTask
                 {
                     TaskName = InsertTaskName.Text,
-                    TaskDescription = "My Description",
+                    Summarization = "",
                     StartDateTime = startDateTime,
                     DueDateTime = dueDateTime
                 };

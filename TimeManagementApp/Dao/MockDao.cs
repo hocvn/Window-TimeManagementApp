@@ -116,21 +116,21 @@ namespace TimeManagementApp.Dao
                 new MyTask()
                 {
                     TaskName = "Task 01",
-                    TaskDescription = "Description 01",
+                    Summarization = "Today, Repeat",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(1),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 02",
-                    TaskDescription = "Description 02",
+                    Summarization = "Tomorrow, Reminder",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(2),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 03",
-                    TaskDescription = "Description 03",
+                    Summarization = "0 of 2, Important",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(3),
                 },

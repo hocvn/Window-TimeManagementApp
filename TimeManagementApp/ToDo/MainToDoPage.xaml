@@ -100,7 +100,7 @@
                             
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="{x:Bind TaskName}" FontWeight="Bold"/>
-                                <TextBlock Text="{x:Bind TaskDescription}"/>
+                                <TextBlock Text="{x:Bind Summarization}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" Width="180">

@@ -44,58 +44,76 @@ namespace TimeManagementApp.ToDo
         }
 
 
-        private async void UpdateTask_Click(object sender, RoutedEventArgs e)
+        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedTask != null)
+            // todo: save the reminders, steps, ... to summarization
+
+            if (String.IsNullOrEmpty(UpdateTaskName.Text))
             {
-                if (String.IsNullOrEmpty(UpdateTaskName.Text))
-                {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, null, "OK");
-                    return;
-                }
-
-                if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskDueDate.Date.HasValue)
-                {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, null, "OK");
-                    return;
-                }
-
-                var startDateTime = new DateTime(
-                    UpdateTaskStartDate.Date.Value.Year,
-                    UpdateTaskStartDate.Date.Value.Month,
-                    UpdateTaskStartDate.Date.Value.Day,
-                    UpdateTaskStartTime.Time.Hours,
-                    UpdateTaskStartTime.Time.Minutes,
-                    UpdateTaskStartTime.Time.Seconds
-                );
-
-                var dueDateTime = new DateTime(
-                    UpdateTaskDueDate.Date.Value.Year,
-                    UpdateTaskDueDate.Date.Value.Month,
-                    UpdateTaskDueDate.Date.Value.Day,
-                    UpdateTaskDueTime.Time.Hours,
-                    UpdateTaskDueTime.Time.Minutes,
-                    UpdateTaskDueTime.Time.Seconds
-                );
-
-                var newTask = new MyTask
-                {
-                    TaskName = UpdateTaskName.Text,
-                    TaskDescription = UpdateTaskDescription.Text,
-                    StartDateTime = startDateTime,
-                    DueDateTime = dueDateTime
-                };
+                await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, null, "OK");
+                return;
+            }
 
 
-                // send newTask to the MainPage
-                if (Frame.CanGoBack)
-                {
-                    MainWindow.NavigationService.Navigate(typeof(MainToDoPage), newTask);
-                }
+            var startDateTime = new DateTime(
+                UpdateTaskStartDate.Date.Year,
+                UpdateTaskStartDate.Date.Month,
+                UpdateTaskStartDate.Date.Day,
+                UpdateTaskStartTime.Time.Hours,
+                UpdateTaskStartTime.Time.Minutes,
+                UpdateTaskStartTime.Time.Seconds
+            );
 
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task successfully!", null, null, "OK");
+            var dueDateTime = new DateTime(
+                UpdateTaskDueDate.Date.Year,
+                UpdateTaskDueDate.Date.Month,
+                UpdateTaskDueDate.Date.Day,
+                UpdateTaskDueTime.Time.Hours,
+                UpdateTaskDueTime.Time.Minutes,
+                UpdateTaskDueTime.Time.Seconds
+            );
+
+            var newTask = new MyTask
+            {
+                TaskName = UpdateTaskName.Text,
+                Summarization = "This summarization should bind all changed in EditPage",
+                StartDateTime = startDateTime,
+                DueDateTime = dueDateTime
+            };
+
+
+            // send newTask to the MainPage
+            MainWindow.NavigationService.Navigate(typeof(MainToDoPage), newTask);
+
+            await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task successfully!", null, null, "OK");
+        }
+
+
+        private async void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Want to save all the changes?", "Yes", "No", "Cancel");
+
+            if (result == ContentDialogResult.Primary)
+            {
+                UpdateButton_Click(null, null);
+            }
+            else if (result == ContentDialogResult.Secondary)
+            {
+                MainWindow.NavigationService.Navigate(typeof(MainToDoPage));
+            }
+            else
+            {
+                // do nothing
             }
         }
+
+
+        private void ReminderOption_Checked(object sender, RoutedEventArgs e)
+        {
+            // todo
+        }
+
+
     }
 
 }
