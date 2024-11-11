@@ -129,5 +129,24 @@ namespace TimeManagementApp.ToDo
                 ViewModel.LoadCurrentPage();
             }
         }
+
+
+        // handle checkbox for is completed or not
+        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox && checkBox.CommandParameter is MyTask task)
+            {
+                task.IsCompleted = true;
+            }
+        }
+
+        private void TaskCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox && checkBox.CommandParameter is MyTask task)
+            {
+                task.IsCompleted = false;
+            }
+        }
+
     }
 }

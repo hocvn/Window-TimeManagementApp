@@ -113,10 +113,14 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            
-                            <SymbolIcon Symbol="Calendar" 
-                                        Margin="10,0,20,0" Grid.Column="0"/>
-                            
+
+                            <CheckBox Grid.Column="0"
+                                      Margin="10,0,-60,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{x:Bind IsCompleted, Mode=TwoWay}"
+                                      Checked="TaskCheckBox_Checked"
+                                      Unchecked="TaskCheckBox_Unchecked"/>
+
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="{x:Bind TaskName}" FontWeight="Bold"/>
                                 <TextBlock Text="{x:Bind Summarization}"/>
