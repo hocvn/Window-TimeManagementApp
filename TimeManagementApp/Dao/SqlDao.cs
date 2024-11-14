@@ -77,7 +77,7 @@ namespace TimeManagementApp.Dao
 
         public void CreateUser(string username, string password, string email)
         {
-            // Encrypt password and save private key to local settings (private key is protected by DPAPI)
+            // Encrypt password and save private key to local settings 
             (string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
             string privateKeyJson = JsonSerializer.Serialize(PrivateKey);
             StorageHelper.SaveSetting(username, privateKeyJson);
@@ -90,7 +90,7 @@ namespace TimeManagementApp.Dao
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
             command.Parameters["@username"].Value = username;
-            command.Parameters.Add("@password", System.Data.SqlDbType.VarChar);
+            command.Parameters.Add("@password", System.Data.SqlDbType.Text);
             command.Parameters["@password"].Value = EncryptedPasswordBase64;
             command.Parameters.Add("@email", System.Data.SqlDbType.VarChar);
             command.Parameters["@email"].Value = email;
