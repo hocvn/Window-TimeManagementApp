@@ -62,18 +62,9 @@ namespace TimeManagementApp
             this.Close();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        public (bool, string) CheckInfomationUserEnter(string username, string email, string password, string passwordConfirmed)
         {
-            m_window = new LoginWindow();
-            m_window.Activate();
-            this.Close();
-        }
-
-        public (bool, string) CheckInfomationUserEnter(string username, string email, string password,
-                string passwordConfirmed)
-        {
-            string errorMess = "";
-
+            string errorMess;
             if (String.IsNullOrEmpty(username))
             {
                 errorMess = "Please fill out your username.";
@@ -110,12 +101,6 @@ namespace TimeManagementApp
             if (isOk == false)
             {
                 errorMess = mess;
-                return (false, errorMess);
-            }
-
-            if (String.IsNullOrEmpty(passwordConfirmed))
-            {
-                errorMess = "Please fill out your password confirmation.";
                 return (false, errorMess);
             }
 

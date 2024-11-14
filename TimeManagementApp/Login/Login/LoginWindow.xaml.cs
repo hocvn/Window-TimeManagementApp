@@ -4,6 +4,7 @@ using Windows.Storage;
 using TimeManagementApp.Login.ForgotPassword;
 using Microsoft.UI.Windowing;
 using TimeManagementApp.Helper;
+using TimeManagementApp.Services;
 
 namespace TimeManagementApp
 {
@@ -12,7 +13,6 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class LoginWindow : Window
     {
-        private Window m_window;
         private UserCredential user = new UserCredential();
         private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
@@ -57,8 +57,10 @@ namespace TimeManagementApp
             }
             // Username and password are correct
             errorMessage.Text = "";
-            m_window = new MainWindow();
-            m_window.Activate();
+
+            UserSingleton.Instance.Username = username;
+            Window MainWindow = new MainWindow();
+            MainWindow.Activate();
             this.Close();
         }
 
@@ -86,16 +88,15 @@ namespace TimeManagementApp
         }
         private void ForgotPasswordHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
-            m_window = new ForgotPasswordWindow();
-            m_window.Activate();
+            Window ForgotPasswordWindow = new ForgotPasswordWindow();
+            ForgotPasswordWindow.Activate();
             this.Close();
-            // This feature is not working for now
         }
 
         private void RegisterHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
-            m_window = new RegisterWindow();
-            m_window.Activate();
+            Window RegisterWindow = new RegisterWindow();
+            RegisterWindow.Activate();
             this.Close();
         }
     }
