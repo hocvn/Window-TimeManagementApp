@@ -119,21 +119,105 @@ namespace TimeManagementApp.Dao
                 new MyTask()
                 {
                     TaskName = "Task 01",
-                    TaskDescription = "Description 01",
+                    Summarization = "Today, Repeat",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(1),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 02",
-                    TaskDescription = "Description 02",
+                    Summarization = "Tomorrow, Reminder",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(2),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 03",
-                    TaskDescription = "Description 03",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 04",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 05",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 06",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 07",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 08",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 09",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 10",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 11",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 12",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 13",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 14",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 15",
+                    Summarization = "0 of 2, Important",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(3),
                 },
