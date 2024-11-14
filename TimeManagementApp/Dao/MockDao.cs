@@ -13,12 +13,13 @@ using TimeManagementApp.Note;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using TimeManagementApp.ToDo;
+using TimeManagementApp.Timer;
 
 namespace TimeManagementApp.Dao
 {
     public class MockDao : IDao
     {
-
+        // Notes -------------------------------------------------------------
         public ObservableCollection<MyNote> GetAllNote()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -109,6 +110,8 @@ namespace TimeManagementApp.Dao
             SaveNotes(notes);
         }
         
+        
+        // Tasks -------------------------------------------------------------
         public ObservableCollection<MyTask> GetAllTasks()
         {
             return new ObservableCollection<MyTask>()
@@ -232,6 +235,23 @@ namespace TimeManagementApp.Dao
                 }
             }
             return todayTasks;
+        }
+
+
+        // Timer ----------------------------------------------------------
+        public void SaveSession(FocusSession session)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            throw new NotImplementedException();
         }
     }
 }
