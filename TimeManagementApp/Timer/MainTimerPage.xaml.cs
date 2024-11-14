@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Text;
 using TimeManagementApp.Dao;
 using Windows.Foundation;
@@ -36,7 +37,7 @@ namespace TimeManagementApp.Timer
         {
             if (StatisticsPanel.Visibility == Visibility.Collapsed)
             {
-                StatisticsTextBlock.Text = ReadStatisticsFromLocalSettings();
+                StatisticsTextBlock.Text = ReadStatistics();
                 StatisticsPanel.Visibility = Visibility.Visible;
             }
             else
@@ -46,22 +47,21 @@ namespace TimeManagementApp.Timer
         }
 
 
-        // read directly to the local settings, no need to binding the TimerViewModel
-        private string ReadStatisticsFromLocalSettings()
+        private string ReadStatistics()
         {
             var tags = new List<string> { "Working", "Studying", "Reading" };
             var statsBuilder = new StringBuilder();
 
-            IDao _dao = new LocalSettingsDao();
+            var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            var filePath = Path.Combine(directory.FullName, "sessions.xlsx");
+            IDao dao = new ExcelDao(filePath);
 
             foreach (var tag in tags)
             {
-                var totalFocusTime = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.MaxValue);
-                var focusTimeLastMonth = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.FromDays(30));
-                var focusTimeLastWeek = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.FromDays(7));
-                var focusTimeLastDay = CalculateFocusTimeForTag(_dao.LoadSessions($"focusSessions_{tag}"), TimeSpan.FromDays(1));
+                var focusTimeLastMonth = CalculateFocusTimeForTag(dao.GetAllSessionsWithTag(tag), TimeSpan.FromDays(30));
+                var focusTimeLastWeek = CalculateFocusTimeForTag(dao.GetAllSessionsWithTag(tag), TimeSpan.FromDays(7));
+                var focusTimeLastDay = CalculateFocusTimeForTag(dao.GetAllSessionsWithTag(tag), TimeSpan.FromDays(1));
 
-                statsBuilder.AppendLine($"Total Focus Time for {tag}: {totalFocusTime}");
                 statsBuilder.AppendLine($"Total Focus Time for {tag} in the last month: {focusTimeLastMonth}");
                 statsBuilder.AppendLine($"Total Focus Time for {tag} in the last week: {focusTimeLastWeek}");
                 statsBuilder.AppendLine($"Total Focus Time for {tag} in the last day: {focusTimeLastDay}");

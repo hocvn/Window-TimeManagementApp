@@ -7,6 +7,7 @@ using Microsoft.Windows.AppNotifications.Builder;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -161,7 +162,20 @@ namespace TimeManagementApp.Timer
 
                     if (CurrentType == TimerType.FocusTime)
                     {
-                        SaveFocusTime(TimeSpan.FromMinutes(CurrentSettings.FocusTimeMinutes));
+                        // save focus session
+                        var session = new FocusSession
+                        {
+                            Duration = TimeSpan.FromMinutes(CurrentSettings.FocusTimeMinutes),
+                            Timestamp = DateTime.UtcNow,
+                            Tag = CurrentSettings.Tag,
+                        };
+
+
+                        var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                        var filePath = Path.Combine(directory.FullName, "sessions.xlsx");
+                        IDao dao = new ExcelDao(filePath);
+
+                        dao.SaveSession(session);
                     }
 
                     SwitchToNextTimerType();
@@ -250,17 +264,6 @@ namespace TimeManagementApp.Timer
 
             var notification = new AppNotification(toastDoc.GetXml());
             AppNotificationManager.Default.Show(notification);
-        }
-
-
-        // currently saving focus time when timer ends
-        private void SaveFocusTime(TimeSpan focusTime)
-        {
-            IDao _dao = new LocalSettingsDao();
-            string tag = CurrentSettings.Tag ?? "Default";
-
-            // Save the session with timestamp
-            _dao.SaveSession($"focusSessions_{tag}", focusTime);
         }
 
 

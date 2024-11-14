@@ -34,11 +34,9 @@ namespace TimeManagementApp.Dao
 
 
         // Timer ----------------------------------------------
-        public void SaveSession(string key, TimeSpan sessionTime);
-        public List<FocusSession> LoadSessions(string key);
-
-        //public TimeSpan LoadTimeSpan(string key);
-        //public void SaveTimeSpan(string key, TimeSpan timeSpan);
+        void SaveSession(FocusSession session);
+        List<FocusSession> GetAllSessions();
+        List<FocusSession> GetAllSessionsWithTag(string tag);
     }
 }
 

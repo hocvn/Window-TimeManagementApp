@@ -153,25 +153,19 @@ namespace TimeManagementApp.Dao
             return todayTasks;
         }
 
-        
 
         // Timer ----------------------------------------------------------
-        public TimeSpan LoadTimeSpan(string key)
+        public void SaveSession(FocusSession session)
         {
             throw new NotImplementedException();
         }
 
-        public void SaveTimeSpan(string key, TimeSpan timeSpan)
+        public List<FocusSession> GetAllSessions()
         {
             throw new NotImplementedException();
         }
 
-        public void SaveSession(string key, TimeSpan sessionTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<FocusSession> LoadSessions(string key)
+        public List<FocusSession> GetAllSessionsWithTag(string tag)
         {
             throw new NotImplementedException();
         }
