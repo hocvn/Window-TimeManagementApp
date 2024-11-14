@@ -40,6 +40,7 @@ namespace TimeManagementApp.Timer
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+
         // Basic properties
         public DispatcherTimer Timer { get; set; }
         public bool IsRunning { get; set; }
@@ -83,8 +84,8 @@ namespace TimeManagementApp.Timer
             ResetTimer();
         }
 
-        // Design Timer's stroke
 
+        // Design Timer's stroke
         public int StrokeThickness = 5;
 
         public DoubleCollection StrokeDashArray
@@ -119,8 +120,8 @@ namespace TimeManagementApp.Timer
             }
         }
 
-        // start, pause, reset the timer
 
+        // start, pause, reset the timer
         public void StartTimer()
         {
             if (!IsRunning)
@@ -153,7 +154,6 @@ namespace TimeManagementApp.Timer
                 if (Minutes == 0)
                 {
                     // timer end
-
                     if (CurrentSettings.IsNotificationOn == true)
                     {
                         // show notifications toast & sound
@@ -236,6 +236,7 @@ namespace TimeManagementApp.Timer
                     break;
             }
         }
+
 
         private void ShowNotification()
         {

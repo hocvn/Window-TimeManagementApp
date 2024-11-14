@@ -47,6 +47,7 @@
     <None Remove="Login\ForgotPassword\ResetPasswordPage.xaml" />
     <None Remove="RegisterWindow.xaml" />
     <None Remove="Resources\ImageResources.xaml" />
+    <None Remove="Timer\SettingsTimerPage.xaml" />
     <None Remove="ToDo\EditToDoPage.xaml" />
   </ItemGroup>
 
@@ -120,6 +121,11 @@
   <ItemGroup>
     <Folder Include="Login\Login\" />
     <Folder Include="Login\Register\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Timer\SettingsTimerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="ToDo\EditToDoPage.xaml">
