@@ -28,13 +28,6 @@ namespace TimeManagementApp.Login.ForgotPassword
             }
         }
 
-        void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            //Otp = GenerateOtp(6);
-            //myTextBlock.Text = $"Please enter this code '{Otp}' below.";
-            //SendOtpEmail(this.Email, Otp);
-        }
-
         public string GenerateOtp(int length)
         {
             Random random = new Random();

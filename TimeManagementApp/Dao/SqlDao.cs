@@ -4,9 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography;
-using System.Text.Json;
 using System.Threading.Tasks;
-using TimeManagementApp.Helper;
 using TimeManagementApp.Note;
 using TimeManagementApp.Services;
 using TimeManagementApp.Timer;
@@ -57,41 +55,6 @@ namespace TimeManagementApp.Dao
 
 
         // User credentials
-        public bool CheckUser(string username, string password)
-        {
-            var connection = CreateConnection();
-            var result = false;
-            var sql = @"
-                        select user_id, username, encrypted_password
-                        from [USER] 
-                        where username = @username
-                    ";
-            var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
-            command.Parameters["@username"].Value = username;
-            command.Parameters.Add("@password", System.Data.SqlDbType.VarChar);
-            command.Parameters["@password"].Value = password;
-
-            var reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                User.UserId = reader.GetInt32(0);
-                User.Username = reader.GetString(1);
-                User.EncryptedPassword = reader.GetString(2);
-            }
-            else
-            {
-                return false;
-            }
-
-            RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
-            // Decrypt password
-            string decryptedPassword = EncryptionService.Decrypt(User.EncryptedPassword, privateKey);
-
-            result = (password == decryptedPassword);
-            connection.Close();
-            return result;
-        }
 
         public void CreateUser(string username, string password, string email)
         {
@@ -105,38 +68,165 @@ namespace TimeManagementApp.Dao
                         values (@username, @encrypted_password, @email)
                     ";
             var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
             command.Parameters["@username"].Value = username;
             command.Parameters.Add("@encrypted_password", System.Data.SqlDbType.Text);
             command.Parameters["@encrypted_password"].Value = EncryptedPasswordBase64;
-            command.Parameters.Add("@email", System.Data.SqlDbType.VarChar);
+            command.Parameters.Add("@email", System.Data.SqlDbType.NVarChar);
             command.Parameters["@email"].Value = email;
 
             command.ExecuteNonQuery();
             connection.Close();
         }
 
+        public bool CheckCredential(string username, string password)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        select encrypted_password, email
+                        from [USER] 
+                        where username = @username
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = username;
+
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+
+                var encryptedPassword = reader.GetString(0);
+                var email = reader.GetString(1);
+
+                RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
+                string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+
+                if (password == decryptedPassword)
+                {
+                    User.Username = username;
+                    User.Email = email;
+                    User.EncryptedPassword = encryptedPassword;
+                    connection.Close();
+                    return true;
+                }
+            }
+            connection.Close();
+            return false;
+        }
+
+        public bool IsUsernameInUse(string username)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        select email
+                        from [USER] 
+                        where username = @username
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = username;
+
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                connection.Close();
+                return true;
+            }
+            else
+            {
+                connection.Close();
+                return false;
+            }
+        }
+
+        public bool IsEmailInUse(string email)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        select username
+                        from [USER] 
+                        where email = @email
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@email", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@email"].Value = email;
+
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                connection.Close();
+                return true;
+            }
+            else
+            {
+                connection.Close();
+                return false;
+            }
+        }
+
+        public string GetUsername(string email)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        select username
+                        from [USER] 
+                        where email = @email
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@email", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@email"].Value = email;
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var username = reader.GetString(0);
+                connection.Close();
+                return username;
+            }
+            connection.Close();
+            return null;
+        }
+
+        public string GetPassword(string username)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        select encrypted_password
+                        from [USER] 
+                        where username = @username
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = username;
+
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var encryptedPassword = reader.GetString(0);
+                RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
+                string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                connection.Close();
+                return decryptedPassword;
+            }
+            return null;
+        }
+
         public void ResetPassword(string username, string password, string email)
         {
             // Encrypt new password and save private key to local settings 
             (string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
-            string privateKeyJson = JsonSerializer.Serialize(PrivateKey);
-            StorageHelper.SaveSetting(username, privateKeyJson);
+            EncryptionService.SavePrivateKey(PrivateKey, username);
 
             var connection = CreateConnection();
             var sql = @"
                         update [USER] 
                         set encrypted_password = @encrypted_password
-                        where username = @username and email = @user_email
+                        where username = @username
                     ";
             var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
             command.Parameters["@username"].Value = username;
             command.Parameters.Add("@encrypted_password", System.Data.SqlDbType.Text);
             command.Parameters["@encrypted_password"].Value = EncryptedPasswordBase64;
-            command.Parameters.Add("@user_email", System.Data.SqlDbType.VarChar);
-            command.Parameters["@user_email"].Value = email;
-
             command.ExecuteNonQuery();
             connection.Close();
         }
@@ -151,26 +241,24 @@ namespace TimeManagementApp.Dao
             var sql = @"
                         select note.note_id, note.name 
                         from [NOTE] note
-                        where note.user_id = @user_id
+                        where note.username = @username
                     ";
 
             var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
 
             var reader = command.ExecuteReader();
             while (reader.Read())
             {
                 var note = new MyNote
                 {
-                    Id = reader.GetString(0),
+                    Id = "",//Id = reader.GetInt(0),
                     Name = reader.GetString(1)
                 };
                 result.Add(note);
             }
-
             connection.Close();
-
             return result;
         }
 
@@ -179,13 +267,13 @@ namespace TimeManagementApp.Dao
             var connection = CreateConnection();
             var sql = @"
                         delete from [NOTE] note
-                        where note.note_id = @note_id and note.user_id = @user_id
+                        where note.note_id = @note_id and note.username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
             command.Parameters["@note_id"].Value = note.Id;
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
 
             command.ExecuteNonQuery();
             connection.Close();
@@ -197,13 +285,13 @@ namespace TimeManagementApp.Dao
             var sql = @"
                         select notenote.content
                         from [NOTE] note
-                        where note.note_id = @note_id and note.user_id = @user_id
+                        where note.note_id = @note_id and note.username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
             command.Parameters["@note_id"].Value = note.Id;
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
 
             var reader = await command.ExecuteReaderAsync();
             if (reader.Read())
@@ -220,15 +308,15 @@ namespace TimeManagementApp.Dao
             var sql = @"
                         update [NOTE]
                         set name = @name
-                        where note_id = @note_id and user_id = @user_id
+                        where note_id = @note_id and username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
             command.Parameters["@name"].Value = note.Name;
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
             command.Parameters["@note_id"].Value = note.Id;
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
 
             command.ExecuteNonQuery();
             connection.Close();
@@ -240,7 +328,7 @@ namespace TimeManagementApp.Dao
             var sql = @"
                         update [NOTE] note
                         set note.name = @name, note.content = @content
-                        where note_id = @note_id and user_id = @user_id
+                        where note_id = @note_id and username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             // Get content of RichEditBox with RTF format
@@ -254,8 +342,8 @@ namespace TimeManagementApp.Dao
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
             command.Parameters["@note_id"].Value = note.Id;
 
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
 
             command.ExecuteNonQuery();
             connection.Close();
@@ -267,7 +355,7 @@ namespace TimeManagementApp.Dao
             var sql = @"
                         update [NOTE] note
                         set note.name = @name
-                        where note.note_id = @note_id and note.user_id = @user_id
+                        where note.note_id = @note_id and note.username = @username
                     ";
             foreach (var note in notes)
             {
@@ -276,15 +364,15 @@ namespace TimeManagementApp.Dao
                 command.Parameters["@name"].Value = note.Name;
                 command.Parameters.Add("@note_id", System.Data.SqlDbType.Char);
                 command.Parameters["@note_id"].Value = note.Id;
-                command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-                command.Parameters["@user_id"].Value = User.UserId;
+                command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+                command.Parameters["@username"].Value = User.Username;
 
                 command.ExecuteNonQuery();
             }
             connection.Close();
         }
 
-        // TASK (task_id, user_id, name, due_date, description, completed, important, repeat_option, reminder, note_id)
+        // TASK (task_id, username, name, due_date, description, completed, important, repeat_option, reminder, note_id)
         public ObservableCollection<MyTask> GetAllTasks()
         {
             var connection = CreateConnection();
@@ -293,12 +381,12 @@ namespace TimeManagementApp.Dao
                         select task.task_id, task.name, task.due_date, task.description, task.completed, 
                                 task.important, task.repeat_option, task.reminder, task.note_id
                         from [TASK] task
-                        where task.user_id = @user_id
+                        where task.username = @username
                     ";
 
             var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
 
             var reader = command.ExecuteReader();
             while (reader.Read())
@@ -329,11 +417,11 @@ namespace TimeManagementApp.Dao
                         select task.task_id, task.name, task.due_date, task.description, task.completed, 
                                task.important, task.repeat_option, task.reminder, task.note_id
                         from [TASK] task
-                        where task.user_id = @user_id and CAST(task.due_date AS DATE) = CAST(GETDATE() AS DATE)
+                        where task.username = @username and CAST(task.due_date AS DATE) = CAST(GETDATE() AS DATE)
                     ";
             var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
 
             var reader = command.ExecuteReader();
             while (reader.Read())
@@ -360,8 +448,8 @@ namespace TimeManagementApp.Dao
         {
             var connection = CreateConnection();
             var sql = @"
-                        insert into [TASK] (name, due_date, description, completed, important, repeat_option, reminder, note_id, user_id)
-                        values (@name, @due_date, @description, @completed, @important, @repeat_option, @reminder, @note_id, @user_id)
+                        insert into [TASK] (name, due_date, description, completed, important, repeat_option, reminder, note_id, username)
+                        values (@name, @due_date, @description, @completed, @important, @repeat_option, @reminder, @note_id, @username)
                     ";
 
             var command = new SqlCommand(sql, connection);
@@ -381,8 +469,8 @@ namespace TimeManagementApp.Dao
             command.Parameters["@reminder"].Value = DBNull.Value; // Assuming default value
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
             command.Parameters["@note_id"].Value = DBNull.Value; // Assuming default value
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
             command.ExecuteNonQuery();
             connection.Close();
         }
@@ -393,7 +481,7 @@ namespace TimeManagementApp.Dao
             var sql = @"
                         update [TASK] task
                         set task.name = @name, task.due_date = @due_date, task.description = @description, task.completed = @completed, task.important = @important
-                        where task.task_id = @task_id and task.user_id = @user_id
+                        where task.task_id = @task_id and task.username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
@@ -406,8 +494,8 @@ namespace TimeManagementApp.Dao
             //command.Parameters["@completed"].Value = task.Completed;
             command.Parameters.Add("@task_id", System.Data.SqlDbType.Int);
             //command.Parameters["@task_id"].Value = task.Id;
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
             command.Parameters.Add("@important", System.Data.SqlDbType.Bit);
             //command.Parameters["@important"].Value = task.Important;
             command.ExecuteNonQuery();
@@ -419,13 +507,13 @@ namespace TimeManagementApp.Dao
             var connection = CreateConnection();
             var sql = @"
                         delete from [TASK] task
-                        where task.task_id = @task_id and task.user_id = @user_id
+                        where task.task_id = @task_id and task.username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@task_id", System.Data.SqlDbType.Int);
             //command.Parameters["@task_id"].Value = task.id;
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
             command.ExecuteNonQuery();
             connection.Close();
         }
@@ -435,16 +523,16 @@ namespace TimeManagementApp.Dao
         {
             var connection = CreateConnection();
             var sql = @"
-                        insert into [FOCUS_SESSION] (timespan, tag, user_id)
-                        values (@timespan, @tag, @user_id)
+                        insert into [FOCUS_SESSION] (timespan, tag, username)
+                        values (@timespan, @tag, @username)
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@timespan", System.Data.SqlDbType.BigInt);
             command.Parameters["@timespan"].Value = setting.FocusTimeMinutes;
-            command.Parameters.Add("@tag", System.Data.SqlDbType.VarChar);
+            command.Parameters.Add("@tag", System.Data.SqlDbType.NVarChar);
             command.Parameters["@tag"].Value = setting.Tag;
-            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
-            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
             command.ExecuteNonQuery();
             connection.Close();
         }

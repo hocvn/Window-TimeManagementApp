@@ -30,8 +30,8 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Image Height="100" Width="100" Margin="0 80 0 0" Source="{StaticResource LoginImage}"/>
-            <TextBlock Text="SIGN IN" FontSize="36" Margin="20, 10, 20, 50" TextAlignment="Center"/>
+            <Image Height="100" Width="100" Margin="0 60 0 0" Source="{StaticResource LoginImage}"/>
+            <TextBlock Text="SIGN IN" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel
@@ -105,11 +105,8 @@
 
         </RelativePanel>
 
-        <StackPanel
-            Grid.Row="2" 
-            Grid.Column="1"
-            Orientation="Vertical">
-
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical">
+            <!-- Register -->
             <HyperlinkButton 
                 x:Name="registerHyperLinkButton"
                 Content="Create new account" 
@@ -118,12 +115,12 @@
                 Margin="0 4 0 20"
                 Padding="0 4">
             </HyperlinkButton>
-
+            <!-- Error message -->
             <TextBlock 
                 x:Name="errorMessage" 
                 FontSize="16" 
                 Foreground="Red" 
-                Text="" 
+                Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" 
                 HorizontalAlignment="Center" 
                 Margin="10, 20, 10, 20">
             </TextBlock>

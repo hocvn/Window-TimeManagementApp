@@ -5,26 +5,25 @@
 exports.up = async function(knex) {
     await knex.raw(`
         CREATE TABLE [USER] (
-            user_id INT IDENTITY(1,1) PRIMARY KEY,
-            username VARCHAR(50),
+            username NVARCHAR(30) PRIMARY KEY,
             encrypted_password TEXT,
-            email VARCHAR(50)
+            email NVARCHAR(30)
         );
 
         CREATE TABLE NOTE (
             note_id INT IDENTITY(1,1) PRIMARY KEY,
-            user_id INT FOREIGN KEY REFERENCES [USER](user_id) ON DELETE NO ACTION,
+            username NVARCHAR(30) FOREIGN KEY REFERENCES [USER](username) ON DELETE NO ACTION,
             name NVARCHAR(50),
             content TEXT
         );
 
         CREATE TABLE TASK (
             task_id INT IDENTITY(1,1) PRIMARY KEY,
-            user_id INT FOREIGN KEY REFERENCES [USER](user_id) ON DELETE NO ACTION,
+            username NVARCHAR(30) FOREIGN KEY REFERENCES [USER](username) ON DELETE NO ACTION,
             name NVARCHAR(50),
             due_date DATETIME,
             completed BIT,
-            repeat_option VARCHAR(50),
+            repeat_option NVARCHAR(30),
             description NVARCHAR(100),
             note_id INT NULL,  -- Cho phép NULL
             FOREIGN KEY (note_id) REFERENCES NOTE(note_id) ON DELETE SET NULL, 
@@ -35,9 +34,9 @@ exports.up = async function(knex) {
 
         CREATE TABLE FOCUS_SESSION (
             session_id INT IDENTITY(1,1) PRIMARY KEY,
-            user_id INT FOREIGN KEY REFERENCES [USER](user_id) ON DELETE NO ACTION,
+            username NVARCHAR(30) FOREIGN KEY REFERENCES [USER](username) ON DELETE NO ACTION,
             timespan BIGINT,  
-            tag VARCHAR(50),
+            tag NVARCHAR(30),
             date DATE
         );
     `);

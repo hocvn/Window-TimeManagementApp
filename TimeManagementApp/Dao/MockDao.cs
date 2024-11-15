@@ -13,16 +13,36 @@ using TimeManagementApp.Note;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using TimeManagementApp.ToDo;
-using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using TimeManagementApp.Helper;
-using TimeManagementApp.Services;
+using static TimeManagementApp.UserCredential;
 
 namespace TimeManagementApp.Dao
 {
     public class MockDao : IDao
     {
+        private (string, string) EncryptPassword(string password)
+        {
+            // Encrypt the password
+            var passwordInBytes = Encoding.UTF8.GetBytes(password);
+            var entropyInBytes = new byte[20];
 
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(entropyInBytes);
+            }
+
+            var encryptedPasswordInBytes = ProtectedData.Protect(
+                   passwordInBytes,
+                   entropyInBytes,
+                   DataProtectionScope.CurrentUser
+            );
+
+            var encryptedPasswordBase64 = Convert.ToBase64String(encryptedPasswordInBytes);
+            var entropyInBase64 = Convert.ToBase64String(entropyInBytes);
+
+            return (encryptedPasswordBase64, entropyInBase64);
+        }
         public ObservableCollection<MyNote> GetAllNote()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -37,7 +57,23 @@ namespace TimeManagementApp.Dao
 
         public void CreateUser(string username, string password, string email)
         {
-            throw new NotImplementedException();
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                usersData = new Dictionary<string, UserInfo>();
+            }
+            else
+            {
+                usersData = JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+            }
+
+            (string encryptedPasswordBase64, string entropyInBase64) = EncryptPassword(password);
+            UserInfo userInfo = new UserInfo(encryptedPasswordBase64, entropyInBase64, email);
+            usersData[username] = userInfo;
+            usersDataJson = System.Text.Json.JsonSerializer.Serialize(usersData);
+            StorageHelper.SaveSetting("usersData", usersDataJson);
         }
 
         public void SaveNotes(ObservableCollection<MyNote> notes)
@@ -159,9 +195,155 @@ namespace TimeManagementApp.Dao
             return todayTasks;
         }
 
-        public bool CheckUser(string username, string password)
+        public bool CheckCredential(string username, string password)
         {
-            throw new NotImplementedException();
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return false; // There is no data stored for any user
+            }
+
+            usersData = JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            // Retrieve the encrypted password and entropy
+            if (usersData.ContainsKey(username))
+            {
+                var UserInfo = usersData[username];
+                var encryptedPasswordBase64 = UserInfo.Password;
+                var entropyBase64 = UserInfo.Entropy;
+
+                if (encryptedPasswordBase64 == null || entropyBase64 == null)
+                {
+                    return false;
+                }
+                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordBase64);
+                var entropyInBytes = Convert.FromBase64String(entropyBase64);
+
+                // Decrypt the password
+                var decryptedPasswordInBytes = ProtectedData.Unprotect(
+                    encryptedPasswordInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                string decryptedPassword = Encoding.UTF8.GetString(decryptedPasswordInBytes);
+                return decryptedPassword == password;
+            }
+            return false;            
+        }
+
+        public bool IsUsernameInUse(string username)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return false; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Key == username)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsEmailInUse(string email)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return false; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Value.Email == email)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public string GetPassword(string username)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return null; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            // Retrieve the encrypted password and entropy
+            if (usersData.ContainsKey(username))
+            {
+                var UserInfo = usersData[username];
+                var encryptedPasswordBase64 = UserInfo.Password;
+                var entropyBase64 = UserInfo.Entropy;
+
+                if (encryptedPasswordBase64 == null || entropyBase64 == null)
+                {
+                    return null;
+                }
+                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordBase64);
+                var entropyInBytes = Convert.FromBase64String(entropyBase64);
+
+                // Decrypt the password
+                var decryptedPasswordInBytes = ProtectedData.Unprotect(
+                    encryptedPasswordInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                return Encoding.UTF8.GetString(decryptedPasswordInBytes);
+            }
+            return null;
+        }
+
+        public string GetUsername(string email)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return null; // There is no data stored for any user
+            }
+
+            usersData = JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Value.Email == email)
+                {
+                    return usersData.ElementAt(i).Key;
+                }
+            }
+
+            return null;
+        }
+
+        public void ResetPassword(string username, string password, string email)
+        {
+            CreateUser(username, password, email);
         }
     }
 }

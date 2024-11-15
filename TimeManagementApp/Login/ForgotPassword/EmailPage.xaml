@@ -32,8 +32,8 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
-            <Image Height="100" Width="100" Margin="0 100 0 0" Source="{StaticResource LoginImage}"/>
-            <TextBlock Text="RECOVER YOUR ACCOUNT" FontSize="36" Margin="20, 10, 20, 50" TextAlignment="Center"/>
+            <Image Height="100" Width="100" Margin="0 60 0 0" Source="{StaticResource LoginImage}"/>
+            <TextBlock Text="RECOVER YOUR ACCOUNT" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel
@@ -101,7 +101,7 @@
             HorizontalAlignment="Center"
             Foreground="Red"
             x:Name="errorMessage"
-            Text=""
+            Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
             FontSize="16"
             Margin="20">
         </TextBlock>
