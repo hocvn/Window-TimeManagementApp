@@ -13,12 +13,14 @@ using TimeManagementApp.Note;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using TimeManagementApp.ToDo;
+using TimeManagementApp.Timer;
+using Microsoft.UI.Xaml.Media;
 
 namespace TimeManagementApp.Dao
 {
     public class MockDao : IDao
     {
-
+        // Notes -------------------------------------------------------------
         public ObservableCollection<MyNote> GetAllNote()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
@@ -39,7 +41,7 @@ namespace TimeManagementApp.Dao
         }
 
         // Open a file in local folder and load its content to RichEditBox
-        public async void OpenNote(RichEditBox editor, MyNote note)
+        public async Task OpenNote(RichEditBox editor, MyNote note)
         {
             try
             {
@@ -109,6 +111,8 @@ namespace TimeManagementApp.Dao
             SaveNotes(notes);
         }
         
+        
+        // Tasks -------------------------------------------------------------
         public ObservableCollection<MyTask> GetAllTasks()
         {
             return new ObservableCollection<MyTask>()
@@ -116,25 +120,149 @@ namespace TimeManagementApp.Dao
                 new MyTask()
                 {
                     TaskName = "Task 01",
-                    TaskDescription = "Description 01",
+                    Summarization = "Today, Repeat",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(1),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 02",
-                    TaskDescription = "Description 02",
+                    Summarization = "Tomorrow, Reminder",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(2),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 03",
-                    TaskDescription = "Description 03",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 04",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 05",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 06",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 07",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 08",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 09",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 10",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 11",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 12",
+                    Summarization = "0 of 2, Important",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(3),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 13",
+                    Summarization = "Today, Repeat",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(1),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 14",
+                    Summarization = "Tomorrow, Reminder",
+                    StartDateTime = DateTime.Now,
+                    DueDateTime = DateTime.Now.AddHours(2),
+                },
+                new MyTask()
+                {
+                    TaskName = "Task 15",
+                    Summarization = "0 of 2, Important",
                     StartDateTime = DateTime.Now,
                     DueDateTime = DateTime.Now.AddHours(3),
                 },
             };
+        }
+
+        public ObservableCollection<MyTask> GetTodayTask()
+        {
+            ObservableCollection<MyTask> todayTasks = new();
+            foreach (MyTask task in GetAllTasks())
+            {
+                if (task.DueDateTime.Date == DateTime.Now.Date)
+                {
+                    todayTasks.Add(task);
+                }
+            }
+            return todayTasks;
+        }
+
+
+        // Others ----------------------------------------------------------
+        public void SaveSession(FocusSession session)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
+        {
+            throw new NotImplementedException();
         }
     }
 }

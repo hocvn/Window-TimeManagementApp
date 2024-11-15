@@ -1,21 +1,8 @@
 ﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
 using Microsoft.Windows.AppNotifications;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using TimeManagementApp.Global;
+using TimeManagementApp.Timer;
 
 namespace TimeManagementApp
 {
@@ -29,6 +16,7 @@ namespace TimeManagementApp
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         /// 
+
         public App()
         {
             this.InitializeComponent();
@@ -37,6 +25,10 @@ namespace TimeManagementApp
         public static Window LoginWindow { get; private set; }
         public static Window RegisterWindow { get; private set; }
         public static Window MainWindow { get; private set; }
+        public static Window ForgotPasswordWindow { get; private set; }
+
+        public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
+
 
         /// <summary>
         /// Invoked when the application is launched.
@@ -45,7 +37,16 @@ namespace TimeManagementApp
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             LoginWindow = new LoginWindow();
+
+            AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
+            AppNotificationManager.Default.Register();
+
             LoginWindow.Activate();
+        }
+
+        private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
+        {
+            throw new NotImplementedException();
         }
     }
 }

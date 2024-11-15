@@ -7,16 +7,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:app="using:TimeManagementApp"
+    Background="{x:Bind app:App.BackgroundViewModel.WindowBackgroundBrush, Mode=OneWay}">
 
     <Grid RequestedTheme="Light">
-
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="1.5" />
-            </LinearGradientBrush>
-        </Grid.Background>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -30,24 +24,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel
-            Grid.Column="0" 
-            Grid.Row="0"
-            Grid.ColumnSpan="3">
-
-            <Image 
-                Height="100"
-                Width="100"
-                Margin="0 100 0 0"
-                Source="/Assets/Login2.png">
-            </Image>
-
-            <TextBlock 
-                Text="RECOVER YOUR ACCOUNT" 
-                FontSize="36" 
-                Margin="20, 10, 20, 50" 
-                TextAlignment="Center">
-            </TextBlock>
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+            <Image Height="100" Width="100" Margin="0 100 0 0" Source="{StaticResource LoginImage}"/>
+            <TextBlock Text="RECOVER YOUR ACCOUNT" FontSize="36" Margin="20, 10, 20, 50" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel

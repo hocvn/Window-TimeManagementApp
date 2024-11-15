@@ -11,7 +11,7 @@ namespace TimeManagementApp.Helper
     public class Dialog
     {
         public static async Task<ContentDialogResult> ShowContent
-            (XamlRoot root, string title, string content, string primaryButtonText, string closeButtonText)
+            (XamlRoot root, string title, string content, string primaryButtonText, string secondaryButtonText, string closeButtonText)
         {
             ContentDialog contentDialog = new ContentDialog
             {
@@ -19,6 +19,7 @@ namespace TimeManagementApp.Helper
                 Title = title,
                 Content = content,
                 PrimaryButtonText = primaryButtonText,
+                SecondaryButtonText = secondaryButtonText,
                 CloseButtonText = closeButtonText,
             };
 

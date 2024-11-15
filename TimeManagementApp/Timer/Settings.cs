@@ -14,6 +14,8 @@ namespace TimeManagementApp.Timer
         public int LongBreakMinutes { get; set; }
 
         public bool IsNotificationOn { get; set; }
+        
+        public string Tag { get; set; }
 
         // default settings
         public Settings()
@@ -23,6 +25,8 @@ namespace TimeManagementApp.Timer
             LongBreakMinutes = 10;
 
             IsNotificationOn = true;
+
+            Tag = "Studying";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

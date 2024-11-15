@@ -6,30 +6,27 @@
     xmlns:local="using:TimeManagementApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Activated="MainWindow_Activated"
     mc:Ignorable="d">
 
     <NavigationView 
         x:Name="MainNavigationView"
         RequestedTheme="Light"
-        Grid.Row="1"
         PaneDisplayMode="Left"
-        OpenPaneLength="250"
+        OpenPaneLength="200"
 
         IsSettingsVisible="True"
         IsBackButtonVisible="Collapsed"
         IsBackEnabled="False"
         IsTabStop="false"
-        SelectionChanged="NavigationView_SelectionChanged">
-
-        <NavigationView.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="2.5" />
-            </LinearGradientBrush>
-        </NavigationView.Background>
+        SelectionChanged="NavigationView_SelectionChanged"
+        
+        Background="{x:Bind local:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
+        
 
         <NavigationView.MenuItems>
             <NavigationViewItem 
+                x:Name="NavItem_Home"
                 Content="Home" 
                 Icon="Home" 
                 ToolTipService.ToolTip="Home"/>
@@ -57,33 +54,21 @@
             <NavigationViewItem 
                 Content="Calendar"
                 Icon="Calendar"
-                ToolTipService.ToolTip="Calendar"/>
+                ToolTipService.ToolTip="Calendar"
+                SelectsOnInvoked="False"/>
 
             <NavigationViewItem 
                 Content="Group" 
                 Icon="People" 
                 ToolTipService.ToolTip="Document options" 
                 SelectsOnInvoked="False">
-
-                <NavigationViewItem.MenuItems>
-                    <NavigationViewItem 
-                        Content="Group1" 
-                        Icon="NewFolder" 
-                        ToolTipService.ToolTip="Group1" 
-                        Tag="SamplePage5"/>
-
-                    <NavigationViewItem 
-                        Content="Group2" 
-                        Icon="OpenLocal" 
-                        ToolTipService.ToolTip="Group2" 
-                        Tag="SamplePage6"/>
-                </NavigationViewItem.MenuItems>
             </NavigationViewItem>
 
             <NavigationViewItem 
                 Content="Statistics"
                 Icon="PreviewLink"
-                ToolTipService.ToolTip="Statistics"/>
+                ToolTipService.ToolTip="Statistics"
+                SelectsOnInvoked="False"/>
 
         </NavigationView.MenuItems>
 
@@ -93,8 +78,7 @@
                 AutomationProperties.Name="Search"
                 PlaceholderText="Search"/>
         </NavigationView.AutoSuggestBox>
-
-
+        
         <Frame x:Name="mainFrame" />
     </NavigationView>
 </Window>

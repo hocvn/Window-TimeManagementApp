@@ -36,6 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="BlankPage.xaml" />
+    <None Remove="Home\HomePage.xaml" />
     <None Remove="LoginWindow.xaml" />
     <None Remove="Note\NoteMainPage.xaml" />
     <None Remove="Note\NotePage.xaml" />
@@ -44,6 +46,12 @@
     <None Remove="Login\ForgotPassword\OTPPage.xaml" />
     <None Remove="Login\ForgotPassword\ResetPasswordPage.xaml" />
     <None Remove="RegisterWindow.xaml" />
+    <None Remove="Resources\ImageResources.xaml" />
+    <None Remove="Settings\MainSettingsPage.xaml" />
+	<None Remove="Timer\MainTimerPage.xaml" />
+	<None Remove="Timer\SettingsTimerPage.xaml" />
+	<None Remove="ToDo\MainToDoPage.xaml" />
+	<None Remove="ToDo\EditToDoPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +66,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
+    <PackageReference Include="EPPlus" Version="7.4.2" />
     <PackageReference Include="Fody" Version="6.8.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -83,6 +92,21 @@
     <Page Update="Note\NoteMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Content Update="Assets\icons\afternoon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\icons\morning.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\icons\evening.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\icons\note.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\icons\task.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\notification.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -100,6 +124,36 @@
   <ItemGroup>
     <Folder Include="Login\Login\" />
     <Folder Include="Login\Register\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Settings\MainSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Timer\SettingsTimerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ToDo\EditToDoPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="BlankPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Resources\ImageResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Home\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Login\ForgotPassword\ResetPasswordPage.xaml">

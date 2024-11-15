@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Windows.Storage;
 using TimeManagementApp.Login.ForgotPassword;
 using Microsoft.UI.Windowing;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp
 {
@@ -18,7 +19,9 @@ namespace TimeManagementApp
         public LoginWindow()
         {
             this.InitializeComponent();
-            this.Title = "Time management";
+            // Set the window size
+            WindowInitHelper.SetWindowSize(this);
+            WindowInitHelper.SetTitle(this, "Time management");
 
             var rememberUsername = localSettings.Values["rememberUsername"] as string;
             if (!String.IsNullOrEmpty(rememberUsername))
@@ -35,27 +38,7 @@ namespace TimeManagementApp
                 passwordBox.Password = rememberPassword;
                 rememberCheckBox.IsChecked = true;
             }
-
-            // Set the window size
-            SetWindowSize();
         }
-
-        private void SetWindowSize()
-        {
-            var displayArea = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary);
-            var screenWidth = displayArea.WorkArea.Width;
-            var screenHeight = displayArea.WorkArea.Height;
-
-            int width = (int)(screenWidth * 0.8);
-            int height = (int)(screenHeight * 0.8);
-
-            // Center the window
-            int middleX = (int)(screenWidth - width) / 2;
-            int middleY = (int)(screenHeight - height) / 2;
-
-            this.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(middleX, Math.Max(middleY - 100, 0), width, height));
-        }
-
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
