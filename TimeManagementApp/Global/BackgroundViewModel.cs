@@ -18,12 +18,18 @@ namespace TimeManagementApp.Global
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private const double PageGradientStopOffset1 = 0.0;
+        private const double PageGradientStopOffset2 = 8.0;
+        private const double NavigationViewGradientStopOffset1 = 0.0;
+        private const double NavigationViewGradientStopOffset2 = 2.5;
+
+
         public BackgroundViewModel()
         {
             IDao dao = new LocalSettingsDao();
 
-            PageBackgroundBrush = dao.LoadSavedBackground(0.0, 8.0);
-            NavigationViewBackgroundBrush = dao.LoadSavedBackground(0.0, 2.5);
+            PageBackgroundBrush = dao.LoadSavedBackground(PageGradientStopOffset1, PageGradientStopOffset2);
+            NavigationViewBackgroundBrush = dao.LoadSavedBackground(NavigationViewGradientStopOffset1, NavigationViewGradientStopOffset2);
 
             if (PageBackgroundBrush == null)
             {
@@ -33,8 +39,8 @@ namespace TimeManagementApp.Global
                     EndPoint = new Point(0, 1),
                     GradientStops = new GradientStopCollection
                     {
-                        new GradientStop { Color = Colors.AliceBlue, Offset = 0.0 },
-                        new GradientStop { Color = Colors.CornflowerBlue, Offset = 8.0 }
+                        new GradientStop { Color = Colors.AliceBlue, Offset = PageGradientStopOffset1 },
+                        new GradientStop { Color = Colors.CornflowerBlue, Offset = PageGradientStopOffset2 }
                     }
                 };
 
@@ -44,8 +50,8 @@ namespace TimeManagementApp.Global
                     EndPoint = new Point(0, 1),
                     GradientStops = new GradientStopCollection
                     {
-                        new GradientStop { Color = Colors.AliceBlue, Offset = 0.0 },
-                        new GradientStop { Color = Colors.CornflowerBlue, Offset = 2.5 }
+                        new GradientStop { Color = Colors.AliceBlue, Offset = NavigationViewGradientStopOffset1 },
+                        new GradientStop { Color = Colors.CornflowerBlue, Offset = NavigationViewGradientStopOffset2 }
                     }
                 };
             }

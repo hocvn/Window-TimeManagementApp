@@ -27,8 +27,7 @@ namespace TimeManagementApp
         public static Window MainWindow { get; private set; }
         public static Window ForgotPasswordWindow { get; private set; }
 
-
-        public static ViewModelContainer ViewModelContainer { get; set; } = new ViewModelContainer();
+        public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
 
 
         /// <summary>

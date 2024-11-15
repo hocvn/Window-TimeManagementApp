@@ -10,7 +10,7 @@
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d"
     xmlns:app="using:TimeManagementApp"
-    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
 
     <Page.Resources>
@@ -61,7 +61,7 @@
                         <controls:SettingsCard Header="Sample themes">
                             <GridView ItemsSource="{x:Bind BrushesViewModel.BackgroundBrushes}" 
                                       ItemTemplate="{StaticResource BackgroundTemplate}"
-                                      SelectionChanged="GridView_SelectionChanged">
+                                      SelectionChanged="BackgroundGridView_SelectionChanged">
                             </GridView>
                         </controls:SettingsCard>
 

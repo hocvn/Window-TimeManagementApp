@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=local:NoteMainPage}"
     mc:Ignorable="d"
     xmlns:app="using:TimeManagementApp"
-    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <Page.Resources>
         <DataTemplate x:Key="NoteViewFormat" x:DataType="local:MyNote">

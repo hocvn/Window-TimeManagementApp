@@ -35,7 +35,7 @@ namespace TimeManagementApp.Settings
         public BrushesViewModel BrushesViewModel { get; set; }
 
 
-        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BackgroundGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var gridView = sender as GridView;
             var selectedBrush = gridView.SelectedItem as LinearGradientBrush;
@@ -45,8 +45,8 @@ namespace TimeManagementApp.Settings
             dao.SaveSelectedBackground(selectedBrush);
 
             // reload the background
-            App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush = dao.LoadSavedBackground(0.0, 8.0);
-            App.ViewModelContainer.BackgroundViewModel.NavigationViewBackgroundBrush = dao.LoadSavedBackground(0.0, 2.5);
+            App.BackgroundViewModel.PageBackgroundBrush = dao.LoadSavedBackground(0.0, 8.0);
+            App.BackgroundViewModel.NavigationViewBackgroundBrush = dao.LoadSavedBackground(0.0, 2.5);
         }
     }
 

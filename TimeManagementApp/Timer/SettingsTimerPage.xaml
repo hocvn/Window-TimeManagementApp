@@ -10,7 +10,7 @@
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d"
     xmlns:app="using:TimeManagementApp"
-    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <Grid>
         <StackPanel Padding="20">

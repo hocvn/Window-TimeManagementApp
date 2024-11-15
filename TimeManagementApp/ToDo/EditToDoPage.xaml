@@ -10,7 +10,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     xmlns:app="using:TimeManagementApp"
-    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <!--<Page.Resources>
         <helper:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>

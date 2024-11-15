@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:app="using:TimeManagementApp"
-    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <Grid>
         <!--Header-->

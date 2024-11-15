@@ -83,6 +83,12 @@ namespace TimeManagementApp.Dao
             return sessions;
         }
 
+        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            var sessions = GetAllSessions();
+            return sessions.Where(s => s.Tag == tag).ToList();
+        }
+
 
         // Others ---------------------------------------------------
         public void DeleteNote(MyNote note)
@@ -123,12 +129,6 @@ namespace TimeManagementApp.Dao
         public ObservableCollection<MyTask> GetTodayTask()
         {
             throw new NotImplementedException();
-        }
-
-        public List<FocusSession> GetAllSessionsWithTag(string tag)
-        {
-            var sessions = GetAllSessions();
-            return sessions.Where(s => s.Tag == tag).ToList();
         }
 
         public void SaveSelectedBackground(LinearGradientBrush selectedBrush)

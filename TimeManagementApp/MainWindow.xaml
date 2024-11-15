@@ -22,7 +22,7 @@
         IsTabStop="false"
         SelectionChanged="NavigationView_SelectionChanged"
         
-        Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
+        Background="{x:Bind app:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
         
 
         <NavigationView.MenuItems>
