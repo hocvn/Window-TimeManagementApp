@@ -1,6 +1,6 @@
  # Cách chạy database 
 - Tải Docker desktop (nếu chạy commandline thì tải trên terminal)
-- Chạy container: Docker desktop -> chạy container hoặc command line ```docker run sqlcontainer```
+- Chạy container: Docker desktop -> chạy container hoặc command line ```docker start sqlcontainer```
 
 # Kết nối database
 ## 1, SQL Server
