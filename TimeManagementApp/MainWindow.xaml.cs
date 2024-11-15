@@ -8,6 +8,8 @@ using TimeManagementApp.ToDo;
 using TimeManagementApp.Home;
 using TimeManagementApp.Helper;
 using TimeManagementApp.Services;
+using Windows.UI.ApplicationSettings;
+using TimeManagementApp.Settings;
 
 namespace TimeManagementApp
 {
@@ -39,6 +41,12 @@ namespace TimeManagementApp
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            if (args.IsSettingsSelected)
+            {
+                NavigationService.Navigate(typeof(MainSettingsPage));
+                return;
+            }
+
             FrameNavigationOptions navOptions = new();
             navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
 
@@ -65,7 +73,9 @@ namespace TimeManagementApp
             {
                 // other nav
             }
+
             NavigationService.Navigate(pageType);
         }
+
     }
 }

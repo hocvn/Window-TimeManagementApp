@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppNotifications;
 using System;
+using TimeManagementApp.Global;
 using TimeManagementApp.Timer;
 
 namespace TimeManagementApp
@@ -26,6 +27,7 @@ namespace TimeManagementApp
         public static Window MainWindow { get; private set; }
         public static Window ForgotPasswordWindow { get; private set; }
 
+        public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
 
 
         /// <summary>

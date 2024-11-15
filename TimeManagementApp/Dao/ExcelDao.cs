@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -24,51 +25,6 @@ namespace TimeManagementApp.Dao
             // Ensure EPPlus license context is set
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
         }
-
-
-        // Notes ---------------------------------------------------
-        public void DeleteNote(MyNote note)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ObservableCollection<MyNote> GetAllNote()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task OpenNote(RichEditBox editor, MyNote note)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RenameNote(MyNote note)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveNote(RichEditBox editor, MyNote note)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveNotes(ObservableCollection<MyNote> notes)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        // Tasks -------------------------------------------------------
-        public ObservableCollection<MyTask> GetAllTasks()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ObservableCollection<MyTask> GetTodayTask()
-        {
-            throw new NotImplementedException();
-        }
-
 
         // Timer ---------------------------------------------------
         public void SaveSession(FocusSession session)
@@ -131,6 +87,58 @@ namespace TimeManagementApp.Dao
         {
             var sessions = GetAllSessions();
             return sessions.Where(s => s.Tag == tag).ToList();
+        }
+
+
+        // Others ---------------------------------------------------
+        public void DeleteNote(MyNote note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservableCollection<MyNote> GetAllNote()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task OpenNote(RichEditBox editor, MyNote note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RenameNote(MyNote note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveNote(RichEditBox editor, MyNote note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveNotes(ObservableCollection<MyNote> notes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservableCollection<MyTask> GetAllTasks()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservableCollection<MyTask> GetTodayTask()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,6 +38,12 @@ namespace TimeManagementApp.Dao
         void SaveSession(FocusSession session);
         List<FocusSession> GetAllSessions();
         List<FocusSession> GetAllSessionsWithTag(string tag);
+
+
+        // Background -----------------------------------------
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush);
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2);
+
     }
 }
 
