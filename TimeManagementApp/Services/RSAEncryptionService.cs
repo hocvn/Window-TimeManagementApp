@@ -1,33 +1,33 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Services
 {
-    public class EncryptionService
+    public class RSAEncryptionService
     {
         public (string EncryptedTextBase64, RSAParameters PrivateKey) Encrypt(string text)
         {
-            byte[] dataToEncrypt = Encoding.UTF8.GetBytes(text);
-            RSAParameters publicKey;
-            RSAParameters privateKey;
-            // Create a new RSA to generate a new public and private key pair
-            using (var rsa = RSA.Create())
+            if (string.IsNullOrEmpty(text))
             {
-                rsa.KeySize = 2048;
-                publicKey = rsa.ExportParameters(false);
-                privateKey = rsa.ExportParameters(true);
+                throw new ArgumentException("Text to encrypt cannot be null or empty.", nameof(text));
             }
+
+            byte[] dataToEncrypt = Encoding.UTF8.GetBytes(text);
 
             using (var rsa = RSA.Create())
             {
-                rsa.ImportParameters(publicKey);
+                rsa.KeySize = 2048; 
+                var publicKey = rsa.ExportParameters(false); 
+                var privateKey = rsa.ExportParameters(true); 
+
                 byte[] encryptedData = rsa.Encrypt(dataToEncrypt, RSAEncryptionPadding.Pkcs1);
 
                 return (Convert.ToBase64String(encryptedData), privateKey);
             }
         }
-
 
         public string Decrypt(string encryptedTextBase64, RSAParameters privateKey)
         {
@@ -54,6 +54,25 @@ namespace TimeManagementApp.Services
             byte[] dataToDecrypt = Convert.FromBase64String(encryptedTextBase64);
             byte[] decryptedData = ProtectedData.Unprotect(dataToDecrypt, null, DataProtectionScope.CurrentUser);
             return Encoding.UTF8.GetString(decryptedData);
+        }
+
+        public void SavePrivateKey(RSAParameters privateKey, string username)
+        {
+            var rsaSerializable = new RSAParametersSerializable(privateKey);
+            string privateKeyJson = JsonSerializer.Serialize(rsaSerializable);
+            StorageHelper.SaveSetting(username + "_PrivateKey", privateKeyJson);
+        }
+
+        public RSAParameters GetPrivateKey(string username)
+        {
+            if (StorageHelper.ContainsSetting(username + "_PrivateKey"))
+            {
+                string privateKeyJson = StorageHelper.GetSetting(username + "_PrivateKey");
+                var rsaSerializable = JsonSerializer.Deserialize<RSAParametersSerializable>(privateKeyJson);
+                return rsaSerializable.RSAParameters;
+            }
+
+            throw new Exception("Private key not found in local settings.");
         }
     }
 }

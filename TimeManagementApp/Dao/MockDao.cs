@@ -13,6 +13,10 @@ using TimeManagementApp.Note;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using TimeManagementApp.ToDo;
+using Microsoft.Data.SqlClient;
+using System.Security.Cryptography;
+using TimeManagementApp.Helper;
+using TimeManagementApp.Services;
 
 namespace TimeManagementApp.Dao
 {
@@ -29,6 +33,11 @@ namespace TimeManagementApp.Dao
                 notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
             }
             return notes;
+        }
+
+        public void CreateUser(string username, string password, string email)
+        {
+            throw new NotImplementedException();
         }
 
         public void SaveNotes(ObservableCollection<MyNote> notes)
@@ -148,6 +157,11 @@ namespace TimeManagementApp.Dao
                 }
             }
             return todayTasks;
+        }
+
+        public bool CheckUser(string username, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

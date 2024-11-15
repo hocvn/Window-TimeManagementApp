@@ -7,7 +7,7 @@ exports.up = async function(knex) {
         CREATE TABLE [USER] (
             user_id INT IDENTITY(1,1) PRIMARY KEY,
             username VARCHAR(50),
-            encrypted_password VARCHAR(50),
+            encrypted_password TEXT,
             email VARCHAR(50)
         );
 

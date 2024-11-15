@@ -1,9 +1,8 @@
 using System;
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using TimeManagementApp.Dao;
 using TimeManagementApp.Helper;
-using Windows.Storage;
 
 namespace TimeManagementApp
 {
@@ -12,9 +11,27 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class RegisterWindow : Window
     {
-        private Window m_window;
+        public class RegisterViewModel 
+        {
+            public string Username { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+            public string PasswordConfirmed { get; set; }
+            private IDao Dao { get; set; }
 
-        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            public RegisterViewModel()
+            {
+                Dao = new SqlDao();
+            }
+
+            public void SaveCredential(string username, string password, string email)
+            {
+                Dao.CreateUser(username, password, email);
+            }
+        }
+
+        public RegisterViewModel ViewModel { get; set; } = new RegisterViewModel();
+
         public RegisterWindow()
         {
             this.InitializeComponent();
@@ -40,10 +57,12 @@ namespace TimeManagementApp
 
             // Sign up successfully
             errorMessage.Text = "";
-            user.SaveCredential(username, password, email);
-            localSettings.Values.Remove("rememberUsername");
+            //user.SaveCredential(username, password, email);
+            ViewModel.SaveCredential(username, password, email);
+            StorageHelper.RemoveSetting("rememberUsername");
 
             // Display notification dialog
+            //Dialog.ShowContent(((FrameworkElement)sender).XamlRoot, "SUCCESSFUL", "Your account have been created", "Login", null, null);
             ContentDialog dialog = new ContentDialog()
             {
                 Title = "SUCCESSFUL",
@@ -57,8 +76,8 @@ namespace TimeManagementApp
 
         private void Dialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            m_window = new LoginWindow();
-            m_window.Activate();
+            Window loginWindow = new LoginWindow();
+            loginWindow.Activate();
             this.Close();
         }
 
@@ -115,8 +134,8 @@ namespace TimeManagementApp
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            m_window = new LoginWindow();
-            m_window.Activate();
+            Window loginWindow = new LoginWindow();
+            loginWindow.Activate();
             this.Close();
         }
     }

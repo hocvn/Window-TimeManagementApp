@@ -20,15 +20,32 @@ namespace TimeManagementApp.Dao
 
         private readonly UserSingleton User = UserSingleton.Instance;
 
-        private readonly EncryptionService EncryptionService = new();
+        private readonly RSAEncryptionService EncryptionService = new();
+
+        //private SqlConnection CreateConnection()
+        //{
+        //    var builder = new SqlConnectionStringBuilder
+        //    {
+        //        DataSource = ".\\SQLEXPRESS",
+        //        InitialCatalog = "timemanagementdb",
+        //        IntegratedSecurity = true,
+        //        TrustServerCertificate = true
+        //    };
+
+        //    var connectionString = builder.ToString();
+        //    var connection = new SqlConnection(connectionString);
+        //    connection.Open();
+        //    return connection;
+        //}
 
         private SqlConnection CreateConnection()
         {
             var builder = new SqlConnectionStringBuilder
             {
-                DataSource = ".\\SQLEXPRESS",
-                InitialCatalog = "TimeManagementDB",
-                IntegratedSecurity = true,
+                DataSource = "localhost,1433",  
+                InitialCatalog = "timemanagementdb",
+                UserID = "sa",                  
+                Password = "sqlserver@123",       
                 TrustServerCertificate = true
             };
 
@@ -38,15 +55,16 @@ namespace TimeManagementApp.Dao
             return connection;
         }
 
+
         // User credentials
         public bool CheckUser(string username, string password)
         {
             var connection = CreateConnection();
             var result = false;
             var sql = @"
-                        select user.user_id, user.username, user.encrypted_password
-                        from [USER] user
-                        where user.username = @username
+                        select user_id, username, encrypted_password
+                        from [USER] 
+                        where username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
@@ -66,8 +84,7 @@ namespace TimeManagementApp.Dao
                 return false;
             }
 
-            string privateKeyJson = StorageHelper.GetSetting(username);
-            RSAParameters privateKey = JsonSerializer.Deserialize<RSAParameters>(privateKeyJson);
+            RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
             // Decrypt password
             string decryptedPassword = EncryptionService.Decrypt(User.EncryptedPassword, privateKey);
 
@@ -80,19 +97,18 @@ namespace TimeManagementApp.Dao
         {
             // Encrypt password and save private key to local settings 
             (string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
-            string privateKeyJson = JsonSerializer.Serialize(PrivateKey);
-            StorageHelper.SaveSetting(username, privateKeyJson);
+            EncryptionService.SavePrivateKey(PrivateKey, username);
 
             var connection = CreateConnection();
             var sql = @"
-                        insert into [USER] (username, password, email)
-                        values (@username, @password, @email)
+                        insert into [USER] (username, encrypted_password, email)
+                        values (@username, @encrypted_password, @email)
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
             command.Parameters["@username"].Value = username;
-            command.Parameters.Add("@password", System.Data.SqlDbType.Text);
-            command.Parameters["@password"].Value = EncryptedPasswordBase64;
+            command.Parameters.Add("@encrypted_password", System.Data.SqlDbType.Text);
+            command.Parameters["@encrypted_password"].Value = EncryptedPasswordBase64;
             command.Parameters.Add("@email", System.Data.SqlDbType.VarChar);
             command.Parameters["@email"].Value = email;
 
@@ -110,14 +126,14 @@ namespace TimeManagementApp.Dao
             var connection = CreateConnection();
             var sql = @"
                         update [USER] 
-                        set password = @password
+                        set encrypted_password = @encrypted_password
                         where username = @username and email = @user_email
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
             command.Parameters["@username"].Value = username;
-            command.Parameters.Add("@password", System.Data.SqlDbType.Text);
-            command.Parameters["@password"].Value = EncryptedPasswordBase64;
+            command.Parameters.Add("@encrypted_password", System.Data.SqlDbType.Text);
+            command.Parameters["@encrypted_password"].Value = EncryptedPasswordBase64;
             command.Parameters.Add("@user_email", System.Data.SqlDbType.VarChar);
             command.Parameters["@user_email"].Value = email;
 

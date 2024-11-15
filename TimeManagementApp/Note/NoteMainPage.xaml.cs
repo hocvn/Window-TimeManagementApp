@@ -93,8 +93,7 @@ namespace TimeManagementApp.Note
         private void Note_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (e.ClickedItem is MyNote clickedItem)
-            {
-                //Frame.Navigate(typeof(NotePage), clickedItem);
+            { 
                 MainWindow.NavigationService.Navigate(typeof(NotePage), clickedItem);
             }
         }

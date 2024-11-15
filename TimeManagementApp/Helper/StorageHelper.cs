@@ -15,5 +15,20 @@ namespace TimeManagementApp.Helper
         {
             return localSettings.Values[key] as string;
         }
+
+        public static void RemoveSetting(string key)
+        {
+            localSettings.Values.Remove(key);
+        }
+
+        public static bool ContainsSetting(string key)
+        {
+            return localSettings.Values.ContainsKey(key);
+        }
+
+        public static void ClearAllSettings()
+        {
+            localSettings.Values.Clear();
+        }
     }
 }
