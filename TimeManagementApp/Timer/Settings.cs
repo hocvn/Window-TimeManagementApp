@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace TimeManagementApp.Timer
 {
@@ -15,6 +10,8 @@ namespace TimeManagementApp.Timer
 
         public bool IsNotificationOn { get; set; }
 
+        public string Tag { get; set; }
+
         // default settings
         public Settings()
         {
@@ -23,6 +20,8 @@ namespace TimeManagementApp.Timer
             LongBreakMinutes = 10;
 
             IsNotificationOn = true;
+
+            Tag = "Studying";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

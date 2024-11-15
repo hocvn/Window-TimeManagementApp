@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TimeManagementApp.Helper;
 using TimeManagementApp.Note;
 using TimeManagementApp.Services;
+using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
 
 namespace TimeManagementApp.Dao
@@ -101,7 +102,27 @@ namespace TimeManagementApp.Dao
 
         public void ResetPassword(string username, string password, string email)
         {
-            throw new NotImplementedException();
+            // Encrypt new password and save private key to local settings 
+            (string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
+            string privateKeyJson = JsonSerializer.Serialize(PrivateKey);
+            StorageHelper.SaveSetting(username, privateKeyJson);
+
+            var connection = CreateConnection();
+            var sql = @"
+                        update [USER] 
+                        set password = @password
+                        where username = @username and email = @user_email
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@username", System.Data.SqlDbType.VarChar);
+            command.Parameters["@username"].Value = username;
+            command.Parameters.Add("@password", System.Data.SqlDbType.Text);
+            command.Parameters["@password"].Value = EncryptedPasswordBase64;
+            command.Parameters.Add("@user_email", System.Data.SqlDbType.VarChar);
+            command.Parameters["@user_email"].Value = email;
+
+            command.ExecuteNonQuery();
+            connection.Close();
         }
 
         // Note
@@ -247,13 +268,14 @@ namespace TimeManagementApp.Dao
             connection.Close();
         }
 
-        // Todo-list
+        // TASK (task_id, user_id, name, due_date, description, completed, important, repeat_option, reminder, note_id)
         public ObservableCollection<MyTask> GetAllTasks()
         {
             var connection = CreateConnection();
             var result = new ObservableCollection<MyTask>();
             var sql = @"
-                        select task.name, task.due_date, task.description, task.completed
+                        select task.task_id, task.name, task.due_date, task.description, task.completed, 
+                                task.important, task.repeat_option, task.reminder, task.note_id
                         from [TASK] task
                         where task.user_id = @user_id
                     ";
@@ -267,10 +289,14 @@ namespace TimeManagementApp.Dao
             {
                 var task = new MyTask
                 {
-                    TaskName = reader.GetString(0),
-                    DueDateTime = reader.GetDateTime(1),
-                    TaskDescription = reader.GetString(2),
-                    //Completed = reader.GetBoolean(3)
+                    TaskName = reader.GetString(1),
+                    DueDateTime = reader.GetDateTime(2),
+                    TaskDescription = reader.GetString(3),
+                    //Completed = reader.GetBoolean(4),
+                    //Important = reader.GetBoolean(5),
+                    //RepeatOption = reader.GetString(6),
+                    //Reminder = reader.GetDateTime(7),
+                    //NoteId = reader.Int(8)
                 };
                 result.Add(task);
             }
@@ -284,11 +310,11 @@ namespace TimeManagementApp.Dao
             var connection = CreateConnection();
             var result = new ObservableCollection<MyTask>();
             var sql = @"
-                        select task.name, task.due_date, task.description, task.completed
+                        select task.task_id, task.name, task.due_date, task.description, task.completed, 
+                               task.important, task.repeat_option, task.reminder, task.note_id
                         from [TASK] task
                         where task.user_id = @user_id and CAST(task.due_date AS DATE) = CAST(GETDATE() AS DATE)
                     ";
-
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
             command.Parameters["@user_id"].Value = User.UserId;
@@ -298,16 +324,113 @@ namespace TimeManagementApp.Dao
             {
                 var task = new MyTask
                 {
-                    TaskName = reader.GetString(0),
-                    DueDateTime = reader.GetDateTime(1),
-                    TaskDescription = reader.GetString(2),
-                    //Completed = reader.GetBoolean(3)
+                    TaskName = reader.GetString(1),
+                    DueDateTime = reader.GetDateTime(2),
+                    TaskDescription = reader.GetString(3),
+                    //Completed = reader.GetBoolean(4),
+                    //Important = reader.GetBoolean(5),
+                    //RepeatOption = reader.GetString(6),
+                    //Reminder = reader.GetDateTime(7),
+                    //NoteId = reader.GetInt(8)
                 };
                 result.Add(task);
             }
 
             connection.Close();
             return result;
+        }
+
+        public void AddTask(MyTask task)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        insert into [TASK] (name, due_date, description, completed, important, repeat_option, reminder, note_id, user_id)
+                        values (@name, @due_date, @description, @completed, @important, @repeat_option, @reminder, @note_id, @user_id)
+                    ";
+
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@name"].Value = task.TaskName;
+            command.Parameters.Add("@due_date", System.Data.SqlDbType.DateTime);
+            command.Parameters["@due_date"].Value = task.DueDateTime;
+            command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@description"].Value = task.TaskDescription;
+            command.Parameters.Add("@completed", System.Data.SqlDbType.Bit);
+            command.Parameters["@completed"].Value = false;
+            command.Parameters.Add("@important", System.Data.SqlDbType.Bit);
+            command.Parameters["@important"].Value = false; // Assuming default value
+            command.Parameters.Add("@repeat_option", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@repeat_option"].Value = DBNull.Value; // Assuming default value
+            command.Parameters.Add("@reminder", System.Data.SqlDbType.DateTime);
+            command.Parameters["@reminder"].Value = DBNull.Value; // Assuming default value
+            command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
+            command.Parameters["@note_id"].Value = DBNull.Value; // Assuming default value
+            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
+            command.Parameters["@user_id"].Value = User.UserId;
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        public void UpdateTask(MyTask task)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        update [TASK] task
+                        set task.name = @name, task.due_date = @due_date, task.description = @description, task.completed = @completed, task.important = @important
+                        where task.task_id = @task_id and task.user_id = @user_id
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@name"].Value = task.TaskName;
+            command.Parameters.Add("@due_date", System.Data.SqlDbType.DateTime);
+            command.Parameters["@due_date"].Value = task.DueDateTime;
+            command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@description"].Value = task.TaskDescription;
+            command.Parameters.Add("@completed", System.Data.SqlDbType.Bit);
+            //command.Parameters["@completed"].Value = task.Completed;
+            command.Parameters.Add("@task_id", System.Data.SqlDbType.Int);
+            //command.Parameters["@task_id"].Value = task.Id;
+            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
+            command.Parameters["@user_id"].Value = User.UserId;
+            command.Parameters.Add("@important", System.Data.SqlDbType.Bit);
+            //command.Parameters["@important"].Value = task.Important;
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        public void DeleteTask(MyTask task)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        delete from [TASK] task
+                        where task.task_id = @task_id and task.user_id = @user_id
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@task_id", System.Data.SqlDbType.Int);
+            //command.Parameters["@task_id"].Value = task.id;
+            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
+            command.Parameters["@user_id"].Value = User.UserId;
+            command.ExecuteNonQuery();
+            connection.Close();
+        }
+
+        // Time
+        public void AddFocusSession(Settings setting)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        insert into [FOCUS_SESSION] (timespan, tag, user_id)
+                        values (@timespan, @tag, @user_id)
+                    ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@timespan", System.Data.SqlDbType.BigInt);
+            command.Parameters["@timespan"].Value = setting.FocusTimeMinutes;
+            command.Parameters.Add("@tag", System.Data.SqlDbType.VarChar);
+            command.Parameters["@tag"].Value = setting.Tag;
+            command.Parameters.Add("@user_id", System.Data.SqlDbType.Int);
+            command.Parameters["@user_id"].Value = User.UserId;
+            command.ExecuteNonQuery();
+            connection.Close();
         }
     }
 }
