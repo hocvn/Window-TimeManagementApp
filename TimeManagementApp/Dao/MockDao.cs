@@ -14,6 +14,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using TimeManagementApp.ToDo;
 using TimeManagementApp.Timer;
+using Microsoft.UI.Xaml.Media;
 
 namespace TimeManagementApp.Dao
 {
@@ -238,7 +239,7 @@ namespace TimeManagementApp.Dao
         }
 
 
-        // Timer ----------------------------------------------------------
+        // Others ----------------------------------------------------------
         public void SaveSession(FocusSession session)
         {
             throw new NotImplementedException();
@@ -250,6 +251,16 @@ namespace TimeManagementApp.Dao
         }
 
         public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
         {
             throw new NotImplementedException();
         }

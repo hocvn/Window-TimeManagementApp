@@ -9,17 +9,10 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:app="using:TimeManagementApp"
+    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="8" />
-            </LinearGradientBrush>
-        </Grid.Background>
-
-        
         <StackPanel Padding="20">
             
             <!--Header-->

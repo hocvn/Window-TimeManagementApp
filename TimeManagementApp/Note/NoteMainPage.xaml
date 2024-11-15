@@ -7,7 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DataContext="{d:DesignInstance Type=local:NoteMainPage}"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:app="using:TimeManagementApp"
+    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <Page.Resources>
         <DataTemplate x:Key="NoteViewFormat" x:DataType="local:MyNote">
@@ -51,13 +52,6 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="8" />
-            </LinearGradientBrush>
-        </Grid.Background>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>

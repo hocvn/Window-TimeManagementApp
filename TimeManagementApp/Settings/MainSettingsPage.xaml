@@ -9,11 +9,20 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d"
-    Background="{Binding BackgroundTheme.Instance}">
+    xmlns:app="using:TimeManagementApp"
+    Background="{x:Bind app:App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+
+
+    <Page.Resources>
+        <DataTemplate x:Key="BackgroundTemplate">
+            <Border Width="64" Height="64" CornerRadius="4" Background="{Binding}">
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
 
     <Grid>
         <StackPanel Padding="20">
-
             <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
                 <SymbolIcon Symbol="Setting"/>
                 <TextBlock Text="Settings" 
@@ -21,151 +30,62 @@
                            Margin="30,-3,0,0"/>
             </StackPanel>
 
-            <ScrollView>
-                <StackPanel Spacing="5">
-                    <controls:SettingsCard Header="Support"
-                           HeaderIcon="{ui:FontIcon Glyph='&#xE71B;'}"                               
-                           IsEnabled="True">
-                        <controls:SettingsCard.Description>
-                            <HyperlinkButton Content="Learn how to use the app" />
-                        </controls:SettingsCard.Description>
-                        <Button Content="Open Link"
-                                Style="{StaticResource AccentButtonStyle}" />
-                    </controls:SettingsCard>
+            <StackPanel Spacing="5">
+                <controls:SettingsCard Header="Support"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE71B;'}"                               
+                                       IsEnabled="True">
+                    <controls:SettingsCard.Description>
+                        <HyperlinkButton Content="Learn how to use the app" />
+                    </controls:SettingsCard.Description>
+                    <Button Content="Open Link"
+                            Style="{StaticResource AccentButtonStyle}" />
+                </controls:SettingsCard>
 
-                    <controls:SettingsCard Header="Country"
-                       HeaderIcon="{ui:FontIcon Glyph='&#xE707;'}"                               
-                       Description="The language and datetime should correspond to the Country"
-                       IsEnabled="True">
-                        <ComboBox SelectedIndex="0">
-                            <ComboBoxItem>England</ComboBoxItem>
-                            <ComboBoxItem>Vietnam</ComboBoxItem>
-                        </ComboBox>
-                    </controls:SettingsCard>
+                <controls:SettingsCard Header="Country"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE707;'}"                               
+                                       Description="The language and datetime should correspond to the Country"
+                                       IsEnabled="True">
+                    <ComboBox SelectedIndex="0">
+                        <ComboBoxItem>England</ComboBoxItem>
+                        <ComboBoxItem>Vietnam</ComboBoxItem>
+                    </ComboBox>
+                </controls:SettingsCard>
 
-                    <controls:SettingsExpander Header="Background Theme"
-                               HeaderIcon="{ui:FontIcon Glyph='&#xE91B;'}"
-                               Description="Choose your favourite background for better experience"
-                               IsEnabled="True"
-                               IsExpanded="True">
+                <controls:SettingsExpander Header="Background Theme"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE91B;'}"
+                                           Description="Choose your favourite background for better experience"
+                                           IsEnabled="True"
+                                           IsExpanded="True">
 
-                        <controls:SettingsExpander.Items>
-                            <controls:SettingsCard Header="Sample themes">
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="Sample themes">
+                            <GridView ItemsSource="{x:Bind BrushesViewModel.BackgroundBrushes}" 
+                                      ItemTemplate="{StaticResource BackgroundTemplate}"
+                                      SelectionChanged="GridView_SelectionChanged">
+                            </GridView>
+                        </controls:SettingsCard>
 
-                                <GridView>
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="AliceBlue" Offset="0.0"/>
-                                                    <GradientStop Color="CornflowerBlue" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
+                        <controls:SettingsCard Header="Or you can use your own background">
+                            <Button Content="Browse template"/>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
 
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="PaleTurquoise" Offset="0.0"/>
-                                                    <GradientStop Color="MediumPurple" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
+                <controls:SettingsCard Header="Database"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE1DB;'}"                               
+                                       Description="Choose database to be conntected"
+                                       IsEnabled="True"
+                                       IsClickEnabled="True">
+                </controls:SettingsCard>
 
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="LightCoral" Offset="0.0"/>
-                                                    <GradientStop Color="Tomato" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
+                <controls:SettingsCard Header="Account"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE77B;'}"
+                                       Description="Change password, Log out, Account Recovery"
+                                       IsEnabled="True"
+                                       IsClickEnabled="True">
+                </controls:SettingsCard>
 
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="MistyRose" Offset="0.0"/>
-                                                    <GradientStop Color="Salmon" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
-
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="LavenderBlush" Offset="0.0"/>
-                                                    <GradientStop Color="HotPink" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
-
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="Honeydew" Offset="0.0"/>
-                                                    <GradientStop Color="LightGreen" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
-
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="LightYellow" Offset="0.0"/>
-                                                    <GradientStop Color="Gold" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
-
-                                    <GridViewItem>
-                                        <Border Width="64" Height="64" CornerRadius="4">
-                                            <Border.Background>
-                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                    <GradientStop Color="Lavender" Offset="0.0"/>
-                                                    <GradientStop Color="SlateBlue" Offset="1.0"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-                                    </GridViewItem>
-                                </GridView>
-
-                            </controls:SettingsCard>
-
-                            <controls:SettingsCard Header="Or you can use your own background">
-                                <Button Content="Browse template"/>
-                            </controls:SettingsCard>
-                        </controls:SettingsExpander.Items>
-                    </controls:SettingsExpander>
-
-                    <controls:SettingsCard Header="Database"
-                           HeaderIcon="{ui:FontIcon Glyph='&#xE1DB;'}"                               
-                           Description="Choose database to be conntected"
-                           IsEnabled="True"
-                           IsClickEnabled="True">
-                    </controls:SettingsCard>
-
-                    <controls:SettingsCard Header="Account"
-                           HeaderIcon="{ui:FontIcon Glyph='&#xE77B;'}"
-                           Description="Change password, Log out, Account Recovery"
-                           IsEnabled="True"
-                           IsClickEnabled="True">
-                    </controls:SettingsCard>
-
-                </StackPanel>
-            </ScrollView>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

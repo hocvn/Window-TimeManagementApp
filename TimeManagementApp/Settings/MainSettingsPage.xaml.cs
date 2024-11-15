@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using TimeManagementApp.Dao;
+using TimeManagementApp.Global;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,6 +28,26 @@ namespace TimeManagementApp.Settings
         public MainSettingsPage()
         {
             this.InitializeComponent();
+
+            BrushesViewModel = new BrushesViewModel();
+        }
+
+        public BrushesViewModel BrushesViewModel { get; set; }
+
+
+        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var gridView = sender as GridView;
+            var selectedBrush = gridView.SelectedItem as LinearGradientBrush;
+
+            // save to local settings
+            IDao dao = new LocalSettingsDao();
+            dao.SaveSelectedBackground(selectedBrush);
+
+            // reload the background
+            App.ViewModelContainer.BackgroundViewModel.PageBackgroundBrush = dao.LoadSavedBackground(0.0, 8.0);
+            App.ViewModelContainer.BackgroundViewModel.NavigationViewBackgroundBrush = dao.LoadSavedBackground(0.0, 2.5);
         }
     }
+
 }
