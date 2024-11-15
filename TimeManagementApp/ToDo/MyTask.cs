@@ -13,6 +13,7 @@ namespace TimeManagementApp.ToDo
         public string Summarization { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime DueDateTime { get; set; }
+        public bool IsCompleted { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
