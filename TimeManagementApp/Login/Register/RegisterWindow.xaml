@@ -8,14 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid RequestedTheme="Light">
-
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="1.5" />
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid RequestedTheme="Light"
+          Background="{x:Bind local:App.BackgroundViewModel.WindowBackgroundBrush, Mode=OneWay}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

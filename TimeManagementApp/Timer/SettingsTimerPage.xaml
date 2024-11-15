@@ -13,14 +13,6 @@
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="8" />
-            </LinearGradientBrush>
-        </Grid.Background>
-
-        
         <StackPanel Padding="20">
             
             <!--Header-->
