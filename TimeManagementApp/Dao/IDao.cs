@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TimeManagementApp.Note;
+using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
 
 namespace TimeManagementApp.Dao
 {
     public interface IDao
     {
+        // Notes -------------------------------------------------
         ObservableCollection<MyNote> GetAllNote();
 
         void SaveNotes(ObservableCollection<MyNote> notes);
@@ -24,8 +27,16 @@ namespace TimeManagementApp.Dao
 
         void RenameNote(MyNote note);
       
+        
+        // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
         ObservableCollection<MyTask> GetTodayTask();
+
+
+        // Timer ----------------------------------------------
+        void SaveSession(FocusSession session);
+        List<FocusSession> GetAllSessions();
+        List<FocusSession> GetAllSessionsWithTag(string tag);
     }
 }
 

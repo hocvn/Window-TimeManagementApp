@@ -7,6 +7,9 @@
     <Page Update="Settings\MainSettingsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Timer\SettingsTimerPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="ToDo\EditToDoPage.xaml">
       <SubType>Designer</SubType>
     </Page>

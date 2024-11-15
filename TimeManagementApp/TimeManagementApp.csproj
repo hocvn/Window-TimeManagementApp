@@ -48,7 +48,10 @@
     <None Remove="RegisterWindow.xaml" />
     <None Remove="Resources\ImageResources.xaml" />
     <None Remove="Settings\MainSettingsPage.xaml" />
-    <None Remove="ToDo\EditToDoPage.xaml" />
+	<None Remove="Timer\MainTimerPage.xaml" />
+	<None Remove="Timer\SettingsTimerPage.xaml" />
+	<None Remove="ToDo\MainToDoPage.xaml" />
+	<None Remove="ToDo\EditToDoPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +66,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
+    <PackageReference Include="EPPlus" Version="7.4.2" />
     <PackageReference Include="Fody" Version="6.8.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -123,6 +127,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Settings\MainSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Timer\SettingsTimerPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
