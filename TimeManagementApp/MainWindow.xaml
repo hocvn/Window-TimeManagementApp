@@ -6,7 +6,6 @@
     xmlns:local="using:TimeManagementApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:app="using:TimeManagementApp"
     Activated="MainWindow_Activated"
     mc:Ignorable="d">
 
@@ -22,7 +21,7 @@
         IsTabStop="false"
         SelectionChanged="NavigationView_SelectionChanged"
         
-        Background="{x:Bind app:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
+        Background="{x:Bind local:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
         
 
         <NavigationView.MenuItems>
