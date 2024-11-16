@@ -52,10 +52,10 @@
                 ToolTipService.ToolTip="Time"/>
 
             <NavigationViewItem 
+                x:Name="NavItem_Calendar"
                 Content="Calendar"
                 Icon="Calendar"
-                ToolTipService.ToolTip="Calendar"
-                SelectsOnInvoked="False"/>
+                ToolTipService.ToolTip="Calendar"/>
 
             <NavigationViewItem 
                 Content="Group" 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="TimeManagementApp.Calendar.CalendarPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimeManagementApp.Calendar"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:app="using:TimeManagementApp" 
+    xmlns:local1="using:TimeManagementApp.ToDo"
+    mc:Ignorable="d"
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="TaskFormat" x:DataType="local1:MyTask">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock x:Name="Time" FontSize="12" Text="{x:Bind DueDateTime}"  Margin="0" RelativePanel.AlignLeftWithPanel="True"/>
+                    <TextBlock x:Name="Name" FontSize="12" Text="{x:Bind TaskName}" Margin="10 0" RelativePanel.RightOf="Time"/>
+                </RelativePanel>
+            </Grid>
+        </DataTemplate>
+
+        <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Margin" Value="0 4"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+    </Page.Resources>
+
+    <SplitView x:Name="SplitView" IsPaneOpen="False" PanePlacement="Right"
+               OpenPaneLength="280" CompactPaneLength="24" DisplayMode="Inline">
+
+        <SplitView.Pane>
+            <RelativePanel>
+                <TextBlock x:Name="Date" Text="22" Margin="10" RelativePanel.AlignTopWithPanel="True"/>
+                <ListView 
+                    RelativePanel.Below="Date"
+                    x:Name="NoteListView"  Margin="20 12"
+                    IsItemClickEnabled="True"
+                    ItemClick="TaskItem_Click"
+                    ScrollViewer.VerticalScrollBarVisibility="auto"
+                    ItemsSource="{x:Bind ViewModel.Tasks, Mode=OneWay}"
+                    ItemTemplate="{StaticResource TaskFormat}"
+                    ItemContainerStyle="{StaticResource ListViewItemStyle}">
+                </ListView>
+                <Button Click="ClosePane_Click" RelativePanel.AlignBottomWithPanel="True">
+                    <FontIcon Glyph="&#xE89F;" />
+                </Button>
+
+            </RelativePanel>
+        </SplitView.Pane>
+        
+        <SplitView.Content>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+            
+                <CalendarView Grid.Row="0" Grid.Column="0"
+                    Margin="40"
+                    SelectionMode="Single" 
+                    IsOutOfScopeEnabled="True"
+                    Background="White"
+                    Language="en"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    SelectedDatesChanged="CalendarView_DateChanged"
+                    CalendarIdentifier="GregorianCalendar" />
+            </Grid>
+        </SplitView.Content>
+    </SplitView>
+</Page>

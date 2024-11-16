@@ -141,6 +141,11 @@ namespace TimeManagementApp.Dao
         {
             throw new NotImplementedException();
         }
+
+        public ObservableCollection<MyTask> GetAllTasks(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

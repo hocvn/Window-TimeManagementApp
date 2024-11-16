@@ -31,7 +31,7 @@ namespace TimeManagementApp
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            _window = new LoginWindow();
+            _window = new MainWindow();
 
             AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
             AppNotificationManager.Default.Register();
