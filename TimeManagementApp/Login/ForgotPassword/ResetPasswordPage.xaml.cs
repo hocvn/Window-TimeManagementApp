@@ -1,23 +1,45 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using Windows.Storage;
-using System;
-using System.Diagnostics;
-using Windows.Services.Maps;
-using Windows.System;
+using System.ComponentModel;
+using TimeManagementApp.Dao;
+using TimeManagementApp.Helper;
 
 
 namespace TimeManagementApp.Login.ForgotPassword
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page allows the user to reset their password.
     /// </summary>
     public sealed partial class ResetPasswordPage : Page
     {
-        public string Email { get; set; }
+        public partial class ResetPassViewModel : INotifyPropertyChanged
+        {
+            public string Email { get; set; }
+            public string ErrorMessage { get; set; }
 
-        private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            private IDao dao { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public ResetPassViewModel()
+            {
+                dao = new SqlDao();
+                ErrorMessage = "";
+            }
+
+            public string GetUsername()
+            {
+                return dao.GetUsername(this.Email);
+            }
+            public void ResetPassword(string username, string password)
+            {
+                dao.ResetPassword(username, password, this.Email);
+            }
+        }
+
+        public ResetPassViewModel ViewModel { get; set; } = new ResetPassViewModel();
+
         public ResetPasswordPage()
         {
             this.InitializeComponent();
@@ -29,59 +51,36 @@ namespace TimeManagementApp.Login.ForgotPassword
             string email = e.Parameter as string;
             if (!string.IsNullOrEmpty(email))
             {
-                this.Email = email;
+                ViewModel.Email = email;
             }
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            //Frame.Navigate(typeof(ForgotPasswordPage2));
             Frame.GoBack();
         }
 
-        UserCredential user = new UserCredential();
-        private void NextButton_Click(object sender, RoutedEventArgs e)
+        private async void ResetPassButton_Click(object sender, RoutedEventArgs e)
         {
             string password = passwordBox.Password;
             string passwordConfirmed = passwordConfirmedBox.Password;
 
-            if (String.IsNullOrEmpty(password))
-            {
-                errorMessage.Text = "Please fill out your password.";
-                return;
-            }
-
-            (bool isOk, string mess) = user.IsValidPassword(password);
+            (bool isOk, string mess) = CheckingFormatHelper.CheckAll(password, passwordConfirmed);
             if (isOk == false)
             {
-                errorMessage.Text = mess;
+                ViewModel.ErrorMessage = mess;
                 return;
             }
+            ViewModel.ErrorMessage = "";
 
-            if (String.IsNullOrEmpty(passwordConfirmed))
-            {
-                errorMessage.Text = "Please fill out your password confirmation.";
-                return;
-            }
+            string username = ViewModel.GetUsername();
+            ViewModel.ResetPassword(username, password);
+            StorageHelper.RemoveSetting("rememberUsername");
 
-            if (password != passwordConfirmed)
+            var result = await Dialog.ShowContent(this.XamlRoot, "SUCCESSFUL", "You can now login with your new password", "OK", null, null);
+            if (result == ContentDialogResult.Primary)
             {
-                errorMessage.Text = "Password confirmation doesn't match the password";
-                return;
-            }
-
-            errorMessage.Text = "";
-
-            // Get username
-            try
-            {
-                string username = user.GetUsername(this.Email);
-                user.SaveCredential(username, password, this.Email);
-                localSettings.Values.Remove("rememberUsername");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Exception caught: {ex.Message}");
+                App.NavigateWindow(new LoginWindow());
             }
         }
     }

@@ -1,9 +1,8 @@
-using System;
-using Microsoft.UI.Windowing;
+using System.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using TimeManagementApp.Dao;
 using TimeManagementApp.Helper;
-using Windows.Storage;
 
 namespace TimeManagementApp
 {
@@ -12,9 +11,38 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class RegisterWindow : Window
     {
-        private Window m_window;
+        public class RegisterViewModel : INotifyPropertyChanged
+        {
+            public string ErrorMessage { get; set; }
+            private IDao dao { get; set; }
 
-        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            public RegisterViewModel()
+            {
+                dao = new SqlDao();
+                ErrorMessage = "";
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public void SaveCredential(string username, string password, string email)
+            {
+                dao.CreateUser(username, password, email);
+                //user.SaveCredential(username, password, email); // MockDao
+            }
+
+            public bool IsUsernameInUse(string username)
+            {
+                return dao.IsUsernameInUse(username);
+            }
+
+            public bool IsEmailInUse(string username)
+            {
+                return dao.IsEmailInUse(username);
+            }
+        }
+
+        public RegisterViewModel ViewModel { get; set; } = new RegisterViewModel();
+
         public RegisterWindow()
         {
             this.InitializeComponent();
@@ -23,116 +51,48 @@ namespace TimeManagementApp
             WindowInitHelper.SetTitle(this, "Time management");
         }
 
-        UserCredential user = new UserCredential();
         private async void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameTextBox.Text;
             string email = emailTextBox.Text;
             string password = passwordBox.Password;
             string passwordConfirmed = passwordConfirmedBox.Password;
-            (bool isOk, string errorMess) = CheckInfomationUserEnter(username, email, password, passwordConfirmed);
+
+            (bool isOk, string errorMess) = CheckingFormatHelper.CheckAll(username, email, password, passwordConfirmed);
 
             if (!isOk)
             {
-                errorMessage.Text = errorMess;
+                ViewModel.ErrorMessage = errorMess;
+                return;
+            }
+            // Check if the username or email is already in use
+            if (ViewModel.IsUsernameInUse(username))
+            {
+                ViewModel.ErrorMessage = "Username is already in use";
+                return;
+            }
+            if (ViewModel.IsEmailInUse(email))
+            {
+                ViewModel.ErrorMessage = "Email is already in use";
                 return;
             }
 
-            // Sign up successfully
-            errorMessage.Text = "";
-            user.SaveCredential(username, password, email);
-            localSettings.Values.Remove("rememberUsername");
+            ViewModel.ErrorMessage = ""; // Sign up successfully
+            ViewModel.SaveCredential(username, password, email);
+            StorageHelper.RemoveSetting("rememberUsername");
 
             // Display notification dialog
-            ContentDialog dialog = new ContentDialog()
+            var result = await Dialog.ShowContent(((FrameworkElement)sender).XamlRoot, "SUCCESSFUL", "Your account have been created", "Login", null, null);
+
+            if (result == ContentDialogResult.Primary)
             {
-                Title = "SUCCESSFUL",
-                Content = "Your account have been created",
-                PrimaryButtonText = "Login",
-                XamlRoot = ((FrameworkElement)sender).XamlRoot // Set the XamlRoot property
-            };
-            dialog.PrimaryButtonClick += Dialog_PrimaryButtonClick;
-            await dialog.ShowAsync();
-        }
-
-        private void Dialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-            m_window = new LoginWindow();
-            m_window.Activate();
-            this.Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            m_window = new LoginWindow();
-            m_window.Activate();
-            this.Close();
-        }
-
-        public (bool, string) CheckInfomationUserEnter(string username, string email, string password,
-                string passwordConfirmed)
-        {
-            string errorMess = "";
-
-            if (String.IsNullOrEmpty(username))
-            {
-                errorMess = "Please fill out your username.";
-                return (false, errorMess);
+                App.NavigateWindow(new LoginWindow());
             }
-
-            if (user.IsUsernameInUse(username))
-            {
-                errorMess = "Username have existed.";
-                return (false, errorMess);
-            }
-
-            // Check email is in right format
-            (bool isOk, string mess) = user.CheckEmailFormat(email);
-            if (!isOk)
-            {
-                errorMess = mess;
-                return (false, errorMess);
-            }
-
-            // Check if the email is already in use
-            if (user.IsEmailInUse(email))
-            {
-                return (false, "This email is already in use.");
-            }
-
-            if (String.IsNullOrEmpty(password))
-            {
-                errorMess = "Please fill out your password.";
-                return (false, errorMess);
-            }
-
-            (isOk, mess) = user.IsValidPassword(password);
-            if (isOk == false)
-            {
-                errorMess = mess;
-                return (false, errorMess);
-            }
-
-            if (String.IsNullOrEmpty(passwordConfirmed))
-            {
-                errorMess = "Please fill out your password confirmation.";
-                return (false, errorMess);
-            }
-
-            if (password != passwordConfirmed)
-            {
-                errorMess = "Password confirmation doesn't match the password";
-                return (false, errorMess);
-            }
-
-            return (true, "");
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            m_window = new LoginWindow();
-            m_window.Activate();
-            this.Close();
+            App.NavigateWindow(new LoginWindow());
         }
     }
 }
