@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using TimeManagementApp.Note;
+using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
 
 namespace TimeManagementApp.Dao
@@ -34,9 +35,23 @@ namespace TimeManagementApp.Dao
 
         void RenameNote(MyNote note);
       
+        
+        // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
 
         ObservableCollection<MyTask> GetTodayTask();
+
+
+        // Timer ----------------------------------------------
+        void SaveSession(FocusSession session);
+        List<FocusSession> GetAllSessions();
+        List<FocusSession> GetAllSessionsWithTag(string tag);
+
+
+        // Background -----------------------------------------
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush);
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2);
+
     }
 }
 

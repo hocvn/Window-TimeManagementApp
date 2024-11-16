@@ -9,6 +9,8 @@ namespace TimeManagementApp.Timer
         public int LongBreakMinutes { get; set; }
 
         public bool IsNotificationOn { get; set; }
+        
+        public string Tag { get; set; }
 
         public string Tag { get; set; }
 

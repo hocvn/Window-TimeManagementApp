@@ -19,14 +19,10 @@
         IsBackButtonVisible="Collapsed"
         IsBackEnabled="False"
         IsTabStop="false"
-        SelectionChanged="NavigationView_SelectionChanged">
-
-        <NavigationView.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="2.5" />
-            </LinearGradientBrush>
-        </NavigationView.Background>
+        SelectionChanged="NavigationView_SelectionChanged"
+        
+        Background="{x:Bind local:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
+        
 
         <NavigationView.MenuItems>
             <NavigationViewItem 

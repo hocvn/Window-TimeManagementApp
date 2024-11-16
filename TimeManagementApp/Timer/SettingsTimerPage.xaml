@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="TimeManagementApp.Timer.SettingsTimerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimeManagementApp.Timer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d"
+    xmlns:app="using:TimeManagementApp"
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+
+    <Grid>
+        <StackPanel Padding="20">
+            
+            <!--Header-->
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <SymbolIcon Symbol="Setting" 
+                            Grid.Column="0"/>
+                <TextBlock Text="Timer Settings" 
+                           FontSize="22" FontWeight="Bold" 
+                           Grid.Column="1" Margin="30,17,0,0"/>
+                <AppBarButton Label="Save" 
+                              Icon="Save" Click="SaveButton_Click" 
+                              Grid.Column="2"/>
+                <AppBarButton Label="Back" 
+                              Icon="Back" Click="BackButton_Click"  
+                              Grid.Column="3"/>
+            </Grid>
+
+
+            <!--Area for SettingsPanel-->
+            <StackPanel Spacing="5" Padding="20">
+                
+                <StackPanel Spacing="5">
+                    <controls:SettingsCard Header="FocusTime Minutes"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
+                                           IsEnabled="True">    
+                        <Slider x:Name ="FocusTimeSlider" 
+                                Value="{x:Bind TimerViewModel.CurrentSettings.FocusTimeMinutes, Mode=OneWay}"
+                                Minimum="1" Maximum="60"/>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard Header="ShortBreak Minutes"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
+                                           IsEnabled="True">
+                        <Slider x:Name ="ShortBreakSlider" 
+                                Value="{x:Bind TimerViewModel.CurrentSettings.ShortBreakMinutes, Mode=OneWay}"
+                                Minimum="1" Maximum="60"/>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard Header="LongBreak Minutes"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
+                                           IsEnabled="True">
+                        <Slider x:Name ="LongBreakSlider" 
+                                Value="{x:Bind TimerViewModel.CurrentSettings.LongBreakMinutes, Mode=OneWay}"
+                                Minimum="1" Maximum="60"/>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard Header="Timer Notification"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE7ED;'}"                               
+                                           IsEnabled="True">
+                        <ToggleSwitch x:Name="NotificationToggleSwitch" Margin="10,0,0,0" 
+                                      IsOn="{x:Bind TimerViewModel.CurrentSettings.IsNotificationOn, Mode=OneWay}"/>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard Header="Select Tag"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE8EC;'}"                               
+                                           IsEnabled="True">
+                        <ComboBox x:Name="TagComboBox"
+                                  SelectedIndex="{x:Bind TimerViewModel.TagComboBoxIndex, Mode=OneWay}">
+                            <ComboBoxItem Content="Working"/>
+                            <ComboBoxItem Content="Studying"/>
+                            <ComboBoxItem Content="Reading"/>
+                        </ComboBox>
+                    </controls:SettingsCard>
+                    
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

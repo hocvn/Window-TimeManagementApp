@@ -4,6 +4,12 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using System;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TimeManagementApp.Dao;
+using Windows.UI.Notifications;
 
 namespace TimeManagementApp.Timer
 {
@@ -30,6 +36,7 @@ namespace TimeManagementApp.Timer
 
 
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         // Basic properties
         public DispatcherTimer Timer { get; set; }
@@ -74,8 +81,8 @@ namespace TimeManagementApp.Timer
             ResetTimer();
         }
 
-        // Design Timer's stroke
 
+        // Design Timer's stroke
         public int StrokeThickness = 5;
 
         public DoubleCollection StrokeDashArray
@@ -110,8 +117,8 @@ namespace TimeManagementApp.Timer
             }
         }
 
-        // start, pause, reset the timer
 
+        // start, pause, reset the timer
         public void StartTimer()
         {
             if (!IsRunning)
@@ -144,41 +151,30 @@ namespace TimeManagementApp.Timer
                 if (Minutes == 0)
                 {
                     // timer end
-
                     if (CurrentSettings.IsNotificationOn == true)
                     {
                         // show notifications toast & sound
-
-                        string title = "Pomodoro Completed!";
-                        string message = "Time for a break!";
-
-                        if (CurrentType != TimerType.FocusTime)
-                        {
-                            title = "Break time ended!";
-                            message = "Time to focus!";
-                        }
-
-                        string toastXml = $@"
-                            <toast>
-                                <visual>
-                                    <binding template='ToastGeneric'>
-                                        <text>{title}</text>
-                                        <text>{message}</text>
-                                    </binding>
-                                </visual>
-                                <audio src='ms-appx:///Assets/notification.wav'/>
-                            </toast>";
-
-                        var toastDoc = new Windows.Data.Xml.Dom.XmlDocument();
-                        toastDoc.LoadXml(toastXml);
-
-                        //var toast = new ToastNotification(toastDoc);
-                        //ToastNotificationManager.CreateToastNotifier().Show(toast);
-
-                        var notification = new AppNotification(toastDoc.GetXml());
-                        AppNotificationManager.Default.Show(notification);
+                        ShowNotification();
                     }
-                    
+
+                    if (CurrentType == TimerType.FocusTime)
+                    {
+                        // save focus session
+                        var session = new FocusSession
+                        {
+                            Duration = TimeSpan.FromMinutes(CurrentSettings.FocusTimeMinutes),
+                            Timestamp = DateTime.UtcNow,
+                            Tag = CurrentSettings.Tag,
+                        };
+
+
+                        var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                        var filePath = Path.Combine(directory.FullName, "sessions.xlsx");
+                        IDao dao = new ExcelDao(filePath);
+
+                        dao.SaveSession(session);
+                    }
+
                     SwitchToNextTimerType();
                     return;
                 }
@@ -235,6 +231,53 @@ namespace TimeManagementApp.Timer
                     Minutes = CurrentSettings.LongBreakMinutes;
                     Seconds = 0;
                     break;
+            }
+        }
+
+
+        private void ShowNotification()
+        {
+            string title = "Pomodoro Completed!";
+            string message = "Time for a break!";
+
+            if (CurrentType != TimerType.FocusTime)
+            {
+                title = "Break time ended!";
+                message = "Time to focus!";
+            }
+
+            string toastXml = $@"
+                            <toast>
+                                <visual>
+                                    <binding template='ToastGeneric'>
+                                        <text>{title}</text>
+                                        <text>{message}</text>
+                                    </binding>
+                                </visual>
+                                <audio src='ms-appx:///Assets/notification.wav'/>
+                            </toast>";
+
+            var toastDoc = new Windows.Data.Xml.Dom.XmlDocument();
+            toastDoc.LoadXml(toastXml);
+
+            var notification = new AppNotification(toastDoc.GetXml());
+            AppNotificationManager.Default.Show(notification);
+        }
+
+
+        public int TagComboBoxIndex
+        {
+            get
+            {
+                switch (CurrentSettings.Tag)
+                {
+                    case "Working":
+                        return 0;
+                    case "Studying":
+                        return 1;
+                    default:
+                        return 2;
+                }
             }
         }
     }
