@@ -1,4 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using TimeManagementApp.Note;

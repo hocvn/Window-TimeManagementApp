@@ -11,7 +11,6 @@ using TimeManagementApp.Helper;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.ComponentModel;
 
-
 namespace TimeManagementApp.Home
 {
     /// <summary>

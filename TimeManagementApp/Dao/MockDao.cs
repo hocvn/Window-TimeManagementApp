@@ -16,6 +16,8 @@ using TimeManagementApp.ToDo;
 using System.Security.Cryptography;
 using TimeManagementApp.Helper;
 using static TimeManagementApp.UserCredential;
+using TimeManagementApp.Timer;
+using Microsoft.UI.Xaml.Media;
 
 namespace TimeManagementApp.Dao
 {
@@ -430,6 +432,31 @@ namespace TimeManagementApp.Dao
         public void ResetPassword(string username, string password, string email)
         {
             CreateUser(username, password, email);
+        }
+
+        public void SaveSession(FocusSession session)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
+        {
+            throw new NotImplementedException();
         }
     }
 }

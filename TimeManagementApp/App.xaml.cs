@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppNotifications;
 using System;
+using TimeManagementApp.Global;
 
 namespace TimeManagementApp
 {
@@ -21,6 +22,8 @@ namespace TimeManagementApp
         }
 
         private static Window _window { get; set; }
+
+        public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
 
         /// <summary>
         /// Invoked when the application is launched.

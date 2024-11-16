@@ -1,7 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -395,7 +397,7 @@ namespace TimeManagementApp.Dao
                 {
                     TaskName = reader.GetString(1),
                     DueDateTime = reader.GetDateTime(2),
-                    TaskDescription = reader.GetString(3),
+                    //TaskDescription = reader.GetString(3),
                     //Completed = reader.GetBoolean(4),
                     //Important = reader.GetBoolean(5),
                     //RepeatOption = reader.GetString(6),
@@ -430,7 +432,7 @@ namespace TimeManagementApp.Dao
                 {
                     TaskName = reader.GetString(1),
                     DueDateTime = reader.GetDateTime(2),
-                    TaskDescription = reader.GetString(3),
+                    //TaskDescription = reader.GetString(3),
                     //Completed = reader.GetBoolean(4),
                     //Important = reader.GetBoolean(5),
                     //RepeatOption = reader.GetString(6),
@@ -458,7 +460,7 @@ namespace TimeManagementApp.Dao
             command.Parameters.Add("@due_date", System.Data.SqlDbType.DateTime);
             command.Parameters["@due_date"].Value = task.DueDateTime;
             command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar);
-            command.Parameters["@description"].Value = task.TaskDescription;
+            //command.Parameters["@description"].Value = task.TaskDescription;
             command.Parameters.Add("@completed", System.Data.SqlDbType.Bit);
             command.Parameters["@completed"].Value = false;
             command.Parameters.Add("@important", System.Data.SqlDbType.Bit);
@@ -489,7 +491,7 @@ namespace TimeManagementApp.Dao
             command.Parameters.Add("@due_date", System.Data.SqlDbType.DateTime);
             command.Parameters["@due_date"].Value = task.DueDateTime;
             command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar);
-            command.Parameters["@description"].Value = task.TaskDescription;
+            //command.Parameters["@description"].Value = task.TaskDescription;
             command.Parameters.Add("@completed", System.Data.SqlDbType.Bit);
             //command.Parameters["@completed"].Value = task.Completed;
             command.Parameters.Add("@task_id", System.Data.SqlDbType.Int);
@@ -519,7 +521,7 @@ namespace TimeManagementApp.Dao
         }
 
         // Time
-        public void AddFocusSession(Settings setting)
+        public void AddFocusSession(Timer.Settings setting)
         {
             var connection = CreateConnection();
             var sql = @"
@@ -535,6 +537,31 @@ namespace TimeManagementApp.Dao
             command.Parameters["@username"].Value = User.Username;
             command.ExecuteNonQuery();
             connection.Close();
+        }
+
+        public void SaveSession(FocusSession session)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
+        {
+            throw new NotImplementedException();
         }
     }
 }

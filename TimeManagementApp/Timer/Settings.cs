@@ -12,8 +12,6 @@ namespace TimeManagementApp.Timer
         
         public string Tag { get; set; }
 
-        public string Tag { get; set; }
-
         // default settings
         public Settings()
         {
