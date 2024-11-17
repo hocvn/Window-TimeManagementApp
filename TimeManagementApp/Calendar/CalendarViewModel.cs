@@ -8,9 +8,8 @@ namespace TimeManagementApp.Calendar
 {
     public class CalendarViewModel : INotifyPropertyChanged
     {
-        public int Year { get; set; }
-        public int Month { get; set; }
-        public int Day { get; set; }
+        public DateTime Date { get; set; }
+        public string DisplayDate { get; set; }
 
         public ObservableCollection<MyTask> Tasks;
 
@@ -18,9 +17,13 @@ namespace TimeManagementApp.Calendar
 
         public CalendarViewModel()
         {
-            Year = DateTime.Now.Year;
-            Month = DateTime.Now.Month;
-            Day = DateTime.Now.Day;
+            Date = DateTime.Now;
+            Tasks = new ObservableCollection<MyTask>
+            {
+                new MyTask { TaskName = "Task 1", Summarization = "Summary 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddHours(1) },
+                new MyTask { TaskName = "Task 2", Summarization = "Summary 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddHours(1) },
+                new MyTask { TaskName = "Task 3", Summarization = "Summary 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddHours(1) }
+            };
             dao = new MockDao();
         }
 
@@ -28,7 +31,7 @@ namespace TimeManagementApp.Calendar
 
         public void GetTasksForDate(DateTime date)
         {
-            Tasks = dao.GetAllTasks(date);
+            Tasks = dao.GetTasksForDate(date);
         }
     }
 }

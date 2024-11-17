@@ -459,24 +459,13 @@ namespace TimeManagementApp.Dao
             throw new NotImplementedException();
         }
 
-        public ObservableCollection<MyTask> GetAllTasks(DateTime date)
+        public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
         {
-            return new ObservableCollection<MyTask>()
+            return new ObservableCollection<MyTask>
             {
-                new MyTask()
-                {
-                    TaskName = "Task 01",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = date,
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 02",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = date,
-                }
+                new MyTask { TaskName = "Task 1", Summarization = "Summary 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddHours(1) },
+                new MyTask { TaskName = "Task 2", Summarization = "Summary 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddHours(1) },
+                new MyTask { TaskName = "Task 3", Summarization = "Summary 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddHours(1) }
             };
         }
     }

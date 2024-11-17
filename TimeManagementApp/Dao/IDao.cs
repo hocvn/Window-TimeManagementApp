@@ -41,7 +41,7 @@ namespace TimeManagementApp.Dao
         
         // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
-        ObservableCollection<MyTask> GetAllTasks(DateTime date);
+        ObservableCollection<MyTask> GetTasksForDate(DateTime date);
 
         ObservableCollection<MyTask> GetTodayTask();
 

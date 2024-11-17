@@ -7,38 +7,48 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:app="using:TimeManagementApp" 
-    xmlns:local1="using:TimeManagementApp.ToDo"
+    xmlns:local1="using:TimeManagementApp.ToDo" 
+    xmlns:local2="using:TimeManagementApp.Converters"
     mc:Ignorable="d"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
     <Page.Resources>
+        <local2:DateToHourConverter x:Key="DateToHourConverter"/>
         <DataTemplate x:Key="TaskFormat" x:DataType="local1:MyTask">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                    <TextBlock x:Name="Time" FontSize="12" Text="{x:Bind DueDateTime}"  Margin="0" RelativePanel.AlignLeftWithPanel="True"/>
-                    <TextBlock x:Name="Name" FontSize="12" Text="{x:Bind TaskName}" Margin="10 0" RelativePanel.RightOf="Time"/>
+            <Grid>
+                <RelativePanel Height="50" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                    <Rectangle x:Name="Rectangle" Fill="SteelBlue" Width="4" Margin="0 10" RadiusX="2" RadiusY="2"
+                               RelativePanel.AlignTopWithPanel="True" 
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.AlignBottomWithPanel="True"/>
+                    <TextBlock x:Name="Time" Text="{x:Bind DueDateTime, Mode=OneWay, Converter={StaticResource DateToHourConverter}}" Margin="10 0" 
+                               RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="Rectangle"/>
+                    <TextBlock x:Name="Name" Text="{x:Bind TaskName, Mode=OneWay}" RelativePanel.AlignVerticalCenterWithPanel="True"
+                               RelativePanel.RightOf="Time" />
                 </RelativePanel>
             </Grid>
         </DataTemplate>
 
         <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
-            <Setter Property="Margin" Value="0 4"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         </Style>
     </Page.Resources>
 
     <SplitView x:Name="SplitView" IsPaneOpen="False" PanePlacement="Right"
-               OpenPaneLength="280" CompactPaneLength="24" DisplayMode="Inline">
+               OpenPaneLength="320" CompactPaneLength="24" DisplayMode="Inline">
 
         <SplitView.Pane>
-            <RelativePanel>
-                <TextBlock x:Name="Date" Text="22" Margin="10" RelativePanel.AlignTopWithPanel="True"/>
+            <RelativePanel Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock x:Name="Date" FontSize="16" FontWeight="Bold" Text="{x:Bind ViewModel.DisplayDate, Mode=OneWay}" Margin="20 10" RelativePanel.AlignTopWithPanel="True"/>
+                <Rectangle x:Name="Separator" Fill="SteelBlue" Height="1" 
+                           RelativePanel.Below="Date"
+                           RelativePanel.AlignLeftWithPanel="True"
+                           RelativePanel.AlignRightWithPanel="True"/>
                 <ListView 
-                    RelativePanel.Below="Date"
-                    x:Name="NoteListView"  Margin="20 12"
+                    RelativePanel.Below="Separator"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
                     IsItemClickEnabled="True"
                     ItemClick="TaskItem_Click"
                     ScrollViewer.VerticalScrollBarVisibility="auto"
@@ -55,16 +65,8 @@
         
         <SplitView.Content>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-            
-                <CalendarView Grid.Row="0" Grid.Column="0"
-                    Margin="40"
+                <CalendarView
+                    Margin="0"
                     SelectionMode="Single" 
                     IsOutOfScopeEnabled="True"
                     Background="White"
