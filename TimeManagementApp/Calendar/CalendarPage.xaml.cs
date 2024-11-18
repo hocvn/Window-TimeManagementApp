@@ -1,8 +1,8 @@
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
-using TimeManagementApp.Services;
 using TimeManagementApp.ToDo;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Calendar
 {
@@ -12,13 +12,12 @@ namespace TimeManagementApp.Calendar
     public sealed partial class CalendarPage : Page
     {
         public CalendarViewModel ViewModel { get; set; }
-        private NavigationService NavigationService { get; set; }
 
         public CalendarPage()
         {
             this.InitializeComponent();
             ViewModel = new();
-            NavigationService = new NavigationService();
+            ViewModel.Init();
         }
 
         private void ClosePane_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -29,6 +28,7 @@ namespace TimeManagementApp.Calendar
         private void CalendarView_DateChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
         {
             DateTime selectedDate = args.AddedDates.FirstOrDefault().DateTime;
+            ViewModel.Date = selectedDate;
             ViewModel.DisplayDate = selectedDate.ToString("ddd, MMM dd");
             ViewModel.GetTasksForDate(selectedDate);
             SplitView.IsPaneOpen = true;
@@ -36,7 +36,28 @@ namespace TimeManagementApp.Calendar
 
         private void TaskItem_Click(object sender, ItemClickEventArgs e)
         {
-            NavigationService.Navigate(typeof(EditToDoPage), e.ClickedItem);
+            MainWindow.NavigationService.Navigate(typeof(EditToDoPage), e.ClickedItem);
+        }
+
+        private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
+        {
+            if (args.Phase == 0)
+            {
+                args.RegisterUpdateCallback(CalendarView_CalendarViewDayItemChanging);
+            }
+            else if (args.Phase == 1)
+            {
+                DateTime date = args.Item.Date.DateTime.Date;
+
+                if (date != TimeHelper.GetToday())
+                {
+                    if (ViewModel.TaskCounts.TryGetValue(date, out int taskCount))
+                    {
+                        args.Item.SetDensityColors([Microsoft.UI.Colors.Green]);
+                    }
+                    args.RegisterUpdateCallback(CalendarView_CalendarViewDayItemChanging);
+                }
+            }
         }
     }
 }

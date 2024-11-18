@@ -40,7 +40,8 @@
 
         <SplitView.Pane>
             <RelativePanel Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock x:Name="Date" FontSize="16" FontWeight="Bold" Text="{x:Bind ViewModel.DisplayDate, Mode=OneWay}" Margin="20 10" RelativePanel.AlignTopWithPanel="True"/>
+                <TextBlock x:Name="Date" FontSize="16" FontWeight="Bold" Text="{x:Bind ViewModel.DisplayDate, Mode=OneWay}" 
+                           Margin="20 10" RelativePanel.AlignTopWithPanel="True"/>
                 <Rectangle x:Name="Separator" Fill="SteelBlue" Height="1" 
                            RelativePanel.Below="Date"
                            RelativePanel.AlignLeftWithPanel="True"
@@ -52,7 +53,7 @@
                     IsItemClickEnabled="True"
                     ItemClick="TaskItem_Click"
                     ScrollViewer.VerticalScrollBarVisibility="auto"
-                    ItemsSource="{x:Bind ViewModel.Tasks, Mode=OneWay}"
+                    ItemsSource="{x:Bind ViewModel.TasksForDate, Mode=OneWay}"
                     ItemTemplate="{StaticResource TaskFormat}"
                     ItemContainerStyle="{StaticResource ListViewItemStyle}">
                 </ListView>
@@ -74,6 +75,7 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     SelectedDatesChanged="CalendarView_DateChanged"
+                    CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging"
                     CalendarIdentifier="GregorianCalendar" />
             </Grid>
         </SplitView.Content>
