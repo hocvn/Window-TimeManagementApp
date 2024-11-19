@@ -4,6 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Update="App.xaml" />
+    <Page Update="Calendar\CalendarPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Settings\MainSettingsPage.xaml">
       <SubType>Designer</SubType>
     </Page>

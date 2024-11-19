@@ -10,6 +10,7 @@ using TimeManagementApp.Helper;
 using TimeManagementApp.Services;
 using Windows.UI.ApplicationSettings;
 using TimeManagementApp.Settings;
+using TimeManagementApp.Calendar;
 
 namespace TimeManagementApp
 {
@@ -68,6 +69,10 @@ namespace TimeManagementApp
             else if (selectedItem.Name == NavItem_Note.Name)
             {
                 pageType = typeof(NoteMainPage);
+            }
+            else if (selectedItem.Name == NavItem_Calendar.Name)
+            {
+                pageType = typeof(CalendarPage);
             }
             else
             {

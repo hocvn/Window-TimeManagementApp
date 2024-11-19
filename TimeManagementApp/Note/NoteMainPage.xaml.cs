@@ -10,7 +10,7 @@ using System.ComponentModel;
 namespace TimeManagementApp.Note
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This is the main page of the Note feature, responsible for displaying all tasks.
     /// </summary>
     public sealed partial class NoteMainPage : Page
     {

@@ -251,21 +251,21 @@ namespace TimeManagementApp.Dao
                     TaskName = "Task 13",
                     Summarization = "Today, Repeat",
                     StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
+                    DueDateTime = DateTime.Now.AddDays(1),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 14",
                     Summarization = "Tomorrow, Reminder",
                     StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
+                    DueDateTime = DateTime.Now.AddDays(2),
                 },
                 new MyTask()
                 {
                     TaskName = "Task 15",
                     Summarization = "0 of 2, Important",
                     StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
+                    DueDateTime = DateTime.Now.AddDays(3),
                 },
             };
         }
@@ -457,6 +457,16 @@ namespace TimeManagementApp.Dao
         public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
         {
             throw new NotImplementedException();
+        }
+
+        public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
+        {
+            return new ObservableCollection<MyTask>
+            {
+                new MyTask { TaskName = "Task 1", Summarization = "Summary 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(1) },
+                new MyTask { TaskName = "Task 2", Summarization = "Summary 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(2) },
+                new MyTask { TaskName = "Task 3", Summarization = "Summary 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(3) }
+            };
         }
     }
 }

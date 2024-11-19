@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace TimeManagementApp.Dao
         
         // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
+        ObservableCollection<MyTask> GetTasksForDate(DateTime date);
 
         ObservableCollection<MyTask> GetTodayTask();
 
