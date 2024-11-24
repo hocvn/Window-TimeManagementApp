@@ -193,5 +193,10 @@ namespace TimeManagementApp.Dao
         {
             throw new NotImplementedException();
         }
+
+        public int CreateNote(string noteName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -52,7 +52,7 @@ namespace TimeManagementApp.Dao
             ObservableCollection<MyNote> notes = new ObservableCollection<MyNote>();
             if (localSettings.Values["mynotes"] is string notesJson)
             {
-                notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
+                //notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
             }
             return notes;
         }
@@ -155,8 +155,22 @@ namespace TimeManagementApp.Dao
             }
             SaveNotes(notes);
         }
-        
-        
+
+        public int CreateNote(string noteName)
+        {
+            ObservableCollection<MyNote> notes = GetAllNote();
+            int newId = notes.Count == 0 ? 0 : notes.Max(note => note.Id) + 1;
+            MyNote newNote = new MyNote()
+            {
+                Id = newId,
+                Name = noteName
+            };
+            notes.Insert(0, newNote);
+            SaveNotes(notes);
+            return newId;
+        }
+
+
         // Tasks -------------------------------------------------------------
         public ObservableCollection<MyTask> GetAllTasks()
         {

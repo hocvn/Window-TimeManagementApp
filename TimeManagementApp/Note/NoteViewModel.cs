@@ -15,9 +15,11 @@ namespace TimeManagementApp.Note
         public MyNote Note { get; set; }
         public Brush CurrentColor { get; set; }
         public bool HasUnsavedChanged { get; set; }
-        public bool BackButton_Clicked { get; set; }
 
-        private IDao _dao = new MockDao();
+        // this is used to check if the back button is clicked, avoid the dialog to show up when the back button is clicked
+        public bool BackButton_Clicked { get; set; } 
+
+        private IDao _dao = new SqlDao();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,14 +40,10 @@ namespace TimeManagementApp.Note
             _dao.SaveNote(Editor, Note);
         }
 
-        internal async void Remove(XamlRoot xamlRoot)
+        internal void Remove()
         {
-            var result = await Dialog.ShowContent(xamlRoot, "Remove Note", "Are you sure you want to remove this note?", "Yes", null, "No");
-            if (result == ContentDialogResult.Primary)
-            {
-                // Send note back to NoteMainPage to delete
-                MainWindow.NavigationService.Navigate(typeof(NoteMainPage), Note);
-            }
+            // Send note back to NoteMainPage to delete
+            MainWindow.NavigationService.Navigate(typeof(NoteMainPage), Note);
         }
 
         internal void Rename(TextBox textBox)
