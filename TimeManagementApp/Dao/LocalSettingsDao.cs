@@ -3,8 +3,6 @@ using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TimeManagementApp.Helper;
 using TimeManagementApp.Note;
@@ -105,6 +103,46 @@ namespace TimeManagementApp.Dao
         }
 
         public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateUser(string username, string password, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckCredential(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsUsernameInUse(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsEmailInUse(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetUsername(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetPassword(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetPassword(string username, string password, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
         {
             throw new NotImplementedException();
         }

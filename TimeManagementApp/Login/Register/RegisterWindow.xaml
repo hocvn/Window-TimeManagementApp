@@ -8,8 +8,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid RequestedTheme="Light"
-          Background="{x:Bind local:App.BackgroundViewModel.WindowBackgroundBrush, Mode=OneWay}">
+    <Grid RequestedTheme="Light">
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="AliceBlue" Offset="0.0" />
+                <GradientStop Color="CornflowerBlue" Offset="1.5" />
+            </LinearGradientBrush>
+        </Grid.Background>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -37,8 +42,8 @@
             Click="BackButton_Click"/>
 
         <StackPanel Grid.Column="1" Grid.Row="0">
-            <Image Height="100" Width="100" Margin="0 80 0 0" Source="{StaticResource LoginImage}"/>
-            <TextBlock Text="SIGN UP" FontSize="36" Margin="20, 10, 20, 50" TextAlignment="Center"/>
+            <Image Height="100" Width="100" Margin="0 60 0 0" Source="{StaticResource LoginImage}"/>
+            <TextBlock Text="SIGN UP" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel
@@ -118,7 +123,7 @@
             x:Name="errorMessage" 
             FontSize="16" 
             Foreground="Red" 
-            Text="" 
+            Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" 
             HorizontalAlignment="Center" 
             Margin="10, 20, 10, 20">
         </TextBlock>

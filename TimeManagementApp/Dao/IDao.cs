@@ -3,9 +3,6 @@ using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
@@ -15,7 +12,20 @@ namespace TimeManagementApp.Dao
 {
     public interface IDao
     {
-        // Notes -------------------------------------------------
+        void CreateUser(string username, string password, string email);
+
+        bool CheckCredential(string username, string password);
+
+        bool IsUsernameInUse(string username);
+
+        bool IsEmailInUse(string username);
+
+        string GetUsername(string email);
+
+        string GetPassword(string username);
+
+        void ResetPassword(string username, string password, string email);
+
         ObservableCollection<MyNote> GetAllNote();
 
         void SaveNotes(ObservableCollection<MyNote> notes);
@@ -31,6 +41,8 @@ namespace TimeManagementApp.Dao
         
         // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
+        ObservableCollection<MyTask> GetTasksForDate(DateTime date);
+
         ObservableCollection<MyTask> GetTodayTask();
 
 
