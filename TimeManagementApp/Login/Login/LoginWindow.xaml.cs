@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.UI.Xaml;
-using Windows.Storage;
 using TimeManagementApp.Login.ForgotPassword;
-using Microsoft.UI.Windowing;
 using TimeManagementApp.Helper;
+using TimeManagementApp.Dao;
+using System.ComponentModel;
 
 namespace TimeManagementApp
 {
@@ -12,9 +12,31 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class LoginWindow : Window
     {
-        private Window m_window;
-        private UserCredential user = new UserCredential();
-        private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        public partial class LoginViewModel : INotifyPropertyChanged
+        {
+            public string ErrorMessage { get; set; }
+            private IDao dao { get; set; }
+
+            public LoginViewModel()
+            {
+                dao = new SqlDao();
+                ErrorMessage = "";
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public bool CheckCredentials(string username, string password)
+            {
+                return dao.CheckCredential(username, password);
+            }
+
+            public string GetPassword(string username)
+            {
+                return dao.GetPassword(username);
+            }
+        }
+
+        public LoginViewModel ViewModel { get; set; } = new LoginViewModel();
 
         public LoginWindow()
         {
@@ -22,13 +44,13 @@ namespace TimeManagementApp
             // Set the window size
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
+            var rememberUsername = StorageHelper.GetSetting("rememberUsername");
 
-            var rememberUsername = localSettings.Values["rememberUsername"] as string;
             if (!String.IsNullOrEmpty(rememberUsername))
             {
                 // Automatically fill in the username and password
                 usernameTextBox.Text = rememberUsername;
-                var rememberPassword = user.GetPassword(rememberUsername);
+                var rememberPassword = ViewModel.GetPassword(rememberUsername);
 
                 if (rememberPassword == null)
                 {
@@ -47,57 +69,52 @@ namespace TimeManagementApp
 
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
             {
-                errorMessage.Text = "Please enter both username and password.";
+                ViewModel.ErrorMessage = "Please enter both username and password.";
                 return;
             }
-            if (user.CheckCredentials(username, password) == false)
+
+            if (ViewModel.CheckCredentials(username, password) == false)
             {
-                errorMessage.Text = "Invalid username or password.";
+                ViewModel.ErrorMessage = "Invalid username or password.";
                 return;
             }
             // Username and password are correct
-            errorMessage.Text = "";
-            m_window = new MainWindow();
-            m_window.Activate();
-            this.Close();
+            ViewModel.ErrorMessage = "";
+
+            App.NavigateWindow(new MainWindow());
         }
 
         private void RememberCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             var username = usernameTextBox.Text;
-            localSettings.Values["rememberUsername"] = username;
+            StorageHelper.SaveSetting("rememberUsername", username);
         }
 
         private void RememberCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             // Remove the stored username
-            localSettings.Values.Remove("rememberUsername");
+            StorageHelper.RemoveSetting("rememberUsername");
         }
 
         // Hide error message when user starts typing
         private void UsernameTextBox_Focus(object sender, RoutedEventArgs e)
         {
-            errorMessage.Text = "";
+            ViewModel.ErrorMessage = "";
         }
 
         private void PasswordBox_Focus(object sender, RoutedEventArgs e)
         {
-            errorMessage.Text = "";
+            ViewModel.ErrorMessage = "";
         }
+
         private void ForgotPasswordHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
-            m_window = new ForgotPasswordWindow();
-            m_window.Activate();
-            this.Close();
-            // This feature is not working for now
+            App.NavigateWindow(new ForgotPasswordWindow());
         }
 
         private void RegisterHyperLinkButton_Click(object sender, RoutedEventArgs e)
         {
-            m_window = new RegisterWindow();
-            m_window.Activate();
-            this.Close();
+            App.NavigateWindow(new RegisterWindow());
         }
     }
-
 }

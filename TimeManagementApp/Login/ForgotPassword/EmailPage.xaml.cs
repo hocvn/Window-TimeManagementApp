@@ -1,52 +1,62 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using System;
-using Windows.ApplicationModel;
+using System.ComponentModel;
+using TimeManagementApp.Dao;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Login.ForgotPassword
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page requires user to enter email to get OTP
     /// </summary>
     public sealed partial class EmailPage : Page
     {
-        Window _window = null;
-        UserCredential user = new UserCredential();
+        public partial class EmailViewModel : INotifyPropertyChanged
+        {
+            public string ErrorMessage { get; set; }
+            private IDao dao { get; set; }
+
+            public EmailViewModel()
+            {
+                dao = new SqlDao();
+                ErrorMessage = "";
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public bool IsEmailInUse(string email)
+            {
+                return dao.IsEmailInUse(email);
+            }
+        }
+        
+        public EmailViewModel ViewModel = new();
         public EmailPage()
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            _window = e.Parameter as Window;
-        }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Activate();
-
-            _window.Close();
+            App.NavigateWindow(new LoginWindow());
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             string email = emailTextBox.Text as string;
-            (bool isOk, string mess) = user.CheckEmailFormat(email);
+            (bool isOk, string mess) = CheckingFormatHelper.CheckEmailFormat(email);
 
             if (!isOk)
             {
-                errorMessage.Text = mess;
+                ViewModel.ErrorMessage = mess;
                 return;
             }
 
-            if (!user.IsEmailInUse(email))
+            if (!ViewModel.IsEmailInUse(email))
             {
-                errorMessage.Text = "Email you entered have not registered yet.";
+                ViewModel.ErrorMessage= "Email you entered have not registered yet";
                 return;
             }
             Frame.Navigate(typeof(OTPPage), email);
@@ -54,7 +64,7 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            errorMessage.Text = "";
+            ViewModel.ErrorMessage = "";
         }
     }
 }

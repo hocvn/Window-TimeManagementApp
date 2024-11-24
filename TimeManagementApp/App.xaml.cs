@@ -2,7 +2,6 @@
 using Microsoft.Windows.AppNotifications;
 using System;
 using TimeManagementApp.Global;
-using TimeManagementApp.Timer;
 
 namespace TimeManagementApp
 {
@@ -22,26 +21,33 @@ namespace TimeManagementApp
             this.InitializeComponent();
         }
 
-        public static Window LoginWindow { get; private set; }
-        public static Window RegisterWindow { get; private set; }
-        public static Window MainWindow { get; private set; }
-        public static Window ForgotPasswordWindow { get; private set; }
+        private static Window _window { get; set; }
 
         public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
-
 
         /// <summary>
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            LoginWindow = new LoginWindow();
+            _window = new MainWindow();
 
             AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
             AppNotificationManager.Default.Register();
 
-            LoginWindow.Activate();
+            _window.Activate();
+        }
+
+        public static void NavigateWindow(Window window)
+        {
+            window.Activate();
+            _window.Close();
+            _window = window;
+        }
+        public static void CloseWindow()
+        {
+            _window.Close();
         }
 
         private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)

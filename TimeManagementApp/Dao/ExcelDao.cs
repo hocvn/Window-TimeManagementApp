@@ -4,14 +4,12 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
-
 
 namespace TimeManagementApp.Dao
 {
@@ -137,6 +135,61 @@ namespace TimeManagementApp.Dao
         }
 
         public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateUser(string username, string password, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckCredential(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsUsernameInUse(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsEmailInUse(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetUsername(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetPassword(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResetPassword(string username, string password, string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<FocusSession> IDao.GetAllSessions()
+        {
+            throw new NotImplementedException();
+        }
+
+        List<FocusSession> IDao.GetAllSessionsWithTag(string tag)
+        {
+            throw new NotImplementedException();
+        }
+
+        LinearGradientBrush IDao.LoadSavedBackground(double offset1, double offset2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
         {
             throw new NotImplementedException();
         }

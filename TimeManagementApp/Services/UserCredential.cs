@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Popups;
 
 namespace TimeManagementApp
 {
@@ -21,6 +18,10 @@ namespace TimeManagementApp
             public string Password { get; set; } = password;
             public string Entropy { get; set; } = entropy;
         }
+
+        const int MAX_LENGTH = 50;
+        const int MIN_LENGTH = 8;
+
         public void SaveCredential(string username, string password, string email)
         {
             // Retrieve existing users data or create a new dictionary
@@ -117,22 +118,31 @@ namespace TimeManagementApp
         }
         public (bool, string) IsValidPassword(string password)
         {
-            if (password.Length < 8)
+            if (password.Length < MIN_LENGTH)
             {
-                return (false, "Password must be at least 8 characters long");
+                return (false, $"Password must be at least {MIN_LENGTH} characters long");
             }
-            if (!password.Any(char.IsUpper))
+
+            if (password.Length > MAX_LENGTH)
             {
-                return (false, "Password must contain at least one uppercase letter");
+                return (false, $"Password must be less than {MAX_LENGTH} characters long");
             }
-            if (!password.Any(char.IsLower))
+
+            // Regular expression pattern for validating password
+            var regex = new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$");
+
+            if (!regex.IsMatch(password))
             {
-                return (false, "Password must contain at least one lowercase letter");
+                if (!Regex.IsMatch(password, @"[A-Z]"))
+                    return (false, "Password must contain at least one uppercase letter");
+
+                if (!Regex.IsMatch(password, @"[a-z]"))
+                    return (false, "Password must contain at least one lowercase letter");
+
+                if (!Regex.IsMatch(password, @"\d"))
+                    return (false, "Password must contain at least one digit");
             }
-            if (!password.Any(char.IsDigit))
-            {
-                return (false, "Password must contain at least one digit");
-            }
+
             return (true, "");
         }
         public (bool, string) CheckEmailFormat(string email)
@@ -143,11 +153,7 @@ namespace TimeManagementApp
             }
             // Regular expression pattern for validating email
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-
-            // Create a Regex object
             Regex regex = new Regex(pattern);
-
-            // Check if the email matches the pattern
             if (!regex.IsMatch(email))
             {
                 return (false, "Please fill out a valid email address format.");
