@@ -18,11 +18,13 @@ using TimeManagementApp.Helper;
 using static TimeManagementApp.UserCredential;
 using TimeManagementApp.Timer;
 using Microsoft.UI.Xaml.Media;
+using Windows.Foundation;
 
 namespace TimeManagementApp.Dao
 {
     public class MockDao : IDao
     {
+        // Users ------------------------------------------------------------------------------------
         private (string, string) EncryptPassword(string password)
         {
             // Encrypt the password
@@ -45,17 +47,6 @@ namespace TimeManagementApp.Dao
 
             return (encryptedPasswordBase64, entropyInBase64);
         }
-        public ObservableCollection<MyNote> GetAllNote()
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
-            ObservableCollection<MyNote> notes = new ObservableCollection<MyNote>();
-            if (localSettings.Values["mynotes"] is string notesJson)
-            {
-                notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
-            }
-            return notes;
-        }
 
         public void CreateUser(string username, string password, string email)
         {
@@ -76,6 +67,171 @@ namespace TimeManagementApp.Dao
             usersData[username] = userInfo;
             usersDataJson = System.Text.Json.JsonSerializer.Serialize(usersData);
             StorageHelper.SaveSetting("usersData", usersDataJson);
+        }
+
+        public bool CheckCredential(string username, string password)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return false; // There is no data stored for any user
+            }
+
+            usersData = JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            // Retrieve the encrypted password and entropy
+            if (usersData.ContainsKey(username))
+            {
+                var UserInfo = usersData[username];
+                var encryptedPasswordBase64 = UserInfo.Password;
+                var entropyBase64 = UserInfo.Entropy;
+
+                if (encryptedPasswordBase64 == null || entropyBase64 == null)
+                {
+                    return false;
+                }
+                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordBase64);
+                var entropyInBytes = Convert.FromBase64String(entropyBase64);
+
+                // Decrypt the password
+                var decryptedPasswordInBytes = ProtectedData.Unprotect(
+                    encryptedPasswordInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                string decryptedPassword = Encoding.UTF8.GetString(decryptedPasswordInBytes);
+                return decryptedPassword == password;
+            }
+            return false;
+        }
+
+        public bool IsUsernameInUse(string username)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return false; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Key == username)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsEmailInUse(string email)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return false; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Value.Email == email)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public string GetPassword(string username)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return null; // There is no data stored for any user
+            }
+
+            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            // Retrieve the encrypted password and entropy
+            if (usersData.ContainsKey(username))
+            {
+                var UserInfo = usersData[username];
+                var encryptedPasswordBase64 = UserInfo.Password;
+                var entropyBase64 = UserInfo.Entropy;
+
+                if (encryptedPasswordBase64 == null || entropyBase64 == null)
+                {
+                    return null;
+                }
+                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordBase64);
+                var entropyInBytes = Convert.FromBase64String(entropyBase64);
+
+                // Decrypt the password
+                var decryptedPasswordInBytes = ProtectedData.Unprotect(
+                    encryptedPasswordInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                return Encoding.UTF8.GetString(decryptedPasswordInBytes);
+            }
+            return null;
+        }
+
+        public string GetUsername(string email)
+        {
+            var usersDataJson = StorageHelper.GetSetting("usersData");
+            Dictionary<string, UserInfo> usersData;
+
+            if (String.IsNullOrEmpty(usersDataJson))
+            {
+                return null; // There is no data stored for any user
+            }
+
+            usersData = JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
+
+            for (int i = 0; i < usersData.Count; i++)
+            {
+                if (usersData.ElementAt(i).Value.Email == email)
+                {
+                    return usersData.ElementAt(i).Key;
+                }
+            }
+
+            return null;
+        }
+
+        public void ResetPassword(string username, string password, string email)
+        {
+            CreateUser(username, password, email);
+        }
+
+
+        // Notes ------------------------------------------------------------------------------------
+        public ObservableCollection<MyNote> GetAllNote()
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+            ObservableCollection<MyNote> notes = new ObservableCollection<MyNote>();
+            if (localSettings.Values["mynotes"] is string notesJson)
+            {
+                notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
+            }
+            return notes;
         }
 
         public void SaveNotes(ObservableCollection<MyNote> notes)
@@ -155,9 +311,9 @@ namespace TimeManagementApp.Dao
             }
             SaveNotes(notes);
         }
-        
-        
-        // Tasks -------------------------------------------------------------
+
+
+        // Tasks ------------------------------------------------------------------------------------
         public ObservableCollection<MyTask> GetAllTasks()
         {
             return new ObservableCollection<MyTask>()
@@ -283,157 +439,18 @@ namespace TimeManagementApp.Dao
             return todayTasks;
         }
 
-        public bool CheckCredential(string username, string password)
+        public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
         {
-            var usersDataJson = StorageHelper.GetSetting("usersData");
-            Dictionary<string, UserInfo> usersData;
-
-            if (String.IsNullOrEmpty(usersDataJson))
+            return new ObservableCollection<MyTask>
             {
-                return false; // There is no data stored for any user
-            }
-
-            usersData = JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
-
-            // Retrieve the encrypted password and entropy
-            if (usersData.ContainsKey(username))
-            {
-                var UserInfo = usersData[username];
-                var encryptedPasswordBase64 = UserInfo.Password;
-                var entropyBase64 = UserInfo.Entropy;
-
-                if (encryptedPasswordBase64 == null || entropyBase64 == null)
-                {
-                    return false;
-                }
-                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordBase64);
-                var entropyInBytes = Convert.FromBase64String(entropyBase64);
-
-                // Decrypt the password
-                var decryptedPasswordInBytes = ProtectedData.Unprotect(
-                    encryptedPasswordInBytes,
-                    entropyInBytes,
-                    DataProtectionScope.CurrentUser
-                );
-
-                string decryptedPassword = Encoding.UTF8.GetString(decryptedPasswordInBytes);
-                return decryptedPassword == password;
-            }
-            return false;            
+                new MyTask { TaskName = "Task 1", Summarization = "Summary 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(1) },
+                new MyTask { TaskName = "Task 2", Summarization = "Summary 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(2) },
+                new MyTask { TaskName = "Task 3", Summarization = "Summary 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(3) }
+            };
         }
 
-        public bool IsUsernameInUse(string username)
-        {
-            var usersDataJson = StorageHelper.GetSetting("usersData");
-            Dictionary<string, UserInfo> usersData;
 
-            if (String.IsNullOrEmpty(usersDataJson))
-            {
-                return false; // There is no data stored for any user
-            }
-
-            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
-
-            for (int i = 0; i < usersData.Count; i++)
-            {
-                if (usersData.ElementAt(i).Key == username)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool IsEmailInUse(string email)
-        {
-            var usersDataJson = StorageHelper.GetSetting("usersData");
-            Dictionary<string, UserInfo> usersData;
-
-            if (String.IsNullOrEmpty(usersDataJson))
-            {
-                return false; // There is no data stored for any user
-            }
-
-            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
-
-            for (int i = 0; i < usersData.Count; i++)
-            {
-                if (usersData.ElementAt(i).Value.Email == email)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public string GetPassword(string username)
-        {
-            var usersDataJson = StorageHelper.GetSetting("usersData");
-            Dictionary<string, UserInfo> usersData;
-
-            if (String.IsNullOrEmpty(usersDataJson))
-            {
-                return null; // There is no data stored for any user
-            }
-
-            usersData = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
-
-            // Retrieve the encrypted password and entropy
-            if (usersData.ContainsKey(username))
-            {
-                var UserInfo = usersData[username];
-                var encryptedPasswordBase64 = UserInfo.Password;
-                var entropyBase64 = UserInfo.Entropy;
-
-                if (encryptedPasswordBase64 == null || entropyBase64 == null)
-                {
-                    return null;
-                }
-                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordBase64);
-                var entropyInBytes = Convert.FromBase64String(entropyBase64);
-
-                // Decrypt the password
-                var decryptedPasswordInBytes = ProtectedData.Unprotect(
-                    encryptedPasswordInBytes,
-                    entropyInBytes,
-                    DataProtectionScope.CurrentUser
-                );
-
-                return Encoding.UTF8.GetString(decryptedPasswordInBytes);
-            }
-            return null;
-        }
-
-        public string GetUsername(string email)
-        {
-            var usersDataJson = StorageHelper.GetSetting("usersData");
-            Dictionary<string, UserInfo> usersData;
-
-            if (String.IsNullOrEmpty(usersDataJson))
-            {
-                return null; // There is no data stored for any user
-            }
-
-            usersData = JsonSerializer.Deserialize<Dictionary<string, UserInfo>>(usersDataJson);
-
-            for (int i = 0; i < usersData.Count; i++)
-            {
-                if (usersData.ElementAt(i).Value.Email == email)
-                {
-                    return usersData.ElementAt(i).Key;
-                }
-            }
-
-            return null;
-        }
-
-        public void ResetPassword(string username, string password, string email)
-        {
-            CreateUser(username, password, email);
-        }
-
+        // Timer ------------------------------------------------------------------------------------
         public void SaveSession(FocusSession session)
         {
             throw new NotImplementedException();
@@ -449,24 +466,40 @@ namespace TimeManagementApp.Dao
             throw new NotImplementedException();
         }
 
+
+        // Background ------------------------------------------------------------------------------------
+        private const string BackgroundBrushKey = "BackgroundBrush";
+
         public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
         {
-            throw new NotImplementedException();
+            var localSettings = ApplicationData.Current.LocalSettings;
+            var gradientStop1 = selectedBrush.GradientStops[0];
+            var gradientStop2 = selectedBrush.GradientStops[1];
+
+            localSettings.Values[BackgroundBrushKey] = $"{gradientStop1.Color}|{gradientStop2.Color}";
         }
 
         public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
         {
-            throw new NotImplementedException();
-        }
-
-        public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
-        {
-            return new ObservableCollection<MyTask>
+            var localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.ContainsKey(BackgroundBrushKey))
             {
-                new MyTask { TaskName = "Task 1", Summarization = "Summary 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(1) },
-                new MyTask { TaskName = "Task 2", Summarization = "Summary 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(2) },
-                new MyTask { TaskName = "Task 3", Summarization = "Summary 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(3) }
-            };
+                var savedBrush = localSettings.Values[BackgroundBrushKey].ToString().Split('|');
+                var color1 = savedBrush[0];
+                var color2 = savedBrush[1];
+
+                return new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 0),
+                    EndPoint = new Point(0, 1),
+                    GradientStops = new GradientStopCollection
+                    {
+                        new GradientStop { Color = ColorHelper.FromArgb(color1), Offset = offset1 },
+                        new GradientStop { Color = ColorHelper.FromArgb(color2), Offset = offset2 }
+                    }
+                };
+            }
+            return null;
         }
     }
 }

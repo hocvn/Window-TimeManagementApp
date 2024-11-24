@@ -24,7 +24,7 @@ namespace TimeManagementApp.Settings
             var selectedBrush = gridView.SelectedItem as LinearGradientBrush;
 
             // save to local settings
-            IDao dao = new LocalSettingsDao();
+            IDao dao = new MockDao();
             dao.SaveSelectedBackground(selectedBrush);
 
             // reload the background

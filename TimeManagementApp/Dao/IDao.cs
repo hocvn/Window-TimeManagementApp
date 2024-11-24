@@ -12,6 +12,7 @@ namespace TimeManagementApp.Dao
 {
     public interface IDao
     {
+        // Users -----------------------------------------------
         void CreateUser(string username, string password, string email);
 
         bool CheckCredential(string username, string password);
@@ -26,6 +27,8 @@ namespace TimeManagementApp.Dao
 
         void ResetPassword(string username, string password, string email);
 
+
+        // Notes -----------------------------------------------
         ObservableCollection<MyNote> GetAllNote();
 
         void SaveNotes(ObservableCollection<MyNote> notes);
