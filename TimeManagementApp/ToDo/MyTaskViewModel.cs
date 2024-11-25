@@ -1,14 +1,21 @@
-﻿using System.Collections.ObjectModel;
+﻿using OfficeOpenXml.Drawing.Chart;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Printing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TimeManagementApp.Dao;
+using Windows.Storage;
 
 namespace TimeManagementApp.ToDo
 {
     public class MyTaskViewModel : INotifyPropertyChanged
     {
-        // use singleton for reading database one time only
         private static readonly MyTaskViewModel _instance = new MyTaskViewModel();
         public static MyTaskViewModel Instance => _instance;
 
@@ -18,48 +25,79 @@ namespace TimeManagementApp.ToDo
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        // paging setup
+        // ViewModel setup
+        public ObservableCollection<MyTask> ViewTasks;
+
         public const int PageSize = 7;
         public int CurrentPage { get; set; } = 1;
-
-        public ObservableCollection<MyTask> PagedTasks { get; private set; }
+        public Func<MyTask, bool> Filter { get; set; } = null;
+        public string SearchTerm { get; set; } = null;
+        public string SortBy { get; set; } = null;
+        public ListSortDirection SortDirection { get; set; } = ListSortDirection.Ascending;
 
         public void LoadCurrentPage()
         {
-            PagedTasks.Clear();
-            var pagedTasks = Tasks.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+            IEnumerable<MyTask> query = Tasks;
 
+            // Apply filtering
+            if (Filter != null)
+            {
+                query = query.Where(Filter);
+            }
+
+            // Apply searching
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                query = query.Where(task => 
+                    task.TaskName.Contains(SearchTerm) ||
+                    task.Summarization.Contains(SearchTerm)
+                );
+            }
+
+            // Apply sorting
+            if (!string.IsNullOrEmpty(SortBy))
+            {
+                query = SortDirection == ListSortDirection.Ascending
+                    ? query.OrderBy(task => task.GetType().GetProperty(SortBy).GetValue(task, null))
+                    : query.OrderByDescending(task => task.GetType().GetProperty(SortBy).GetValue(task, null));
+            }
+
+            // Apply paging
+            var pagedTasks = query.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+
+            ViewTasks.Clear();
             foreach (var task in pagedTasks)
             {
-                PagedTasks.Add(task);
+                ViewTasks.Add(task);
             }
         }
 
 
+        private IDao _dao;
+
         public MyTaskViewModel()
         {
-            // checking if reading database multiple times
-            Debug.WriteLine("Reading database ...");
+            var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            var filePath = Path.Combine(directory.FullName, "tasks.xlsx"); 
+            _dao = new MockDao(filePath);
+            Tasks = _dao.GetAllTasks();
 
-            IDao dao = new MockDao();
-            Tasks = dao.GetAllTasks();
-
-            PagedTasks = new ObservableCollection<MyTask>();
+            ViewTasks = new ObservableCollection<MyTask>();
             LoadCurrentPage();
         }
 
 
-        // todo: are there any solution for insert, delete, update task
-        // that dont need to reread all tasks (no LoadCurrentPage) ?
         public void InsertTask(MyTask newTask)
         {
             Tasks.Add(newTask);
+            _dao.InsertTask(newTask);
             LoadCurrentPage();
         }
 
         public void DeleteTask(MyTask selectedTask)
         {
             Tasks.Remove(selectedTask);
+            _dao.DeleteTask(selectedTask);
             LoadCurrentPage();
         }
 
@@ -67,6 +105,7 @@ namespace TimeManagementApp.ToDo
         {
             var index = Tasks.IndexOf(oldTask);
             Tasks[index] = newTask;
+            _dao.UpdateTask(oldTask, newTask);
             LoadCurrentPage();
         }
     }

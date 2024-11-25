@@ -40,16 +40,6 @@ namespace TimeManagementApp.ToDo
                 return;
             }
 
-
-            var startDateTime = new DateTime(
-                UpdateTaskStartDate.Date.Year,
-                UpdateTaskStartDate.Date.Month,
-                UpdateTaskStartDate.Date.Day,
-                UpdateTaskStartTime.Time.Hours,
-                UpdateTaskStartTime.Time.Minutes,
-                UpdateTaskStartTime.Time.Seconds
-            );
-
             var dueDateTime = new DateTime(
                 UpdateTaskDueDate.Date.Year,
                 UpdateTaskDueDate.Date.Month,
@@ -62,9 +52,9 @@ namespace TimeManagementApp.ToDo
             var newTask = new MyTask
             {
                 TaskName = UpdateTaskName.Text,
-                Summarization = "This summarization should bind all changed in EditPage",
-                StartDateTime = startDateTime,
-                DueDateTime = dueDateTime
+                DueDateTime = dueDateTime,
+                IsCompleted = false,
+                IsImportant = false,
             };
 
 

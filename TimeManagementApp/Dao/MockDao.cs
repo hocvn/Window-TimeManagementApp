@@ -19,11 +19,26 @@ using static TimeManagementApp.UserCredential;
 using TimeManagementApp.Timer;
 using Microsoft.UI.Xaml.Media;
 using Windows.Foundation;
+using OfficeOpenXml;
 
 namespace TimeManagementApp.Dao
 {
     public class MockDao : IDao
     {
+        public MockDao()
+        {
+            // do nothing, just for using parameterized constructor
+        }
+
+        private readonly string _filePath;
+
+        public MockDao(string filePath)
+        {
+            _filePath = filePath;
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+        }
+
+
         // Users ------------------------------------------------------------------------------------
         private (string, string) EncryptPassword(string password)
         {
@@ -316,115 +331,107 @@ namespace TimeManagementApp.Dao
         // Tasks ------------------------------------------------------------------------------------
         public ObservableCollection<MyTask> GetAllTasks()
         {
-            return new ObservableCollection<MyTask>()
-            {
-                new MyTask()
-                {
-                    TaskName = "Task 01",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 02",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 03",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 04",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 05",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 06",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 07",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 08",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 09",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 10",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 11",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 12",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 13",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddDays(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 14",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddDays(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 15",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddDays(3),
-                },
-            };
+            return LoadTasksFromExcel(_filePath);
         }
+
+        public void InsertTask(MyTask newTask)
+        {
+            var tasks = LoadTasksFromExcel(_filePath);
+            newTask.Id = tasks.Count + 1; // Assign new unique ID based on the row number
+            tasks.Add(newTask);
+            SaveTasksToExcel(_filePath, tasks);
+        }
+
+        public void DeleteTask(MyTask selectedTask)
+        {
+            var tasks = LoadTasksFromExcel(_filePath);
+            var taskToDelete = tasks.FirstOrDefault(t => t.Id == selectedTask.Id);
+            if (taskToDelete != null)
+            {
+                tasks.Remove(taskToDelete);
+                SaveTasksToExcel(_filePath, tasks);
+            }
+        }
+
+        public void UpdateTask(MyTask oldTask, MyTask newTask)
+        {
+            var tasks = LoadTasksFromExcel(_filePath);
+            var taskToUpdate = tasks.FirstOrDefault(t => t.Id == oldTask.Id);
+            if (taskToUpdate != null)
+            {
+                var index = tasks.IndexOf(taskToUpdate);
+                tasks[index] = newTask;
+                SaveTasksToExcel(_filePath, tasks);
+            }
+        }
+
+        private ObservableCollection<MyTask> LoadTasksFromExcel(string filePath)
+        {
+            var tasks = new ObservableCollection<MyTask>();
+
+            if (!File.Exists(filePath))
+            {
+                return tasks;
+            }
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (worksheet == null || worksheet.Dimension == null)
+                {
+                    return tasks;
+                }
+
+                for (int row = 2; row <= worksheet.Dimension.Rows; row++)
+                {
+                    var task = new MyTask
+                    {
+                        Id = int.Parse(worksheet.Cells[row, 1].Text),
+                        TaskName = worksheet.Cells[row, 2].Text,
+                        DueDateTime = DateTime.Parse(worksheet.Cells[row, 3].Text),
+                        IsCompleted = bool.Parse(worksheet.Cells[row, 4].Text),
+                        IsImportant = bool.Parse(worksheet.Cells[row, 5].Text),
+                        RepeatOption = worksheet.Cells[row, 6].Text,
+                        ReminderTime = DateTime.Parse(worksheet.Cells[row, 7].Text),
+                    };
+                    tasks.Add(task);
+                }
+            }
+
+            return tasks;
+        }
+
+        private void SaveTasksToExcel(string filePath, ObservableCollection<MyTask> tasks)
+        {
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault() ?? package.Workbook.Worksheets.Add("Tasks");
+
+                worksheet.Cells[1, 1].Value = "Id";
+                worksheet.Cells[1, 2].Value = "TaskName";
+                worksheet.Cells[1, 3].Value = "DueDateTime";
+                worksheet.Cells[1, 4].Value = "IsCompleted";
+                worksheet.Cells[1, 5].Value = "IsImportant";
+                worksheet.Cells[1, 6].Value = "RepeatOption";
+                worksheet.Cells[1, 7].Value = "ReminderTime";
+
+                int row = 2;
+                foreach (var task in tasks)
+                {
+                    worksheet.Cells[row, 1].Value = task.Id;
+                    worksheet.Cells[row, 2].Value = task.TaskName;
+                    worksheet.Cells[row, 3].Value = task.DueDateTime.ToString();
+                    worksheet.Cells[row, 4].Value = task.IsCompleted.ToString();
+                    worksheet.Cells[row, 5].Value = task.IsImportant.ToString();
+                    worksheet.Cells[row, 6].Value = task.RepeatOption;
+                    worksheet.Cells[row, 7].Value = task.ReminderTime.ToString();
+                    row++;
+                }
+
+                package.Save();
+            }
+        }
+
 
         public ObservableCollection<MyTask> GetTodayTask()
         {
@@ -443,9 +450,36 @@ namespace TimeManagementApp.Dao
         {
             return new ObservableCollection<MyTask>
             {
-                new MyTask { TaskName = "Task 1", Summarization = "Summary 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(1) },
-                new MyTask { TaskName = "Task 2", Summarization = "Summary 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(2) },
-                new MyTask { TaskName = "Task 3", Summarization = "Summary 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(3) }
+                new MyTask()
+                {
+                    Id = 1,
+                    TaskName = "Task 01",
+                    DueDateTime = DateTime.Now.AddHours(1),
+                    IsCompleted = true,
+                    IsImportant = false,
+                    RepeatOption = "Everyday",
+                    ReminderTime = DateTime.Now.AddDays(1),
+                },
+                new MyTask()
+                {
+                    Id = 2,
+                    TaskName = "Task 02",
+                    DueDateTime = DateTime.Now.AddHours(2),
+                    IsCompleted = false,
+                    IsImportant = true,
+                    RepeatOption = "Weekly",
+                    ReminderTime = DateTime.Now.AddDays(2),
+                },
+                new MyTask()
+                {
+                    Id = 3,
+                    TaskName = "Task 03",
+                    DueDateTime = DateTime.Now.AddHours(3),
+                    IsCompleted = false,
+                    IsImportant = false,
+                    RepeatOption = "Monthly",
+                    ReminderTime = DateTime.Now.AddDays(3),
+                },
             };
         }
 
@@ -453,17 +487,64 @@ namespace TimeManagementApp.Dao
         // Timer ------------------------------------------------------------------------------------
         public void SaveSession(FocusSession session)
         {
-            throw new NotImplementedException();
+            FileInfo fileInfo = new FileInfo(_filePath);
+
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets.Count == 0
+                    ? package.Workbook.Worksheets.Add("FocusSessions")
+                    : package.Workbook.Worksheets[0];
+
+                int row = (worksheet.Dimension?.Rows ?? 0) + 1;
+
+                // Assign a new unique ID to the session
+                session.Id = row;
+
+                worksheet.Cells[row, 1].Value = session.Id;
+                worksheet.Cells[row, 2].Value = session.Duration.ToString();
+                worksheet.Cells[row, 3].Value = session.Timestamp.ToString("o"); // ISO 8601 format
+                worksheet.Cells[row, 4].Value = session.Tag;
+
+                package.Save();
+            }
         }
 
         public List<FocusSession> GetAllSessions()
         {
-            throw new NotImplementedException();
+            var sessions = new List<FocusSession>();
+
+            FileInfo fileInfo = new FileInfo(_filePath);
+            if (!fileInfo.Exists)
+            {
+                return sessions; // No file exists yet, return empty list
+            }
+
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets[0];
+                if (worksheet.Dimension == null)
+                {
+                    return sessions;
+                }
+
+                for (int row = 1; row <= worksheet.Dimension.Rows; row++)
+                {
+                    var id = int.Parse(worksheet.Cells[row, 1].Value.ToString());
+                    var duration = TimeSpan.Parse(worksheet.Cells[row, 2].Value.ToString());
+                    var timestamp = DateTime.Parse(worksheet.Cells[row, 3].Value.ToString());
+                    var tag = worksheet.Cells[row, 4].Value.ToString();
+
+                    sessions.Add(new FocusSession { Id = id, Duration = duration, Timestamp = timestamp, Tag = tag });
+                }
+            }
+
+            return sessions;
         }
 
         public List<FocusSession> GetAllSessionsWithTag(string tag)
         {
-            throw new NotImplementedException();
+            var sessions = GetAllSessions();
+            return sessions.Where(s => s.Tag == tag).ToList();
         }
 
 

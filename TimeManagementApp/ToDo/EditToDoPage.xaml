@@ -12,9 +12,6 @@
     xmlns:app="using:TimeManagementApp"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
-    <!--<Page.Resources>
-        <helper:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
-    </Page.Resources>-->
 
     <Grid>
         <StackPanel VerticalAlignment="Top" Padding="20">
@@ -69,27 +66,6 @@
                                 <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
                                         Grid.Column="1"
                                         Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
-                            </Grid>
-
-
-                            <!-- Update Start Date and Time -->
-                            <Grid Margin="0,0,0,10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="110"/>
-                                    <ColumnDefinition Width="330"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Text="Start time:" 
-                                            Grid.Column="0" Margin="0,4,0,0"/>
-
-                                <DatePicker x:Name="UpdateTaskStartDate" 
-                                            Grid.Column="1"
-                                            Date="{x:Bind SelectedTask.StartDateTime, Mode=OneWay}"/>
-
-                                <TimePicker x:Name="UpdateTaskStartTime" 
-                                            Grid.Column="2"
-                                            Time="{x:Bind SelectedTask.StartDateTime.TimeOfDay, Mode=OneWay}"/>
                             </Grid>
 
                             <!-- Update Due Date and Time -->

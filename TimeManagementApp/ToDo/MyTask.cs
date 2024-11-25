@@ -9,12 +9,16 @@ namespace TimeManagementApp.ToDo
 {
     public class MyTask : INotifyPropertyChanged
     {
+        public int Id { get; set; }
         public string TaskName { get; set; }
-        public string Summarization { get; set; }
-        public DateTime StartDateTime { get; set; }
         public DateTime DueDateTime { get; set; }
         public bool IsCompleted { get; set; }
+        public bool IsImportant { get; set; }
+        public string RepeatOption { get; set; }
+        public DateTime ReminderTime { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Summarization => "Binding all properties";
     }
 }

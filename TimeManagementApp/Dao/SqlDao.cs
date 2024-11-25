@@ -568,5 +568,15 @@ namespace TimeManagementApp.Dao
         {
             throw new NotImplementedException();
         }
+
+        public void InsertTask(MyTask newTask)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateTask(MyTask oldTask, MyTask newTask)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

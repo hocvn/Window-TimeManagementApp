@@ -19,8 +19,6 @@ namespace TimeManagementApp.ToDo
     {
         public MyTaskViewModel ViewModel { get; set; }
 
-        // this property must be static
-        // if not, it will be null when navigate to EditPage and navigate back to MainPage
         public static MyTask CurrentSelectTask { get; set; }
 
         public MainToDoPage()
@@ -76,9 +74,9 @@ namespace TimeManagementApp.ToDo
                 var newTask = new MyTask
                 {
                     TaskName = InsertTaskName.Text,
-                    Summarization = "",
-                    StartDateTime = startDateTime,
-                    DueDateTime = dueDateTime
+                    DueDateTime = dueDateTime,
+                    IsCompleted = false,
+                    IsImportant = false,
                 };
 
                 ViewModel.InsertTask(newTask);

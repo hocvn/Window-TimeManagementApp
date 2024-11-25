@@ -40,7 +40,7 @@
 
     
             <ListView x:Name="MyTasksListView" 
-                     ItemsSource="{x:Bind ViewModel.PagedTasks, Mode=OneWay}"
+                     ItemsSource="{x:Bind ViewModel.ViewTasks, Mode=OneWay}"
                      Background="Transparent"
                      Margin="20,20,0,0"
                      IsItemClickEnabled="True"
@@ -120,9 +120,6 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" Width="180">
-                                <TextBlock>
-                                    Start: <Run Text="{x:Bind StartDateTime}"/>
-                                </TextBlock>
                                 <TextBlock>
                                     Due: <Run Text="{x:Bind DueDateTime}"/>
                                 </TextBlock>
