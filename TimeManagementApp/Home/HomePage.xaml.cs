@@ -30,12 +30,12 @@ namespace TimeManagementApp.Home
 
             public ObservableCollection<MyNote> NoteList { get; set; }
 
-            private IDao dao = new MockDao();
+            private IDao _dao = new SqlDao();
 
             public void Init()
             {
-                NoteList = dao.GetAllNote();
-                TodayTasks = dao.GetTodayTask();
+                NoteList = _dao.GetAllNote();
+                TodayTasks = _dao.GetTodayTask();
 
                 TodayTasksTotal = TodayTasks.Count;
                 NotesTotal = NoteList.Count;
@@ -89,7 +89,6 @@ namespace TimeManagementApp.Home
         {
             MyNote note = (MyNote)e.ClickedItem;
             MainWindow.NavigationService.Navigate(typeof(NotePage), note);
-            //Frame.Navigate(typeof(NotePage), note);
         }
     }
 }

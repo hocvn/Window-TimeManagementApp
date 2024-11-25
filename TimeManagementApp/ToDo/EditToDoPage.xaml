@@ -12,9 +12,6 @@
     xmlns:app="using:TimeManagementApp"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
-    <!--<Page.Resources>
-        <helper:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
-    </Page.Resources>-->
 
     <Grid>
         <StackPanel VerticalAlignment="Top" Padding="20">
@@ -27,25 +24,17 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                     
-                <SymbolIcon Symbol="Edit" 
-                            Grid.Column="0"/>
-                <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" 
-                           FontSize="22" FontWeight="Bold" 
+                <SymbolIcon Symbol="Edit" Grid.Column="0"/>
+                <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" FontSize="22" FontWeight="Bold" 
                            Grid.Column="1" Margin="30,15,0,0"/>
-                <AppBarButton Label="Update" 
-                              Icon="Save" Click="UpdateButton_Click" 
-                              Grid.Column="2"/>
-                <AppBarButton Label="Back" 
-                              Icon="Back" Click="BackButton_Click"  
-                              Grid.Column="3"/>
+                <AppBarButton Label="Update" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
+                <AppBarButton Label="Back" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
             </Grid>
 
             <StackPanel Margin="20,0,0,0" Padding="5">
 
                 <!-- Update Task Section -->
-                <muxc:Expander IsExpanded="True" 
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch">
+                <muxc:Expander IsExpanded="True" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
 
                     <muxc:Expander.Header>
                         <StackPanel Orientation="Horizontal">

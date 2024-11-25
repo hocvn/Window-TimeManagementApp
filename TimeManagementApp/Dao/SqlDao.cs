@@ -220,9 +220,9 @@ namespace TimeManagementApp.Dao
             var result = new ObservableCollection<MyNote>();
 
             var sql = @"
-                        select note.note_id, note.name 
-                        from [NOTE] note
-                        where note.username = @username
+                        select Note.note_id, Note.name 
+                        from [NOTE] Note
+                        where Note.username = @username
                     ";
 
             var command = new SqlCommand(sql, connection);
@@ -247,8 +247,8 @@ namespace TimeManagementApp.Dao
         {
             var connection = CreateConnection();
             var sql = @"
-                        delete from [NOTE] note
-                        where note.note_id = @note_id and note.username = @username
+                        delete from [NOTE] 
+                        where note_id = @note_id and username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
@@ -286,7 +286,7 @@ namespace TimeManagementApp.Dao
             return newNoteId;
         }
 
-        public async Task OpenNote(RichEditBox editor, MyNote note)
+        public async Task OpenNote(MyNote note)
         {
             var connection = CreateConnection();
             var sql = @"
@@ -304,7 +304,8 @@ namespace TimeManagementApp.Dao
             if (reader.Read())
             {
                 var content = reader.GetString(0);
-                editor.Document.SetText(TextSetOptions.FormatRtf, content);
+                note.Content = content;
+                //editor.Document.SetText(TextSetOptions.FormatRtf, content);
             }
             connection.Close();
         }
@@ -329,7 +330,7 @@ namespace TimeManagementApp.Dao
             connection.Close();
         }
 
-        public void SaveNote(RichEditBox editor, MyNote note)
+        public void SaveNote(MyNote note)
         {
             var connection = CreateConnection();
             var sql = @"
@@ -340,8 +341,7 @@ namespace TimeManagementApp.Dao
             var command = new SqlCommand(sql, connection);
             // Get content of RichEditBox with RTF format
             command.Parameters.Add("@content", System.Data.SqlDbType.Text);
-            editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
-            command.Parameters["@content"].Value = content;
+            command.Parameters["@content"].Value = note.Content;
 
             command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
             command.Parameters["@name"].Value = note.Name;

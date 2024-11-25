@@ -15,8 +15,6 @@ namespace TimeManagementApp.Note
     /// </summary>
     public sealed partial class NotePage : Page
     {
-        private string _originalContentWithFormat = "";
-
         public NoteViewModel ViewModel { get; set; } = new NoteViewModel();
 
         public NotePage()
@@ -35,7 +33,6 @@ namespace TimeManagementApp.Note
         private async void NotePage_Loaded(object sender, RoutedEventArgs e)
         {
             await ViewModel.Load(Editor);
-            Editor.Document.GetText(TextGetOptions.FormatRtf, out _originalContentWithFormat);
             UnsavedSign.Fill = new SolidColorBrush(Colors.Transparent);
         }
 
@@ -98,7 +95,7 @@ namespace TimeManagementApp.Note
         private void CheckChanged()
         {
             Editor.Document.GetText(TextGetOptions.FormatRtf, out string currentContent);
-            ViewModel.HasUnsavedChanged = !string.Equals(_originalContentWithFormat, currentContent, StringComparison.Ordinal);
+            ViewModel.HasUnsavedChanged = !string.Equals(ViewModel.Note.Content, currentContent, StringComparison.Ordinal);
             if (ViewModel.HasUnsavedChanged)
             {
                 UnsavedSign.Fill = new SolidColorBrush(Colors.Blue);
@@ -112,7 +109,10 @@ namespace TimeManagementApp.Note
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Save(Editor);
-            Editor.Document.GetText(TextGetOptions.FormatRtf, out _originalContentWithFormat);
+
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
+            ViewModel.Note.Content = content;
+
             ViewModel.HasUnsavedChanged = false;
             UnsavedSign.Fill = new SolidColorBrush(Colors.Transparent);
         }
@@ -165,20 +165,16 @@ namespace TimeManagementApp.Note
         private void Editor_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var selection = Editor.Document.Selection;
-            if (selection.Length >= 0)
+            if (selection.Length == 0)
             {
                 var documentRange = Editor.Document.GetRange(0, TextConstants.MaxUnitCount);
                 documentRange.CharacterFormat.BackgroundColor = Colors.Transparent;
             }
-            
-            //CheckChanged();
-
         }
 
         private void Editor_TextChanged(object sender, RoutedEventArgs e)
         {
             Editor.Document.Selection.CharacterFormat.ForegroundColor = ((SolidColorBrush)ViewModel.CurrentColor).Color;
-            //ViewModel.HasUnsavedChanged = true;
             CheckChanged();
         }
 

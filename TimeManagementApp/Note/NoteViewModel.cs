@@ -3,10 +3,10 @@ using Microsoft.UI;
 using System.ComponentModel;
 using TimeManagementApp.Dao;
 using Microsoft.UI.Xaml.Controls;
-using TimeManagementApp.Helper;
-using Microsoft.UI.Xaml;
 using Quartz.Util;
 using System.Threading.Tasks;
+using Microsoft.UI.Text;
+using System;
 
 namespace TimeManagementApp.Note
 {
@@ -16,7 +16,7 @@ namespace TimeManagementApp.Note
         public Brush CurrentColor { get; set; }
         public bool HasUnsavedChanged { get; set; }
 
-        // this is used to check if the back button is clicked, avoid the dialog to show up when the back button is clicked
+        // This is used to check if the back button is clicked, avoid the dialog to show up twice
         public bool BackButton_Clicked { get; set; } 
 
         private IDao _dao = new SqlDao();
@@ -32,12 +32,18 @@ namespace TimeManagementApp.Note
 
         internal async Task Load(RichEditBox Editor)
         {
-            await _dao.OpenNote(Editor, Note);
+            await _dao.OpenNote(Note);
+            Editor.Document.SetText(TextSetOptions.FormatRtf, Note.Content.Trim());
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
+            content = content.Replace(@"\highlight0", string.Empty);
+            Note.Content = content;
         }
 
         internal void Save(RichEditBox Editor)
         {
-            _dao.SaveNote(Editor, Note);
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
+            Note.Content = content;
+            _dao.SaveNote(Note);
         }
 
         internal void Remove()

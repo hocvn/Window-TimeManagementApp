@@ -99,7 +99,7 @@ namespace TimeManagementApp.Dao
             throw new NotImplementedException();
         }
 
-        public Task OpenNote(RichEditBox editor, MyNote note)
+        public Task OpenNote(MyNote note)
         {
             throw new NotImplementedException();
         }
@@ -109,7 +109,7 @@ namespace TimeManagementApp.Dao
             throw new NotImplementedException();
         }
 
-        public void SaveNote(RichEditBox editor, MyNote note)
+        public void SaveNote(MyNote note)
         {
             throw new NotImplementedException();
         }

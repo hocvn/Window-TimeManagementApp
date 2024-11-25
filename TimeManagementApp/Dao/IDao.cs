@@ -28,9 +28,9 @@ namespace TimeManagementApp.Dao
 
         ObservableCollection<MyNote> GetAllNote();
 
-        void SaveNote(RichEditBox editor, MyNote note);
+        void SaveNote(MyNote note);
 
-        Task OpenNote(RichEditBox editor, MyNote note);
+        Task OpenNote(MyNote note);
 
         void DeleteNote(MyNote note);
 
