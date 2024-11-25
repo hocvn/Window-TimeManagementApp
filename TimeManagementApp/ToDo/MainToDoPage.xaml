@@ -23,8 +23,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <SymbolIcon Symbol="Home" 
-                            Grid.Column="0" Margin="0,3,0,0"/>
+                <SymbolIcon Symbol="Home" Grid.Column="0" Margin="0,3,0,0"/>
 
                 <TextBlock Text="Tasks" FontSize="25" FontWeight="Bold" 
                            Grid.Column="1" Margin="20,0,0,0"/>
@@ -70,7 +69,7 @@
                                                     <Storyboard>
                                                         <ColorAnimation Storyboard.TargetName="BackgroundElement"
                                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                        To="FloralWhite"/>
+                                                                        To="AntiqueWhite"/>
                                                     </Storyboard>
                                                 </VisualState>
                                                 
@@ -156,8 +155,7 @@
                              PlaceholderText="Fill in the space and press Enter to add new task"
                              KeyDown="InsertTask_KeyDown"/>
                     
-                    <CalendarDatePicker x:Name="InsertTaskDueDateTime" Grid.Column="1"
-                                        PlaceholderText="Due date"/>
+                    <CalendarDatePicker x:Name="InsertTaskDueDateTime" Grid.Column="1" PlaceholderText="Due date"/>
                 </Grid>
             </InfoBar>
         </StackPanel>
