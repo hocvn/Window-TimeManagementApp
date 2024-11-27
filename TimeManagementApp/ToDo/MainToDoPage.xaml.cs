@@ -143,5 +143,6 @@ namespace TimeManagementApp.ToDo
                 ViewModel.UpdateTask(task);
             }
         }
+
     }
 }

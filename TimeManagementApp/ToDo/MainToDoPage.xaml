@@ -16,6 +16,7 @@
         <conv:IsCompletedToTextDecorationsConverter x:Key="IsCompletedToTextDecorationsConverter" />
         <conv:IsImportantToGlyphConverter x:Key="IsImportantToGlyphConverter" />
         <conv:IsImportantToForegroundConverter x:Key="IsImportantToForegroundConverter" />
+        <conv:TaskPropertyToVisibilityConverter x:Key="TaskPropertyToVisibilityConverter" />
     </Page.Resources>
 
     <Grid>
@@ -28,6 +29,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <SymbolIcon Symbol="Home" 
@@ -36,11 +38,25 @@
                 <TextBlock Text="Tasks" FontSize="25" FontWeight="Bold" 
                            Grid.Column="1" Margin="20,0,0,0"/>
 
+                <!-- Filtering -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                            Grid.Column="2" Margin="0,0,10,0">
+                    <ComboBox x:Name="FilterComboBox" 
+                              SelectedIndex="{x:Bind ViewModel.FilterSelectedIndex, Mode=TwoWay}">
+                        <ComboBoxItem>All Tasks</ComboBoxItem>
+                        <ComboBoxItem>Uncompleted Tasks</ComboBoxItem>
+                        <ComboBoxItem>Completed Tasks</ComboBoxItem>
+                        <ComboBoxItem>Important Tasks</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                
                 <!-- Paging controls -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="3">
                     <Button Content="Previous" Click="PreviousPage_Click"/>
-                    <TextBlock Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" 
-                               VerticalAlignment="Center" Margin="10,0,10,0"/>
+                    <TextBlock  VerticalAlignment="Center" Margin="10,0,10,0"
+                                Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}">
+                        <!--<Run Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}"/> / <Run Text="{x:Bind ViewModel.TotalPage, Mode=OneWay}"/>-->
+                    </TextBlock>
                     <Button Content="Next" Click="NextPage_Click"/>
                 </StackPanel>
             </Grid>
@@ -112,7 +128,6 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
                             <AppBarButton Click="IsCompletedTask_Click"
@@ -144,18 +159,37 @@
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="{x:Bind TaskName}"
                                            TextDecorations="{x:Bind IsCompleted, Converter={StaticResource IsCompletedToTextDecorationsConverter}}"
-                                           Foreground="{x:Bind IsImportant, Converter={StaticResource IsImportantToForegroundConverter}}"/>
-                                <TextBlock Text="{x:Bind Summarization}"/>
-                            </StackPanel>
+                                           Foreground="{x:Bind IsImportant, Converter={StaticResource IsImportantToForegroundConverter}}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,2"/>
 
-                            <StackPanel Grid.Column="3" Width="180">
-                                <TextBlock>
-                                    Due: <Run Text="{x:Bind DueDateTime}"/>
-                                </TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Calendar Icon and DueDateTime -->
+                                    <FontIcon Glyph="&#xE787;" FontSize="12" Margin="0,0,3,0"/>
+                                    <TextBlock Text="{x:Bind DueDateTime, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"/>
+
+                                    <!-- Notification Icon and ReminderTime -->
+                                    <FontIcon Glyph="&#xE7ED;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind ReminderTime, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind ReminderTime, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind ReminderTime, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+
+                                    <!-- Repeat Icon and RepeatOption -->
+                                    <FontIcon Glyph="&#xE8EE;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind RepeatOption, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind RepeatOption, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind RepeatOption, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+
+                                    <!-- Description Icon and Description -->
+                                    <FontIcon Glyph="&#xE70F;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind Description, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind Description, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind Description, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                </StackPanel>
                             </StackPanel>
 
                             <AppBarButton Icon="Delete" Click="DeleteTask_Click"
-                                          Grid.Column="4" Margin="15,-10,0,-10"
+                                          Grid.Column="3" Margin="15,-10,0,-10"
                                           Width="40" Height="50"
                                           VerticalAlignment="Center"
                                           CommandParameter="{Binding}">

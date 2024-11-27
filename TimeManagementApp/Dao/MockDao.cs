@@ -20,6 +20,7 @@ using TimeManagementApp.Timer;
 using Microsoft.UI.Xaml.Media;
 using Windows.Foundation;
 using OfficeOpenXml;
+using System.Threading;
 
 namespace TimeManagementApp.Dao
 {
@@ -356,14 +357,14 @@ namespace TimeManagementApp.Dao
         public void UpdateTask(MyTask task)
         {
             var tasks = LoadTasksFromExcel(_filePath);
-            var taskToUpdate = tasks.FirstOrDefault(t => t.TaskId == task.TaskId);
-            if (taskToUpdate != null)
+            var index = tasks.IndexOf(tasks.FirstOrDefault(t => t.TaskId == task.TaskId));
+            if (index >= 0)
             {
-                var index = tasks.IndexOf(taskToUpdate);
                 tasks[index] = task;
                 SaveTasksToExcel(_filePath, tasks);
             }
         }
+
 
         private ObservableCollection<MyTask> LoadTasksFromExcel(string filePath)
         {
@@ -405,10 +406,19 @@ namespace TimeManagementApp.Dao
 
         private void SaveTasksToExcel(string filePath, ObservableCollection<MyTask> tasks)
         {
+            if (!File.Exists(filePath))
+            {
+                throw new Exception("File not found");
+            }
+
             using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
                 var worksheet = package.Workbook.Worksheets.FirstOrDefault() ?? package.Workbook.Worksheets.Add("Tasks");
 
+                // Clear existing rows
+                worksheet.Cells.Clear();
+
+                // Add headers
                 worksheet.Cells[1, 1].Value = "TaskId";
                 worksheet.Cells[1, 2].Value = "TaskName";
                 worksheet.Cells[1, 3].Value = "DueDateTime";
@@ -437,7 +447,6 @@ namespace TimeManagementApp.Dao
                 package.Save();
             }
         }
-
 
         public ObservableCollection<MyTask> GetTodayTask()
         {

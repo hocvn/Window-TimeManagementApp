@@ -49,8 +49,7 @@ namespace TimeManagementApp.ToDo
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 query = query.Where(task => 
-                    task.TaskName.Contains(SearchTerm) ||
-                    task.Summarization.Contains(SearchTerm)
+                    task.TaskName.Contains(SearchTerm)
                 );
             }
 
@@ -77,8 +76,8 @@ namespace TimeManagementApp.ToDo
 
         public MyTaskViewModel()
         {
-            var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-            var filePath = Path.Combine(directory.FullName, "tasks.xlsx"); 
+            var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
+            var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
             _dao = new MockDao(filePath);
             Tasks = _dao.GetAllTasks();
 
@@ -111,6 +110,40 @@ namespace TimeManagementApp.ToDo
                 _dao.UpdateTask(task);
                 LoadCurrentPage();
             }
+        }
+
+
+        // handle filter two way binding
+        private int _filterSelectedIndex = 0;
+        public int FilterSelectedIndex
+        {
+            get => _filterSelectedIndex;
+            set
+            {
+                _filterSelectedIndex = value;
+                UpdateFilter();
+            }
+        }
+
+        public void UpdateFilter()
+        {
+            switch (FilterSelectedIndex)
+            {
+                case 1: // uncompleted tasks
+                    Filter = task => !task.IsCompleted;
+                    break;
+                case 2: // completed tasks
+                    Filter = task => task.IsCompleted;
+                    break;
+                case 3: // important tasks
+                    Filter = task => task.IsImportant;
+                    break;
+                default: // all tasks
+                    Filter = null;
+                    break;
+            }
+
+            LoadCurrentPage();
         }
     }
 }

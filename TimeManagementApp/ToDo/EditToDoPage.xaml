@@ -53,13 +53,27 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="Task name:" 
-                                    Grid.Column="0" VerticalAlignment="Center"/>
+                                           Grid.Column="0" VerticalAlignment="Center"/>
 
                                 <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
                                         Grid.Column="1"
                                         Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
                             </Grid>
 
+                            <!-- Update Task Description -->
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Description:" 
+                                           Grid.Column="0" VerticalAlignment="Center"/>
+
+                                <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Description" 
+                                        Grid.Column="1"
+                                        Text="{x:Bind SelectedTask.Description, Mode=OneWay}"/>
+                            </Grid>
 
                             <!-- Update Due Date and Time -->
                             <Grid>
@@ -126,7 +140,7 @@
                 </muxc:Expander>
 
 
-                <!--todo: repeat, add file, add note-->
+                <!--todo: repeat, add note-->
                 <muxc:Expander IsExpanded="False" 
                                HorizontalAlignment="Stretch"
                                HorizontalContentAlignment="Stretch">
@@ -135,19 +149,6 @@
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="&#xE8EE;" Margin="0,1,20,0"/>
                             <TextBlock Text="Repeat"/>
-                        </StackPanel>
-                    </muxc:Expander.Header>
-
-                </muxc:Expander>
-
-                <muxc:Expander IsExpanded="False" 
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch">
-
-                    <muxc:Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE8A5;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Add file"/>
                         </StackPanel>
                     </muxc:Expander.Header>
 

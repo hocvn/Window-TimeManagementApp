@@ -21,8 +21,6 @@ namespace TimeManagementApp.ToDo
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Summarization => "Binding all properties";
-
         public object Clone()
         {
             return new MyTask()

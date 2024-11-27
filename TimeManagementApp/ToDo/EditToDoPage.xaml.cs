@@ -51,10 +51,15 @@ namespace TimeManagementApp.ToDo
 
             var task = new MyTask
             {
+                TaskId = SelectedTask.TaskId,
                 TaskName = UpdateTaskName.Text,
                 DueDateTime = dueDateTime,
-                IsCompleted = false,
-                IsImportant = false,
+                Description = UpdateTaskDescription.Text,
+                IsCompleted = SelectedTask.IsCompleted,
+                IsImportant = SelectedTask.IsImportant,
+                RepeatOption = SelectedTask.RepeatOption,
+                ReminderTime = SelectedTask.ReminderTime,
+                NoteId = SelectedTask.NoteId,
             };
 
 
