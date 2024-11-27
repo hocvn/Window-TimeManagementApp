@@ -446,7 +446,7 @@ namespace TimeManagementApp.Dao
             return result;
         }
 
-        public void AddTask(MyTask task)
+        public void InsertTask(MyTask task)
         {
             var connection = CreateConnection();
             var sql = @"
@@ -565,16 +565,6 @@ namespace TimeManagementApp.Dao
         }
 
         public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InsertTask(MyTask newTask)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateTask(MyTask oldTask, MyTask newTask)
         {
             throw new NotImplementedException();
         }

@@ -87,26 +87,30 @@ namespace TimeManagementApp.ToDo
         }
 
 
-        public void InsertTask(MyTask newTask)
+        public void InsertTask(MyTask task)
         {
-            Tasks.Add(newTask);
-            _dao.InsertTask(newTask);
+            Tasks.Add(task);
+            _dao.InsertTask(task);
             LoadCurrentPage();
         }
 
-        public void DeleteTask(MyTask selectedTask)
+        public void DeleteTask(MyTask task)
         {
-            Tasks.Remove(selectedTask);
-            _dao.DeleteTask(selectedTask);
+            Tasks.Remove(task);
+            _dao.DeleteTask(task);
             LoadCurrentPage();
         }
 
-        public void UpdateTask(MyTask oldTask, MyTask newTask)
+        public void UpdateTask(MyTask task)
         {
-            var index = Tasks.IndexOf(oldTask);
-            Tasks[index] = newTask;
-            _dao.UpdateTask(oldTask, newTask);
-            LoadCurrentPage();
+            var taskToUpdate = Tasks.FirstOrDefault(t => t.TaskId == task.TaskId);
+            if (taskToUpdate != null)
+            {
+                var index = Tasks.IndexOf(taskToUpdate);
+                Tasks[index] = task;
+                _dao.UpdateTask(task);
+                LoadCurrentPage();
+            }
         }
     }
 }

@@ -23,26 +23,18 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                    
-                <SymbolIcon Symbol="Edit" 
-                            Grid.Column="0"/>
-                <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" 
-                           FontSize="22" FontWeight="Bold" 
+
+                <SymbolIcon Symbol="Edit" Grid.Column="0"/>
+                <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" FontSize="22" FontWeight="Bold" 
                            Grid.Column="1" Margin="30,15,0,0"/>
-                <AppBarButton Label="Update" 
-                              Icon="Save" Click="UpdateButton_Click" 
-                              Grid.Column="2"/>
-                <AppBarButton Label="Back" 
-                              Icon="Back" Click="BackButton_Click"  
-                              Grid.Column="3"/>
+                <AppBarButton Label="Update" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
+                <AppBarButton Label="Back" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
             </Grid>
 
             <StackPanel Margin="20,0,0,0" Padding="5">
 
                 <!-- Update Task Section -->
-                <muxc:Expander IsExpanded="True" 
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch">
+                <muxc:Expander IsExpanded="True" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
 
                     <muxc:Expander.Header>
                         <StackPanel Orientation="Horizontal">
@@ -67,6 +59,7 @@
                                         Grid.Column="1"
                                         Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
                             </Grid>
+
 
                             <!-- Update Due Date and Time -->
                             <Grid>
@@ -132,7 +125,7 @@
                     </muxc:Expander.Content>
                 </muxc:Expander>
 
-                
+
                 <!--todo: repeat, add file, add note-->
                 <muxc:Expander IsExpanded="False" 
                                HorizontalAlignment="Stretch"
@@ -157,7 +150,7 @@
                             <TextBlock Text="Add file"/>
                         </StackPanel>
                     </muxc:Expander.Header>
-                    
+
                 </muxc:Expander>
 
                 <muxc:Expander IsExpanded="False" 
@@ -177,4 +170,3 @@
         </StackPanel>
     </Grid>
 </Page>
-

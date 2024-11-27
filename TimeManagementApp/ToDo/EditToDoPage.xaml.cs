@@ -49,7 +49,7 @@ namespace TimeManagementApp.ToDo
                 UpdateTaskDueTime.Time.Seconds
             );
 
-            var newTask = new MyTask
+            var task = new MyTask
             {
                 TaskName = UpdateTaskName.Text,
                 DueDateTime = dueDateTime,
@@ -58,30 +58,17 @@ namespace TimeManagementApp.ToDo
             };
 
 
-            // send newTask to the MainPage
-            MainWindow.NavigationService.Navigate(typeof(MainToDoPage), newTask);
+            // send task to the MainPage for _dao to update, then send back to EditToDoPage
+            MainWindow.NavigationService.Navigate(typeof(MainToDoPage), task.Clone());
+            MainWindow.NavigationService.Navigate(typeof(EditToDoPage), task.Clone());
 
             await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task successfully!", null, null, "OK");
         }
 
 
-        private async void BackButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Want to save all the changes?", "Yes", "No", "Cancel");
-
-            if (result == ContentDialogResult.Primary)
-            {
-                UpdateButton_Click(null, null);
-            }
-            else if (result == ContentDialogResult.Secondary)
-            {
-                //MainWindow.NavigationService.Navigate(typeof(MainToDoPage));
-                MainWindow.NavigationService.GoBack();
-            }
-            else
-            {
-                // do nothing
-            }
+            MainWindow.NavigationService.GoBack();
         }
 
 
@@ -92,5 +79,4 @@ namespace TimeManagementApp.ToDo
 
 
     }
-
 }

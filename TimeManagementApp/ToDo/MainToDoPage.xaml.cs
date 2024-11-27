@@ -19,8 +19,6 @@ namespace TimeManagementApp.ToDo
     {
         public MyTaskViewModel ViewModel { get; set; }
 
-        public static MyTask CurrentSelectTask { get; set; }
-
         public MainToDoPage()
         {
             this.InitializeComponent();
@@ -31,16 +29,16 @@ namespace TimeManagementApp.ToDo
         // navigate to the EditPage when an task is tapped
         private void TaskItem_Click(object sender, ItemClickEventArgs e)
         {
-            CurrentSelectTask = e.ClickedItem as MyTask;
-            MainWindow.NavigationService.Navigate(typeof(EditToDoPage), CurrentSelectTask);
+            var selectedTask = e.ClickedItem as MyTask;
+            MainWindow.NavigationService.Navigate(typeof(EditToDoPage), selectedTask.Clone());
         }
 
         // navigate back from EditPage
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is MyTask newTask)
+            if (e.Parameter is MyTask task)
             {
-                ViewModel.UpdateTask(CurrentSelectTask, newTask);
+                ViewModel.UpdateTask(task);
             }
 
             base.OnNavigatedTo(e);
@@ -129,22 +127,21 @@ namespace TimeManagementApp.ToDo
         }
 
 
-        // handle checkbox for is completed or not
-        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void IsCompletedTask_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox checkBox && checkBox.CommandParameter is MyTask task)
+            if (sender is AppBarButton button && button.CommandParameter is MyTask task)
             {
-                task.IsCompleted = true;
+                task.IsCompleted = (task.IsCompleted == true) ? false : true;
+                ViewModel.UpdateTask(task);
             }
         }
-
-        private void TaskCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void IsImportantTask_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is CheckBox checkBox && checkBox.CommandParameter is MyTask task)
+            if (sender is AppBarButton button && button.CommandParameter is MyTask task)
             {
-                task.IsCompleted = false;
+                task.IsImportant = (task.IsImportant == true) ? false : true;
+                ViewModel.UpdateTask(task);
             }
         }
-
     }
 }

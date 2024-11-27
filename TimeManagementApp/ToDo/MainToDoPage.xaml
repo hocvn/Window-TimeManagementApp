@@ -7,9 +7,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
+    xmlns:conv="using:TimeManagementApp.Converters"
     xmlns:app="using:TimeManagementApp"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
+    <Page.Resources>
+        <conv:IsCompletedToGlyphConverter x:Key="IsCompletedToGlyphConverter" />
+        <conv:IsCompletedToTextDecorationsConverter x:Key="IsCompletedToTextDecorationsConverter" />
+        <conv:IsImportantToGlyphConverter x:Key="IsImportantToGlyphConverter" />
+        <conv:IsImportantToForegroundConverter x:Key="IsImportantToForegroundConverter" />
+    </Page.Resources>
 
     <Grid>
         <!--Area for ToDoListView-->
@@ -102,34 +109,60 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <CheckBox Grid.Column="0"
-                                      Margin="10,0,-60,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{x:Bind IsCompleted, Mode=TwoWay}"
-                                      Checked="TaskCheckBox_Checked"
-                                      Unchecked="TaskCheckBox_Unchecked"/>
+                            <AppBarButton Click="IsCompletedTask_Click"
+                                          Grid.Column="0" Margin="0,-10,0,-10"
+                                          Width="40" Height="50"
+                                          VerticalAlignment="Center"
+                                          CommandParameter="{Binding}">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="{x:Bind IsCompleted, Mode=OneWay, Converter={StaticResource IsCompletedToGlyphConverter}}"/>
+                                </AppBarButton.Icon>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="IsCompleted"/>
+                                </ToolTipService.ToolTip>
+                            </AppBarButton>
 
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{x:Bind TaskName}" FontWeight="Bold"/>
+                            <AppBarButton Click="IsImportantTask_Click"
+                                          Grid.Column="1" Margin="0,-10,15,-10"
+                                          Width="40" Height="50"
+                                          VerticalAlignment="Center"
+                                          CommandParameter="{Binding}">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="{x:Bind IsImportant, Mode=OneWay, Converter={StaticResource IsImportantToGlyphConverter}}"/>
+                                </AppBarButton.Icon>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="IsImportant"/>
+                                </ToolTipService.ToolTip>
+                            </AppBarButton>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{x:Bind TaskName}"
+                                           TextDecorations="{x:Bind IsCompleted, Converter={StaticResource IsCompletedToTextDecorationsConverter}}"
+                                           Foreground="{x:Bind IsImportant, Converter={StaticResource IsImportantToForegroundConverter}}"/>
                                 <TextBlock Text="{x:Bind Summarization}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="2" Width="180">
+                            <StackPanel Grid.Column="3" Width="180">
                                 <TextBlock>
                                     Due: <Run Text="{x:Bind DueDateTime}"/>
                                 </TextBlock>
                             </StackPanel>
 
                             <AppBarButton Icon="Delete" Click="DeleteTask_Click"
-                                          Grid.Column="3" Margin="15,-10,0,-10"
+                                          Grid.Column="4" Margin="15,-10,0,-10"
                                           Width="40" Height="50"
                                           VerticalAlignment="Center"
-                                          CommandParameter="{Binding}"/>
+                                          CommandParameter="{Binding}">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="Delete"/>
+                                </ToolTipService.ToolTip>
+                            </AppBarButton>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

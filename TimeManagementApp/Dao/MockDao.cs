@@ -334,18 +334,18 @@ namespace TimeManagementApp.Dao
             return LoadTasksFromExcel(_filePath);
         }
 
-        public void InsertTask(MyTask newTask)
+        public void InsertTask(MyTask task)
         {
             var tasks = LoadTasksFromExcel(_filePath);
-            newTask.Id = tasks.Count + 1; // Assign new unique ID based on the row number
-            tasks.Add(newTask);
+            task.TaskId = tasks.Any() ? tasks.Max(t => t.TaskId) + 1 : 1; // Assign new unique ID based on the max existing ID
+            tasks.Add(task);
             SaveTasksToExcel(_filePath, tasks);
         }
 
-        public void DeleteTask(MyTask selectedTask)
+        public void DeleteTask(MyTask task)
         {
             var tasks = LoadTasksFromExcel(_filePath);
-            var taskToDelete = tasks.FirstOrDefault(t => t.Id == selectedTask.Id);
+            var taskToDelete = tasks.FirstOrDefault(t => t.TaskId == task.TaskId);
             if (taskToDelete != null)
             {
                 tasks.Remove(taskToDelete);
@@ -353,14 +353,14 @@ namespace TimeManagementApp.Dao
             }
         }
 
-        public void UpdateTask(MyTask oldTask, MyTask newTask)
+        public void UpdateTask(MyTask task)
         {
             var tasks = LoadTasksFromExcel(_filePath);
-            var taskToUpdate = tasks.FirstOrDefault(t => t.Id == oldTask.Id);
+            var taskToUpdate = tasks.FirstOrDefault(t => t.TaskId == task.TaskId);
             if (taskToUpdate != null)
             {
                 var index = tasks.IndexOf(taskToUpdate);
-                tasks[index] = newTask;
+                tasks[index] = task;
                 SaveTasksToExcel(_filePath, tasks);
             }
         }
@@ -386,13 +386,15 @@ namespace TimeManagementApp.Dao
                 {
                     var task = new MyTask
                     {
-                        Id = int.Parse(worksheet.Cells[row, 1].Text),
+                        TaskId = int.Parse(worksheet.Cells[row, 1].Text),
                         TaskName = worksheet.Cells[row, 2].Text,
                         DueDateTime = DateTime.Parse(worksheet.Cells[row, 3].Text),
-                        IsCompleted = bool.Parse(worksheet.Cells[row, 4].Text),
-                        IsImportant = bool.Parse(worksheet.Cells[row, 5].Text),
-                        RepeatOption = worksheet.Cells[row, 6].Text,
-                        ReminderTime = DateTime.Parse(worksheet.Cells[row, 7].Text),
+                        Description = worksheet.Cells[row, 4].Text,
+                        IsCompleted = bool.Parse(worksheet.Cells[row, 5].Text),
+                        IsImportant = bool.Parse(worksheet.Cells[row, 6].Text),
+                        RepeatOption = worksheet.Cells[row, 7].Text,
+                        ReminderTime = DateTime.Parse(worksheet.Cells[row, 8].Text),
+                        NoteId = int.Parse(worksheet.Cells[row, 9].Text)
                     };
                     tasks.Add(task);
                 }
@@ -407,24 +409,28 @@ namespace TimeManagementApp.Dao
             {
                 var worksheet = package.Workbook.Worksheets.FirstOrDefault() ?? package.Workbook.Worksheets.Add("Tasks");
 
-                worksheet.Cells[1, 1].Value = "Id";
+                worksheet.Cells[1, 1].Value = "TaskId";
                 worksheet.Cells[1, 2].Value = "TaskName";
                 worksheet.Cells[1, 3].Value = "DueDateTime";
-                worksheet.Cells[1, 4].Value = "IsCompleted";
-                worksheet.Cells[1, 5].Value = "IsImportant";
-                worksheet.Cells[1, 6].Value = "RepeatOption";
-                worksheet.Cells[1, 7].Value = "ReminderTime";
+                worksheet.Cells[1, 4].Value = "Description";
+                worksheet.Cells[1, 5].Value = "IsCompleted";
+                worksheet.Cells[1, 6].Value = "IsImportant";
+                worksheet.Cells[1, 7].Value = "RepeatOption";
+                worksheet.Cells[1, 8].Value = "ReminderTime";
+                worksheet.Cells[1, 9].Value = "NoteId";
 
                 int row = 2;
                 foreach (var task in tasks)
                 {
-                    worksheet.Cells[row, 1].Value = task.Id;
+                    worksheet.Cells[row, 1].Value = task.TaskId;
                     worksheet.Cells[row, 2].Value = task.TaskName;
                     worksheet.Cells[row, 3].Value = task.DueDateTime.ToString();
-                    worksheet.Cells[row, 4].Value = task.IsCompleted.ToString();
-                    worksheet.Cells[row, 5].Value = task.IsImportant.ToString();
-                    worksheet.Cells[row, 6].Value = task.RepeatOption;
-                    worksheet.Cells[row, 7].Value = task.ReminderTime.ToString();
+                    worksheet.Cells[row, 4].Value = task.Description;
+                    worksheet.Cells[row, 5].Value = task.IsCompleted.ToString();
+                    worksheet.Cells[row, 6].Value = task.IsImportant.ToString();
+                    worksheet.Cells[row, 7].Value = task.RepeatOption;
+                    worksheet.Cells[row, 8].Value = task.ReminderTime.ToString();
+                    worksheet.Cells[row, 9].Value = task.NoteId;
                     row++;
                 }
 
@@ -448,39 +454,7 @@ namespace TimeManagementApp.Dao
 
         public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
         {
-            return new ObservableCollection<MyTask>
-            {
-                new MyTask()
-                {
-                    Id = 1,
-                    TaskName = "Task 01",
-                    DueDateTime = DateTime.Now.AddHours(1),
-                    IsCompleted = true,
-                    IsImportant = false,
-                    RepeatOption = "Everyday",
-                    ReminderTime = DateTime.Now.AddDays(1),
-                },
-                new MyTask()
-                {
-                    Id = 2,
-                    TaskName = "Task 02",
-                    DueDateTime = DateTime.Now.AddHours(2),
-                    IsCompleted = false,
-                    IsImportant = true,
-                    RepeatOption = "Weekly",
-                    ReminderTime = DateTime.Now.AddDays(2),
-                },
-                new MyTask()
-                {
-                    Id = 3,
-                    TaskName = "Task 03",
-                    DueDateTime = DateTime.Now.AddHours(3),
-                    IsCompleted = false,
-                    IsImportant = false,
-                    RepeatOption = "Monthly",
-                    ReminderTime = DateTime.Now.AddDays(3),
-                },
-            };
+            throw new NotImplementedException();
         }
 
 
