@@ -30,8 +30,8 @@ namespace TimeManagementApp.Calendar
             TaskCounts = new Dictionary<DateTime, int>();
 
             //dao = new MockDao();
-            var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-            var filePath = Path.Combine(directory.FullName, "tasks.xlsx");
+            var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
+            var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
             dao = new MockDao(filePath);
         }
 

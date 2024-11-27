@@ -2,7 +2,10 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using System.Threading.Tasks;
+using TimeManagementApp.Calendar;
 using TimeManagementApp.Helper;
+using TimeManagementApp.Home;
 
 namespace TimeManagementApp.ToDo
 {
@@ -73,7 +76,21 @@ namespace TimeManagementApp.ToDo
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.NavigationService.GoBack();
+            // cant use this one because the update task feature need to navigate to MainToDoPage for _dao to update
+            // MainWindow.NavigationService.GoBack();
+            
+            if (MainWindow.CurrentNavigationViewItem == "CalendarPage")
+            {
+                MainWindow.NavigationService.Navigate(typeof(CalendarPage));
+            }
+            else if (MainWindow.CurrentNavigationViewItem == "HomePage")
+            {
+                MainWindow.NavigationService.Navigate(typeof(HomePage));
+            }
+            else
+            {
+                MainWindow.NavigationService.Navigate(typeof(MainToDoPage));
+            }
         }
 
 
