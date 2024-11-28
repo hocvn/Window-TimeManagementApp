@@ -5,7 +5,7 @@ using TimeManagementApp.Dao;
 namespace TimeManagementApp.Settings
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page is used to display and change the settings of the application.
     /// </summary>
     public sealed partial class MainSettingsPage : Page
     {
@@ -24,12 +24,29 @@ namespace TimeManagementApp.Settings
             var selectedBrush = gridView.SelectedItem as LinearGradientBrush;
 
             // save to local settings
-            IDao dao = new LocalSettingsDao();
-            dao.SaveSelectedBackground(selectedBrush);
+            IDao _dao = new LocalSettingsDao();
+            _dao.SaveSelectedBackground(selectedBrush);
 
             // reload the background
-            App.BackgroundViewModel.PageBackgroundBrush = dao.LoadSavedBackground(0.0, 8.0);
-            App.BackgroundViewModel.NavigationViewBackgroundBrush = dao.LoadSavedBackground(0.0, 2.5);
+            App.BackgroundViewModel.PageBackgroundBrush = _dao.LoadSavedBackground(0.0, 8.0);
+            App.BackgroundViewModel.NavigationViewBackgroundBrush = _dao.LoadSavedBackground(0.0, 2.5);
+        }
+
+        private void Country_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox CountryComboBox = sender as ComboBox;
+            if (CountryComboBox.SelectedItem != null)
+            {
+                var selectedCountry = CountryComboBox.SelectedItem as ComboBoxItem;
+                if (selectedCountry.Content.ToString() == "Vietnam")
+                {
+                    App.SwitchLocalization("vi-VN");
+                }
+                else
+                {
+                    App.SwitchLocalization("en-US");
+                }
+            }
         }
     }
 

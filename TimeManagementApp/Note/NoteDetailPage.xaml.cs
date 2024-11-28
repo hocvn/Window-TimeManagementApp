@@ -47,7 +47,15 @@ namespace TimeManagementApp.Note
             {
                 return;
             }
-            var result = await Dialog.ShowContent(this.XamlRoot, "Save", "Would you like to save the recent note?", "Yes", "No", null);
+            var result = await Dialog.ShowContent
+            (
+                this.XamlRoot, 
+                "Save".GetLocalized(), 
+                "Would_you_like_to_save_the_recent_note".GetLocalized(), 
+                "Yes".GetLocalized(), 
+                "No".GetLocalized(), 
+                null
+            );
             if (result == ContentDialogResult.Primary)
             {
                 ViewModel.Save(Editor);
@@ -74,7 +82,15 @@ namespace TimeManagementApp.Note
                 }
             }
 
-            var result = await Dialog.ShowContent(this.XamlRoot, "Exit", "Would you like to save?", "Yes", "No", "Cancel");
+            var result = await Dialog.ShowContent
+            (
+                this.XamlRoot, 
+                "Exit".GetLocalized(), 
+                "Would_you_like_to_save".GetLocalized(), 
+                "Yes".GetLocalized(), 
+                "No".GetLocalized(), 
+                "Cancel".GetLocalized()
+            );
             if (result == ContentDialogResult.Primary)
             {
                 if (Frame.CanGoBack)
@@ -120,7 +136,15 @@ namespace TimeManagementApp.Note
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             
-            var result = await Dialog.ShowContent(this.XamlRoot, "Remove Note", "Are you sure you want to remove this note?", "Yes", null, "No");
+            var result = await Dialog.ShowContent
+            (
+                this.XamlRoot, 
+                "Delete_note".GetLocalized(), 
+                "Are_you_sure_you_want_to_remove_this_note".GetLocalized(), 
+                "Yes".GetLocalized(), 
+                null, 
+                "No".GetLocalized()
+            );
             if (result == ContentDialogResult.Primary)
             {
                 ViewModel.Remove();

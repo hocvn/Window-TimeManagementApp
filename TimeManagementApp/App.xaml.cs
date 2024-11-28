@@ -2,6 +2,7 @@
 using Microsoft.Windows.AppNotifications;
 using System;
 using TimeManagementApp.Global;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp
 {
@@ -31,12 +32,21 @@ namespace TimeManagementApp
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            string code = StorageHelper.GetSetting("language");
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code ?? "en-US";
+
             _window = new LoginWindow();
 
             AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
             AppNotificationManager.Default.Register();
 
             _window.Activate();
+        }
+
+        public static void SwitchLocalization(string code)
+        {
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
+            StorageHelper.SaveSetting("language", code);
         }
 
         public static void NavigateWindow(Window window)

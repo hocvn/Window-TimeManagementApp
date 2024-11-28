@@ -14,7 +14,7 @@
         <!--Header-->
         <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Padding="30">
             <SymbolIcon Symbol="Clock"/>
-            <TextBlock Text="Timer" 
+            <TextBlock x:Uid="timeTitle'"
                        FontSize="24" FontWeight="Bold" 
                        Margin="30,-3,0,0"/>
         </StackPanel>
@@ -48,19 +48,16 @@
             </Grid>
 
             <!--play, pause, reset timer features-->
-            <StackPanel Orientation="Horizontal" Margin="0,40,0,0"
-                        HorizontalAlignment="Center" VerticalAlignment="Center">
-                <AppBarButton Icon="Play" Label="Start" Click="StartButton_Click"/>
-                <AppBarButton Icon="Pause" Label="Pause" Click="PauseButton_Click"/>
-                <AppBarButton Icon="Refresh" Label="Reset" Click="ResetButton_Click"/>
+            <StackPanel Orientation="Horizontal" Margin="0,40,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <AppBarButton Icon="Play" x:Uid="startButton" Click="StartButton_Click"/>
+                <AppBarButton Icon="Pause" x:Uid="pauseButton" Click="PauseButton_Click"/>
+                <AppBarButton Icon="Refresh" x:Uid="resetButton" Click="ResetButton_Click"/>
             </StackPanel>
 
             <!--settings & skip session-->
-            <StackPanel Orientation="Horizontal" Margin="0,-10,0,0"
-                        HorizontalAlignment="Center" VerticalAlignment="Center">
-                <AppBarButton Icon="Forward" Label="Skip this session" Click="SkipButton_Click"/>
-                <AppBarButton x:Name="SettingsButton" 
-                              Icon="Setting" Label="Change settings" Click="SettingsButton_Click"/>
+            <StackPanel Orientation="Horizontal" Margin="0,-10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <AppBarButton Icon="Forward" x:Uid="skipThisSessionButton" Click="SkipButton_Click"/>
+                <AppBarButton x:Name="SettingsButton" Icon="Setting" x:Uid="changeSettingButton" Click="SettingsButton_Click"/>
             </StackPanel>
 
         </StackPanel>

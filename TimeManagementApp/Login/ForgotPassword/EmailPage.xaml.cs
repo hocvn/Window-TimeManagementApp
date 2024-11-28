@@ -56,7 +56,7 @@ namespace TimeManagementApp.Login.ForgotPassword
 
             if (!ViewModel.IsEmailInUse(email))
             {
-                ViewModel.ErrorMessage= "Email you entered have not registered yet";
+                ViewModel.ErrorMessage= "Email_you_entered_have_not_registered_yet".GetLocalized();
                 return;
             }
             Frame.Navigate(typeof(OTPPage), email);
