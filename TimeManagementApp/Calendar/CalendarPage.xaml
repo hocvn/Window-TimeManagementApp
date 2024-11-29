@@ -67,6 +67,7 @@
         <SplitView.Content>
             <Grid>
                 <CalendarView
+                    x:Name="CalendarView"
                     Margin="0"
                     SelectionMode="Single" 
                     IsOutOfScopeEnabled="True"

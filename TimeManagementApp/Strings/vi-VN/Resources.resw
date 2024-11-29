@@ -214,7 +214,7 @@
     <value>Việc hôm nay</value>
   </data>
   <data name="taskTitle.Text" xml:space="preserve">
-    <value>Việc cần làm</value>
+    <value>Nhiệm vụ</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>Tất cả</value>
@@ -443,5 +443,53 @@
   </data>
   <data name="account.Description" xml:space="preserve">
     <value>Đổi mật khẩu, đăng xuất</value>
+  </data>
+  <data name="previousButton.Content" xml:space="preserve">
+    <value>Trước</value>
+  </data>
+  <data name="fillInTheSpaceAndPressEnterToAddNewTask.PlaceholderText" xml:space="preserve">
+    <value>Điền tên vào ô trống rồi nhấn Enter để thêm nhiệm vụ</value>
+  </data>
+  <data name="insertTaskDueDateTime.PlaceholderText" xml:space="preserve">
+    <value>Ngày kết thúc</value>
+  </data>
+  <data name="updateTaskButton.Label" xml:space="preserve">
+    <value>Cập nhật</value>
+  </data>
+  <data name="updateTask.Text" xml:space="preserve">
+    <value>Cập nhật</value>
+  </data>
+  <data name="taskName.Text" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="startTime.Text" xml:space="preserve">
+    <value>Bắt đầu</value>
+  </data>
+  <data name="dueTime.Text" xml:space="preserve">
+    <value>Kết thúc</value>
+  </data>
+  <data name="remindMe.Text" xml:space="preserve">
+    <value>Nhắc nhở</value>
+  </data>
+  <data name="laterToday.Content" xml:space="preserve">
+    <value>Sau hôm nay</value>
+  </data>
+  <data name="tomorrow.Content" xml:space="preserve">
+    <value>Ngày mai</value>
+  </data>
+  <data name="nextWeek.Content" xml:space="preserve">
+    <value>Tuần tới</value>
+  </data>
+  <data name="pickDateAndTime.Content" xml:space="preserve">
+    <value>Chọn ngày và giờ</value>
+  </data>
+  <data name="repeat.Text" xml:space="preserve">
+    <value>Lặp lại</value>
+  </data>
+  <data name="addFile.Text" xml:space="preserve">
+    <value>Thêm tệp</value>
+  </data>
+  <data name="addNoteInTask.Text" xml:space="preserve">
+    <value>Thêm ghi chú</value>
   </data>
 </root>

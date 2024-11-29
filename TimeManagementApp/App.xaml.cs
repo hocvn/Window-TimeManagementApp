@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppNotifications;
 using System;
+using System.Globalization;
 using TimeManagementApp.Global;
 using TimeManagementApp.Helper;
 
@@ -33,7 +34,10 @@ namespace TimeManagementApp
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             string code = StorageHelper.GetSetting("language");
-            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code ?? "en-US";
+            code ??= "en-US";
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(code);
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(code);
 
             _window = new LoginWindow();
 
@@ -45,6 +49,8 @@ namespace TimeManagementApp
 
         public static void SwitchLocalization(string code)
         {
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(code);
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(code);
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
             StorageHelper.SaveSetting("language", code);
         }

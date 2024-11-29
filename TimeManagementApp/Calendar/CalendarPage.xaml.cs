@@ -18,6 +18,8 @@ namespace TimeManagementApp.Calendar
             this.InitializeComponent();
             ViewModel = new();
             ViewModel.Init();
+            string language = ResourcesHelper.GetLanguage();
+            CalendarView.Language = language;
         }
 
         private void ClosePane_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

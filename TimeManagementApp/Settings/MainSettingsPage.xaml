@@ -42,7 +42,7 @@
                 <controls:SettingsCard x:Uid="country"
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE707;'}" 
                                        IsEnabled="True">
-                    <ComboBox SelectedIndex="0" SelectionChanged="Country_SelectionChanged">
+                    <ComboBox x:Name="CountryComboBox" SelectedIndex="0" SelectionChanged="Country_SelectionChanged">
                         <ComboBoxItem>England</ComboBoxItem>
                         <ComboBoxItem>Vietnam</ComboBoxItem>
                     </ComboBox>

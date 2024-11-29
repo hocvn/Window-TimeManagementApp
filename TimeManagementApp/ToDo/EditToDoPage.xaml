@@ -27,8 +27,8 @@
                 <SymbolIcon Symbol="Edit" Grid.Column="0"/>
                 <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" FontSize="22" FontWeight="Bold" 
                            Grid.Column="1" Margin="30,15,0,0"/>
-                <AppBarButton Label="Update" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
-                <AppBarButton Label="Back" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
+                <AppBarButton x:Uid="updateTaskButton" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
+                <AppBarButton x:Uid="backButton" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
             </Grid>
 
             <StackPanel Margin="20,0,0,0" Padding="5">
@@ -39,7 +39,7 @@
                     <muxc:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="&#xE777;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Update Task"/>
+                            <TextBlock x:Uid="updateTask"/>
                         </StackPanel>
                     </muxc:Expander.Header>
 
@@ -52,7 +52,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Task name:" 
+                                <TextBlock x:Uid="taskName"
                                     Grid.Column="0" VerticalAlignment="Center"/>
 
                                 <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
@@ -69,10 +69,10 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Start time:" 
+                                <TextBlock x:Uid="startTime"
                                             Grid.Column="0" Margin="0,4,0,0"/>
 
-                                <DatePicker x:Name="UpdateTaskStartDate" 
+                                <DatePicker x:Name="UpdateTaskStartDate"  
                                             Grid.Column="1"
                                             Date="{x:Bind SelectedTask.StartDateTime, Mode=OneWay}"/>
 
@@ -89,7 +89,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="Due time:" 
+                                <TextBlock x:Uid="dueTime"
                                            Grid.Column="0" Margin="0,4,0,0"/>
 
                                 <DatePicker x:Name="UpdateTaskDueDate" 
@@ -114,7 +114,7 @@
                     <muxc:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="&#xE121;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Remind me"/>
+                            <TextBlock x:Uid="remindMe"/>
                         </StackPanel>
                     </muxc:Expander.Header>
 
@@ -122,17 +122,17 @@
                         <StackPanel>
                             <!-- Basic options -->
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton Content="Later Today" Margin="0,0,200,0" 
+                                <RadioButton x:Uid="laterToday" Margin="0,0,200,0" 
                                              GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-                                <RadioButton Content="Tomorrow" Margin="0,0,200,0"
+                                <RadioButton x:Uid="tomorrow" Margin="0,0,200,0"
                                              GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-                                <RadioButton Content="Next Week" 
+                                <RadioButton x:Uid="nextWeek"
                                              GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
                             </StackPanel>
 
                             <!-- Pick date and time option -->
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton Content="Pick Date and Time:" 
+                                <RadioButton x:Uid="pickDateAndTime" 
                                              GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
 
                                 <DatePicker x:Name="CustomReminderDatePicker" IsEnabled="False" 
@@ -154,7 +154,7 @@
                     <muxc:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="&#xE8EE;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Repeat"/>
+                            <TextBlock x:Uid="repeat"/>
                         </StackPanel>
                     </muxc:Expander.Header>
 
@@ -167,7 +167,7 @@
                     <muxc:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="&#xE8A5;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Add file"/>
+                            <TextBlock x:Uid="addFile"/>
                         </StackPanel>
                     </muxc:Expander.Header>
                     
@@ -180,7 +180,7 @@
                     <muxc:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="&#xE70B;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Add note"/>
+                            <TextBlock x:Uid="addNoteInTask"/>
                         </StackPanel>
                     </muxc:Expander.Header>
 

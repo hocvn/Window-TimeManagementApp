@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using TimeManagementApp.Dao;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Settings
 {
@@ -14,6 +15,15 @@ namespace TimeManagementApp.Settings
             this.InitializeComponent();
 
             BrushesViewModel = new BrushesViewModel();
+
+            if (ResourcesHelper.GetLanguage() == "en-US")
+            {
+                CountryComboBox.SelectedIndex = 0;
+            }
+            else
+            {
+                CountryComboBox.SelectedIndex = 1;
+            }
         }
 
         public BrushesViewModel BrushesViewModel { get; set; }

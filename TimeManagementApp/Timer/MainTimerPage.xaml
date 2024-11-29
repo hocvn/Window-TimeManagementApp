@@ -14,9 +14,7 @@
         <!--Header-->
         <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Padding="30">
             <SymbolIcon Symbol="Clock"/>
-            <TextBlock x:Uid="timeTitle'"
-                       FontSize="24" FontWeight="Bold" 
-                       Margin="30,-3,0,0"/>
+            <TextBlock x:Uid="timeTitle" FontSize="24" FontWeight="Bold" Margin="30,-3,0,0"/>
         </StackPanel>
 
         
