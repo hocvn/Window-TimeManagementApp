@@ -75,9 +75,13 @@ namespace TimeManagementApp.ToDo
                     DueDateTime = dueDateTime,
                     IsCompleted = false,
                     IsImportant = false,
+                    ReminderTime = MainWindow.NullDateTime
                 };
 
                 ViewModel.InsertTask(newTask);
+
+                InsertTaskName.Text = null;
+                InsertTaskDueDateTime.Date = null;
 
                 await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, null, "OK");
             }

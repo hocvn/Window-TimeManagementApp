@@ -139,7 +139,7 @@
                                     <FontIcon Glyph="{x:Bind IsCompleted, Mode=OneWay, Converter={StaticResource IsCompletedToGlyphConverter}}"/>
                                 </AppBarButton.Icon>
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="IsCompleted"/>
+                                    <ToolTip Content="Completed"/>
                                 </ToolTipService.ToolTip>
                             </AppBarButton>
 
@@ -152,7 +152,7 @@
                                     <FontIcon Glyph="{x:Bind IsImportant, Mode=OneWay, Converter={StaticResource IsImportantToGlyphConverter}}"/>
                                 </AppBarButton.Icon>
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="IsImportant"/>
+                                    <ToolTip Content="Important"/>
                                 </ToolTipService.ToolTip>
                             </AppBarButton>
 

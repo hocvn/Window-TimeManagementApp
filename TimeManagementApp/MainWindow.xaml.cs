@@ -20,6 +20,8 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public static readonly DateTime NullDateTime = new DateTime(2000, 1, 1, 1, 0, 0);
+
         public static NavigationService NavigationService { get; set; } = new NavigationService();
         private bool _isFirstActivation = true;
 

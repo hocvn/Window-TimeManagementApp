@@ -8,6 +8,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d"
     xmlns:app="using:TimeManagementApp"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
@@ -27,145 +29,133 @@
                 <SymbolIcon Symbol="Edit" Grid.Column="0"/>
                 <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" FontSize="22" FontWeight="Bold" 
                            Grid.Column="1" Margin="30,15,0,0"/>
-                <AppBarButton Label="Update" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
+                <AppBarButton Label="Save" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
                 <AppBarButton Label="Back" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
             </Grid>
 
             <StackPanel Margin="20,0,0,0" Padding="5">
 
                 <!-- Update Task Section -->
-                <muxc:Expander IsExpanded="True" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <controls:SettingsCard IsEnabled="True" 
+                                       ContentAlignment="Left">
+                    <StackPanel>
+                        <!-- Update Task Name -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                    <muxc:Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE777;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Task Informations"/>
-                        </StackPanel>
-                    </muxc:Expander.Header>
+                            <TextBlock Text="Task name:" 
+                           Grid.Column="0" VerticalAlignment="Center"/>
 
-                    <muxc:Expander.Content>
-                        <StackPanel>
-                            <!-- Update Task Name -->
-                            <Grid Margin="0,0,0,10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="110"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                            <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
+                        Grid.Column="1"
+                        Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
+                        </Grid>
 
-                                <TextBlock Text="Task name:" 
-                                           Grid.Column="0" VerticalAlignment="Center"/>
+                        <!-- Update Task Description -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                                <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
-                                        Grid.Column="1"
-                                        Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
-                            </Grid>
+                            <TextBlock Text="Description:" 
+                           Grid.Column="0" VerticalAlignment="Center"/>
 
-                            <!-- Update Task Description -->
-                            <Grid Margin="0,0,0,10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="110"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                            <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Description" 
+                        Grid.Column="1"
+                        Text="{x:Bind SelectedTask.Description, Mode=OneWay}"/>
+                        </Grid>
 
-                                <TextBlock Text="Description:" 
-                                           Grid.Column="0" VerticalAlignment="Center"/>
+                        <!-- Update Due Date and Time -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="330"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                                <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Description" 
-                                        Grid.Column="1"
-                                        Text="{x:Bind SelectedTask.Description, Mode=OneWay}"/>
-                            </Grid>
+                            <TextBlock Text="Due time:" 
+                           Grid.Column="0" Margin="0,4,0,0"/>
 
-                            <!-- Update Due Date and Time -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="110"/>
-                                    <ColumnDefinition Width="330"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                            <DatePicker x:Name="UpdateTaskDueDate" 
+                            Grid.Column="1"
+                            Date="{x:Bind SelectedTask.DueDateTime, Mode=OneWay}"/>
 
-                                <TextBlock Text="Due time:" 
-                                           Grid.Column="0" Margin="0,4,0,0"/>
+                            <TimePicker x:Name="UpdateTaskDueTime" 
+                            Grid.Column="2"
+                            Time="{x:Bind SelectedTask.DueDateTime.TimeOfDay, Mode=OneWay}"/>
+                        </Grid>
 
-                                <DatePicker x:Name="UpdateTaskDueDate" 
-                                            Grid.Column="1"
-                                            Date="{x:Bind SelectedTask.DueDateTime, Mode=OneWay}"/>
-
-                                <TimePicker x:Name="UpdateTaskDueTime" 
-                                            Grid.Column="2"
-                                            Time="{x:Bind SelectedTask.DueDateTime.TimeOfDay, Mode=OneWay}"/>
-                            </Grid>
-
-                        </StackPanel>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
+                    </StackPanel>
+                </controls:SettingsCard>
+                
 
 
                 <!-- Set Reminder -->
-                <muxc:Expander IsExpanded="True" 
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch">
+                <controls:SettingsExpander Header="Remind me"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE121;'}"
+                                           HorizontalAlignment="Stretch"
+                                           HorizontalContentAlignment="Stretch"
+                                           IsEnabled="True"
+                                           IsExpanded="True">
 
-                    <muxc:Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE121;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Remind me"/>
-                        </StackPanel>
-                    </muxc:Expander.Header>
+                    <ToggleSwitch IsOn="{x:Bind IsReminderOn, Mode=TwoWay}"/>
 
-                    <muxc:Expander.Content>
-                        <StackPanel>
-                            <!-- Basic options -->
-                            <StackPanel Orientation="Horizontal">
-                                <RadioButton Content="Later Today" Margin="0,0,200,0" 
-                                             GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-                                <RadioButton Content="Tomorrow" Margin="0,0,200,0"
-                                             GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-                                <RadioButton Content="Next Week" 
-                                             GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard IsEnabled="{x:Bind IsReminderOn, Mode=OneWay}"
+                                               ContentAlignment="Left">
+                            <StackPanel>
+                                <!-- Basic options -->
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="End of Today" Margin="0,0,200,0" 
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
+                                    <RadioButton Content="Tomorrow Morning" Margin="0,0,200,0"
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
+                                    <RadioButton Content="Next week Morning" 
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
+                                </StackPanel>
+
+                                <!-- Pick date and time option -->
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="Pick Date and Time:" 
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"
+                                                 IsChecked="{x:Bind IsPickingReminderTime, Mode=TwoWay}"/>
+
+                                    <DatePicker x:Name="CustomReminderDatePicker" IsEnabled="{x:Bind IsPickingReminderTime, Mode=OneWay}"
+                                                Margin="30,5,0,0"/>
+                                    <TimePicker x:Name="CustomReminderTimePicker" IsEnabled="{x:Bind IsPickingReminderTime, Mode=OneWay}"
+                                                Margin="20,5,0,0"/>
+                                </StackPanel>
                             </StackPanel>
-
-                            <!-- Pick date and time option -->
-                            <StackPanel Orientation="Horizontal">
-                                <RadioButton Content="Pick Date and Time:" 
-                                             GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-
-                                <DatePicker x:Name="CustomReminderDatePicker" IsEnabled="False" 
-                                            Margin="30,5,0,0"/>
-                                <TimePicker x:Name="CustomReminderTimePicker" IsEnabled="False" 
-                                            Margin="20,5,0,0"/>
-                            </StackPanel>
-
-                        </StackPanel>
-                    </muxc:Expander.Content>
-                </muxc:Expander>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
 
 
-                <!--todo: repeat, add note-->
-                <muxc:Expander IsExpanded="False" 
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch">
-
-                    <muxc:Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE8EE;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Repeat"/>
-                        </StackPanel>
-                    </muxc:Expander.Header>
-
-                </muxc:Expander>
-
-                <muxc:Expander IsExpanded="False" 
-                               HorizontalAlignment="Stretch"
-                               HorizontalContentAlignment="Stretch">
-
-                    <muxc:Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon Glyph="&#xE70B;" Margin="0,1,20,0"/>
-                            <TextBlock Text="Add note"/>
-                        </StackPanel>
-                    </muxc:Expander.Header>
-
-                </muxc:Expander>
+                <!-- Repeat Option -->
+                <controls:SettingsCard Header="Repeat"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE8EE;'}"
+                                       HorizontalAlignment="Stretch"
+                                       HorizontalContentAlignment="Stretch">
+                    <ComboBox SelectedIndex="{x:Bind RepeatOptionSelectedIndex, Mode=TwoWay}">
+                        <ComboBoxItem>None</ComboBoxItem>
+                        <ComboBoxItem>Daily</ComboBoxItem>
+                        <ComboBoxItem>Weekly</ComboBoxItem>
+                        <ComboBoxItem>Monthly</ComboBoxItem>
+                    </ComboBox>
+                </controls:SettingsCard>
+                
+                
+                <!--Note-->
+                <controls:SettingsCard Header="Add note"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE70B;'}"
+                                       HorizontalAlignment="Stretch"
+                                       HorizontalContentAlignment="Stretch">
+                    <!--TODO-->
+                </controls:SettingsCard>
 
             </StackPanel>
         </StackPanel>

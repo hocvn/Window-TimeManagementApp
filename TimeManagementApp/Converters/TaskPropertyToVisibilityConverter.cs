@@ -10,7 +10,7 @@ namespace TimeManagementApp.Converters
         {
             if (value is DateTime dateTime)
             {
-                return dateTime != DateTime.MinValue ? Visibility.Visible : Visibility.Collapsed;
+                return dateTime != MainWindow.NullDateTime ? Visibility.Visible : Visibility.Collapsed;
             }
             if (value is string str && !string.IsNullOrWhiteSpace(str))
             {
