@@ -10,7 +10,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeManagementApp.Dao;
+using Windows.Data.Xml.Dom;
 using Windows.Storage;
+using Windows.System.Threading;
+using Windows.UI.Notifications;
 
 namespace TimeManagementApp.ToDo
 {
@@ -21,7 +24,7 @@ namespace TimeManagementApp.ToDo
 
 
         public ObservableCollection<MyTask> Tasks;
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 
@@ -48,7 +51,7 @@ namespace TimeManagementApp.ToDo
             // Apply searching
             if (!string.IsNullOrEmpty(SearchTerm))
             {
-                query = query.Where(task => 
+                query = query.Where(task =>
                     task.TaskName.Contains(SearchTerm)
                 );
             }
@@ -73,6 +76,7 @@ namespace TimeManagementApp.ToDo
 
 
         private IDao _dao;
+        private ThreadPoolTimer _reminderTimer;
 
         public MyTaskViewModel()
         {
@@ -83,6 +87,12 @@ namespace TimeManagementApp.ToDo
 
             ViewTasks = new ObservableCollection<MyTask>();
             LoadCurrentPage();
+
+            // using ThreadPoolTimer to check for reminders when the app is running
+            _reminderTimer = ThreadPoolTimer.CreatePeriodicTimer((timer) =>
+            {
+                CheckReminders();
+            }, TimeSpan.FromMinutes(1));
         }
 
 
@@ -90,14 +100,18 @@ namespace TimeManagementApp.ToDo
         {
             Tasks.Add(task);
             _dao.InsertTask(task);
+
             LoadCurrentPage();
+            CheckReminders();
         }
 
         public void DeleteTask(MyTask task)
         {
             Tasks.Remove(task);
             _dao.DeleteTask(task);
+
             LoadCurrentPage();
+            CheckReminders();
         }
 
         public void UpdateTask(MyTask task)
@@ -108,7 +122,9 @@ namespace TimeManagementApp.ToDo
                 var index = Tasks.IndexOf(taskToUpdate);
                 Tasks[index] = task;
                 _dao.UpdateTask(task);
+
                 LoadCurrentPage();
+                CheckReminders();
             }
         }
 
@@ -145,5 +161,41 @@ namespace TimeManagementApp.ToDo
 
             LoadCurrentPage();
         }
+
+
+        public void CheckReminders()
+        {
+            foreach (var task in Tasks)
+            {
+                if (task.ReminderTime.ToString("yyyy-MM-dd HH:mm") == DateTime.Now.ToString("yyyy-MM-dd HH:mm") && !task.IsCompleted)
+                {
+                    ShowToastNotification(task);
+                }
+            }
+        }
+
+        private void ShowToastNotification(MyTask task)
+        {
+            string title = "Task Reminder";
+            string message = $"It's time to: {task.TaskName}";
+
+            string toastXml = $@"
+                <toast>
+                    <visual>
+                        <binding template='ToastGeneric'>
+                            <text>{title}</text>
+                            <text>{message}</text>
+                        </binding>
+                    </visual>
+                    <audio src='ms-appx:///Assets/notification.wav'/>
+                </toast>";
+
+            var toastDoc = new XmlDocument();
+            toastDoc.LoadXml(toastXml);
+
+            var toastNotification = new ToastNotification(toastDoc);
+            ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
+        }
+
     }
 }

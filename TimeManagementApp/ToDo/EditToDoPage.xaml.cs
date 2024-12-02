@@ -78,6 +78,16 @@ namespace TimeManagementApp.ToDo
             {
                 SelectedTask.ReminderTime = MainWindow.NullDateTime;
             }
+            else if (IsPickingReminderTime)
+            {
+                var selectedDate = CustomReminderDatePicker.Date;
+                var selectedTime = CustomReminderTimePicker.Time;
+
+                SelectedTask.ReminderTime = new DateTime(
+                    selectedDate.Year, selectedDate.Month, selectedDate.Day,
+                    selectedTime.Hours, selectedTime.Minutes, selectedTime.Seconds
+                );
+            }
 
             switch (RepeatOptionSelectedIndex)
             {
@@ -120,7 +130,7 @@ namespace TimeManagementApp.ToDo
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             // cant use GoBack() this one because the update task feature need to navigate to MainToDoPage for _dao to update
-            
+
             if (MainWindow.CurrentNavigationViewItem == "CalendarPage")
             {
                 MainWindow.NavigationService.Navigate(typeof(CalendarPage));
@@ -157,13 +167,7 @@ namespace TimeManagementApp.ToDo
                 }
                 else
                 {
-                    var selectedDate = CustomReminderDatePicker.Date;
-                    var selectedTime = CustomReminderTimePicker.Time;
-
-                    SelectedTask.ReminderTime = new DateTime(
-                        selectedDate.Year, selectedDate.Month, selectedDate.Day, 
-                        selectedTime.Hours, selectedTime.Minutes, selectedTime.Seconds
-                    );
+                    // will handle it when user click save
                 }
             }
         }
