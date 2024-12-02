@@ -14,13 +14,11 @@
         RequestedTheme="Light"
         PaneDisplayMode="Left"
         OpenPaneLength="200"
-
         IsSettingsVisible="True"
         IsBackButtonVisible="Collapsed"
         IsBackEnabled="False"
         IsTabStop="false"
         SelectionChanged="NavigationView_SelectionChanged"
-        
         Background="{x:Bind local:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
         
 
@@ -34,9 +32,12 @@
             <NavigationViewItem 
                 x:Name="NavItem_Note"
                 Content="Notes" 
-                Icon="Edit" 
+              
                 ToolTipService.ToolTip="Note" 
                 Tag="NoteMainPage">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE70B;"/>
+                </NavigationViewItem.Icon>
             </NavigationViewItem>
 
             <NavigationViewItem 

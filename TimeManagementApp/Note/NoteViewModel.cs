@@ -3,10 +3,10 @@ using Microsoft.UI;
 using System.ComponentModel;
 using TimeManagementApp.Dao;
 using Microsoft.UI.Xaml.Controls;
-using TimeManagementApp.Helper;
-using Microsoft.UI.Xaml;
 using Quartz.Util;
 using System.Threading.Tasks;
+using Microsoft.UI.Text;
+using System;
 
 namespace TimeManagementApp.Note
 {
@@ -15,9 +15,11 @@ namespace TimeManagementApp.Note
         public MyNote Note { get; set; }
         public Brush CurrentColor { get; set; }
         public bool HasUnsavedChanged { get; set; }
-        public bool BackButton_Clicked { get; set; }
 
-        private IDao _dao = new MockDao();
+        // This is used to check if the back button is clicked, avoid the dialog to show up twice
+        public bool BackButton_Clicked { get; set; } 
+
+        private IDao _dao = new SqlDao();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,22 +32,24 @@ namespace TimeManagementApp.Note
 
         internal async Task Load(RichEditBox Editor)
         {
-            await _dao.OpenNote(Editor, Note);
+            await _dao.OpenNote(Note);
+            Editor.Document.SetText(TextSetOptions.FormatRtf, Note.Content.Trim());
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
+            content = content.Replace(@"\highlight0", string.Empty);
+            Note.Content = content;
         }
 
         internal void Save(RichEditBox Editor)
         {
-            _dao.SaveNote(Editor, Note);
+            Editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
+            Note.Content = content;
+            _dao.SaveNote(Note);
         }
 
-        internal async void Remove(XamlRoot xamlRoot)
+        internal void Remove()
         {
-            var result = await Dialog.ShowContent(xamlRoot, "Remove Note", "Are you sure you want to remove this note?", "Yes", null, "No");
-            if (result == ContentDialogResult.Primary)
-            {
-                // Send note back to NoteMainPage to delete
-                MainWindow.NavigationService.Navigate(typeof(NoteMainPage), Note);
-            }
+            // Send note back to NoteMainPage to delete
+            MainWindow.NavigationService.Navigate(typeof(NoteMainPage), Note);
         }
 
         internal void Rename(TextBox textBox)

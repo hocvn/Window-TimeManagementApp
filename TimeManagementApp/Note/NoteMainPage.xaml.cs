@@ -26,37 +26,25 @@ namespace TimeManagementApp.Note
 
             public void Init()
             {
-                _dao = new MockDao();
+                _dao = new SqlDao();
                 Notes = _dao.GetAllNote();
                 TotalItems = Notes.Count;
             }
 
             public void AddNote(String newNoteName)
             {
-                // Create a new note with id is the time when user create it
-                String currentTime = TimeHelper.GetTimeString();
-                // Remove all spaces of the current time
-                var tokens = currentTime.Split(' ');
-                currentTime = tokens[0] + tokens[1] + tokens[2] + tokens[3] + tokens[4] + tokens[5];
-
-                MyNote newNote = new MyNote(currentTime, newNoteName);
-                RichEditBox editor = new RichEditBox();
-
-                IDao dao = new MockDao();
-                dao.SaveNote(editor, newNote);
-                // Update the note list
-                Notes.Insert(0, newNote);
-                dao.SaveNotes(Notes);
+                int id = _dao.CreateNote(newNoteName);
+                MyNote newNote = new MyNote(id, newNoteName);
                 // Update ViewModel
+                Notes.Insert(0, newNote);
                 TotalItems++;
             }
 
             public void DeleteNote(MyNote note)
             {
+                _dao.DeleteNote(note);
                 Notes.Remove(note);
                 TotalItems--;
-                IDao dao = new MockDao();
-                dao.SaveNotes(Notes);
             }
         }
 
