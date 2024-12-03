@@ -20,6 +20,7 @@ namespace TimeManagementApp.ToDo
     public sealed partial class EditToDoPage : Page, INotifyPropertyChanged
     {
         public MyTask SelectedTask { get; set; } // selected task from MainPage
+        public MyTask SavedTask { get; set; } // use to determine if user want to make a change
         public bool IsReminderOn { get; set; } = true;
         public bool IsPickingReminderTime { get; set; } = true;
         public int RepeatOptionSelectedIndex { get; set; } = 0;
@@ -37,6 +38,9 @@ namespace TimeManagementApp.ToDo
 
             IDao dao = new SqlDao();
             AllNotes = dao.GetAllNote();
+
+            // Add "None" option
+            AllNotes.Insert(0, new MyNote { Id = -1, Name = "None", Content = string.Empty });
         }
 
 
@@ -49,6 +53,7 @@ namespace TimeManagementApp.ToDo
             if (e.Parameter is MyTask task)
             {
                 SelectedTask = task;
+                SavedTask = (MyTask)task.Clone();
 
                 // Set reminder on/off based on the task's reminder time
                 IsReminderOn = task.ReminderTime == MainWindow.NullDateTime ? false : true;
@@ -91,6 +96,7 @@ namespace TimeManagementApp.ToDo
                 UpdateTaskDueTime.Time.Hours, UpdateTaskDueTime.Time.Minutes, UpdateTaskDueTime.Time.Seconds
             );
 
+            // Get reminder time based on user selection
             DateTime reminderTime;
             if (!IsReminderOn)
             {
@@ -115,6 +121,7 @@ namespace TimeManagementApp.ToDo
                 3 => "Monthly",
                 _ => ""
             };
+
 
             // Return a task with updated values
             return new MyTask
@@ -166,7 +173,7 @@ namespace TimeManagementApp.ToDo
 
             // Check if task need to be saved
             var task = GetCurrentTask();
-            if (!MyTask.IsEqual(task, SelectedTask))
+            if (!MyTask.IsEqual(task, SavedTask))
             {
                 var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Want to save all the changes?", "Yes", "No", "Cancel");
 

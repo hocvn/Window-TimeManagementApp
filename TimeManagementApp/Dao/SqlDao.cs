@@ -221,7 +221,7 @@ namespace TimeManagementApp.Dao
             var result = new ObservableCollection<MyNote>();
 
             var sql = @"
-                        select Note.note_id, Note.name 
+                        select Note.note_id, Note.name, Note.content
                         from [NOTE] Note
                         where Note.username = @username
                     ";
@@ -236,7 +236,8 @@ namespace TimeManagementApp.Dao
                 var note = new MyNote
                 {
                     Id = reader.GetInt32(0),
-                    Name = reader.GetString(1)
+                    Name = reader.GetString(1),
+                    Content = reader.GetString(2)
                 };
                 result.Add(note);
             }

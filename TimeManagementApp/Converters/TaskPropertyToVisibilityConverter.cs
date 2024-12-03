@@ -16,6 +16,10 @@ namespace TimeManagementApp.Converters
             {
                 return Visibility.Visible;
             }
+            if (value is int noteId) 
+            { 
+                return noteId != -1 ? Visibility.Visible : Visibility.Collapsed; 
+            }
             return Visibility.Collapsed;
         }
 

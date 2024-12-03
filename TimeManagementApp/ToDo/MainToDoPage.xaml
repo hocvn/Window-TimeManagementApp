@@ -17,6 +17,7 @@
         <conv:IsImportantToGlyphConverter x:Key="IsImportantToGlyphConverter" />
         <conv:IsImportantToForegroundConverter x:Key="IsImportantToForegroundConverter" />
         <conv:TaskPropertyToVisibilityConverter x:Key="TaskPropertyToVisibilityConverter" />
+        <conv:NoteIdToNoteNameConverter x:Key="NoteIdToNoteNameConverter" />
     </Page.Resources>
 
     <Grid>
@@ -178,6 +179,13 @@
                                               Visibility="{x:Bind RepeatOption, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
                                     <TextBlock Text="{x:Bind RepeatOption, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"
                                                Visibility="{x:Bind RepeatOption, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+
+                                    <!-- Note Icon and NoteName -->
+                                    <FontIcon Glyph="&#xE8D2;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind NoteId, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind NoteId, Mode=OneWay, Converter={StaticResource NoteIdToNoteNameConverter}}" 
+                                               FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind NoteId, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
 
                                     <!-- Description Icon and Description -->
                                     <FontIcon Glyph="&#xE70F;" FontSize="12" Margin="20,0,3,0"

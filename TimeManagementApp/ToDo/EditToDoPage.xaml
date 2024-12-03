@@ -11,9 +11,13 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:ui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d"
+    xmlns:conv="using:TimeManagementApp.Converters"
     xmlns:app="using:TimeManagementApp"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
+    <Page.Resources>
+        <conv:NoteIdToContentConverter x:Key="NoteIdToContentConverter"/>
+    </Page.Resources>
 
     <Grid>
         <StackPanel VerticalAlignment="Top" Padding="20">
@@ -144,15 +148,32 @@
                         <ComboBoxItem>Monthly</ComboBoxItem>
                     </ComboBox>
                 </controls:SettingsCard>
-                
-                
-                <!--Note-->
-                <controls:SettingsCard Header="Add note"
-                                       HeaderIcon="{ui:FontIcon Glyph='&#xE70B;'}"
-                                       HorizontalAlignment="Stretch"
-                                       HorizontalContentAlignment="Stretch">
-                    <!--TODO-->
-                </controls:SettingsCard>
+
+
+                <!-- Note -->
+                <controls:SettingsExpander Header="Add note"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE70B;'}"
+                                           HorizontalAlignment="Stretch"
+                                           HorizontalContentAlignment="Stretch"
+                                           IsExpanded="True">
+
+                    <ComboBox x:Name="NoteComboBox" 
+                              ItemsSource="{x:Bind AllNotes, Mode=OneWay}" 
+                              DisplayMemberPath="Name" 
+                              SelectedValuePath="Id"
+                              SelectedValue="{x:Bind SelectedTask.NoteId, Mode=TwoWay}"/>
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard ContentAlignment="Left">
+                            <StackPanel>
+                                <!-- Note's content -->
+                                <TextBlock Text="{x:Bind SelectedTask.NoteId, 
+                                    Converter={StaticResource NoteIdToContentConverter}, Mode=OneWay}"/>
+                            </StackPanel>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+
+                </controls:SettingsExpander>
 
             </StackPanel>
         </StackPanel>

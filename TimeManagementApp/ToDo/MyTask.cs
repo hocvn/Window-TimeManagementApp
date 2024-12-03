@@ -45,6 +45,7 @@ namespace TimeManagementApp.ToDo
             if (ReferenceEquals(t2, null)) return false;
 
             // Round DueDateTime and ReminderTime to the nearest minute for comparison
+            // because the TimePicker doesnt have a second selection
             DateTime RoundToNearestMinute(DateTime dateTime)
             {
                 return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, 0);
