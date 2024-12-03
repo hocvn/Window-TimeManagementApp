@@ -27,58 +27,6 @@ namespace TimeManagementApp.ToDo
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-
-        // ViewModel setup
-        public ObservableCollection<MyTask> ViewTasks; // displaying tasks in the view
-
-        public const int PageSize = 7;
-        public int CurrentPage { get; set; } = 1;
-        public Func<MyTask, bool> Filter { get; set; } = null;
-        public string SearchTerm { get; set; } = null;
-        public string SortBy { get; set; } = null;
-        public ListSortDirection SortDirection { get; set; } = ListSortDirection.Ascending;
-
-
-        /// <summary>
-        /// Method to load tasks for the current page based on filter, search, and sort settings
-        /// </summary>
-        public void LoadCurrentPage()
-        {
-            IEnumerable<MyTask> query = Tasks;
-
-            // Apply filtering
-            if (Filter != null)
-            {
-                query = query.Where(Filter);
-            }
-
-            // Apply searching
-            if (!string.IsNullOrEmpty(SearchTerm))
-            {
-                query = query.Where(task =>
-                    task.TaskName.Contains(SearchTerm)
-                );
-            }
-
-            // Apply sorting
-            if (!string.IsNullOrEmpty(SortBy))
-            {
-                query = SortDirection == ListSortDirection.Ascending
-                    ? query.OrderBy(task => task.GetType().GetProperty(SortBy).GetValue(task, null))
-                    : query.OrderByDescending(task => task.GetType().GetProperty(SortBy).GetValue(task, null));
-            }
-
-            // Apply paging
-            var pagedTasks = query.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-
-            ViewTasks.Clear();
-            foreach (var task in pagedTasks)
-            {
-                ViewTasks.Add(task);
-            }
-        }
-
-
         private IDao _dao;
         private ThreadPoolTimer _reminderTimer;
 
@@ -101,6 +49,107 @@ namespace TimeManagementApp.ToDo
 
             CheckAndGenerateRepeatingTasks();
         }
+
+
+        // ViewModel setup
+        public ObservableCollection<MyTask> ViewTasks; // displaying tasks in the view
+
+        public const int PageSize = 7;
+        public int CurrentPage { get; set; } = 1;
+        public Func<MyTask, bool> Filter { get; set; } = null;
+
+        private string _searchTerm;
+        public string SearchTerm
+        {
+            get => _searchTerm;
+            set
+            {
+                _searchTerm = value;
+                LoadCurrentPage();
+            }
+        }
+
+        private int _sortSelectedIndex;
+        public int SortSelectedIndex
+        {
+            get => _sortSelectedIndex;
+            set
+            {
+                _sortSelectedIndex = value;
+                LoadCurrentPage();
+            }
+        }
+
+        private int _filterSelectedIndex = 0;
+        public int FilterSelectedIndex
+        {
+            get => _filterSelectedIndex;
+            set
+            {
+                _filterSelectedIndex = value;
+                LoadCurrentPage();
+            }
+        }
+
+
+        /// <summary>
+        /// Method to load tasks for the current page based on filter, search, and sort settings
+        /// </summary>
+        public void LoadCurrentPage()
+        {
+            IEnumerable<MyTask> query = Tasks;
+
+            // Apply filtering
+            switch (FilterSelectedIndex)
+            {
+                case 1: // uncompleted tasks
+                    Filter = task => !task.IsCompleted;
+                    break;
+                case 2: // completed tasks
+                    Filter = task => task.IsCompleted;
+                    break;
+                case 3: // important tasks
+                    Filter = task => task.IsImportant;
+                    break;
+                default: // all tasks
+                    Filter = null;
+                    break;
+            }
+
+            if (Filter != null)
+            {
+                query = query.Where(Filter);
+            }
+
+            // Apply searching
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                query = query.Where(task =>
+                    task.TaskName.Contains(SearchTerm)
+                );
+            }
+
+            // Apply sorting
+            switch (SortSelectedIndex)
+            {
+                case 0: // sort by due date
+                    query = query.OrderBy(task => task.DueDateTime);
+                    break;
+                case 1: // sort by task name
+                    query = query.OrderBy(task => task.TaskName);
+                    break;
+            }
+
+            // Apply paging
+            var pagedTasks = query.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+
+            ViewTasks.Clear();
+            foreach (var task in pagedTasks)
+            {
+                ViewTasks.Add(task);
+            }
+        }
+
 
 
         /// <summary>
@@ -143,42 +192,6 @@ namespace TimeManagementApp.ToDo
             }
         }
 
-
-        // handle filter two way binding
-        private int _filterSelectedIndex = 0;
-        public int FilterSelectedIndex
-        {
-            get => _filterSelectedIndex;
-            set
-            {
-                _filterSelectedIndex = value;
-                UpdateFilter();
-            }
-        }
-
-        /// <summary>
-        /// Method to update the filter based on the selected index
-        /// </summary>
-        public void UpdateFilter()
-        {
-            switch (FilterSelectedIndex)
-            {
-                case 1: // uncompleted tasks
-                    Filter = task => !task.IsCompleted;
-                    break;
-                case 2: // completed tasks
-                    Filter = task => task.IsCompleted;
-                    break;
-                case 3: // important tasks
-                    Filter = task => task.IsImportant;
-                    break;
-                default: // all tasks
-                    Filter = null;
-                    break;
-            }
-
-            LoadCurrentPage();
-        }
 
         /// <summary>
         /// Method to check reminders for tasks

@@ -29,8 +29,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <SymbolIcon Symbol="Home" 
@@ -38,34 +36,56 @@
 
                 <TextBlock Text="Tasks" FontSize="25" FontWeight="Bold" 
                            Grid.Column="1" Margin="20,0,0,0"/>
+            </Grid>
+
+            
+            <!--Search, Filter, Sort, Paging-->
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sort Options -->
+                <ComboBox x:Name="SortComboBox" Width="170"
+                          SelectedIndex="{x:Bind ViewModel.SortSelectedIndex, Mode=TwoWay}"
+                          Grid.Column="0" Margin="22,20,10,0">    
+                    <ComboBoxItem Content="Sort by Due Date" />
+                    <ComboBoxItem Content="Sort by Name" />
+                </ComboBox>
 
                 <!-- Filtering -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
-                            Grid.Column="2" Margin="0,0,10,0">
-                    <ComboBox x:Name="FilterComboBox" 
-                              SelectedIndex="{x:Bind ViewModel.FilterSelectedIndex, Mode=TwoWay}">
-                        <ComboBoxItem>All Tasks</ComboBoxItem>
-                        <ComboBoxItem>Uncompleted Tasks</ComboBoxItem>
-                        <ComboBoxItem>Completed Tasks</ComboBoxItem>
-                        <ComboBoxItem>Important Tasks</ComboBoxItem>
-                    </ComboBox>
-                </StackPanel>
+                <ComboBox x:Name="FilterComboBox" Width="180"
+                          SelectedIndex="{x:Bind ViewModel.FilterSelectedIndex, Mode=TwoWay}"
+                          Grid.Column="1" Margin="0,20,10,0">
+                    <ComboBoxItem Content="All Tasks" />
+                    <ComboBoxItem Content="Uncompleted Tasks" />
+                    <ComboBoxItem Content="Completed Tasks" />
+                    <ComboBoxItem Content="Important Tasks" />
+                </ComboBox>
+
+                <!-- Search Box -->
+                <TextBox x:Name="SearchTextBox" PlaceholderText="Type Search term and press Enter ..."
+                         KeyDown="SearchTextBox_KeyDown" 
+                         Grid.Column="2" Margin="0,20,10,0"/>
                 
                 <!-- Paging controls -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="3">
-                    <Button Content="Previous" Click="PreviousPage_Click"/>
-                    <TextBlock  VerticalAlignment="Center" Margin="10,0,10,0"
-                                Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}">
-                    </TextBlock>
-                    <Button Content="Next" Click="NextPage_Click"/>
+                    <Button Content="Previous" Click="PreviousPage_Click" Margin="0,20,0,0"/>
+                    <TextBlock VerticalAlignment="Center" Margin="10,20,10,0"
+                               Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" />
+                    <Button Content="Next" Click="NextPage_Click" Margin="0,20,0,0"/>
                 </StackPanel>
             </Grid>
 
-    
+
+            <!--Task List View-->
             <ListView x:Name="MyTasksListView" 
                      ItemsSource="{x:Bind ViewModel.ViewTasks, Mode=OneWay}"
                      Background="Transparent"
-                     Margin="20,20,0,0"
+                     Margin="20,10,0,0"
                      IsItemClickEnabled="True"
                      ItemClick="TaskItem_Click">
 

@@ -172,5 +172,19 @@ namespace TimeManagementApp.ToDo
             }
         }
 
+
+        /// <summary>
+        /// Press Enter for faster seraching.
+        /// </summary>
+        private void SearchTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                var textBox = sender as TextBox;
+                ViewModel.SearchTerm = textBox.Text;
+                ViewModel.LoadCurrentPage();
+            }
+        }
+
     }
 }
