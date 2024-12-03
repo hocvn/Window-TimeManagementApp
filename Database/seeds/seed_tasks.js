@@ -98,7 +98,7 @@ exports.seed = async function(knex) {
           description: "Annual Check-up", 
           completed: false, 
           important: true, 
-          repeat_option: "Yearly", 
+          repeat_option: "", 
           reminder: new Date(Date.now() + 194400000).toISOString(), // DateTime.Now.AddDays(2).AddHours(22)
           note_id: null 
       },
@@ -153,7 +153,7 @@ exports.seed = async function(knex) {
           description: "Teeth cleaning", 
           completed: false, 
           important: true, 
-          repeat_option: "Yearly", 
+          repeat_option: "", 
           reminder: new Date(Date.now() + 691200000).toISOString(), // DateTime.Now.AddDays(8).AddHours(14)
           note_id: null 
       },

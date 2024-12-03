@@ -23,14 +23,13 @@ namespace TimeManagementApp.ToDo
         private static readonly MyTaskViewModel _instance = new MyTaskViewModel();
         public static MyTaskViewModel Instance => _instance;
 
-
-        public ObservableCollection<MyTask> Tasks;
+        public ObservableCollection<MyTask> Tasks; // store all tasks
 
         public event PropertyChangedEventHandler PropertyChanged;
 
 
         // ViewModel setup
-        public ObservableCollection<MyTask> ViewTasks;
+        public ObservableCollection<MyTask> ViewTasks; // displaying tasks in the view
 
         public const int PageSize = 7;
         public int CurrentPage { get; set; } = 1;
@@ -39,6 +38,10 @@ namespace TimeManagementApp.ToDo
         public string SortBy { get; set; } = null;
         public ListSortDirection SortDirection { get; set; } = ListSortDirection.Ascending;
 
+
+        /// <summary>
+        /// Method to load tasks for the current page based on filter, search, and sort settings
+        /// </summary>
         public void LoadCurrentPage()
         {
             IEnumerable<MyTask> query = Tasks;
@@ -100,6 +103,9 @@ namespace TimeManagementApp.ToDo
         }
 
 
+        /// <summary>
+        /// Method to insert a new task into the Tasks collection and the database
+        /// </summary>
         public void InsertTask(MyTask task)
         {
             Tasks.Add(task);
@@ -108,6 +114,9 @@ namespace TimeManagementApp.ToDo
             LoadCurrentPage();
         }
 
+        /// <summary>
+        /// Method to delete a task from the Tasks collection and the database
+        /// </summary>
         public void DeleteTask(MyTask task)
         {
             Tasks.Remove(task);
@@ -116,6 +125,9 @@ namespace TimeManagementApp.ToDo
             LoadCurrentPage();
         }
 
+        /// <summary>
+        /// Method to update an existing task in the Tasks collection and the database
+        /// </summary>
         public void UpdateTask(MyTask task)
         {
             var taskToUpdate = Tasks.FirstOrDefault(t => t.TaskId == task.TaskId);
@@ -144,6 +156,9 @@ namespace TimeManagementApp.ToDo
             }
         }
 
+        /// <summary>
+        /// Method to update the filter based on the selected index
+        /// </summary>
         public void UpdateFilter()
         {
             switch (FilterSelectedIndex)
@@ -165,7 +180,9 @@ namespace TimeManagementApp.ToDo
             LoadCurrentPage();
         }
 
-
+        /// <summary>
+        /// Method to check reminders for tasks
+        /// </summary>
         public void CheckReminders()
         {
             foreach (var task in Tasks)
@@ -177,6 +194,9 @@ namespace TimeManagementApp.ToDo
             }
         }
 
+        /// <summary>
+        /// Method to show a toast notification for a task reminder
+        /// </summary>
         private void ShowToastNotification(MyTask task)
         {
             string title = "Task Reminder";
@@ -201,6 +221,9 @@ namespace TimeManagementApp.ToDo
         }
 
 
+        /// <summary>
+        /// Method to check and generate repeating tasks
+        /// </summary>
         public void CheckAndGenerateRepeatingTasks()
         {
             var tasksToAdd = new List<MyTask>(); // List to collect new tasks

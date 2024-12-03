@@ -19,21 +19,27 @@ namespace TimeManagementApp.ToDo
     {
         public MyTaskViewModel ViewModel { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the MainToDoPage class.
+        /// </summary>
         public MainToDoPage()
         {
             this.InitializeComponent();
             ViewModel = MyTaskViewModel.Instance;
         }
 
-
-        // navigate to the EditPage when an task is tapped
+        /// <summary>
+        /// Navigate to the EditToDoPage when a task is tapped.
+        /// </summary>
         private void TaskItem_Click(object sender, ItemClickEventArgs e)
         {
             var selectedTask = e.ClickedItem as MyTask;
             MainWindow.NavigationService.Navigate(typeof(EditToDoPage), selectedTask.Clone());
         }
 
-        // navigate back from EditPage
+        /// <summary>
+        /// Update the task when navigating back from the EditToDoPage.
+        /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter is MyTask task)
@@ -45,7 +51,9 @@ namespace TimeManagementApp.ToDo
         }
 
 
-        // insert new task when press Enter on textbox
+        /// <summary>
+        /// Insert a new task when the Enter key is pressed in the text box.
+        /// </summary>
         private async void InsertTask_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
@@ -64,6 +72,7 @@ namespace TimeManagementApp.ToDo
 
                 var startDateTime = DateTime.Now;
 
+                // Set the due date to the end of the day
                 var dueDateTime = new DateTime(
                     InsertTaskDueDateTime.Date.Value.Year, InsertTaskDueDateTime.Date.Value.Month, InsertTaskDueDateTime.Date.Value.Day,
                     23, 59, 00
@@ -83,6 +92,7 @@ namespace TimeManagementApp.ToDo
 
                 ViewModel.InsertTask(newTask);
 
+                // Clear the input fields after insertion
                 InsertTaskName.Text = null;
                 InsertTaskDueDateTime.Date = null;
 
@@ -90,9 +100,9 @@ namespace TimeManagementApp.ToDo
             }
         }
 
-
-
-        // delete a task
+        /// <summary>
+        /// Delete a task.
+        /// </summary>
         private async void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
             if (sender is AppBarButton button && button.CommandParameter is MyTask taskToDelete)
@@ -112,7 +122,9 @@ namespace TimeManagementApp.ToDo
             }
         }
 
-
+        /// <summary>
+        /// Navigate to the previous page of tasks.
+        /// </summary>
         private void PreviousPage_Click(object sender, RoutedEventArgs e)
         {
             if (ViewModel.CurrentPage > 1)
@@ -122,6 +134,9 @@ namespace TimeManagementApp.ToDo
             }
         }
 
+        /// <summary>
+        /// Navigate to the next page of tasks.
+        /// </summary>
         private void NextPage_Click(object sender, RoutedEventArgs e)
         {
             int maxPage = (int)Math.Ceiling((double)ViewModel.Tasks.Count / MyTaskViewModel.PageSize);
@@ -133,7 +148,9 @@ namespace TimeManagementApp.ToDo
             }
         }
 
-
+        /// <summary>
+        /// Toggle the completion status of a task.
+        /// </summary>
         private void IsCompletedTask_Click(object sender, RoutedEventArgs e)
         {
             if (sender is AppBarButton button && button.CommandParameter is MyTask task)
@@ -142,6 +159,10 @@ namespace TimeManagementApp.ToDo
                 ViewModel.UpdateTask(task);
             }
         }
+
+        /// <summary>
+        /// Toggle the importance status of a task.
+        /// </summary>
         private void IsImportantTask_Click(object sender, RoutedEventArgs e)
         {
             if (sender is AppBarButton button && button.CommandParameter is MyTask task)

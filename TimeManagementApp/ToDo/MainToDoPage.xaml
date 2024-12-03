@@ -55,7 +55,6 @@
                     <Button Content="Previous" Click="PreviousPage_Click"/>
                     <TextBlock  VerticalAlignment="Center" Margin="10,0,10,0"
                                 Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}">
-                        <!--<Run Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}"/> / <Run Text="{x:Bind ViewModel.TotalPage, Mode=OneWay}"/>-->
                     </TextBlock>
                     <Button Content="Next" Click="NextPage_Click"/>
                 </StackPanel>
