@@ -488,6 +488,19 @@ namespace TimeManagementApp.Dao
             return result;
         }
 
+        public ObservableCollection<MyTask> GetRepeatingTasks()
+        {
+            ObservableCollection<MyTask> result = new();
+            foreach (MyTask task in GetAllTasks())
+            {
+                if (task.RepeatOption != null && task.RepeatOption != "None" && task.RepeatOption != "")
+                {
+                    result.Add(task);
+                }
+            }
+            return result;
+        }
+
 
         // Timer ------------------------------------------------------------------------------------
         public void SaveSession(FocusSession session)

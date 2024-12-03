@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TimeManagementApp.Dao;
 using Windows.Data.Xml.Dom;
+using Windows.Networking.Vpn;
 using Windows.Storage;
 using Windows.System.Threading;
 using Windows.UI.Notifications;
@@ -94,6 +95,8 @@ namespace TimeManagementApp.ToDo
             {
                 CheckReminders();
             }, TimeSpan.FromMinutes(1));
+
+            CheckAndGenerateRepeatingTasks();
         }
 
 
@@ -103,7 +106,6 @@ namespace TimeManagementApp.ToDo
             _dao.InsertTask(task);
 
             LoadCurrentPage();
-            CheckReminders();
         }
 
         public void DeleteTask(MyTask task)
@@ -112,7 +114,6 @@ namespace TimeManagementApp.ToDo
             _dao.DeleteTask(task);
 
             LoadCurrentPage();
-            CheckReminders();
         }
 
         public void UpdateTask(MyTask task)
@@ -126,6 +127,7 @@ namespace TimeManagementApp.ToDo
 
                 LoadCurrentPage();
                 CheckReminders();
+                CheckAndGenerateRepeatingTasks();
             }
         }
 
@@ -196,6 +198,61 @@ namespace TimeManagementApp.ToDo
 
             var toastNotification = new ToastNotification(toastDoc);
             ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
+        }
+
+
+        public void CheckAndGenerateRepeatingTasks()
+        {
+            var tasksToAdd = new List<MyTask>(); // List to collect new tasks
+            var taskDates = new HashSet<(string, DateTime)>(); // Set to track generated task names and dates
+
+            foreach (var task in Tasks)
+            {
+                taskDates.Add((task.TaskName, task.DueDateTime)); // Track the generated task
+            }
+
+            foreach (var task in Tasks)
+            {
+                var nextDueDate = task.DueDateTime;
+                var currentDate = DateTime.Now;
+
+                // Only generate a new task if the original task's due date is less than or equal to the current date
+                if (nextDueDate <= currentDate)
+                {
+                    // Generate the next due date based on RepeatOption
+                    nextDueDate = task.RepeatOption switch
+                    {
+                        "Daily" => nextDueDate.AddDays(1),
+                        "Weekly" => nextDueDate.AddDays(7),
+                        "Monthly" => nextDueDate.AddMonths(1),
+                        _ => nextDueDate
+                    };
+
+                    // Ensure the new task's due date is greater than or equal to the current date
+                    if (nextDueDate >= currentDate && !taskDates.Contains((task.TaskName, nextDueDate)))
+                    {
+                        var newTask = new MyTask
+                        {
+                            TaskName = task.TaskName,
+                            DueDateTime = nextDueDate,
+                            Description = task.Description,
+                            IsCompleted = false,
+                            IsImportant = task.IsImportant,
+                            RepeatOption = task.RepeatOption,
+                            ReminderTime = task.ReminderTime,
+                            NoteId = task.NoteId,
+                        };
+
+                        tasksToAdd.Add(newTask); // Collect the new task
+                    }
+                }
+            }
+
+            // Add the collected tasks to the original collection
+            foreach (var newTask in tasksToAdd)
+            {
+                InsertTask(newTask);
+            }
         }
 
     }

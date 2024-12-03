@@ -370,7 +370,7 @@ namespace TimeManagementApp.Dao
                        task.important, task.repeat_option, task.reminder, task.note_id
                 from [TASK] task
                 where task.username = @username
-              ";
+            ";
 
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
@@ -409,7 +409,7 @@ namespace TimeManagementApp.Dao
                 where task.username = @username 
                 and task.due_date >= CAST(GETDATE() AS DATE) 
                 and task.due_date < CAST(GETDATE() + 1 AS DATE)
-              ";
+            ";
 
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
@@ -443,7 +443,7 @@ namespace TimeManagementApp.Dao
             var sql = @"
                 insert into [TASK] (name, due_date, description, completed, important, repeat_option, reminder, note_id, username)
                 values (@name, @due_date, @description, @completed, @important, @repeat_option, @reminder, @note_id, @username)
-              ";
+            ";
 
             var command = new SqlCommand(sql, connection);
             command.Parameters.AddWithValue("@name", task.TaskName);
@@ -473,7 +473,7 @@ namespace TimeManagementApp.Dao
                     reminder = @reminder, 
                     note_id = @note_id
                 where task_id = @task_id and username = @username
-              ";
+            ";
 
             var command = new SqlCommand(sql, connection);
             command.Parameters.AddWithValue("@task_id", task.TaskId);
@@ -496,7 +496,7 @@ namespace TimeManagementApp.Dao
             var sql = @"
                 delete from [TASK] 
                 where task_id = @task_id and username = @username
-              ";
+            ";
 
             var command = new SqlCommand(sql, connection);
             command.Parameters.AddWithValue("@task_id", task.TaskId);
@@ -520,7 +520,7 @@ namespace TimeManagementApp.Dao
                 where task.username = @username 
                 and task.due_date >= @startDate 
                 and task.due_date < @endDate
-              ";
+            ";
 
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar).Value = User.Username;
@@ -540,6 +540,42 @@ namespace TimeManagementApp.Dao
                     IsImportant = reader.GetBoolean(5),
                     RepeatOption = reader.IsDBNull(6) ? null : reader.GetString(6),
                     ReminderTime = reader.GetDateTime(7),
+                    NoteId = reader.IsDBNull(8) ? -1 : reader.GetInt32(8)
+                };
+                result.Add(task);
+            }
+
+            connection.Close();
+            return result;
+        }
+
+        public ObservableCollection<MyTask> GetRepeatingTasks()
+        {
+            var connection = CreateConnection();
+            var result = new ObservableCollection<MyTask>();
+
+            var sql = @"
+                SELECT task.task_id, task.name, task.due_date, task.description, task.completed, 
+                       task.important, task.repeat_option, task.reminder, task.note_id
+                FROM [TASK] task
+                WHERE task.repeat_option IN ('Daily', 'Weekly', 'Monthly');
+            ";
+
+            var command = new SqlCommand(sql, connection);
+
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var task = new MyTask
+                {
+                    TaskId = reader.GetInt32(0),
+                    TaskName = reader.GetString(1),
+                    DueDateTime = reader.GetDateTime(2),
+                    Description = reader.GetString(3),
+                    IsCompleted = reader.GetBoolean(4),
+                    IsImportant = reader.GetBoolean(5),
+                    RepeatOption = reader.IsDBNull(6) ? string.Empty : reader.GetString(6),
+                    ReminderTime = reader.IsDBNull(7) ? DateTime.MinValue : reader.GetDateTime(7),
                     NoteId = reader.IsDBNull(8) ? -1 : reader.GetInt32(8)
                 };
                 result.Add(task);
