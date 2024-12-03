@@ -75,7 +75,10 @@ namespace TimeManagementApp.ToDo
                     DueDateTime = dueDateTime,
                     IsCompleted = false,
                     IsImportant = false,
-                    ReminderTime = MainWindow.NullDateTime
+                    ReminderTime = MainWindow.NullDateTime,
+                    Description = "",
+                    NoteId = -1,
+                    RepeatOption = "",
                 };
 
                 ViewModel.InsertTask(newTask);

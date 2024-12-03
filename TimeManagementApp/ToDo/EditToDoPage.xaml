@@ -33,65 +33,61 @@
                 <AppBarButton Label="Back" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
             </Grid>
 
-            <StackPanel Margin="20,0,0,0" Padding="5">
+            <StackPanel Margin="20,10,15,0" Padding="5">
 
                 <!-- Update Task Section -->
-                <controls:SettingsCard IsEnabled="True" 
-                                       ContentAlignment="Left">
-                    <StackPanel>
-                        <!-- Update Task Name -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="110"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <!-- Update Task Name -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Task name:" 
-                           Grid.Column="0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Task name:" 
+                                               Grid.Column="0" VerticalAlignment="Center"/>
 
-                            <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
-                        Grid.Column="1"
-                        Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
-                        </Grid>
+                        <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
+                                             Grid.Column="1"
+                                             Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
+                    </Grid>
 
-                        <!-- Update Task Description -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="110"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                    <!-- Update Task Description -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Description:" 
-                           Grid.Column="0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Description:" 
+                                               Grid.Column="0" VerticalAlignment="Center"/>
 
-                            <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Description" 
-                        Grid.Column="1"
-                        Text="{x:Bind SelectedTask.Description, Mode=OneWay}"/>
-                        </Grid>
+                        <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Description" 
+                                             Grid.Column="1"
+                                             Text="{x:Bind SelectedTask.Description, Mode=OneWay}"/>
+                    </Grid>
 
-                        <!-- Update Due Date and Time -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="110"/>
-                                <ColumnDefinition Width="330"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                    <!-- Update Due Date and Time -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="330"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Due time:" 
-                           Grid.Column="0" Margin="0,4,0,0"/>
+                        <TextBlock Text="Due time:" 
+                                               Grid.Column="0" Margin="0,4,0,0"/>
 
-                            <DatePicker x:Name="UpdateTaskDueDate" 
-                            Grid.Column="1"
-                            Date="{x:Bind SelectedTask.DueDateTime, Mode=OneWay}"/>
+                        <DatePicker x:Name="UpdateTaskDueDate" 
+                                                Grid.Column="1"
+                                                Date="{x:Bind SelectedTask.DueDateTime, Mode=OneWay}"/>
 
-                            <TimePicker x:Name="UpdateTaskDueTime" 
-                            Grid.Column="2"
-                            Time="{x:Bind SelectedTask.DueDateTime.TimeOfDay, Mode=OneWay}"/>
-                        </Grid>
+                        <TimePicker x:Name="UpdateTaskDueTime" 
+                                                Grid.Column="2"
+                                                Time="{x:Bind SelectedTask.DueDateTime.TimeOfDay, Mode=OneWay}"/>
+                    </Grid>
 
-                    </StackPanel>
-                </controls:SettingsCard>
-                
+                </StackPanel>
 
 
                 <!-- Set Reminder -->
@@ -100,7 +96,8 @@
                                            HorizontalAlignment="Stretch"
                                            HorizontalContentAlignment="Stretch"
                                            IsEnabled="True"
-                                           IsExpanded="True">
+                                           IsExpanded="True"
+                                           Margin="0,20,0,0">
 
                     <ToggleSwitch IsOn="{x:Bind IsReminderOn, Mode=TwoWay}"/>
 

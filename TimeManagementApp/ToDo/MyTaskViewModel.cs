@@ -80,9 +80,10 @@ namespace TimeManagementApp.ToDo
 
         public MyTaskViewModel()
         {
-            var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
-            var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
-            _dao = new MockDao(filePath);
+            //var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
+            //var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
+            //_dao = new MockDao(filePath);
+            _dao = new SqlDao();
             Tasks = _dao.GetAllTasks();
 
             ViewTasks = new ObservableCollection<MyTask>();

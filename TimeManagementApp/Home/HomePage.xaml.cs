@@ -35,9 +35,10 @@ namespace TimeManagementApp.Home
 
             public void Init()
             {
-                var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
-                var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
-                dao = new MockDao(filePath);
+                //var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
+                //var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
+                //dao = new MockDao(filePath);
+                dao = new SqlDao();
 
                 NoteList = dao.GetAllNote();
                 TodayTasks = dao.GetTodayTask();

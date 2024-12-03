@@ -35,8 +35,11 @@ namespace TimeManagementApp.ToDo
                 SelectedTask = task;
 
                 IsReminderOn = task.ReminderTime == MainWindow.NullDateTime ? false : true;
-                CustomReminderDatePicker.Date = task.ReminderTime;
-                CustomReminderTimePicker.Time = task.ReminderTime.TimeOfDay;
+                CustomReminderDatePicker.Date = task.ReminderTime
+                    == MainWindow.NullDateTime 
+                    ? DateTime.Now : task.ReminderTime;
+                CustomReminderTimePicker.Time = task.ReminderTime == MainWindow.NullDateTime 
+                    ? DateTime.Now.TimeOfDay : task.ReminderTime.TimeOfDay;
 
                 switch (task.RepeatOption)
                 {
