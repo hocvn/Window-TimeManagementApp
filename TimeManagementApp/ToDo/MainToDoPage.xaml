@@ -250,9 +250,6 @@
                     <TextBox x:Name="InsertTaskName" x:Uid="fillInTheSpaceAndPressEnterToAddNewTask" Grid.Column="0"
                              KeyDown="InsertTask_KeyDown"/>
                     
-                    <CalendarDatePicker x:Name="InsertTaskDueDateTime" Grid.Column="1"
-                                        PlaceholderText="Due date"/>
-
                     <CalendarDatePicker x:Name="InsertTaskDueDateTime" x:Uid="insertTaskDueDateTime" Grid.Column="1"/>
                 </Grid>
             </InfoBar>

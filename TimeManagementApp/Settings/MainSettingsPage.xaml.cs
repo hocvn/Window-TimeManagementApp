@@ -38,8 +38,8 @@ namespace TimeManagementApp.Settings
             dao.SaveSelectedBackground(selectedBrush);
 
             // reload the background
-            App.BackgroundViewModel.PageBackgroundBrush = _dao.LoadSavedBackground(0.0, 8.0);
-            App.BackgroundViewModel.NavigationViewBackgroundBrush = _dao.LoadSavedBackground(0.0, 2.5);
+            App.BackgroundViewModel.PageBackgroundBrush = dao.LoadSavedBackground(0.0, 8.0);
+            App.BackgroundViewModel.NavigationViewBackgroundBrush = dao.LoadSavedBackground(0.0, 2.5);
         }
 
         private void Country_SelectionChanged(object sender, SelectionChangedEventArgs e)
