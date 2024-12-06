@@ -29,10 +29,9 @@
         </Grid.ColumnDefinitions>
 
         <Button 
-            Grid.Column="0" 
-            Grid.Row="0"
+            Grid.Column="0" Grid.Row="0"
             x:Name="BackButton" 
-            Content="Back" 
+            x:Uid="backButtons"
             Width="80" 
             Height="30" 
             Background="GhostWhite"
@@ -43,7 +42,7 @@
 
         <StackPanel Grid.Column="1" Grid.Row="0">
             <Image Height="100" Width="100" Margin="0 60 0 0" Source="{StaticResource LoginImage}"/>
-            <TextBlock Text="SIGN UP" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
+            <TextBlock x:Uid="signUp" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel
@@ -59,10 +58,9 @@
             <TextBox 
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 x:Name="usernameTextBox" 
-                Width="300" 
-                Height="36" 
+                x:Uid="username"
+                Width="300" Height="36" 
                 VerticalAlignment="Center" 
-                PlaceholderText="Username" 
                 Margin="16 20">
             </TextBox>
 
@@ -70,10 +68,10 @@
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.Below="usernameTextBox"
                 x:Name="emailTextBox" 
+                x:Uid="email"
                 Width="300" 
                 Height="36" 
                 VerticalAlignment="Center" 
-                PlaceholderText="Email" 
                 Margin="16 0 16 20">
             </TextBox>
             
@@ -81,10 +79,10 @@
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.Below="emailTextBox"
                 x:Name="passwordBox" 
+                x:Uid="password"
                 Width="300" 
                 Height="36" 
                 VerticalAlignment="Center" 
-                PlaceholderText="Password" 
                 Margin="16 0 16 20"
                 AutomationProperties.Name="Simple PasswordBox">
             </PasswordBox>
@@ -92,11 +90,11 @@
             <PasswordBox 
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.Below="passwordBox"
-                x:Name="passwordConfirmedBox" 
-                Width="300" 
+                x:Name="passwordConfirmedBox"
+                x:Uid="reenterPassword"
+                Width="300"
                 Height="36" 
                 VerticalAlignment="Center" 
-                PlaceholderText="Re-enter password" 
                 AutomationProperties.Name="Simple PasswordBox">
             </PasswordBox>
 
@@ -105,7 +103,7 @@
                 RelativePanel.Below="passwordConfirmedBox"
                 HorizontalAlignment="Stretch"
                 x:Name="registerButton" 
-                Content="SIGN UP" 
+                x:Uid="signUpButton"
                 Height="36"
                 Width="300"
                 Background="MediumBlue" 

@@ -35,7 +35,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center">
                         <Button.Content>
-                            <FontIcon Glyph="&#xE74D;" FontSize="14"/>
+                            <FontIcon Glyph="&#xE74D;" FontSize="16"/>
                         </Button.Content>
                     </Button>
                 </RelativePanel>
@@ -45,9 +45,47 @@
         <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
             <Setter Property="Margin" Value="0 4"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Grid Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="BackgroundElement"
+                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                        To="White"/>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="BackgroundElement"
+                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                        To="AntiqueWhite"/>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="BackgroundElement"
+                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                        To="LightGray"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Border x:Name="BackgroundElement" Background="{TemplateBinding Background}" CornerRadius="7" Padding="5">
+                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Page.Resources>
 
@@ -61,31 +99,31 @@
         <RelativePanel Grid.Row="0">
             
             <StackPanel Orientation="Horizontal" Margin="28 20" x:Name="Title">
-                <FontIcon Glyph="&#xE70F;" Margin="0 8 12 4" FontSize="24"/>
-                <TextBlock Text="Note" FontSize="28" FontWeight="Bold"/>
+                <FontIcon Glyph="&#xE70B;" Margin="0 8 12 4" FontSize="24"/>
+                <TextBlock x:Uid="noteTitle" FontSize="28" FontWeight="Bold"/>
             </StackPanel>
             
             <TextBlock
                 x:Name="NumberOfNote" RelativePanel.AlignTopWithPanel="True" Margin="28 28" FontSize="16" FontWeight="Bold"
                 RelativePanel.AlignHorizontalCenterWithPanel="True" >
-                Total: <Run Text="{x:Bind ViewModel.TotalItems, Mode=OneWay}"/>
+                <Run Text="{x:Bind ViewModel.TotalItems, Mode=OneWay}"/>
             </TextBlock>
 
             <Rectangle x:Name="Separator" Height="1" Fill="SteelBlue" Margin="24 0" RelativePanel.Below="Title"
                 RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"/>
 
-            <TextBox x:Name="NewNoteNameTextBox" RelativePanel.Below="Separator" RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.LeftOf="NewNoteButton" Margin="24 32 8 0" PlaceholderText="Add a note"/>
-            <Button x:Name="NewNoteButton" RelativePanel.Below="Separator" RelativePanel.AlignRightWithPanel="True"
-                Margin="0 32 24 0" Click="NewNoteButton_Click" Content="Add" ToolTipService.ToolTip="New note"/>
+            <TextBox x:Name="NewNoteNameTextBox" x:Uid="addNote" RelativePanel.Below="Separator" RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.LeftOf="NewNoteButton" Margin="40 32 8 0"/>
+            
+            <Button x:Name="NewNoteButton" x:Uid="addNoteButton" RelativePanel.Below="Separator" RelativePanel.AlignRightWithPanel="True"
+                Margin="0 32 20 0" Click="NewNoteButton_Click"/>
 
         </RelativePanel>
 
         <!-- Note list -->
         <ListView
-            x:Name="NoteListView" Grid.Row="1" Margin="20 12"
-            IsItemClickEnabled="True"
-            ItemClick="Note_ItemClick"
+            x:Name="NoteListView" Grid.Row="1" Margin="40 20 20 0"
+            IsItemClickEnabled="True" ItemClick="Note_ItemClick"
             ScrollViewer.VerticalScrollBarVisibility="auto"
             ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}"
             ItemTemplate="{StaticResource NoteViewFormat}"

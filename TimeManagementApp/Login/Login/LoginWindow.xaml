@@ -25,7 +25,7 @@
 
         <StackPanel Grid.Column="1" Grid.Row="0">
             <Image Height="100" Width="100" Margin="0 60 0 0" Source="{StaticResource LoginImage}"/>
-            <TextBlock Text="SIGN IN" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
+            <TextBlock x:Uid="signIn" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
         </StackPanel>
 
         <RelativePanel
@@ -41,10 +41,10 @@
              <TextBox 
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 x:Name="usernameTextBox" 
+                x:Uid="username"
                 Width="280" 
                 Height="36" 
                 VerticalAlignment="Center" 
-                PlaceholderText="Username" 
                 GotFocus="UsernameTextBox_Focus" 
                 Margin="16 20">
             </TextBox>
@@ -52,11 +52,11 @@
             <PasswordBox 
                 RelativePanel.AlignHorizontalCenterWithPanel="True"
                 RelativePanel.Below="usernameTextBox"
-                x:Name="passwordBox" 
+                x:Name="passwordBox"
+                x:Uid="password"
                 Width="280" 
                 Height="36" 
                 VerticalAlignment="Center" 
-                PlaceholderText="Password" 
                 GotFocus="PasswordBox_Focus" 
                 AutomationProperties.Name="Simple PasswordBox">
             </PasswordBox>
@@ -66,7 +66,7 @@
                 RelativePanel.Below="passwordBox"
                 HorizontalAlignment="Stretch"
                 x:Name="loginButton" 
-                Content="SIGN IN" 
+                x:Uid="signInButton"
                 FontWeight="Bold"
                 Height="36"
                 Width="280"
@@ -80,7 +80,7 @@
                 RelativePanel.Below="loginButton"
                 RelativePanel.AlignLeftWith="loginButton"
                 x:Name="rememberCheckBox" 
-                Content="Remember me" 
+                x:Uid="remember"
                 Checked="RememberCheckBox_Checked" 
                 Unchecked="RememberCheckBox_Unchecked" 
                 Margin="0 10 0 0"
@@ -89,9 +89,9 @@
 
             <HyperlinkButton 
                 x:Name="forgotPasswordHyperLinkButton"
+                x:Uid="forgotPassword"
                 RelativePanel.Below="loginButton"
                 RelativePanel.AlignRightWith="loginButton"
-                Content="Forgot password?" 
                 Click="ForgotPasswordHyperLinkButton_Click" 
                 Margin="0 10 0 0"
                 Padding="0 4">
@@ -103,7 +103,7 @@
             <!-- Register -->
             <HyperlinkButton 
                 x:Name="registerHyperLinkButton"
-                Content="Create new account" 
+                x:Uid="createNewAccount"
                 HorizontalAlignment="Center"
                 Click="RegisterHyperLinkButton_Click" 
                 Margin="0 4 0 20"

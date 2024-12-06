@@ -28,17 +28,17 @@ namespace TimeManagementApp.Dao
 
         ObservableCollection<MyNote> GetAllNote();
 
-        void SaveNotes(ObservableCollection<MyNote> notes);
+        void SaveNote(MyNote note);
 
-        void SaveNote(RichEditBox editor, MyNote note);
-
-        Task OpenNote(RichEditBox editor, MyNote note);
+        Task OpenNote(MyNote note);
 
         void DeleteNote(MyNote note);
 
         void RenameNote(MyNote note);
-      
-        
+
+        int CreateNote(string noteName);
+
+
         // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
         ObservableCollection<MyTask> GetTasksForDate(DateTime date);

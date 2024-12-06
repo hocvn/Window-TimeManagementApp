@@ -4,18 +4,21 @@ namespace TimeManagementApp.Note
 {
     public partial class MyNote 
     {
-        public MyNote(string id, string name)
+        public MyNote(int id, string name)
         {
             Id = id;
             Name = name;
+            Content = "";
         }
 
         public MyNote() {
-            Id = "";
+            Id = 0;
             Name = "";
+            Content = "";
         }
 
-        public String Id { get; set; }
-        public String Name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Content { get; set; }
     }
 }

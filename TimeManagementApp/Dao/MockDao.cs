@@ -52,7 +52,7 @@ namespace TimeManagementApp.Dao
             ObservableCollection<MyNote> notes = new ObservableCollection<MyNote>();
             if (localSettings.Values["mynotes"] is string notesJson)
             {
-                notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
+                //notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
             }
             return notes;
         }
@@ -86,7 +86,7 @@ namespace TimeManagementApp.Dao
         }
 
         // Open a file in local folder and load its content to RichEditBox
-        public async Task OpenNote(RichEditBox editor, MyNote note)
+        public async Task OpenNote(MyNote note)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace TimeManagementApp.Dao
 
                 // Open file and load its content to RichEditBox
                 using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
-                editor.Document.LoadFromStream(TextSetOptions.FormatRtf, stream);
+                //editor.Document.LoadFromStream(TextSetOptions.FormatRtf, stream);
             }
             catch (FileNotFoundException)
             {
@@ -111,14 +111,14 @@ namespace TimeManagementApp.Dao
         }
 
         // Save the content of RichEditBox to a file in local folder
-        public async void SaveNote(RichEditBox editor, MyNote note)
+        public async void SaveNote(MyNote note)
         {
             string fileName = note.Id + ".rtf";
             StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
 
             // Save the content of RichEditBox to a stream and write to file
             using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite);
-            editor.Document.SaveToStream(TextGetOptions.FormatRtf, stream);
+            //editor.Document.SaveToStream(TextGetOptions.FormatRtf, stream);
         }
 
         // Delete a file which store note in local folder
@@ -155,8 +155,22 @@ namespace TimeManagementApp.Dao
             }
             SaveNotes(notes);
         }
-        
-        
+
+        public int CreateNote(string noteName)
+        {
+            ObservableCollection<MyNote> notes = GetAllNote();
+            int newId = notes.Count == 0 ? 0 : notes.Max(note => note.Id) + 1;
+            MyNote newNote = new MyNote()
+            {
+                Id = newId,
+                Name = noteName
+            };
+            notes.Insert(0, newNote);
+            SaveNotes(notes);
+            return newId;
+        }
+
+
         // Tasks -------------------------------------------------------------
         public ObservableCollection<MyTask> GetAllTasks()
         {

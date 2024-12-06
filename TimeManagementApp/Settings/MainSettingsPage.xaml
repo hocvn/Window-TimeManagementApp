@@ -12,7 +12,6 @@
     xmlns:app="using:TimeManagementApp"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
-
     <Page.Resources>
         <DataTemplate x:Key="BackgroundTemplate">
             <Border Width="64" Height="64" CornerRadius="4" Background="{Binding}">
@@ -20,67 +19,62 @@
         </DataTemplate>
     </Page.Resources>
 
-
     <Grid>
         <StackPanel Padding="20">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
                 <SymbolIcon Symbol="Setting"/>
-                <TextBlock Text="Settings" 
+                <TextBlock x:Uid="settingsTitle"
                            FontSize="24" FontWeight="Bold" 
                            Margin="30,-3,0,0"/>
             </StackPanel>
 
             <StackPanel Spacing="5">
-                <controls:SettingsCard Header="Support"
+                <controls:SettingsCard x:Uid="supportTitle"
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE71B;'}"                               
                                        IsEnabled="True">
                     <controls:SettingsCard.Description>
-                        <HyperlinkButton Content="Learn how to use the app" />
+                        <HyperlinkButton x:Uid="learnHowtoUseApp" />
                     </controls:SettingsCard.Description>
-                    <Button Content="Open Link"
+                    <Button x:Uid="openLinkButton"
                             Style="{StaticResource AccentButtonStyle}" />
                 </controls:SettingsCard>
 
-                <controls:SettingsCard Header="Country"
-                                       HeaderIcon="{ui:FontIcon Glyph='&#xE707;'}"                               
-                                       Description="The language and datetime should correspond to the Country"
+                <controls:SettingsCard x:Uid="country"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE707;'}" 
                                        IsEnabled="True">
-                    <ComboBox SelectedIndex="0">
+                    <ComboBox x:Name="CountryComboBox" SelectedIndex="0" SelectionChanged="Country_SelectionChanged">
                         <ComboBoxItem>England</ComboBoxItem>
                         <ComboBoxItem>Vietnam</ComboBoxItem>
                     </ComboBox>
                 </controls:SettingsCard>
 
-                <controls:SettingsExpander Header="Background Theme"
+                <controls:SettingsExpander x:Uid="backgroundTheme"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE91B;'}"
-                                           Description="Choose your favourite background for better experience"
                                            IsEnabled="True"
                                            IsExpanded="True">
 
                     <controls:SettingsExpander.Items>
-                        <controls:SettingsCard Header="Sample themes">
+                        <controls:SettingsCard x:Uid="samplesTheme">
                             <GridView ItemsSource="{x:Bind BrushesViewModel.BackgroundBrushes}" 
                                       ItemTemplate="{StaticResource BackgroundTemplate}"
                                       SelectionChanged="BackgroundGridView_SelectionChanged">
                             </GridView>
                         </controls:SettingsCard>
 
-                        <controls:SettingsCard Header="Or you can use your own background">
+                        <controls:SettingsCard x:Uid="orYouCanUseYourOwnBackground">
                             <Button Content="Browse template"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>
 
-                <controls:SettingsCard Header="Database"
+                <controls:SettingsCard x:Uid="database"
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE1DB;'}"                               
-                                       Description="Choose database to be conntected"
                                        IsEnabled="True"
                                        IsClickEnabled="True">
                 </controls:SettingsCard>
 
-                <controls:SettingsCard Header="Account"
+                <controls:SettingsCard x:Uid="account"
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE77B;'}"
-                                       Description="Change password, Log out, Account Recovery"
                                        IsEnabled="True"
                                        IsClickEnabled="True">
                 </controls:SettingsCard>

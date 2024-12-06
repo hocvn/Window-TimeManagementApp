@@ -1,7 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppNotifications;
 using System;
+using System.Globalization;
 using TimeManagementApp.Global;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp
 {
@@ -21,7 +23,7 @@ namespace TimeManagementApp
             this.InitializeComponent();
         }
 
-        private static Window _window { get; set; }
+        private static Window _window { get; set; } // Controll current window
 
         public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
 
@@ -31,12 +33,26 @@ namespace TimeManagementApp
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            _window = new MainWindow();
+            string code = StorageHelper.GetSetting("language");
+            code ??= "en-US";
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(code);
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(code);
+
+            _window = new LoginWindow();
 
             AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;
             AppNotificationManager.Default.Register();
 
             _window.Activate();
+        }
+
+        public static void SwitchLocalization(string code)
+        {
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(code);
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(code);
+            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
+            StorageHelper.SaveSetting("language", code);
         }
 
         public static void NavigateWindow(Window window)

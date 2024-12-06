@@ -22,22 +22,6 @@ namespace TimeManagementApp.Dao
 
         private readonly RSAEncryptionService EncryptionService = new();
 
-        //private SqlConnection CreateConnection()
-        //{
-        //    var builder = new SqlConnectionStringBuilder
-        //    {
-        //        DataSource = ".\\SQLEXPRESS",
-        //        InitialCatalog = "timemanagementdb",
-        //        IntegratedSecurity = true,
-        //        TrustServerCertificate = true
-        //    };
-
-        //    var connectionString = builder.ToString();
-        //    var connection = new SqlConnection(connectionString);
-        //    connection.Open();
-        //    return connection;
-        //}
-
         private SqlConnection CreateConnection()
         {
             var builder = new SqlConnectionStringBuilder
@@ -54,7 +38,6 @@ namespace TimeManagementApp.Dao
             connection.Open();
             return connection;
         }
-
 
         // User credentials
 
@@ -100,8 +83,9 @@ namespace TimeManagementApp.Dao
                 var encryptedPassword = reader.GetString(0);
                 var email = reader.GetString(1);
 
-                RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
-                string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                //RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
+                //string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                string decryptedPassword = EncryptionService.DecryptDPAPI(encryptedPassword);
 
                 if (password == decryptedPassword)
                 {
@@ -134,11 +118,9 @@ namespace TimeManagementApp.Dao
                 connection.Close();
                 return true;
             }
-            else
-            {
-                connection.Close();
-                return false;
-            }
+
+            connection.Close();
+            return false;
         }
 
         public bool IsEmailInUse(string email)
@@ -159,11 +141,9 @@ namespace TimeManagementApp.Dao
                 connection.Close();
                 return true;
             }
-            else
-            {
-                connection.Close();
-                return false;
-            }
+            connection.Close();
+            return false;
+
         }
 
         public string GetUsername(string email)
@@ -204,11 +184,13 @@ namespace TimeManagementApp.Dao
             if (reader.Read())
             {
                 var encryptedPassword = reader.GetString(0);
-                RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
-                string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                //RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
+                //string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                string decryptedPassword = EncryptionService.DecryptDPAPI(encryptedPassword);
                 connection.Close();
                 return decryptedPassword;
             }
+            connection.Close();
             return null;
         }
 
@@ -238,12 +220,11 @@ namespace TimeManagementApp.Dao
         {
             var connection = CreateConnection();
             var result = new ObservableCollection<MyNote>();
-            connection.Open();
 
             var sql = @"
-                        select note.note_id, note.name 
-                        from [NOTE] note
-                        where note.username = @username
+                        select Note.note_id, Note.name 
+                        from [NOTE] Note
+                        where Note.username = @username
                     ";
 
             var command = new SqlCommand(sql, connection);
@@ -255,7 +236,7 @@ namespace TimeManagementApp.Dao
             {
                 var note = new MyNote
                 {
-                    Id = "",//Id = reader.GetInt(0),
+                    Id = reader.GetInt32(0),
                     Name = reader.GetString(1)
                 };
                 result.Add(note);
@@ -268,8 +249,8 @@ namespace TimeManagementApp.Dao
         {
             var connection = CreateConnection();
             var sql = @"
-                        delete from [NOTE] note
-                        where note.note_id = @note_id and note.username = @username
+                        delete from [NOTE] 
+                        where note_id = @note_id and username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
@@ -281,13 +262,39 @@ namespace TimeManagementApp.Dao
             connection.Close();
         }
 
-        public async Task OpenNote(RichEditBox editor, MyNote note)
+        public int CreateNote(string noteName)
         {
             var connection = CreateConnection();
             var sql = @"
-                        select notenote.content
-                        from [NOTE] note
-                        where note.note_id = @note_id and note.username = @username
+                insert into [NOTE] (name, content, username)
+                values (@name, @content, @username);
+                select SCOPE_IDENTITY(); -- Get ID of the newly added record
+            ";
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@name"].Value = noteName;
+            command.Parameters.Add("@content", System.Data.SqlDbType.Text);
+            // Create an empty RichEditBox to store content of the note
+            var editor = new RichEditBox();
+            editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
+            command.Parameters["@content"].Value = content;
+
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
+            command.Parameters["@username"].Value = User.Username;
+
+            int newNoteId = Convert.ToInt32(command.ExecuteScalar());
+            connection.Close();
+
+            return newNoteId;
+        }
+
+        public async Task OpenNote(MyNote note)
+        {
+            var connection = CreateConnection();
+            var sql = @"
+                        select Note.content
+                        from [NOTE] Note
+                        where Note.note_id = @note_id and Note.username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             command.Parameters.Add("@note_id", System.Data.SqlDbType.Int);
@@ -299,7 +306,8 @@ namespace TimeManagementApp.Dao
             if (reader.Read())
             {
                 var content = reader.GetString(0);
-                editor.Document.SetText(TextSetOptions.FormatRtf, content);
+                note.Content = content;
+                //editor.Document.SetText(TextSetOptions.FormatRtf, content);
             }
             connection.Close();
         }
@@ -308,7 +316,7 @@ namespace TimeManagementApp.Dao
         {
             var connection = CreateConnection();
             var sql = @"
-                        update [NOTE]
+                        update [NOTE] 
                         set name = @name
                         where note_id = @note_id and username = @username
                     ";
@@ -324,19 +332,18 @@ namespace TimeManagementApp.Dao
             connection.Close();
         }
 
-        public void SaveNote(RichEditBox editor, MyNote note)
+        public void SaveNote(MyNote note)
         {
             var connection = CreateConnection();
             var sql = @"
-                        update [NOTE] note
-                        set note.name = @name, note.content = @content
-                        where note_id = @note_id and username = @username
+                        UPDATE [NOTE] 
+                        SET name = @name, content = @content
+                        WHERE note_id = @note_id AND username = @username
                     ";
             var command = new SqlCommand(sql, connection);
             // Get content of RichEditBox with RTF format
             command.Parameters.Add("@content", System.Data.SqlDbType.Text);
-            editor.Document.GetText(TextGetOptions.FormatRtf, out string content);
-            command.Parameters["@content"].Value = content;
+            command.Parameters["@content"].Value = note.Content;
 
             command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
             command.Parameters["@name"].Value = note.Name;
@@ -348,29 +355,6 @@ namespace TimeManagementApp.Dao
             command.Parameters["@username"].Value = User.Username;
 
             command.ExecuteNonQuery();
-            connection.Close();
-        }
-
-        public void SaveNotes(ObservableCollection<MyNote> notes)
-        {
-            var connection = CreateConnection();
-            var sql = @"
-                        update [NOTE] note
-                        set note.name = @name
-                        where note.note_id = @note_id and note.username = @username
-                    ";
-            foreach (var note in notes)
-            {
-                var command = new SqlCommand(sql, connection);
-                command.Parameters.Add("@name", System.Data.SqlDbType.NVarChar);
-                command.Parameters["@name"].Value = note.Name;
-                command.Parameters.Add("@note_id", System.Data.SqlDbType.Char);
-                command.Parameters["@note_id"].Value = note.Id;
-                command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
-                command.Parameters["@username"].Value = User.Username;
-
-                command.ExecuteNonQuery();
-            }
             connection.Close();
         }
 

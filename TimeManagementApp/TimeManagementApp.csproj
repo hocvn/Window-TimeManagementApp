@@ -13,6 +13,7 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
@@ -41,7 +42,6 @@
     <None Remove="Home\HomePage.xaml" />
     <None Remove="LoginWindow.xaml" />
     <None Remove="Note\NoteMainPage.xaml" />
-    <None Remove="Note\NotePage.xaml" />
     <None Remove="Login\ForgotPassword\EmailPage.xaml" />
     <None Remove="Login\ForgotPassword\ForgotPasswordWindow.xaml" />
     <None Remove="Login\ForgotPassword\OTPPage.xaml" />
@@ -192,4 +192,12 @@
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
+  <ItemGroup>
+    <PRIResource Remove="Strings\vi-VN\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Update="Strings\vi-VN\Resources.resw">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </PRIResource>
+  </ItemGroup>
 </Project>

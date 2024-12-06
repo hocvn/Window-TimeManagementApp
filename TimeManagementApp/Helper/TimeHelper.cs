@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azure;
+using System;
 
 namespace TimeManagementApp.Helper
 {
