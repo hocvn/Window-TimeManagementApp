@@ -492,4 +492,34 @@
   <data name="addNoteInTask.Text" xml:space="preserve">
     <value>Thêm ghi chú</value>
   </data>
+  <data name="browseTemplate.Content" xml:space="preserve">
+    <value>Chọn mẫu</value>
+  </data>
+  <data name="allTasks.Content" xml:space="preserve">
+    <value>Tất cả nhiệm vụ</value>
+  </data>
+  <data name="uncompletedTasks.Content" xml:space="preserve">
+    <value>Nhiệm vụ chưa hoàn thành</value>
+  </data>
+  <data name="completedTasks.Content" xml:space="preserve">
+    <value>Nhiệm vụ đã hoàn thành</value>
+  </data>
+  <data name="importantTasks.Content" xml:space="preserve">
+    <value>Nhiệm vụ quan trọng</value>
+  </data>
+  <data name="sortByDueDate.Content" xml:space="preserve">
+    <value>Sắp xếp theo ngày kết thúc</value>
+  </data>
+  <data name="sortByName.Content" xml:space="preserve">
+    <value>Sắp xếp theo tên nhiệm vụ</value>
+  </data>
+  <data name="searchTextBoxPlaceHolder.PlaceholderText" xml:space="preserve">
+    <value>Nhập từ khóa tìm kiếm rồi nhấn Enter ...</value>
+  </data>
+  <data name="previousPage.Content" xml:space="preserve">
+    <value>Trước</value>
+  </data>
+  <data name="nextPage.Content" xml:space="preserve">
+    <value>Sau</value>
+  </data>
 </root>
