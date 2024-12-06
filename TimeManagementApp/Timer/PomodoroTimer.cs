@@ -5,11 +5,7 @@ using Microsoft.Windows.AppNotifications;
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TimeManagementApp.Dao;
-using Windows.UI.Notifications;
 
 namespace TimeManagementApp.Timer
 {
@@ -271,9 +267,9 @@ namespace TimeManagementApp.Timer
             {
                 switch (CurrentSettings.Tag)
                 {
-                    case "Working":
+                    case "work":
                         return 0;
-                    case "Studying":
+                    case "studying":
                         return 1;
                     default:
                         return 2;

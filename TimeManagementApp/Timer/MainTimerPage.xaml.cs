@@ -1,13 +1,5 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Text;
-using TimeManagementApp.Dao;
-using TimeManagementApp.ToDo;
-using Windows.Foundation;
 
 namespace TimeManagementApp.Timer
 {

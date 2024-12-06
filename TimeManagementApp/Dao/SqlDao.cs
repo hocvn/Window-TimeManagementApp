@@ -83,8 +83,9 @@ namespace TimeManagementApp.Dao
                 var encryptedPassword = reader.GetString(0);
                 var email = reader.GetString(1);
 
-                RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
-                string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                //RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
+                //string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                string decryptedPassword = EncryptionService.DecryptDPAPI(encryptedPassword);
 
                 if (password == decryptedPassword)
                 {
@@ -183,8 +184,9 @@ namespace TimeManagementApp.Dao
             if (reader.Read())
             {
                 var encryptedPassword = reader.GetString(0);
-                RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
-                string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                //RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
+                //string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+                string decryptedPassword = EncryptionService.DecryptDPAPI(encryptedPassword);
                 connection.Close();
                 return decryptedPassword;
             }
