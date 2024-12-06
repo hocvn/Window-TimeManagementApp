@@ -14,14 +14,14 @@
 
     <Page.Resources>
         <DataTemplate x:Key="NoteItemFormat" x:DataType="model2:MyNote">
-            <Grid Width="160" Height="80" Background="White" CornerRadius="6">
+            <Grid Width="180" Height="80" Background="White" CornerRadius="6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Note" FontSize="16" FontWeight="Bold" Margin="16 16 12 4"/>
+                    <TextBlock x:Uid="noteTitle" FontSize="16" FontWeight="Bold" Margin="16 16 8 4"/>
                     <TextBlock Text="{x:Bind Name}" FontSize="12" Margin="16 0 12 16"/>
                 </StackPanel>
 
@@ -31,14 +31,14 @@
         </DataTemplate>
 
         <DataTemplate x:Key="TodayTaskFormat" x:DataType="model1:MyTask">
-            <Grid Width="160" Height="80" Background="White" CornerRadius="6">
+            <Grid Width="180" Height="80" Background="White" CornerRadius="6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Task" FontSize="16" FontWeight="Bold" Margin="16 16 12 4"/>
+                    <TextBlock x:Uid="taskTitle" FontSize="16" FontWeight="Bold" Margin="16 16 12 4"/>
                     <TextBlock Text="{x:Bind TaskName}" FontSize="12" Margin="16 0 12 16"/>
                 </StackPanel>
 
@@ -58,7 +58,7 @@
         <!-- Title -->
         <StackPanel Orientation="Horizontal" Margin="28 20">
             <FontIcon Glyph="&#xE80F;" Margin="0 4 12 0" FontSize="24"/>
-            <TextBlock Text="Home" FontSize="28" FontWeight="Bold"/>
+            <TextBlock x:Uid="homeTitle"  FontSize="28" FontWeight="Bold"/>
         </StackPanel>
         
         <!-- Separator -->
@@ -71,17 +71,17 @@
         
         <!-- Greeting -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <TextBlock Text="{x:Bind ViewModel.Greeting}" Height="40" Margin="28 20 0 0" FontSize="30" Foreground="RoyalBlue" FontWeight="Bold"/>
+            <TextBlock Text="{x:Bind ViewModel.Greeting, Mode=OneWay}" Height="40" Margin="28 20 0 0" FontSize="30" Foreground="RoyalBlue" FontWeight="Bold"/>
             <Image Width="40" Height="40" Source="{x:Bind ViewModel.Icon, Mode=OneWay}" Margin="12 24 28 0"/>
         </StackPanel>
         
         <!-- Task -->
         <StackPanel Orientation="Horizontal" Margin="28 20">
-            <TextBlock Text="Today tasks" FontSize="20" FontWeight="Bold" Margin="0 0 12 0" Height="30" VerticalAlignment="Center"/>
+            <TextBlock x:Uid="todayTasks" FontSize="20" FontWeight="Bold" Margin="0 0 12 0" Height="30" VerticalAlignment="Center"/>
 
             <Border CornerRadius="20" Background="RoyalBlue" Width="32" Height="32" Padding="2 0 2 2"
                     VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="{x:Bind ViewModel.TodayTasksTotal}" FontSize="16" FontWeight="Bold" Foreground="White"
+                <TextBlock Text="{x:Bind ViewModel.TodayTasksTotal, Mode=OneWay}" FontSize="16" FontWeight="Bold" Foreground="White"
                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
         </StackPanel>
@@ -97,7 +97,7 @@
 
         <!-- Note -->
         <StackPanel Orientation="Horizontal" Margin="28 20">
-            <TextBlock Text="Note" FontSize="20" FontWeight="Bold" Margin="0 0 12 0" Height="30" VerticalAlignment="Center"/>
+            <TextBlock x:Uid="noteTitle" FontSize="20" FontWeight="Bold" Margin="0 0 12 0" Height="30" VerticalAlignment="Center"/>
 
             <Border CornerRadius="20" Background="RoyalBlue" Width="32" Height="32" Padding="2 0 2 2"
             VerticalAlignment="Center" HorizontalAlignment="Center">

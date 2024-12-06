@@ -11,11 +11,11 @@ namespace TimeManagementApp.Helper
         {
             if (username.IsNullOrEmpty())
             {
-                return (false, $"Username can not be empty");
+                return (false, $"Please_fill_out_your_username".GetLocalized());
             }
 
-            if (username.Length > MAX_LENGTH) { 
-                return (false, $"Username must be less than {MAX_LENGTH} characters long");
+            if (username.Length >= MAX_LENGTH) { 
+                return (false, $"Username_must_have_characters_long_less_than".GetLocalized() + $" {MAX_LENGTH}");
             }
             return (true, null);
         }
@@ -23,12 +23,12 @@ namespace TimeManagementApp.Helper
         {
             if (password.Length < MIN_LENGTH)
             {
-                return (false, $"Password must be at least {MIN_LENGTH} characters long");
+                return (false, $"Pasword_must_have_characters_long_more_than".GetLocalized() + $" {MIN_LENGTH}");
             }
 
-            if (password.Length > MAX_LENGTH)
+            if (password.Length >= MAX_LENGTH)
             {
-                return (false, $"Password must be less than {MAX_LENGTH} characters long");
+                return (false, $"Pasword_must_have_characters_long_less_than".GetLocalized() + $" {MAX_LENGTH}");
             }
 
             // Regular expression pattern for validating password
@@ -37,13 +37,13 @@ namespace TimeManagementApp.Helper
             if (!regex.IsMatch(password))
             {
                 if (!Regex.IsMatch(password, @"[A-Z]"))
-                    return (false, "Password must contain at least one uppercase letter");
+                    return (false, "Password_must_contain_at_least_one_uppercase_letter".GetLocalized());
 
                 if (!Regex.IsMatch(password, @"[a-z]"))
-                    return (false, "Password must contain at least one lowercase letter");
+                    return (false, "Password_must_contain_at_least_one_lowercase_letter".GetLocalized());
 
                 if (!Regex.IsMatch(password, @"\d"))
-                    return (false, "Password must contain at least one digit");
+                    return (false, "Password_must_contain_at_least_one_digit".GetLocalized());
             }
             return (true, null);
         }
@@ -51,14 +51,14 @@ namespace TimeManagementApp.Helper
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                return (false, "Please fill out your email.");
+                return (false, "Please_fill_out_your_email".GetLocalized());
             }
             // Regular expression pattern for validating email
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             Regex regex = new Regex(pattern);
             if (!regex.IsMatch(email))
             {
-                return (false, "Please fill out a valid email address format.");
+                return (false, "Please_fill_out_a_valid_email_address_format".GetLocalized());
             }
             return (true, null);
         }
@@ -66,7 +66,7 @@ namespace TimeManagementApp.Helper
         {
             if (password != passwordConfirmed)
             {
-                return (false, "Password confirmation doesn't match the password");
+                return (false, "Password_confirmation_does_not_match_the_password".GetLocalized());
             }
             return (true, null);
         }

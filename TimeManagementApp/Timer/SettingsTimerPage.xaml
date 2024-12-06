@@ -24,17 +24,10 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <SymbolIcon Symbol="Setting" 
-                            Grid.Column="0"/>
-                <TextBlock Text="Timer Settings" 
-                           FontSize="22" FontWeight="Bold" 
-                           Grid.Column="1" Margin="30,17,0,0"/>
-                <AppBarButton Label="Save" 
-                              Icon="Save" Click="SaveButton_Click" 
-                              Grid.Column="2"/>
-                <AppBarButton Label="Back" 
-                              Icon="Back" Click="BackButton_Click"  
-                              Grid.Column="3"/>
+                <SymbolIcon Symbol="Setting" Grid.Column="0"/>
+                <TextBlock x:Uid="timerSettingTitle" FontSize="22" FontWeight="Bold" Grid.Column="1" Margin="30,17,0,0"/>
+                <AppBarButton x:Uid="saveButton" Icon="Save" Click="SaveButton_Click" Grid.Column="2"/>
+                <AppBarButton x:Uid="backButton" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
             </Grid>
 
 
@@ -42,7 +35,7 @@
             <StackPanel Spacing="5" Padding="20">
                 
                 <StackPanel Spacing="5">
-                    <controls:SettingsCard Header="FocusTime Minutes"
+                    <controls:SettingsCard x:Uid="focusTimeMinutes"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                            IsEnabled="True">    
                         <Slider x:Name ="FocusTimeSlider" 
@@ -50,7 +43,7 @@
                                 Minimum="1" Maximum="60"/>
                     </controls:SettingsCard>
 
-                    <controls:SettingsCard Header="ShortBreak Minutes"
+                    <controls:SettingsCard x:Uid="shortBreakMinutes"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                            IsEnabled="True">
                         <Slider x:Name ="ShortBreakSlider" 
@@ -58,7 +51,7 @@
                                 Minimum="1" Maximum="60"/>
                     </controls:SettingsCard>
 
-                    <controls:SettingsCard Header="LongBreak Minutes"
+                    <controls:SettingsCard x:Uid="longBreakMinutes"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                            IsEnabled="True">
                         <Slider x:Name ="LongBreakSlider" 
@@ -66,21 +59,20 @@
                                 Minimum="1" Maximum="60"/>
                     </controls:SettingsCard>
 
-                    <controls:SettingsCard Header="Timer Notification"
+                    <controls:SettingsCard x:Uid="timerNotification"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE7ED;'}"                               
                                            IsEnabled="True">
                         <ToggleSwitch x:Name="NotificationToggleSwitch" Margin="10,0,0,0" 
                                       IsOn="{x:Bind TimerViewModel.CurrentSettings.IsNotificationOn, Mode=OneWay}"/>
                     </controls:SettingsCard>
 
-                    <controls:SettingsCard Header="Select Tag"
+                    <controls:SettingsCard x:Uid="selectTag"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE8EC;'}"                               
                                            IsEnabled="True">
-                        <ComboBox x:Name="TagComboBox"
-                                  SelectedIndex="{x:Bind TimerViewModel.TagComboBoxIndex, Mode=OneWay}">
-                            <ComboBoxItem Content="Working"/>
-                            <ComboBoxItem Content="Studying"/>
-                            <ComboBoxItem Content="Reading"/>
+                        <ComboBox x:Name="TagComboBox" SelectedIndex="{x:Bind TimerViewModel.TagComboBoxIndex, Mode=OneWay}">
+                            <ComboBoxItem x:Uid="working"/>
+                            <ComboBoxItem x:Uid="studying"/>
+                            <ComboBoxItem x:Uid="reading"/>
                         </ComboBox>
                     </controls:SettingsCard>
                     

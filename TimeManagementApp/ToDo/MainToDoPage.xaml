@@ -34,7 +34,7 @@
                 <SymbolIcon Symbol="Home" 
                             Grid.Column="0" Margin="0,3,0,0"/>
 
-                <TextBlock Text="Tasks" FontSize="25" FontWeight="Bold" 
+                <TextBlock x:Uid="taskTitle" FontSize="25" FontWeight="Bold" 
                            Grid.Column="1" Margin="20,0,0,0"/>
             </Grid>
 
@@ -247,12 +247,13 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="InsertTaskName" Grid.Column="0"
-                             PlaceholderText="Fill in the space and press Enter to add new task"
+                    <TextBox x:Name="InsertTaskName" x:Uid="fillInTheSpaceAndPressEnterToAddNewTask" Grid.Column="0"
                              KeyDown="InsertTask_KeyDown"/>
                     
                     <CalendarDatePicker x:Name="InsertTaskDueDateTime" Grid.Column="1"
                                         PlaceholderText="Due date"/>
+
+                    <CalendarDatePicker x:Name="InsertTaskDueDateTime" x:Uid="insertTaskDueDateTime" Grid.Column="1"/>
                 </Grid>
             </InfoBar>
         </StackPanel>

@@ -33,8 +33,8 @@
                 <SymbolIcon Symbol="Edit" Grid.Column="0"/>
                 <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" FontSize="22" FontWeight="Bold" 
                            Grid.Column="1" Margin="30,15,0,0"/>
-                <AppBarButton Label="Save" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
-                <AppBarButton Label="Back" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
+                <AppBarButton x:Uid="updateTaskButton" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
+                <AppBarButton x:Uid="backButton" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
             </Grid>
 
             <StackPanel Margin="20,10,15,0" Padding="5">
@@ -48,8 +48,8 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Task name:" 
-                                               Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBlock x:Uid="taskName"
+                                    Grid.Column="0" VerticalAlignment="Center"/>
 
                         <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
                                              Grid.Column="1"
@@ -79,8 +79,8 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Due time:" 
-                                               Grid.Column="0" Margin="0,4,0,0"/>
+                                <TextBlock x:Uid="dueTime"
+                                           Grid.Column="0" Margin="0,4,0,0"/>
 
                         <DatePicker x:Name="UpdateTaskDueDate" 
                                                 Grid.Column="1"

@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Login.ForgotPassword
 {
@@ -16,6 +17,8 @@ namespace TimeManagementApp.Login.ForgotPassword
         {
             this.InitializeComponent();
             Otp = GenerateOtp(6);
+
+            myTextBlock.Text = "Please_enter_this_code".GetLocalized() + $" {Otp}";
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -63,7 +66,6 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            //Frame.Navigate(typeof(ForgotPasswordPage1));
             Frame.GoBack();
         }
 
@@ -75,7 +77,7 @@ namespace TimeManagementApp.Login.ForgotPassword
             }
             else
             {
-                errorMessage.Text = "Invalid OTP code";
+                errorMessage.Text = "Invalid_code".GetLocalized();
             }
         }
 
