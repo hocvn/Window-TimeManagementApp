@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
@@ -6,8 +9,8 @@ exports.seed = async function(knex) {
     // Deletes ALL existing entries
     await knex('TASK').del();
   
-    // Dynamic username
-    const username = 'myAccount456'; // Change this to a variable as needed
+    // Read the single username from the file
+    const username = fs.readFileSync(path.join(__dirname, 'username.txt'), 'utf-8').trim();
   
     // Define a constant for NullDateTime
     const NullDateTime = new Date(1999, 0, 1, 1, 1, 1).toISOString();
@@ -84,7 +87,7 @@ exports.seed = async function(knex) {
             username: username, 
             name: "Buy Groceries", 
             due_date: new Date(Date.now() + 86400000).toISOString(), // DateTime.Now.AddDays(1)
-            description: "Milk, Bread, Eggs", 
+            description: "", 
             completed: false, 
             important: true, 
             repeat_option: "Weekly", 
