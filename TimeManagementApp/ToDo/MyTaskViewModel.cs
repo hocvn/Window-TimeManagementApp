@@ -125,7 +125,7 @@ namespace TimeManagementApp.ToDo
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 query = query.Where(task =>
-                    task.TaskName.Contains(SearchTerm)
+                    task.TaskName.ToLower().Contains(SearchTerm.ToLower())
                 );
             }
 
@@ -249,13 +249,17 @@ namespace TimeManagementApp.ToDo
 
             foreach (var task in Tasks)
             {
-                var nextDueDate = task.DueDateTime;
-                var currentDate = DateTime.Now;
+                DateTime nextDueDate = task.DueDateTime;
 
-                // Only generate a new task if the original task's due date is less than or equal to the current date
-                if (nextDueDate <= currentDate)
+                // Continue to generate tasks until we find a due date >= current date
+                while (nextDueDate < DateTime.Now)
                 {
-                    // Generate the next due date based on RepeatOption
+                    // Break out of the loop if RepeatOption is none
+                    if (string.IsNullOrEmpty(task.RepeatOption))
+                    {
+                        break;
+                    }
+
                     nextDueDate = task.RepeatOption switch
                     {
                         "Daily" => nextDueDate.AddDays(1),
@@ -263,24 +267,25 @@ namespace TimeManagementApp.ToDo
                         "Monthly" => nextDueDate.AddMonths(1),
                         _ => nextDueDate
                     };
+                }
 
-                    // Ensure the new task's due date is greater than or equal to the current date
-                    if (nextDueDate >= currentDate && !taskDates.Contains((task.TaskName, nextDueDate)))
+                // Ensure the new task's due date is greater than or equal to the current date
+                if (nextDueDate >= DateTime.Now && !taskDates.Contains((task.TaskName, nextDueDate)))
+                {
+                    var newTask = new MyTask
                     {
-                        var newTask = new MyTask
-                        {
-                            TaskName = task.TaskName,
-                            DueDateTime = nextDueDate,
-                            Description = task.Description,
-                            IsCompleted = false,
-                            IsImportant = task.IsImportant,
-                            RepeatOption = task.RepeatOption,
-                            ReminderTime = task.ReminderTime,
-                            NoteId = task.NoteId,
-                        };
+                        TaskName = task.TaskName,
+                        DueDateTime = nextDueDate,
+                        Description = task.Description,
+                        IsCompleted = false,
+                        IsImportant = task.IsImportant,
+                        RepeatOption = task.RepeatOption,
+                        ReminderTime = task.ReminderTime,
+                        NoteId = task.NoteId,
+                    };
 
-                        tasksToAdd.Add(newTask); // Collect the new task
-                    }
+                    tasksToAdd.Add(newTask); // Collect the new task
+                    taskDates.Add((task.TaskName, nextDueDate)); // Track the new task to avoid duplicates
                 }
             }
 
