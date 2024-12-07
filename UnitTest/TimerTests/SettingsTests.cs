@@ -1,56 +1,67 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TimeManagementApp.Timer;
 using System.ComponentModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
+using TimeManagementApp.Timer;
 
 namespace UnitTest
 {
     [TestClass]
     public class SettingsTests
     {
-        [UITestMethod]
-        public void DefaultSettings_ShouldBeCorrect()
-        {
-            var settings = new Settings();
+        private Settings settings;
 
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            settings = new Settings();
+        }
+
+        [TestMethod]
+        public void Settings_DefaultConstructor_ShouldInitializeProperties()
+        {
+            // Assert
             Assert.AreEqual(25, settings.FocusTimeMinutes);
             Assert.AreEqual(5, settings.ShortBreakMinutes);
             Assert.AreEqual(10, settings.LongBreakMinutes);
             Assert.IsTrue(settings.IsNotificationOn);
+            Assert.AreEqual("Studying", settings.Tag);
         }
 
-        [UITestMethod]
-        public void SettingProperties_ShouldRaisePropertyChanged()
+        [TestMethod]
+        public void Settings_SetProperties_ShouldRaisePropertyChangedEvent()
         {
-            var settings = new Settings();
-            bool propertyChangedRaised = false;
-
-            settings.PropertyChanged += (sender, args) => {
-                if (args.PropertyName == "FocusTimeMinutes")
+            // Arrange
+            bool eventRaised = false;
+            settings.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(settings.FocusTimeMinutes))
                 {
-                    propertyChangedRaised = true;
+                    eventRaised = true;
                 }
             };
 
+            // Act
             settings.FocusTimeMinutes = 30;
 
-            Assert.IsTrue(propertyChangedRaised);
+            // Assert
+            Assert.IsTrue(eventRaised);
         }
 
-        [UITestMethod]
-        public void SettingProperties_ShouldUpdateValues()
+        [TestMethod]
+        public void Settings_ShouldSetPropertiesCorrectly()
         {
-            var settings = new Settings();
-
-            settings.FocusTimeMinutes = 40;
+            // Act
+            settings.FocusTimeMinutes = 30;
             settings.ShortBreakMinutes = 10;
             settings.LongBreakMinutes = 20;
             settings.IsNotificationOn = false;
+            settings.Tag = "Work";
 
-            Assert.AreEqual(40, settings.FocusTimeMinutes);
+            // Assert
+            Assert.AreEqual(30, settings.FocusTimeMinutes);
             Assert.AreEqual(10, settings.ShortBreakMinutes);
             Assert.AreEqual(20, settings.LongBreakMinutes);
             Assert.IsFalse(settings.IsNotificationOn);
+            Assert.AreEqual("Work", settings.Tag);
         }
     }
 }

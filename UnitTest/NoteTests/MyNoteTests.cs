@@ -7,10 +7,10 @@ namespace UnitTest
     public class MyNoteTests
     {
         [TestMethod]
-        public void Constructor_WithParameters_ShouldInitializeProperties()
+        public void MyNote_ConstructorWithParameters_ShouldInitializeProperties()
         {
             // Arrange
-            string id = "123";
+            int id = 1;
             string name = "Test Note";
 
             // Act
@@ -19,34 +19,36 @@ namespace UnitTest
             // Assert
             Assert.AreEqual(id, note.Id);
             Assert.AreEqual(name, note.Name);
+            Assert.AreEqual(string.Empty, note.Content);
         }
 
         [TestMethod]
-        public void Constructor_WithoutParameters_ShouldInitializePropertiesToEmpty()
+        public void MyNote_DefaultConstructor_ShouldInitializeProperties()
         {
             // Act
             var note = new MyNote();
 
             // Assert
-            Assert.AreEqual("", note.Id);
-            Assert.AreEqual("", note.Name);
+            Assert.AreEqual(0, note.Id);
+            Assert.AreEqual(string.Empty, note.Name);
+            Assert.AreEqual(string.Empty, note.Content);
         }
 
         [TestMethod]
-        public void SetProperties_ShouldUpdateValues()
+        public void MyNote_SetProperties_ShouldSetPropertiesCorrectly()
         {
             // Arrange
             var note = new MyNote();
-            string newId = "456";
-            string newName = "Updated Note";
 
             // Act
-            note.Id = newId;
-            note.Name = newName;
+            note.Id = 1;
+            note.Name = "Test Note";
+            note.Content = "This is the content of the note.";
 
             // Assert
-            Assert.AreEqual(newId, note.Id);
-            Assert.AreEqual(newName, note.Name);
+            Assert.AreEqual(1, note.Id);
+            Assert.AreEqual("Test Note", note.Name);
+            Assert.AreEqual("This is the content of the note.", note.Content);
         }
     }
 }
