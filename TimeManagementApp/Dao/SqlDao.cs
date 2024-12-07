@@ -5,12 +5,13 @@ using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using TimeManagementApp.Note;
 using TimeManagementApp.Services;
 using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace TimeManagementApp.Dao
 {
@@ -24,16 +25,13 @@ namespace TimeManagementApp.Dao
 
         private SqlConnection CreateConnection()
         {
-            var builder = new SqlConnectionStringBuilder
-            {
-                DataSource = "localhost,1433",  
-                InitialCatalog = "timemanagementdb",
-                UserID = "sa",                  
-                Password = "sqlserver@123",       
-                TrustServerCertificate = true
-            };
+            // Store connection string in appsettings.json
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory) 
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
 
-            var connectionString = builder.ToString();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
             var connection = new SqlConnection(connectionString);
             connection.Open();
             return connection;
@@ -44,9 +42,11 @@ namespace TimeManagementApp.Dao
         public void CreateUser(string username, string password, string email)
         {
             // Encrypt password and save private key to local settings 
-            (string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
-            EncryptionService.SavePrivateKey(PrivateKey, username);
+            //(string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
+            //EncryptionService.SavePrivateKey(PrivateKey, username);
+            // Encrypt password by RSA
 
+            string EncryptedPasswordBase64 = EncryptionService.EncryptDPAPI(password);
             var connection = CreateConnection();
             var sql = @"
                         insert into [USER] (username, encrypted_password, email)
@@ -83,8 +83,10 @@ namespace TimeManagementApp.Dao
                 var encryptedPassword = reader.GetString(0);
                 var email = reader.GetString(1);
 
+                // RSA
                 //RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
                 //string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+
                 string decryptedPassword = EncryptionService.DecryptDPAPI(encryptedPassword);
 
                 if (password == decryptedPassword)
@@ -184,8 +186,10 @@ namespace TimeManagementApp.Dao
             if (reader.Read())
             {
                 var encryptedPassword = reader.GetString(0);
+                // RSA
                 //RSAParameters privateKey = EncryptionService.GetPrivateKey(username);
                 //string decryptedPassword = EncryptionService.Decrypt(encryptedPassword, privateKey);
+
                 string decryptedPassword = EncryptionService.DecryptDPAPI(encryptedPassword);
                 connection.Close();
                 return decryptedPassword;
@@ -196,9 +200,12 @@ namespace TimeManagementApp.Dao
 
         public void ResetPassword(string username, string password, string email)
         {
+            // RSA
             // Encrypt new password and save private key to local settings 
-            (string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
-            EncryptionService.SavePrivateKey(PrivateKey, username);
+            //(string EncryptedPasswordBase64, RSAParameters PrivateKey) = EncryptionService.Encrypt(password);
+            //EncryptionService.SavePrivateKey(PrivateKey, username);
+
+            string EncryptedPasswordBase64 = EncryptionService.EncryptDPAPI(password);
 
             var connection = CreateConnection();
             var sql = @"

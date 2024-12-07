@@ -15,11 +15,11 @@ namespace TimeManagementApp
         public partial class LoginViewModel : INotifyPropertyChanged
         {
             public string ErrorMessage { get; set; }
-            private IDao dao { get; set; }
+            private IDao _dao { get; set; }
 
             public LoginViewModel()
             {
-                dao = new SqlDao();
+                _dao = new SqlDao();
                 ErrorMessage = "";
             }
 
@@ -27,12 +27,12 @@ namespace TimeManagementApp
 
             public bool CheckCredentials(string username, string password)
             {
-                return dao.CheckCredential(username, password);
+                return _dao.CheckCredential(username, password);
             }
 
             public string GetPassword(string username)
             {
-                return dao.GetPassword(username);
+                return _dao.GetPassword(username);
             }
         }
 
