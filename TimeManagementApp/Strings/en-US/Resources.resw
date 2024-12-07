@@ -522,4 +522,40 @@
   <data name="nextPage.Content" xml:space="preserve">
     <value>Next</value>
   </data>
+  <data name="descriptionTitle.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="descriptionTextBox.PlaceholderText" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="nextWeekMorning.Content" xml:space="preserve">
+    <value>Next week morning</value>
+  </data>
+  <data name="endOfToday.Content" xml:space="preserve">
+    <value>End of Today</value>
+  </data>
+  <data name="tomorrowMorning.Content" xml:space="preserve">
+    <value>Tomorrow morning</value>
+  </data>
+  <data name="remindMeTitle.Header" xml:space="preserve">
+    <value>Remind me</value>
+  </data>
+  <data name="repeatTitle.Header" xml:space="preserve">
+    <value>Repeat</value>
+  </data>
+  <data name="addNoteTitle.Header" xml:space="preserve">
+    <value>Add note</value>
+  </data>
+  <data name="repeatOption_None.Content" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="repeatOption_Daily.Content" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="repeatOption_Weekly.Content" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
+  <data name="repeatOption_Monthly.Content" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
 </root>
