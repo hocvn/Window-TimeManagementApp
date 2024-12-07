@@ -1,5 +1,7 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System;
 using System.Diagnostics;
 using TimeManagementApp.Dao;
 using TimeManagementApp.Helper;
@@ -59,6 +61,12 @@ namespace TimeManagementApp.Settings
                 }
             }
         }
-    }
 
+        private void OpenLinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            var uri = new Uri("https://sites.google.com/view/time-management-app");
+            _ = Windows.System.Launcher.LaunchUriAsync(uri);
+        }
+
+    }
 }
