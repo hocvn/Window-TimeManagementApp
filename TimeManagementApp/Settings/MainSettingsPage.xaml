@@ -42,7 +42,7 @@
                 <controls:SettingsCard x:Uid="country"
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE707;'}" 
                                        IsEnabled="True">
-                    <ComboBox x:Name="CountryComboBox" SelectedIndex="0" SelectionChanged="Country_SelectionChanged">
+                    <ComboBox x:Name="CountryComboBox" SelectionChanged="Country_SelectionChanged">
                         <ComboBoxItem>England</ComboBoxItem>
                         <ComboBoxItem>Vietnam</ComboBoxItem>
                     </ComboBox>
@@ -62,7 +62,7 @@
                         </controls:SettingsCard>
 
                         <controls:SettingsCard x:Uid="orYouCanUseYourOwnBackground">
-                            <Button Content="Browse template"/>
+                            <Button x:Uid="browseTemplate"/>
                         </controls:SettingsCard>
                     </controls:SettingsExpander.Items>
                 </controls:SettingsExpander>

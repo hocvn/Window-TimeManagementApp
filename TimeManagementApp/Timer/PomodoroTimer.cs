@@ -166,7 +166,7 @@ namespace TimeManagementApp.Timer
 
                         var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
                         var filePath = Path.Combine(directory.FullName, "sessions.xlsx");
-                        IDao dao = new ExcelDao(filePath);
+                        IDao dao = new MockDao(filePath);
 
                         dao.SaveSession(session);
                     }

@@ -10,6 +10,7 @@ using TimeManagementApp.Note;
 using TimeManagementApp.Helper;
 using System.ComponentModel;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.IO;
 
 namespace TimeManagementApp.Home
 {
@@ -32,12 +33,17 @@ namespace TimeManagementApp.Home
 
             public ObservableCollection<MyNote> NoteList { get; set; }
 
-            private IDao _dao = new SqlDao();
+            private IDao dao;
 
             public void Init()
             {
-                NoteList = _dao.GetAllNote();
-                TodayTasks = _dao.GetTodayTask();
+                //var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
+                //var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
+                //dao = new MockDao(filePath);
+                dao = new SqlDao();
+
+                NoteList = dao.GetAllNote();
+                TodayTasks = dao.GetTodayTask();
 
                 TodayTasksTotal = TodayTasks.Count;
                 NotesTotal = NoteList.Count;
@@ -90,7 +96,8 @@ namespace TimeManagementApp.Home
 
         private void GridViewTaskItem_Click(object sender, ItemClickEventArgs e)
         {
-            throw new NotImplementedException();
+            MyTask task = (MyTask)e.ClickedItem;
+            MainWindow.NavigationService.Navigate(typeof(EditToDoPage), task);
         }
 
         private void GridViewNoteItem_Click(object sender, ItemClickEventArgs e)

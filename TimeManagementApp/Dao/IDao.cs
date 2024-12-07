@@ -12,6 +12,7 @@ namespace TimeManagementApp.Dao
 {
     public interface IDao
     {
+        // Users -----------------------------------------------
         void CreateUser(string username, string password, string email);
 
         bool CheckCredential(string username, string password);
@@ -26,6 +27,8 @@ namespace TimeManagementApp.Dao
 
         void ResetPassword(string username, string password, string email);
 
+
+        // Notes -----------------------------------------------
         ObservableCollection<MyNote> GetAllNote();
 
         void SaveNote(MyNote note);
@@ -41,9 +44,12 @@ namespace TimeManagementApp.Dao
 
         // Tasks ----------------------------------------------
         ObservableCollection<MyTask> GetAllTasks();
+        void InsertTask(MyTask task);
+        void DeleteTask(MyTask task);
+        void UpdateTask(MyTask task);
         ObservableCollection<MyTask> GetTasksForDate(DateTime date);
-
         ObservableCollection<MyTask> GetTodayTask();
+        ObservableCollection<MyTask> GetRepeatingTasks();
 
 
         // Timer ----------------------------------------------

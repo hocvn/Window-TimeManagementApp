@@ -28,7 +28,7 @@ namespace TimeManagementApp.Global
 
         public BackgroundViewModel()
         {
-            IDao dao = new LocalSettingsDao();
+            IDao dao = new MockDao();
 
             PageBackgroundBrush = dao.LoadSavedBackground(PageGradientStopOffset1, PageGradientStopOffset2);
             NavigationViewBackgroundBrush = dao.LoadSavedBackground(NavigationViewGradientStopOffset1, NavigationViewGradientStopOffset2);

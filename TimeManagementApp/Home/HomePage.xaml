@@ -88,6 +88,7 @@
 
         <GridView 
             Margin="28 0"
+            IsItemClickEnabled="True"
             ItemsSource="{x:Bind ViewModel.TodayTasks, Mode=OneWay}" 
             ItemTemplate="{StaticResource TodayTaskFormat}" 
             ItemContainerStyle="{StaticResource GridViewItemStyle}"

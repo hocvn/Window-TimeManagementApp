@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System.Diagnostics;
 using TimeManagementApp.Dao;
 using TimeManagementApp.Helper;
 
@@ -16,7 +17,7 @@ namespace TimeManagementApp.Settings
 
             BrushesViewModel = new BrushesViewModel();
 
-            if (ResourcesHelper.GetLanguage() == "en-US")
+            if (ResourcesHelper.GetLanguage() == "en")
             {
                 CountryComboBox.SelectedIndex = 0;
             }
@@ -34,12 +35,12 @@ namespace TimeManagementApp.Settings
             var selectedBrush = gridView.SelectedItem as LinearGradientBrush;
 
             // save to local settings
-            IDao _dao = new LocalSettingsDao();
-            _dao.SaveSelectedBackground(selectedBrush);
+            IDao dao = new MockDao();
+            dao.SaveSelectedBackground(selectedBrush);
 
             // reload the background
-            App.BackgroundViewModel.PageBackgroundBrush = _dao.LoadSavedBackground(0.0, 8.0);
-            App.BackgroundViewModel.NavigationViewBackgroundBrush = _dao.LoadSavedBackground(0.0, 2.5);
+            App.BackgroundViewModel.PageBackgroundBrush = dao.LoadSavedBackground(0.0, 8.0);
+            App.BackgroundViewModel.NavigationViewBackgroundBrush = dao.LoadSavedBackground(0.0, 2.5);
         }
 
         private void Country_SelectionChanged(object sender, SelectionChangedEventArgs e)
