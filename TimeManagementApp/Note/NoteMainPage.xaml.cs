@@ -63,6 +63,7 @@ namespace TimeManagementApp.Note
             {
                 ViewModel.DeleteNote(myNote);
             }
+            NumberOfNote.Text = "Total".GetLocalized() + ": " + ViewModel.TotalItems.ToString();
         }
 
         private async void NewNoteButton_Click(object sender, RoutedEventArgs e)
@@ -71,7 +72,15 @@ namespace TimeManagementApp.Note
             // Check error when user add a new note
             if (newNoteName.Length == 0)
             {
-                await Dialog.ShowContent(this.XamlRoot, "Error", "Note Name cannot be empty!", null, null, "OK");
+                await Dialog.ShowContent
+                (
+                    this.XamlRoot, 
+                    "Error".GetLocalized(), 
+                    "Note_Name_cannot_be_empty".GetLocalized(), 
+                    null, 
+                    null, 
+                    "OK".GetLocalized()
+                );
                 return;
             }
 
@@ -88,7 +97,15 @@ namespace TimeManagementApp.Note
 
         private async void DeleteNoteButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = await Dialog.ShowContent(this.XamlRoot, "Remove Note", "Are you sure you want to remove this note?", "Yes", null, "No");
+            var result = await Dialog.ShowContent
+            (
+                this.XamlRoot, 
+                "Delete_note".GetLocalized(), 
+                "Are_you_sure_you_want_to_remove_this_note".GetLocalized(), 
+                "Yes".GetLocalized(), 
+                null, 
+                "No".GetLocalized()
+            );
             if (result == ContentDialogResult.Primary)
             {
                 var button = sender as Button;

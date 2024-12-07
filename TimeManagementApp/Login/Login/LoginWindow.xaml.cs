@@ -69,13 +69,13 @@ namespace TimeManagementApp
 
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
             {
-                ViewModel.ErrorMessage = "Please enter both username and password.";
+                ViewModel.ErrorMessage = "Please_enter_both_username_and_password".GetLocalized();
                 return;
             }
 
             if (ViewModel.CheckCredentials(username, password) == false)
             {
-                ViewModel.ErrorMessage = "Invalid username or password.";
+                ViewModel.ErrorMessage = "Invalid_username_or_password".GetLocalized();
                 return;
             }
             // Username and password are correct

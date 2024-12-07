@@ -127,15 +127,15 @@
                 </Style>
             </RelativePanel.Resources>
             <!-- Back -->
-            <Button x:Name="BackButton" Click="BackButton_Click" AutomationProperties.Name="Back" 
-                    Margin="0 4" ToolTipService.ToolTip="Back">
+            <Button x:Name="BackButton" x:Uid="backNoteButton" Click="BackButton_Click" AutomationProperties.Name="Back" 
+                    Margin="0 4">
                 <Button.Content>
                     <FontIcon Glyph="&#xE72B;"/>
                 </Button.Content>
             </Button>
             <!-- Save -->
-            <Button x:Name="SaveButton" Click="SaveButton_Click" AutomationProperties.Name="Save" 
-                    Margin="0 4" ToolTipService.ToolTip="Save" RelativePanel.RightOf="BackButton">
+            <Button x:Name="SaveButton" x:Uid="saveNoteButton" Click="SaveButton_Click" AutomationProperties.Name="Save" 
+                    Margin="0 4" RelativePanel.RightOf="BackButton">
                 <Button.Content>
                     <FontIcon Glyph="&#xE74E;"/>
                 </Button.Content>
@@ -143,7 +143,7 @@
             <!-- Unsaved sign -->
             <Ellipse x:Name="UnsavedSign" Fill="Transparent" Height="8" Width="8" Margin="4 6" RelativePanel.AlignRightWith="SaveButton"/>
             <!-- Delete -->
-            <Button x:Name="DeleteButton" Click="DeleteButton_Click" AutomationProperties.Name="Delete" ToolTipService.ToolTip="Delete" 
+            <Button x:Name="DeleteButton" x:Uid="deleteNoteButton" Click="DeleteButton_Click" AutomationProperties.Name="Delete"
                 Margin="0 4"  RelativePanel.RightOf="SaveButton">
                 <Button.Content>
                     <FontIcon Glyph="&#xE74D;"/>
@@ -154,28 +154,28 @@
                      RelativePanel.LeftOf="BoldButton" RelativePanel.AlignHorizontalCenterWithPanel="True" KeyDown="NoteNameTextBox_KeyDown"
                      Text="{x:Bind ViewModel.Note.Name, Mode=TwoWay}"/>
             <!-- Bold -->
-            <ToggleButton x:Name="BoldButton" AutomationProperties.Name="Bold" ToolTipService.ToolTip="Bold" Click="BoldButton_Click"
+            <ToggleButton x:Name="BoldButton" x:Uid="boldButton" AutomationProperties.Name="Bold" Click="BoldButton_Click"
                           RelativePanel.LeftOf="ItalicButton" Style="{StaticResource ToggleButtonStyle}" Margin="0 6 0 0">
                 <ToggleButton.Content>
                     <FontIcon Glyph="&#xE8DD;" FontSize="16"/>
                 </ToggleButton.Content>
             </ToggleButton>
             <!-- Italic -->
-            <ToggleButton x:Name="ItalicButton" Click="ItalicButton_Click" AutomationProperties.Name="Italic" ToolTipService.ToolTip="Italic"
+            <ToggleButton x:Name="ItalicButton" x:Uid="italicButton" Click="ItalicButton_Click" AutomationProperties.Name="Italic"
                 RelativePanel.LeftOf="UnderlineButton" Style="{StaticResource ToggleButtonStyle}" Margin="2 6 0 0">
                 <ToggleButton.Content>
                     <FontIcon Glyph="&#xE8DB;" FontSize="16"/>
                 </ToggleButton.Content>
             </ToggleButton>
             <!-- Underline -->
-            <ToggleButton x:Name="UnderlineButton" AutomationProperties.Name="UnderlineButton" ToolTipService.ToolTip="Underline" Height="27"
+            <ToggleButton x:Name="UnderlineButton" x:Uid="underlineButton" AutomationProperties.Name="UnderlineButton" Height="27"
                 Click="UnderlineButton_Click" RelativePanel.LeftOf="FontColorButton" Style="{StaticResource ToggleButtonStyle}" Margin="2 6 0 0" >
                 <ToggleButton.Content>
                     <FontIcon Glyph="&#xE8DC;" FontSize="18"/>
                 </ToggleButton.Content>
             </ToggleButton>
             <!-- Color picker -->
-            <DropDownButton x:Name="FontColorButton" AutomationProperties.Name="Font color" BorderThickness="0" ToolTipService.ToolTip="Font color"
+            <DropDownButton x:Name="FontColorButton" x:Uid="fontColor" AutomationProperties.Name="Font color" BorderThickness="0"
                                 Background="Transparent" RelativePanel.AlignRightWithPanel="True" Margin="2 4">
                 <SymbolIcon Symbol="FontColor"/>
                 <DropDownButton.Flyout>

@@ -30,7 +30,8 @@
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="en-US"/>
+    <Resource Language="vi-VN"/>
   </Resources>
 
   <Applications>

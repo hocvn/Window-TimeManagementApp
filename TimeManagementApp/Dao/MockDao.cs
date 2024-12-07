@@ -18,11 +18,29 @@ using TimeManagementApp.Helper;
 using static TimeManagementApp.UserCredential;
 using TimeManagementApp.Timer;
 using Microsoft.UI.Xaml.Media;
+using Windows.Foundation;
+using OfficeOpenXml;
+using System.Threading;
 
 namespace TimeManagementApp.Dao
 {
     public class MockDao : IDao
     {
+        public MockDao()
+        {
+            // do nothing, just for using parameterized constructor
+        }
+
+        private readonly string _filePath;
+
+        public MockDao(string filePath)
+        {
+            _filePath = filePath;
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+        }
+
+
+        // Users ------------------------------------------------------------------------------------
         private (string, string) EncryptPassword(string password)
         {
             // Encrypt the password
@@ -45,17 +63,6 @@ namespace TimeManagementApp.Dao
 
             return (encryptedPasswordBase64, entropyInBase64);
         }
-        public ObservableCollection<MyNote> GetAllNote()
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
-            ObservableCollection<MyNote> notes = new ObservableCollection<MyNote>();
-            if (localSettings.Values["mynotes"] is string notesJson)
-            {
-                //notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
-            }
-            return notes;
-        }
 
         public void CreateUser(string username, string password, string email)
         {
@@ -76,225 +83,6 @@ namespace TimeManagementApp.Dao
             usersData[username] = userInfo;
             usersDataJson = System.Text.Json.JsonSerializer.Serialize(usersData);
             StorageHelper.SaveSetting("usersData", usersDataJson);
-        }
-
-        public void SaveNotes(ObservableCollection<MyNote> notes)
-        {
-            string notesJson = JsonSerializer.Serialize(notes);
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values["mynotes"] = notesJson;
-        }
-
-        // Open a file in local folder and load its content to RichEditBox
-        public async Task OpenNote(MyNote note)
-        {
-            try
-            {
-                string fileName = note.Id + ".rtf";
-
-                // Check if file exists
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName) as StorageFile;
-
-                // Open file and load its content to RichEditBox
-                using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
-                //editor.Document.LoadFromStream(TextSetOptions.FormatRtf, stream);
-            }
-            catch (FileNotFoundException)
-            {
-                Debug.WriteLine("File not found.");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error loading file: {ex.Message}");
-
-            }
-        }
-
-        // Save the content of RichEditBox to a file in local folder
-        public async void SaveNote(MyNote note)
-        {
-            string fileName = note.Id + ".rtf";
-            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-
-            // Save the content of RichEditBox to a stream and write to file
-            using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite);
-            //editor.Document.SaveToStream(TextGetOptions.FormatRtf, stream);
-        }
-
-        // Delete a file which store note in local folder
-        public async void DeleteNote(MyNote note)
-        {
-            try
-            {
-                string fileName = note.Id + ".rtf";
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName) as StorageFile;
-
-                // Delete the file
-                await file.DeleteAsync();
-            }
-            catch (FileNotFoundException)
-            {
-                Debug.WriteLine("File not found.");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error deleting file: {ex.Message}");
-            }
-        }
-
-        public void RenameNote(MyNote note)
-        {
-            ObservableCollection <MyNote> notes = GetAllNote();
-            foreach (MyNote item in notes)
-            {
-                if (item.Id == note.Id)
-                {
-                    item.Name = note.Name;
-                    break;
-                }
-            }
-            SaveNotes(notes);
-        }
-
-        public int CreateNote(string noteName)
-        {
-            ObservableCollection<MyNote> notes = GetAllNote();
-            int newId = notes.Count == 0 ? 0 : notes.Max(note => note.Id) + 1;
-            MyNote newNote = new MyNote()
-            {
-                Id = newId,
-                Name = noteName
-            };
-            notes.Insert(0, newNote);
-            SaveNotes(notes);
-            return newId;
-        }
-
-
-        // Tasks -------------------------------------------------------------
-        public ObservableCollection<MyTask> GetAllTasks()
-        {
-            return new ObservableCollection<MyTask>()
-            {
-                new MyTask()
-                {
-                    TaskName = "Task 01",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 02",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 03",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 04",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 05",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 06",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 07",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 08",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 09",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 10",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 11",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 12",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddHours(3),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 13",
-                    Summarization = "Today, Repeat",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddDays(1),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 14",
-                    Summarization = "Tomorrow, Reminder",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddDays(2),
-                },
-                new MyTask()
-                {
-                    TaskName = "Task 15",
-                    Summarization = "0 of 2, Important",
-                    StartDateTime = DateTime.Now,
-                    DueDateTime = DateTime.Now.AddDays(3),
-                },
-            };
-        }
-
-        public ObservableCollection<MyTask> GetTodayTask()
-        {
-            ObservableCollection<MyTask> todayTasks = new();
-            foreach (MyTask task in GetAllTasks())
-            {
-                if (task.DueDateTime.Date == DateTime.Now.Date)
-                {
-                    todayTasks.Add(task);
-                }
-            }
-            return todayTasks;
         }
 
         public bool CheckCredential(string username, string password)
@@ -333,7 +121,7 @@ namespace TimeManagementApp.Dao
                 string decryptedPassword = Encoding.UTF8.GetString(decryptedPasswordInBytes);
                 return decryptedPassword == password;
             }
-            return false;            
+            return false;
         }
 
         public bool IsUsernameInUse(string username)
@@ -448,39 +236,369 @@ namespace TimeManagementApp.Dao
             CreateUser(username, password, email);
         }
 
-        public void SaveSession(FocusSession session)
+
+        // Notes ------------------------------------------------------------------------------------
+        public ObservableCollection<MyNote> GetAllNote()
         {
-            throw new NotImplementedException();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+            ObservableCollection<MyNote> notes = new ObservableCollection<MyNote>();
+            if (localSettings.Values["mynotes"] is string notesJson)
+            {
+                //notes = JsonSerializer.Deserialize<ObservableCollection<MyNote>>(notesJson);
+            }
+            return notes;
         }
 
-        public List<FocusSession> GetAllSessions()
+        public void SaveNotes(ObservableCollection<MyNote> notes)
         {
-            throw new NotImplementedException();
+            string notesJson = JsonSerializer.Serialize(notes);
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["mynotes"] = notesJson;
         }
 
-        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        // Open a file in local folder and load its content to RichEditBox
+        public async Task OpenNote(MyNote note)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string fileName = note.Id + ".rtf";
+
+                // Check if file exists
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName) as StorageFile;
+
+                // Open file and load its content to RichEditBox
+                using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
+                //editor.Document.LoadFromStream(TextSetOptions.FormatRtf, stream);
+            }
+            catch (FileNotFoundException)
+            {
+                Debug.WriteLine("File not found.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading file: {ex.Message}");
+
+            }
         }
 
-        public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
+        // Save the content of RichEditBox to a file in local folder
+        public async void SaveNote(MyNote note)
         {
-            throw new NotImplementedException();
+            string fileName = note.Id + ".rtf";
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            // Save the content of RichEditBox to a stream and write to file
+            using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite);
+            //editor.Document.SaveToStream(TextGetOptions.FormatRtf, stream);
         }
 
-        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
+        // Delete a file which store note in local folder
+        public async void DeleteNote(MyNote note)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string fileName = note.Id + ".rtf";
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName) as StorageFile;
+
+                // Delete the file
+                await file.DeleteAsync();
+            }
+            catch (FileNotFoundException)
+            {
+                Debug.WriteLine("File not found.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error deleting file: {ex.Message}");
+            }
+        }
+
+        public void RenameNote(MyNote note)
+        {
+            ObservableCollection<MyNote> notes = GetAllNote();
+            foreach (MyNote item in notes)
+            {
+                if (item.Id == note.Id)
+                {
+                    item.Name = note.Name;
+                    break;
+                }
+            }
+            SaveNotes(notes);
+        }
+
+        public int CreateNote(string noteName)
+        {
+            ObservableCollection<MyNote> notes = GetAllNote();
+            int newId = notes.Count == 0 ? 0 : notes.Max(note => note.Id) + 1;
+            MyNote newNote = new MyNote()
+            {
+                Id = newId,
+                Name = noteName
+            };
+            notes.Insert(0, newNote);
+            SaveNotes(notes);
+            return newId;
+        }
+
+
+        // Tasks ------------------------------------------------------------------------------------
+        public ObservableCollection<MyTask> GetAllTasks()
+        {
+            return LoadTasksFromExcel(_filePath);
+        }
+
+        public void InsertTask(MyTask task)
+        {
+            var tasks = LoadTasksFromExcel(_filePath);
+            task.TaskId = tasks.Any() ? tasks.Max(t => t.TaskId) + 1 : 1; // Assign new unique ID based on the max existing ID
+            tasks.Add(task);
+            SaveTasksToExcel(_filePath, tasks);
+        }
+
+        public void DeleteTask(MyTask task)
+        {
+            var tasks = LoadTasksFromExcel(_filePath);
+            var taskToDelete = tasks.FirstOrDefault(t => t.TaskId == task.TaskId);
+            if (taskToDelete != null)
+            {
+                tasks.Remove(taskToDelete);
+                SaveTasksToExcel(_filePath, tasks);
+            }
+        }
+
+        public void UpdateTask(MyTask task)
+        {
+            var tasks = LoadTasksFromExcel(_filePath);
+            var index = tasks.IndexOf(tasks.FirstOrDefault(t => t.TaskId == task.TaskId));
+            if (index >= 0)
+            {
+                tasks[index] = task;
+                SaveTasksToExcel(_filePath, tasks);
+            }
+        }
+
+
+        private ObservableCollection<MyTask> LoadTasksFromExcel(string filePath)
+        {
+            var tasks = new ObservableCollection<MyTask>();
+
+            if (!File.Exists(filePath))
+            {
+                return tasks;
+            }
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (worksheet == null || worksheet.Dimension == null)
+                {
+                    return tasks;
+                }
+
+                for (int row = 2; row <= worksheet.Dimension.Rows; row++)
+                {
+                    var task = new MyTask
+                    {
+                        TaskId = int.Parse(worksheet.Cells[row, 1].Text),
+                        TaskName = worksheet.Cells[row, 2].Text,
+                        DueDateTime = DateTime.Parse(worksheet.Cells[row, 3].Text),
+                        Description = worksheet.Cells[row, 4].Text,
+                        IsCompleted = bool.Parse(worksheet.Cells[row, 5].Text),
+                        IsImportant = bool.Parse(worksheet.Cells[row, 6].Text),
+                        RepeatOption = worksheet.Cells[row, 7].Text,
+                        ReminderTime = DateTime.Parse(worksheet.Cells[row, 8].Text),
+                        NoteId = int.Parse(worksheet.Cells[row, 9].Text)
+                    };
+                    tasks.Add(task);
+                }
+            }
+
+            return tasks;
+        }
+
+        private void SaveTasksToExcel(string filePath, ObservableCollection<MyTask> tasks)
+        {
+            if (!File.Exists(filePath))
+            {
+                throw new Exception("File not found");
+            }
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault() ?? package.Workbook.Worksheets.Add("Tasks");
+
+                // Clear existing rows
+                worksheet.Cells.Clear();
+
+                // Add headers
+                worksheet.Cells[1, 1].Value = "TaskId";
+                worksheet.Cells[1, 2].Value = "TaskName";
+                worksheet.Cells[1, 3].Value = "DueDateTime";
+                worksheet.Cells[1, 4].Value = "Description";
+                worksheet.Cells[1, 5].Value = "IsCompleted";
+                worksheet.Cells[1, 6].Value = "IsImportant";
+                worksheet.Cells[1, 7].Value = "RepeatOption";
+                worksheet.Cells[1, 8].Value = "ReminderTime";
+                worksheet.Cells[1, 9].Value = "NoteId";
+
+                int row = 2;
+                foreach (var task in tasks)
+                {
+                    worksheet.Cells[row, 1].Value = task.TaskId;
+                    worksheet.Cells[row, 2].Value = task.TaskName;
+                    worksheet.Cells[row, 3].Value = task.DueDateTime.ToString();
+                    worksheet.Cells[row, 4].Value = task.Description;
+                    worksheet.Cells[row, 5].Value = task.IsCompleted.ToString();
+                    worksheet.Cells[row, 6].Value = task.IsImportant.ToString();
+                    worksheet.Cells[row, 7].Value = task.RepeatOption;
+                    worksheet.Cells[row, 8].Value = task.ReminderTime.ToString();
+                    worksheet.Cells[row, 9].Value = task.NoteId;
+                    row++;
+                }
+
+                package.Save();
+            }
+        }
+
+        public ObservableCollection<MyTask> GetTodayTask()
+        {
+            ObservableCollection<MyTask> todayTasks = new();
+            foreach (MyTask task in GetAllTasks())
+            {
+                if (task.DueDateTime.Date == DateTime.Now.Date)
+                {
+                    todayTasks.Add(task);
+                }
+            }
+            return todayTasks;
         }
 
         public ObservableCollection<MyTask> GetTasksForDate(DateTime date)
         {
-            return new ObservableCollection<MyTask>
+            ObservableCollection<MyTask> result = new();
+            foreach (MyTask task in GetAllTasks())
             {
-                new MyTask { TaskName = "Task 1", Summarization = "Summary 1", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(1) },
-                new MyTask { TaskName = "Task 2", Summarization = "Summary 2", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(2) },
-                new MyTask { TaskName = "Task 3", Summarization = "Summary 3", StartDateTime = DateTime.Now, DueDateTime = DateTime.Now.AddDays(3) }
-            };
+                if (task.DueDateTime.Date == date.Date)
+                {
+                    result.Add(task);
+                }
+            }
+            return result;
+        }
+
+        public ObservableCollection<MyTask> GetRepeatingTasks()
+        {
+            ObservableCollection<MyTask> result = new();
+            foreach (MyTask task in GetAllTasks())
+            {
+                if (task.RepeatOption != null && task.RepeatOption != "None" && task.RepeatOption != "")
+                {
+                    result.Add(task);
+                }
+            }
+            return result;
+        }
+
+
+        // Timer ------------------------------------------------------------------------------------
+        public void SaveSession(FocusSession session)
+        {
+            FileInfo fileInfo = new FileInfo(_filePath);
+
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets.Count == 0
+                    ? package.Workbook.Worksheets.Add("FocusSessions")
+                    : package.Workbook.Worksheets[0];
+
+                int row = (worksheet.Dimension?.Rows ?? 0) + 1;
+
+                // Assign a new unique ID to the session
+                session.Id = row;
+
+                worksheet.Cells[row, 1].Value = session.Id;
+                worksheet.Cells[row, 2].Value = session.Duration.ToString();
+                worksheet.Cells[row, 3].Value = session.Timestamp.ToString("o"); // ISO 8601 format
+                worksheet.Cells[row, 4].Value = session.Tag;
+
+                package.Save();
+            }
+        }
+
+        public List<FocusSession> GetAllSessions()
+        {
+            var sessions = new List<FocusSession>();
+
+            FileInfo fileInfo = new FileInfo(_filePath);
+            if (!fileInfo.Exists)
+            {
+                return sessions; // No file exists yet, return empty list
+            }
+
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets[0];
+                if (worksheet.Dimension == null)
+                {
+                    return sessions;
+                }
+
+                for (int row = 1; row <= worksheet.Dimension.Rows; row++)
+                {
+                    var id = int.Parse(worksheet.Cells[row, 1].Value.ToString());
+                    var duration = TimeSpan.Parse(worksheet.Cells[row, 2].Value.ToString());
+                    var timestamp = DateTime.Parse(worksheet.Cells[row, 3].Value.ToString());
+                    var tag = worksheet.Cells[row, 4].Value.ToString();
+
+                    sessions.Add(new FocusSession { Id = id, Duration = duration, Timestamp = timestamp, Tag = tag });
+                }
+            }
+
+            return sessions;
+        }
+
+        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        {
+            var sessions = GetAllSessions();
+            return sessions.Where(s => s.Tag == tag).ToList();
+        }
+
+
+        // Background ------------------------------------------------------------------------------------
+        private const string BackgroundBrushKey = "BackgroundBrush";
+
+        public void SaveSelectedBackground(LinearGradientBrush selectedBrush)
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+            var gradientStop1 = selectedBrush.GradientStops[0];
+            var gradientStop2 = selectedBrush.GradientStops[1];
+
+            localSettings.Values[BackgroundBrushKey] = $"{gradientStop1.Color}|{gradientStop2.Color}";
+        }
+
+        public LinearGradientBrush LoadSavedBackground(double offset1, double offset2)
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.ContainsKey(BackgroundBrushKey))
+            {
+                var savedBrush = localSettings.Values[BackgroundBrushKey].ToString().Split('|');
+                var color1 = savedBrush[0];
+                var color2 = savedBrush[1];
+
+                return new LinearGradientBrush
+                {
+                    StartPoint = new Point(0, 0),
+                    EndPoint = new Point(0, 1),
+                    GradientStops = new GradientStopCollection
+                    {
+                        new GradientStop { Color = ColorHelper.FromArgb(color1), Offset = offset1 },
+                        new GradientStop { Color = ColorHelper.FromArgb(color2), Offset = offset2 }
+                    }
+                };
+            }
+            return null;
         }
     }
 }

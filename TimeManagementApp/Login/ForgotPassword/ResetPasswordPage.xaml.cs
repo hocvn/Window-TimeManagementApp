@@ -77,7 +77,15 @@ namespace TimeManagementApp.Login.ForgotPassword
             ViewModel.ResetPassword(username, password);
             StorageHelper.RemoveSetting("rememberUsername");
 
-            var result = await Dialog.ShowContent(this.XamlRoot, "SUCCESSFUL", "You can now login with your new password", "OK", null, null);
+            var result = await Dialog.ShowContent
+            (
+                this.XamlRoot, 
+                "SUCCESSFUL".GetLocalized(), 
+                "Your_password_has_been_reset".GetLocalized(),
+                "Login".GetLocalized(),
+                null, 
+                null
+            );
             if (result == ContentDialogResult.Primary)
             {
                 App.NavigateWindow(new LoginWindow());

@@ -7,7 +7,7 @@ using TimeManagementApp.Helper;
 namespace TimeManagementApp
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// This window is used to register a new account.
     /// </summary>
     public sealed partial class RegisterWindow : Window
     {
@@ -27,7 +27,6 @@ namespace TimeManagementApp
             public void SaveCredential(string username, string password, string email)
             {
                 dao.CreateUser(username, password, email);
-                //user.SaveCredential(username, password, email); // MockDao
             }
 
             public bool IsUsernameInUse(string username)
@@ -68,12 +67,12 @@ namespace TimeManagementApp
             // Check if the username or email is already in use
             if (ViewModel.IsUsernameInUse(username))
             {
-                ViewModel.ErrorMessage = "Username is already in use";
+                ViewModel.ErrorMessage = "Username_is_already_in_use".GetLocalized();
                 return;
             }
             if (ViewModel.IsEmailInUse(email))
             {
-                ViewModel.ErrorMessage = "Email is already in use";
+                ViewModel.ErrorMessage = "Email_is_already_in_use".GetLocalized();
                 return;
             }
 
@@ -82,7 +81,15 @@ namespace TimeManagementApp
             StorageHelper.RemoveSetting("rememberUsername");
 
             // Display notification dialog
-            var result = await Dialog.ShowContent(((FrameworkElement)sender).XamlRoot, "SUCCESSFUL", "Your account have been created", "Login", null, null);
+            var result = await Dialog.ShowContent
+            (
+                ((FrameworkElement)sender).XamlRoot, 
+                "SUCCESSFUL".GetLocalized(), 
+                "Your_account_have_been_created".GetLocalized(), 
+                "Login".GetLocalized(), 
+                null, 
+                null
+            );
 
             if (result == ContentDialogResult.Primary)
             {

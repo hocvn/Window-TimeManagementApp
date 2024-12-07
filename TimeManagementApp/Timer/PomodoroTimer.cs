@@ -5,11 +5,7 @@ using Microsoft.Windows.AppNotifications;
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TimeManagementApp.Dao;
-using Windows.UI.Notifications;
 
 namespace TimeManagementApp.Timer
 {
@@ -170,7 +166,7 @@ namespace TimeManagementApp.Timer
 
                         var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
                         var filePath = Path.Combine(directory.FullName, "sessions.xlsx");
-                        IDao dao = new ExcelDao(filePath);
+                        IDao dao = new MockDao(filePath);
 
                         dao.SaveSession(session);
                     }
@@ -271,9 +267,9 @@ namespace TimeManagementApp.Timer
             {
                 switch (CurrentSettings.Tag)
                 {
-                    case "Working":
+                    case "work":
                         return 0;
-                    case "Studying":
+                    case "studying":
                         return 1;
                     default:
                         return 2;
