@@ -63,10 +63,9 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Description:" 
-                                               Grid.Column="0" VerticalAlignment="Center"/>
+                        <TextBlock x:Uid="descriptionTitle" Grid.Column="0" VerticalAlignment="Center"/>
 
-                        <TextBox x:Name="UpdateTaskDescription" PlaceholderText="Description" 
+                        <TextBox x:Name="UpdateTaskDescription" x:Uid="descriptionTextBox"
                                              Grid.Column="1"
                                              Text="{x:Bind SelectedTask.Description, Mode=OneWay}"/>
                     </Grid>
@@ -95,7 +94,7 @@
 
 
                 <!-- Set Reminder -->
-                <controls:SettingsExpander Header="Remind me"
+                <controls:SettingsExpander x:Uid="remindMeTitle"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE121;'}"
                                            HorizontalAlignment="Stretch"
                                            HorizontalContentAlignment="Stretch"
@@ -111,17 +110,17 @@
                             <StackPanel>
                                 <!-- Basic options -->
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton Content="End of Today" Margin="0,0,200,0" 
+                                    <RadioButton x:Uid="endOfToday" Margin="0,0,200,0" 
                                                  GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-                                    <RadioButton Content="Tomorrow Morning" Margin="0,0,200,0"
+                                    <RadioButton x:Uid="tomorrowMorning"  Margin="0,0,200,0"
                                                  GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-                                    <RadioButton Content="Next week Morning" 
+                                    <RadioButton x:Uid="nextWeekMorning" 
                                                  GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
                                 </StackPanel>
 
                                 <!-- Pick date and time option -->
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton Content="Pick Date and Time:" 
+                                    <RadioButton x:Uid="pickDateAndTime"
                                                  GroupName="ReminderOptions" Checked="ReminderOption_Checked"
                                                  IsChecked="{x:Bind IsPickingReminderTime, Mode=TwoWay}"/>
 
@@ -137,21 +136,21 @@
 
 
                 <!-- Repeat Option -->
-                <controls:SettingsCard Header="Repeat"
+                <controls:SettingsCard x:Uid="repeatTitle"
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE8EE;'}"
                                        HorizontalAlignment="Stretch"
                                        HorizontalContentAlignment="Stretch">
                     <ComboBox SelectedIndex="{x:Bind RepeatOptionSelectedIndex, Mode=TwoWay}">
-                        <ComboBoxItem>None</ComboBoxItem>
-                        <ComboBoxItem>Daily</ComboBoxItem>
-                        <ComboBoxItem>Weekly</ComboBoxItem>
-                        <ComboBoxItem>Monthly</ComboBoxItem>
+                        <ComboBoxItem x:Uid="repeatOption_None"/>
+                        <ComboBoxItem x:Uid="repeatOption_Daily"/>
+                        <ComboBoxItem x:Uid="repeatOption_Weekly"/>
+                        <ComboBoxItem x:Uid="repeatOption_Monthly"/>
                     </ComboBox>
                 </controls:SettingsCard>
 
 
                 <!-- Note -->
-                <controls:SettingsExpander Header="Add note"
+                <controls:SettingsExpander x:Uid="addNoteTitle"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE70B;'}"
                                            HorizontalAlignment="Stretch"
                                            HorizontalContentAlignment="Stretch"
