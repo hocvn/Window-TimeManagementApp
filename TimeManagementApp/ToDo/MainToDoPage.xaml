@@ -7,9 +7,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
+    xmlns:conv="using:TimeManagementApp.Converters"
     xmlns:app="using:TimeManagementApp"
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
+    <Page.Resources>
+        <conv:IsCompletedToGlyphConverter x:Key="IsCompletedToGlyphConverter" />
+        <conv:IsCompletedToTextDecorationsConverter x:Key="IsCompletedToTextDecorationsConverter" />
+        <conv:IsImportantToGlyphConverter x:Key="IsImportantToGlyphConverter" />
+        <conv:IsImportantToForegroundConverter x:Key="IsImportantToForegroundConverter" />
+        <conv:TaskPropertyToVisibilityConverter x:Key="TaskPropertyToVisibilityConverter" />
+        <conv:NoteIdToNoteNameConverter x:Key="NoteIdToNoteNameConverter" />
+    </Page.Resources>
 
     <Grid>
         <!--Area for ToDoListView-->
@@ -20,28 +29,63 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <SymbolIcon Symbol="Home" Grid.Column="0" Margin="0,3,0,0"/>
+                <SymbolIcon Symbol="Home" 
+                            Grid.Column="0" Margin="0,3,0,0"/>
 
                 <TextBlock x:Uid="taskTitle" FontSize="25" FontWeight="Bold" 
                            Grid.Column="1" Margin="20,0,0,0"/>
+            </Grid>
 
+            
+            <!--Search, Filter, Sort, Paging-->
+            <Grid Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sort Options -->
+                <ComboBox x:Name="SortComboBox" Width="220"
+                          SelectedIndex="{x:Bind ViewModel.SortSelectedIndex, Mode=TwoWay}"
+                          Grid.Column="0" Margin="22,20,10,0">    
+                    <ComboBoxItem x:Uid="sortByDueDate" />
+                    <ComboBoxItem x:Uid="sortByName" />
+                </ComboBox>
+
+                <!-- Filtering -->
+                <ComboBox x:Name="FilterComboBox" Width="220"
+                          SelectedIndex="{x:Bind ViewModel.FilterSelectedIndex, Mode=TwoWay}"
+                          Grid.Column="1" Margin="0,20,10,0">
+                    <ComboBoxItem x:Uid="allTasks" />
+                    <ComboBoxItem x:Uid="uncompletedTasks" />
+                    <ComboBoxItem x:Uid="completedTasks" />
+                    <ComboBoxItem x:Uid="importantTasks" />
+                </ComboBox>
+
+                <!-- Search Box -->
+                <TextBox x:Name="SearchTextBox" x:Uid="searchTextBoxPlaceHolder"
+                         KeyDown="SearchTextBox_KeyDown" 
+                         Grid.Column="2" Margin="0,20,10,0"/>
+                
                 <!-- Paging controls -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
-                    <Button x:Uid="previousButton" Click="PreviousPage_Click"/>
-                    <TextBlock Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" 
-                               VerticalAlignment="Center" Margin="10,0,10,0"/>
-                    <Button x:Uid="nextButton" Click="NextPage_Click"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="3">
+                    <Button x:Uid="previousPage" Click="PreviousPage_Click" Margin="0,20,0,0"/>
+                    <TextBlock VerticalAlignment="Center" Margin="10,20,10,0"
+                               Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" />
+                    <Button x:Uid="nextPage" Click="NextPage_Click" Margin="0,20,0,0"/>
                 </StackPanel>
             </Grid>
 
-    
+
+            <!--Task List View-->
             <ListView x:Name="MyTasksListView" 
-                     ItemsSource="{x:Bind ViewModel.PagedTasks, Mode=OneWay}"
+                     ItemsSource="{x:Bind ViewModel.ViewTasks, Mode=OneWay}"
                      Background="Transparent"
-                     Margin="20,20,0,0"
+                     Margin="20,10,0,0"
                      IsItemClickEnabled="True"
                      ItemClick="TaskItem_Click">
 
@@ -69,7 +113,7 @@
                                                     <Storyboard>
                                                         <ColorAnimation Storyboard.TargetName="BackgroundElement"
                                                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                        To="AntiqueWhite"/>
+                                                                        To="FloralWhite"/>
                                                     </Storyboard>
                                                 </VisualState>
                                                 
@@ -101,33 +145,85 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            
-                            <SymbolIcon Symbol="Calendar" 
-                                        Margin="10,0,20,0" Grid.Column="0"/>
-                            
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{x:Bind TaskName}" FontWeight="Bold"/>
-                                <TextBlock Text="{x:Bind Summarization}"/>
-                            </StackPanel>
 
-                            <StackPanel Grid.Column="2" Width="180">
-                                <TextBlock>
-                                    Start: <Run Text="{x:Bind StartDateTime}"/>
-                                </TextBlock>
-                                <TextBlock>
-                                    Due: <Run Text="{x:Bind DueDateTime}"/>
-                                </TextBlock>
+                            <AppBarButton Click="IsCompletedTask_Click"
+                                          Grid.Column="0" Margin="0,-10,0,-10"
+                                          Width="40" Height="50"
+                                          VerticalAlignment="Center"
+                                          CommandParameter="{Binding}">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="{x:Bind IsCompleted, Mode=OneWay, Converter={StaticResource IsCompletedToGlyphConverter}}"/>
+                                </AppBarButton.Icon>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="Completed"/>
+                                </ToolTipService.ToolTip>
+                            </AppBarButton>
+
+                            <AppBarButton Click="IsImportantTask_Click"
+                                          Grid.Column="1" Margin="0,-10,15,-10"
+                                          Width="40" Height="50"
+                                          VerticalAlignment="Center"
+                                          CommandParameter="{Binding}">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="{x:Bind IsImportant, Mode=OneWay, Converter={StaticResource IsImportantToGlyphConverter}}"/>
+                                </AppBarButton.Icon>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="Important"/>
+                                </ToolTipService.ToolTip>
+                            </AppBarButton>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{x:Bind TaskName}"
+                                           TextDecorations="{x:Bind IsCompleted, Converter={StaticResource IsCompletedToTextDecorationsConverter}}"
+                                           Foreground="{x:Bind IsImportant, Converter={StaticResource IsImportantToForegroundConverter}}"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,2"/>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Calendar Icon and DueDateTime -->
+                                    <FontIcon Glyph="&#xE787;" FontSize="12" Margin="0,0,3,0"/>
+                                    <TextBlock Text="{x:Bind DueDateTime, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"/>
+
+                                    <!-- Notification Icon and ReminderTime -->
+                                    <FontIcon Glyph="&#xE7ED;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind ReminderTime, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind ReminderTime, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind ReminderTime, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+
+                                    <!-- Repeat Icon and RepeatOption -->
+                                    <FontIcon Glyph="&#xE8EE;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind RepeatOption, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind RepeatOption, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind RepeatOption, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+
+                                    <!-- Note Icon and NoteName -->
+                                    <FontIcon Glyph="&#xE8D2;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind NoteId, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind NoteId, Mode=OneWay, Converter={StaticResource NoteIdToNoteNameConverter}}" 
+                                               FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind NoteId, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+
+                                    <!-- Description Icon and Description -->
+                                    <FontIcon Glyph="&#xE70F;" FontSize="12" Margin="20,0,3,0"
+                                              Visibility="{x:Bind Description, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                    <TextBlock Text="{x:Bind Description, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"
+                                               Visibility="{x:Bind Description, Mode=OneWay, Converter={StaticResource TaskPropertyToVisibilityConverter}}"/>
+                                </StackPanel>
                             </StackPanel>
 
                             <AppBarButton Icon="Delete" Click="DeleteTask_Click"
                                           Grid.Column="3" Margin="15,-10,0,-10"
                                           Width="40" Height="50"
                                           VerticalAlignment="Center"
-                                          CommandParameter="{Binding}"/>
+                                          CommandParameter="{Binding}">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Content="Delete"/>
+                                </ToolTipService.ToolTip>
+                            </AppBarButton>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -153,7 +249,7 @@
 
                     <TextBox x:Name="InsertTaskName" x:Uid="fillInTheSpaceAndPressEnterToAddNewTask" Grid.Column="0"
                              KeyDown="InsertTask_KeyDown"/>
-
+                    
                     <CalendarDatePicker x:Name="InsertTaskDueDateTime" x:Uid="insertTaskDueDateTime" Grid.Column="1"/>
                 </Grid>
             </InfoBar>

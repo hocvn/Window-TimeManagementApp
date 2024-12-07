@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using TimeManagementApp.Dao;
 using TimeManagementApp.ToDo;
 
@@ -27,7 +28,11 @@ namespace TimeManagementApp.Calendar
             Tasks = new ObservableCollection<MyTask>();
             TasksForDate = new ObservableCollection<MyTask>();
             TaskCounts = new Dictionary<DateTime, int>();
-            dao = new MockDao();
+
+            //var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory); // bin\x64\Debug\net9.0-windows10.0.22621.0\win-x64\AppX\
+            //var filePath = Path.Combine(baseDirectory.FullName, "..", "..", "..", "..", "..", "..", "Dao", "tasks.xlsx");
+            //dao = new MockDao(filePath);
+            dao = new SqlDao();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -49,15 +54,7 @@ namespace TimeManagementApp.Calendar
 
         public void GetTasksForDate(DateTime date)
         {
-            TasksForDate.Clear();
-
-            foreach (MyTask task in Tasks)
-            {
-                if (task.DueDateTime.Date == date.Date)
-                {
-                    TasksForDate.Add(task);
-                }
-            }
+            TasksForDate = dao.GetTasksForDate(date);
         }
     }
 }

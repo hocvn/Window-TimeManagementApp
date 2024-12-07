@@ -11,6 +11,7 @@ using TimeManagementApp.Services;
 using Windows.UI.ApplicationSettings;
 using TimeManagementApp.Settings;
 using TimeManagementApp.Calendar;
+using TimeManagementApp.Global;
 
 namespace TimeManagementApp
 {
@@ -19,6 +20,8 @@ namespace TimeManagementApp
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public static readonly DateTime NullDateTime = new DateTime(1999, 1, 1, 1, 1, 1).ToUniversalTime();
+
         public static NavigationService NavigationService { get; set; } = new NavigationService();
         private bool _isFirstActivation = true;
 
@@ -40,6 +43,10 @@ namespace TimeManagementApp
             }
         }
 
+
+        // decide which page to go back when the GoBack() not work as expected
+        public static string CurrentNavigationViewItem { get; set; }
+
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             if (args.IsSettingsSelected)
@@ -56,22 +63,27 @@ namespace TimeManagementApp
 
             if (selectedItem.Name == NavItem_Home.Name)
             {
+                CurrentNavigationViewItem = "HomePage";
                 pageType = typeof(HomePage);
             }
             else if (selectedItem.Name == NavItem_ToDo.Name)
             {
+                CurrentNavigationViewItem = "MainToDoPage";
                 pageType = typeof(MainToDoPage);
             }
             else if (selectedItem.Name == NavItem_Timer.Name)
             {
+                CurrentNavigationViewItem = "MainTimerPage";
                 pageType = typeof(MainTimerPage);
             }
             else if (selectedItem.Name == NavItem_Note.Name)
             {
+                CurrentNavigationViewItem = "NoteMainPage";
                 pageType = typeof(NoteMainPage);
             }
             else if (selectedItem.Name == NavItem_Calendar.Name)
             {
+                CurrentNavigationViewItem = "CalendarPage";
                 pageType = typeof(CalendarPage);
             }
             else
