@@ -33,10 +33,12 @@
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE71B;'}"                               
                                        IsEnabled="True">
                     <controls:SettingsCard.Description>
-                        <HyperlinkButton x:Uid="learnHowtoUseApp" />
+                        <HyperlinkButton x:Uid="learnHowtoUseApp"
+                                         NavigateUri="https://sites.google.com/view/time-management-app"/>
                     </controls:SettingsCard.Description>
                     <Button x:Uid="openLinkButton"
-                            Style="{StaticResource AccentButtonStyle}" />
+                            Style="{StaticResource AccentButtonStyle}"
+                            Click="OpenLinkButton_Click"/>
                 </controls:SettingsCard>
 
                 <controls:SettingsCard x:Uid="country"
