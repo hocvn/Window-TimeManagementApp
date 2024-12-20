@@ -1,0 +1,70 @@
+﻿using System.ComponentModel;
+using TimeManagementApp.Services;
+using Windows.Media.Core;
+using Windows.Media.Playback;
+
+namespace TimeManagementApp.Music
+{
+    public class MusicViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Hardcoded music titles
+        private string[] musicTitle = {
+            "Song 1",
+            "Song 2",
+            "Song 3",
+            "Song 4",
+            "Song 5"
+        };
+
+        public int CurrentSongIndex { get; set; } = 0;
+
+        public string CurrentSongTitle { get; set; } = "Song 1";
+
+        // Hardcoded animation background paths
+        private string[] animatedBackgroundPath = {
+            "ms-appx:///Assets/animationBackground/image_animation_loop_1.mp4",
+            "ms-appx:///Assets/animationBackground/image_animation_loop_2.mp4",
+            "ms-appx:///Assets/animationBackground/image_animation_loop_3.mp4",
+        };
+
+        public int currentAnimatedBackgroundIndex { get; set; } = 0;
+
+        public string CurrentAnimatedBackgroundPath
+        {
+            get
+            {
+                return animatedBackgroundPath[currentAnimatedBackgroundIndex];
+            }
+        }
+
+        private readonly MediaPlayer mediaPlayer = new();
+
+        public void TogglePlayPause()
+        {
+            MusicService.ToggleMusic();
+        }
+
+        public void SetSongIndex(int songIndex)
+        {
+            CurrentSongIndex = songIndex;
+            CurrentSongTitle = musicTitle[songIndex];
+            MusicService.SetMusic(songIndex);
+        }
+
+        public MediaPlayer GetMediaPlayer()
+        {
+            return mediaPlayer;
+        }
+
+        public void SetupAnimationBackground()
+        {
+            // Set background animation
+            string path = CurrentAnimatedBackgroundPath;
+            mediaPlayer.Source = MediaSource.CreateFromUri(new System.Uri(path));
+            mediaPlayer.IsLoopingEnabled = true;
+            mediaPlayer.Volume = 0;
+        }
+    }
+}

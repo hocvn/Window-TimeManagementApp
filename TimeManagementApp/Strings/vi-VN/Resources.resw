@@ -558,4 +558,13 @@
   <data name="repeatOption_Monthly.Content" xml:space="preserve">
     <value>Hàng tháng</value>
   </data>
+  <data name="music.Content" xml:space="preserve">
+    <value>Nhạc</value>
+  </data>
+  <data name="animationBackground.PlaceholderText" xml:space="preserve">
+    <value>Chọn hình nền</value>
+  </data>
+  <data name="musicComboBox.PlaceholderText" xml:space="preserve">
+    <value>Chọn bài hát</value>
+  </data>
 </root>

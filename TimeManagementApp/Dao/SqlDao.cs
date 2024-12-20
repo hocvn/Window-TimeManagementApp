@@ -316,7 +316,6 @@ namespace TimeManagementApp.Dao
             {
                 var content = reader.GetString(0);
                 note.Content = content;
-                //editor.Document.SetText(TextSetOptions.FormatRtf, content);
             }
             connection.Close();
         }

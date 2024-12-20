@@ -8,10 +8,9 @@ using TimeManagementApp.ToDo;
 using TimeManagementApp.Home;
 using TimeManagementApp.Helper;
 using TimeManagementApp.Services;
-using Windows.UI.ApplicationSettings;
 using TimeManagementApp.Settings;
 using TimeManagementApp.Calendar;
-using TimeManagementApp.Global;
+using TimeManagementApp.Music;
 
 namespace TimeManagementApp
 {
@@ -85,6 +84,11 @@ namespace TimeManagementApp
             {
                 CurrentNavigationViewItem = "CalendarPage";
                 pageType = typeof(CalendarPage);
+            }
+            else if (selectedItem.Name == NavItem_Music.Name)
+            {
+                CurrentNavigationViewItem = "MusicPage";
+                pageType = typeof(MusicPage);
             }
             else
             {

@@ -558,4 +558,13 @@
   <data name="repeatOption_Monthly.Content" xml:space="preserve">
     <value>Monthly</value>
   </data>
+  <data name="music.Content" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="animationBackground.PlaceholderText" xml:space="preserve">
+    <value>Choose background</value>
+  </data>
+  <data name="musicComboBox.PlaceholderText" xml:space="preserve">
+    <value>Choose music</value>
+  </data>
 </root>

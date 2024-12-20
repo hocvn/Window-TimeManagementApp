@@ -33,12 +33,17 @@ namespace TimeManagementApp
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            // Enable Prelaunch - this will allow the app to run in the background
+            Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
+
+            // Set the language
             string code = StorageHelper.GetSetting("language");
             code ??= "en-US";
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(code);
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(code);
 
+            // Set startup window
             _window = new LoginWindow();
 
             AppNotificationManager.Default.NotificationInvoked += NotificationManager_NotificationInvoked;

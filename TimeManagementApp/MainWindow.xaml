@@ -59,11 +59,11 @@
                 ToolTipService.ToolTip="Calendar"/>
 
             <NavigationViewItem 
-                x:Uid="group" 
-                Icon="People" 
-                ToolTipService.ToolTip="Group" 
-                SelectsOnInvoked="False">
-            </NavigationViewItem>
+                x:Name="NavItem_Music"
+                x:Uid="music" 
+                Icon="Audio" 
+                ToolTipService.ToolTip="Music" />
+          
 
             <NavigationViewItem 
                 x:Uid="statistics"
