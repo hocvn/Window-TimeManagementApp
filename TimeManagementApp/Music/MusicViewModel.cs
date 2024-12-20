@@ -10,7 +10,7 @@ namespace TimeManagementApp.Music
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Hardcoded music titles
-        private string[] musicTitle = {
+        private readonly string[] musicTitle = {
             "Song 1",
             "Song 2",
             "Song 3",
@@ -23,21 +23,13 @@ namespace TimeManagementApp.Music
         public string CurrentSongTitle { get; set; } = "Song 1";
 
         // Hardcoded animation background paths
-        private string[] animatedBackgroundPath = {
+        private readonly string[] animatedBackgroundPath = {
             "ms-appx:///Assets/animationBackground/image_animation_loop_1.mp4",
             "ms-appx:///Assets/animationBackground/image_animation_loop_2.mp4",
             "ms-appx:///Assets/animationBackground/image_animation_loop_3.mp4",
         };
 
-        public int currentAnimatedBackgroundIndex { get; set; } = 0;
-
-        public string CurrentAnimatedBackgroundPath
-        {
-            get
-            {
-                return animatedBackgroundPath[currentAnimatedBackgroundIndex];
-            }
-        }
+        public int CurrentAnimatedBackgroundIndex { get; set; } = 0;
 
         private readonly MediaPlayer mediaPlayer = new();
 
@@ -50,7 +42,7 @@ namespace TimeManagementApp.Music
         {
             CurrentSongIndex = songIndex;
             CurrentSongTitle = musicTitle[songIndex];
-            MusicService.SetMusic(songIndex);
+            MusicService.SetSongIndex(songIndex);
         }
 
         public MediaPlayer GetMediaPlayer()
@@ -61,10 +53,10 @@ namespace TimeManagementApp.Music
         public void SetupAnimationBackground()
         {
             // Set background animation
-            string path = CurrentAnimatedBackgroundPath;
+            string path = animatedBackgroundPath[CurrentAnimatedBackgroundIndex];
             mediaPlayer.Source = MediaSource.CreateFromUri(new System.Uri(path));
-            mediaPlayer.IsLoopingEnabled = true;
-            mediaPlayer.Volume = 0;
+            mediaPlayer.IsLoopingEnabled = true;  // Loop the video
+            mediaPlayer.Volume = 0; // Mute the video
         }
     }
 }

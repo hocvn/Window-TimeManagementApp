@@ -9,18 +9,19 @@ namespace TimeManagementApp.Services
 
         // Hardcoded music paths
         private static readonly string[] musicPaths = {
-            "ms-appx:///Assets/music/chill_song_1.mp3",
-            "ms-appx:///Assets/music/chill_song_2.mp3",
-            "ms-appx:///Assets/music/chill_song_3.mp3",
-            "ms-appx:///Assets/music/chill_song_4.mp3",
-            "ms-appx:///Assets/music/chill_song_5.mp3"
+            "ms-appx:///Assets/songs/chill_song_1.mp3",
+            "ms-appx:///Assets/songs/chill_song_2.mp3",
+            "ms-appx:///Assets/songs/chill_song_3.mp3",
+            "ms-appx:///Assets/songs/chill_song_4.mp3",
+            "ms-appx:///Assets/songs/chill_song_5.mp3"
         };
+
+        public static int CurrentSongIndex { get; set; } = 0;
 
         static MusicService()
         {
             mediaPlayer = new MediaPlayer();
-            SetMusic(0);
-
+            SetMusic();
         }
 
         public static MediaPlayer GetMediaPlayer()
@@ -28,12 +29,25 @@ namespace TimeManagementApp.Services
             return mediaPlayer;
         }
 
-        public static void SetMusic(int songIndex)
+        public static void SetSongIndex(int songIndex)
         {
-            string musicPath = musicPaths[songIndex];
+            CurrentSongIndex = songIndex;
+            SetMusic();
+        }
+
+        public static void SetMusic()
+        {
+            bool isPlaying = GetStatus();
+
+            string musicPath = musicPaths[CurrentSongIndex];
             mediaPlayer.Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(musicPath));
             mediaPlayer.Volume = 100;
             mediaPlayer.IsLoopingEnabled = true;
+
+            if (isPlaying)
+            {
+                mediaPlayer.Play();
+            }
         }
 
         public static bool GetStatus()

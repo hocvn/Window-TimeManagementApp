@@ -16,11 +16,6 @@
     <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="Assets\songs\chill_song_1.mp3" />
-    <Content Remove="Assets\songs\chill_song_2.mp3" />
-    <Content Remove="Assets\songs\chill_song_3.mp3" />
-    <Content Remove="Assets\songs\chill_song_4.mp3" />
-    <Content Remove="Assets\songs\chill_song_5.mp3" />
     <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
     <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
     <Content Remove="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
@@ -45,6 +40,11 @@
     <None Remove="Assets\image_animation_loop_1.mp4" />
     <None Remove="Assets\image_animation_loop_2.mp4" />
     <None Remove="Assets\image_animation_loop_3.mp4" />
+    <None Remove="Assets\songs\chill_song_1.mp3" />
+    <None Remove="Assets\songs\chill_song_2.mp3" />
+    <None Remove="Assets\songs\chill_song_3.mp3" />
+    <None Remove="Assets\songs\chill_song_4.mp3" />
+    <None Remove="Assets\songs\chill_song_5.mp3" />
     <None Remove="BlankPage.xaml" />
     <None Remove="Calendar\CalendarPage.xaml" />
     <None Remove="Dao\appsettings.json" />
@@ -136,6 +136,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\notification.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_1.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_2.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_3.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_4.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_5.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

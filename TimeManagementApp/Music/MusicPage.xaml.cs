@@ -15,7 +15,7 @@ namespace TimeManagementApp.Music
         {
             this.InitializeComponent();
             SetAnimationBackground();
-            AnimationBackground.SelectedIndex = ViewModel.currentAnimatedBackgroundIndex;
+            AnimationBackground.SelectedIndex = ViewModel.CurrentAnimatedBackgroundIndex;
             Music.SelectedIndex = ViewModel.CurrentSongIndex;
         }
 
@@ -32,20 +32,20 @@ namespace TimeManagementApp.Music
             ViewModel.TogglePlayPause();
             if (MusicService.GetStatus())
             {
-                PlayPauseIcon.Glyph = "\uF8AE";
+                PlayPauseIcon.Glyph = "\uF5B0";
             }
             else
             {
-                PlayPauseIcon.Glyph = "\uF5B0";
+                PlayPauseIcon.Glyph = "\uF8AE";
             }
         }
 
         private void AnimationBackground_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
-            if (comboBox.SelectedIndex != ViewModel.currentAnimatedBackgroundIndex)
+            if (comboBox.SelectedIndex != ViewModel.CurrentAnimatedBackgroundIndex)
             {
-                ViewModel.currentAnimatedBackgroundIndex = comboBox.SelectedIndex;
+                ViewModel.CurrentAnimatedBackgroundIndex = comboBox.SelectedIndex;
                 SetAnimationBackground();
             }
         }
