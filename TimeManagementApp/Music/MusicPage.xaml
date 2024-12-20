@@ -69,5 +69,8 @@
             </StackPanel>
 
         </Grid>
+
+        <ToggleButton x:Name="ToggleMenuButton" Content="Show Menu" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                      Checked="ToggleMenuButton_Checked" Unchecked="ToggleMenuButton_Unchecked"/>
     </Grid>
 </Page>

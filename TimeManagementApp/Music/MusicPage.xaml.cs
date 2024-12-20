@@ -1,5 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Diagnostics;
 using TimeManagementApp.Services;
 
 
@@ -17,6 +19,7 @@ namespace TimeManagementApp.Music
             SetAnimationBackground();
             AnimationBackground.SelectedIndex = ViewModel.CurrentAnimatedBackgroundIndex;
             Music.SelectedIndex = ViewModel.CurrentSongIndex;
+            UpdateToggleButtonContent();
         }
 
         private void SetAnimationBackground()
@@ -57,6 +60,23 @@ namespace TimeManagementApp.Music
             {
                 ViewModel.SetSongIndex(comboBox.SelectedIndex);
             }
+        }
+
+        private void ToggleMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MainWindow.NavigationMenuHelper.IsNavigationMenuVisible = true;
+            UpdateToggleButtonContent();
+        }
+
+        private void ToggleMenuButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MainWindow.NavigationMenuHelper.IsNavigationMenuVisible = false;
+            UpdateToggleButtonContent();
+        }
+
+        private void UpdateToggleButtonContent()
+        {
+            ToggleMenuButton.Content = MainWindow.NavigationMenuHelper.IsNavigationMenuVisible ? "Hide Menu" : "Show Menu";
         }
     }
 }
