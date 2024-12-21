@@ -1,12 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
 
 namespace TimeManagementApp.Helper
 {
-    public class NavigationMenuHelper : INotifyPropertyChanged
+    public class NavigationMenuHelper
     {
         private bool _isNavigationMenuVisible = true;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler NavigationMenuVisibilityChanged;
 
         public bool IsNavigationMenuVisible
         {
@@ -16,14 +16,14 @@ namespace TimeManagementApp.Helper
                 if (_isNavigationMenuVisible != value)
                 {
                     _isNavigationMenuVisible = value;
-                    OnPropertyChanged(nameof(IsNavigationMenuVisible));
+                    OnNavigationMenuVisibilityChanged();
                 }
             }
         }
 
-        protected void OnPropertyChanged(string propertyName)
+        protected virtual void OnNavigationMenuVisibilityChanged()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            NavigationMenuVisibilityChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

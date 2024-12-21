@@ -12,7 +12,6 @@ using TimeManagementApp.Services;
 using TimeManagementApp.Settings;
 using TimeManagementApp.Calendar;
 using TimeManagementApp.Music;
-using System.ComponentModel;
 
 namespace TimeManagementApp
 {
@@ -31,8 +30,8 @@ namespace TimeManagementApp
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
 
-            // Listen for property changes
-            NavigationMenuHelper.PropertyChanged += OnNavigationMenuVisibilityChanged;
+            // Listen for visibility changes
+            NavigationMenuHelper.NavigationMenuVisibilityChanged += OnNavigationMenuVisibilityChanged;
 
             // Listen for IsPaneOpen changes
             MainNavigationView.PaneOpened += OnPaneOpened;
@@ -51,13 +50,10 @@ namespace TimeManagementApp
             UpdateNavigationViewProperties();
         }
 
-        private void OnNavigationMenuVisibilityChanged(object sender, PropertyChangedEventArgs e)
+        private void OnNavigationMenuVisibilityChanged(object sender, EventArgs e)
         {
-            if (e.PropertyName == nameof(NavigationMenuHelper.IsNavigationMenuVisible))
-            {
-                Debug.WriteLine($"NavigationMenuVisibility changed: {NavigationMenuHelper.IsNavigationMenuVisible}");
-                UpdateNavigationViewProperties();
-            }
+            Debug.WriteLine($"NavigationMenuVisibility changed: {NavigationMenuHelper.IsNavigationMenuVisible}");
+            UpdateNavigationViewProperties();
         }
 
         private void UpdateNavigationViewProperties()
