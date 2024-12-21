@@ -38,15 +38,26 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Background="#AA000000" Padding="18" CornerRadius="16" Width="410">
+                Padding="18" CornerRadius="16" Width="410">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="{x:Bind timer:PomodoroTimer.Instance.TimerText, Mode=OneWay}"
                                VerticalAlignment="Center"
-                               Foreground="White" FontWeight="Bold" FontSize="50" />
+                               Foreground="White" FontWeight="ExtraBold" FontSize="80" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="StartTimerButton" Background="Transparent" Click="StartTimerButton_Click">
+                        <FontIcon Glyph="&#xF5B0;" Foreground="White"/>
+                    </Button>
+                    <Button x:Name="StopTimerButton" Margin="16" Background="Transparent" Click="StopTimerButton_Click">
+                        <FontIcon Glyph="&#xF8AE;" Foreground="White"/>
+                    </Button>
+                    <Button x:Name="SettingTimerButton" Background="Transparent" Click="SettingTimerButton_Click">
+                        <FontIcon Glyph="&#xF8B0;" Foreground="White"/>
+                    </Button>
                 </StackPanel>
             </StackPanel>
-            
-            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Background="#AA000000" Padding="28" CornerRadius="8">
+
+            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Background="#66000000" Padding="28" CornerRadius="8">
 
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 20" HorizontalAlignment="Center">
                     <TextBlock Text="{x:Bind ViewModel.CurrentSongTitle, Mode=OneWay}" Foreground="White" FontWeight="Bold" FontSize="28" />
@@ -80,7 +91,9 @@
 
         </Grid>
 
-        <ToggleButton x:Name="ToggleMenuButton" Content="Show Menu" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                      Checked="ToggleMenuButton_Checked" Unchecked="ToggleMenuButton_Unchecked"/>
+        <ToggleButton x:Name="ToggleMenuButton" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" Margin="10 10 0 0"
+                      Checked="ToggleMenuButton_Checked" Unchecked="ToggleMenuButton_Unchecked">
+            <FontIcon Glyph="&#xE700;" Foreground="White"/>
+        </ToggleButton>
     </Grid>
 </Page>

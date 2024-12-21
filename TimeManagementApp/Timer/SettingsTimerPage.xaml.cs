@@ -39,7 +39,14 @@ namespace TimeManagementApp.Timer
         // back to MainTimerPage
         public void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.NavigationService.Navigate(typeof(MainTimerPage));
+            if (MainWindow.NavigationService.CanGoBack())
+            {
+                MainWindow.NavigationService.GoBack();
+            }
+            else
+            {
+                MainWindow.NavigationService.Navigate(typeof(MainTimerPage));
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Diagnostics;
 using TimeManagementApp.Services;
+using TimeManagementApp.Timer;
 
 
 namespace TimeManagementApp.Music
@@ -19,7 +20,6 @@ namespace TimeManagementApp.Music
             SetAnimationBackground();
             AnimationBackground.SelectedIndex = ViewModel.CurrentAnimatedBackgroundIndex;
             Music.SelectedIndex = ViewModel.CurrentSongIndex;
-            UpdateToggleButtonContent();
         }
 
         private void SetAnimationBackground()
@@ -65,18 +65,28 @@ namespace TimeManagementApp.Music
         private void ToggleMenuButton_Checked(object sender, RoutedEventArgs e)
         {
             MainWindow.NavigationMenuHelper.IsNavigationMenuVisible = true;
-            UpdateToggleButtonContent();
         }
 
         private void ToggleMenuButton_Unchecked(object sender, RoutedEventArgs e)
         {
             MainWindow.NavigationMenuHelper.IsNavigationMenuVisible = false;
-            UpdateToggleButtonContent();
         }
 
-        private void UpdateToggleButtonContent()
+        private void StartTimerButton_Click(object sender, RoutedEventArgs e)
         {
-            ToggleMenuButton.Content = MainWindow.NavigationMenuHelper.IsNavigationMenuVisible ? "Hide Menu" : "Show Menu";
+            var timer = PomodoroTimer.Instance;
+            timer.StartTimer();
+        }
+
+        private void StopTimerButton_Click(object sender, RoutedEventArgs e)
+        {
+            var timer = PomodoroTimer.Instance;
+            timer.PauseTimer();
+        }
+
+        private void SettingTimerButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.NavigationService.Navigate(typeof(SettingsTimerPage));
         }
     }
 }

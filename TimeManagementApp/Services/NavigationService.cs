@@ -20,9 +20,14 @@ namespace TimeManagementApp.Services
             }
         }
 
+        public bool CanGoBack()
+        {
+            return _mainFrame?.CanGoBack == true;
+        }
+
         public void GoBack()
         {
-            if (_mainFrame?.CanGoBack == true)
+            if (CanGoBack())
             {
                 _mainFrame.GoBack();
             }
