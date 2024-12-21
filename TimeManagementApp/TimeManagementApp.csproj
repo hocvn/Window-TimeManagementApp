@@ -37,11 +37,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\image_animation_loop_1.mp4" />
+    <None Remove="Assets\image_animation_loop_2.mp4" />
+    <None Remove="Assets\image_animation_loop_3.mp4" />
+    <None Remove="Assets\songs\chill_song_1.mp3" />
+    <None Remove="Assets\songs\chill_song_2.mp3" />
+    <None Remove="Assets\songs\chill_song_3.mp3" />
+    <None Remove="Assets\songs\chill_song_4.mp3" />
+    <None Remove="Assets\songs\chill_song_5.mp3" />
     <None Remove="BlankPage.xaml" />
     <None Remove="Calendar\CalendarPage.xaml" />
     <None Remove="Dao\appsettings.json" />
     <None Remove="Home\HomePage.xaml" />
     <None Remove="LoginWindow.xaml" />
+    <None Remove="Music\MusicPage.xaml" />
     <None Remove="Note\NoteMainPage.xaml" />
     <None Remove="Note\NotePage.xaml" />
     <None Remove="Login\ForgotPassword\EmailPage.xaml" />
@@ -117,7 +126,31 @@
     <Content Update="Assets\icons\task.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\animationBackground\image_animation_loop_1.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\animationBackground\image_animation_loop_2.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\animationBackground\image_animation_loop_3.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\notification.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_1.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_2.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_3.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_4.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\songs\chill_song_5.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -201,6 +234,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PRIResource Remove="Strings\vi-VN\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Music\MusicPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PRIResource Update="Strings\vi-VN\Resources.resw">
