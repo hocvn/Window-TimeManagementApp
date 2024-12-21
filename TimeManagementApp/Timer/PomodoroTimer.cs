@@ -158,16 +158,13 @@ namespace TimeManagementApp.Timer
                         // save focus session
                         var session = new FocusSession
                         {
-                            Duration = TimeSpan.FromMinutes(CurrentSettings.FocusTimeMinutes),
+                            Duration = CurrentSettings.FocusTimeMinutes,
                             Timestamp = DateTime.UtcNow,
                             Tag = CurrentSettings.Tag,
                         };
 
 
-                        var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-                        var filePath = Path.Combine(directory.FullName, "sessions.xlsx");
-                        IDao dao = new MockDao(filePath);
-
+                        IDao dao = new SqlDao();
                         dao.SaveSession(session);
                     }
 

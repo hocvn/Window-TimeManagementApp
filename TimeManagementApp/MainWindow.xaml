@@ -69,10 +69,10 @@
                     Tag="MusicPage"/>
 
                 <NavigationViewItem 
+                    x:Name="NavItem_Statistics"
                     x:Uid="statistics"
                     Icon="PreviewLink"
-                    ToolTipService.ToolTip="Statistics"
-                    SelectsOnInvoked="False"/>
+                    ToolTipService.ToolTip="Statistics"/>
             </NavigationView.MenuItems>
 
             <NavigationView.AutoSuggestBox>

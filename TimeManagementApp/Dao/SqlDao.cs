@@ -596,37 +596,77 @@ namespace TimeManagementApp.Dao
 
 
         // Timer ------------------------------------------------------------------------------------
-        public void AddFocusSession(Timer.Settings setting)
-        {
-            var connection = CreateConnection();
-            var sql = @"
-                        insert into [FOCUS_SESSION] (timespan, tag, username)
-                        values (@timespan, @tag, @username)
-                    ";
-            var command = new SqlCommand(sql, connection);
-            command.Parameters.Add("@timespan", System.Data.SqlDbType.BigInt);
-            command.Parameters["@timespan"].Value = setting.FocusTimeMinutes;
-            command.Parameters.Add("@tag", System.Data.SqlDbType.NVarChar);
-            command.Parameters["@tag"].Value = setting.Tag;
-            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar);
-            command.Parameters["@username"].Value = User.Username;
-            command.ExecuteNonQuery();
-            connection.Close();
-        }
 
         public void SaveSession(FocusSession session)
         {
-            throw new NotImplementedException();
+            using (var connection = CreateConnection())
+            {
+                var sql = @"
+                INSERT INTO FOCUS_SESSION (username, duration, tag, timestamp)
+                VALUES (@username, @duration, @tag, @timestamp)
+            ";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@username", User.Username);
+                command.Parameters.AddWithValue("@duration", session.Duration); // Store duration as seconds
+                command.Parameters.AddWithValue("@tag", session.Tag);
+                command.Parameters.AddWithValue("@timestamp", session.Timestamp);
+                command.ExecuteNonQuery();
+            }
         }
 
         public List<FocusSession> GetAllSessions()
         {
-            throw new NotImplementedException();
+            var sessions = new List<FocusSession>();
+            using (var connection = CreateConnection())
+            {
+                var sql = @"
+                SELECT session_id, duration, tag, timestamp
+                FROM FOCUS_SESSION
+                WHERE username = @username
+            ";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@username", User.Username);
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    sessions.Add(new FocusSession
+                    {
+                        Id = reader.GetInt32(0),
+                        Duration = reader.GetInt32(1), // Retrieve duration as seconds
+                        Tag = reader.GetString(2),
+                        Timestamp = reader.GetDateTime(3)
+                    });
+                }
+            }
+            return sessions;
         }
 
         public List<FocusSession> GetAllSessionsWithTag(string tag)
         {
-            throw new NotImplementedException();
+            var sessions = new List<FocusSession>();
+            using (var connection = CreateConnection())
+            {
+                var sql = @"
+                SELECT session_id, duration, tag, timestamp
+                FROM FOCUS_SESSION
+                WHERE username = @username AND tag = @tag
+            ";
+                var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@username", User.Username);
+                command.Parameters.AddWithValue("@tag", tag);
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    sessions.Add(new FocusSession
+                    {
+                        Id = reader.GetInt32(0),
+                        Duration = reader.GetInt32(1), // Retrieve duration as seconds
+                        Tag = reader.GetString(2),
+                        Timestamp = reader.GetDateTime(3)
+                    });
+                }
+            }
+            return sessions;
         }
 
 

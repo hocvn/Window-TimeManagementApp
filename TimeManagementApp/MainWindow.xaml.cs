@@ -12,6 +12,7 @@ using TimeManagementApp.Services;
 using TimeManagementApp.Settings;
 using TimeManagementApp.Calendar;
 using TimeManagementApp.Music;
+using TimeManagementApp.Statistics;
 
 namespace TimeManagementApp
 {
@@ -123,6 +124,11 @@ namespace TimeManagementApp
                 CurrentNavigationViewItem = "MusicPage";
                 pageType = typeof(MusicPage);
                 NavigationMenuHelper.IsNavigationMenuVisible = false;
+            }
+            else if (selectedItem.Name == NavItem_Statistics.Name)
+            {
+                CurrentNavigationViewItem = "StatisticsPage";
+                pageType = typeof(StatisticsPage);
             }
 
             NavigationService.Navigate(pageType);

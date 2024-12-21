@@ -60,6 +60,7 @@
     <None Remove="RegisterWindow.xaml" />
     <None Remove="Resources\ImageResources.xaml" />
     <None Remove="Settings\MainSettingsPage.xaml" />
+    <None Remove="Statistics\StatisticsPage.xaml" />
 	<None Remove="Timer\MainTimerPage.xaml" />
 	<None Remove="Timer\SettingsTimerPage.xaml" />
 	<None Remove="ToDo\MainToDoPage.xaml" />
@@ -81,12 +82,14 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Common" Version="8.3.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="EPPlus" Version="7.4.2" />
     <PackageReference Include="Fody" Version="6.8.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
+    <PackageReference Include="H.OxyPlot.WinUI" Version="0.9.30" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
@@ -234,6 +237,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PRIResource Remove="Strings\vi-VN\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Statistics\StatisticsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Music\MusicPage.xaml">
