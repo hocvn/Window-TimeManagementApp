@@ -567,4 +567,40 @@
   <data name="musicComboBox.PlaceholderText" xml:space="preserve">
     <value>Choose music</value>
   </data>
+  <data name="accountTitle.Text" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="usernameTextBlock.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="emailTextBlock.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="signOutTextBlock.Text" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="usernameTitle.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="emailTitle.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="resetPassTitle.Header" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="currentPassTitle.Header" xml:space="preserve">
+    <value>Enter current password</value>
+  </data>
+  <data name="enterNewPassAgainTitle.Header" xml:space="preserve">
+    <value>Re-enter new password</value>
+  </data>
+  <data name="enterNewPassTitle.Header" xml:space="preserve">
+    <value>Enter new password</value>
+  </data>
+  <data name="currentPassword.PlaceholderText" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="Current_password_is_incorrect" xml:space="preserve">
+    <value>Current password is incorrect</value>
+  </data>
 </root>

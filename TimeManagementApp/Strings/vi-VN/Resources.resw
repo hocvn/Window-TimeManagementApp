@@ -567,4 +567,40 @@
   <data name="musicComboBox.PlaceholderText" xml:space="preserve">
     <value>Chọn bài hát</value>
   </data>
+  <data name="accountTitle.Text" xml:space="preserve">
+    <value>Tài Khoản</value>
+  </data>
+  <data name="usernameTextBlock.Text" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="emailTextBlock.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="signOutTextBlock.Text" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="usernameTitle.Header" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="emailTitle.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="resetPassTitle.Header" xml:space="preserve">
+    <value>Đổi mật khẩu</value>
+  </data>
+  <data name="currentPassTitle.Header" xml:space="preserve">
+    <value>Nhập mật khẩu hiện tại</value>
+  </data>
+  <data name="enterNewPassAgainTitle.Header" xml:space="preserve">
+    <value>Nhập lại mật khẩu mới</value>
+  </data>
+  <data name="enterNewPassTitle.Header" xml:space="preserve">
+    <value>Nhập mật khẩu mới</value>
+  </data>
+  <data name="currentPassword.PlaceholderText" xml:space="preserve">
+    <value>Mật khẩu hiện tại</value>
+  </data>
+  <data name="Current_password_is_incorrect" xml:space="preserve">
+    <value>Mật khẩu hiện tại chưa chính xác</value>
+  </data>
 </root>

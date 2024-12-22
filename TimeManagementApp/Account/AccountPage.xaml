@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="TimeManagementApp.Account.AccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimeManagementApp.Account"
+    xmlns:app="using:TimeManagementApp"
+    xmlns:local2="using:TimeManagementApp.Services"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+        <!-- Header -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,40,20,0">
+            <FontIcon Glyph="&#xE77B;" FontSize="24" Margin="0,2,0,0"/>
+            <TextBlock x:Uid="accountTitle" FontSize="24" FontWeight="Bold" Margin="20,0,0,0"/>
+        </StackPanel>
+
+        <!-- Content -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20" Spacing="10">
+
+            <controls:SettingsCard x:Uid="usernameTitle" HeaderIcon="{ui:FontIcon Glyph='&#xE77B;'}" IsEnabled="True">
+                <TextBlock Text="{x:Bind local2:UserSingleton.Instance.Username, Mode=OneWay}" />
+            </controls:SettingsCard>
+
+
+            <controls:SettingsCard x:Uid="emailTitle" HeaderIcon="{ui:FontIcon Glyph='&#xE715;'}" IsEnabled="True">
+                <TextBlock Text="{x:Bind local2:UserSingleton.Instance.Email, Mode=OneWay}" />
+            </controls:SettingsCard>
+
+            <controls:SettingsExpander x:Uid="resetPassTitle"
+                           HeaderIcon="{ui:FontIcon Glyph='&#xE8D7;'}"
+                           IsEnabled="True"
+                           IsExpanded="False">
+
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard x:Uid="currentPassTitle">
+                        <PasswordBox x:Uid="currentPassword" Width="200" Password="{x:Bind ViewModel.CurrentPass, Mode=TwoWay}"/>
+
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard x:Uid="enterNewPassTitle">
+                        <PasswordBox x:Uid="newPassword" Width="200" Password="{x:Bind ViewModel.NewPass, Mode=TwoWay}"/>
+
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard x:Uid="enterNewPassAgainTitle">
+                        <PasswordBox x:Uid="reenterPassword" Width="200" Password="{x:Bind ViewModel.ConfirmPass, Mode=TwoWay}"/>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard>
+                        <Button x:Uid="resetPasswordButton" Click="ResetPasswordButton_Click"/>
+                    </controls:SettingsCard>
+
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
+
+            <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center"/>
+
+        </StackPanel>
+
+        <Button Grid.Row="1"  Click="SignOutButton_Click" FontSize="20" FontWeight="Bold" Foreground="White" Background="DarkRed"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="40">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <FontIcon Glyph="&#xF3B1;" />
+                <TextBlock x:Uid="signOutTextBlock" Margin="8,0,0,0"/>
+            </StackPanel>
+        </Button> 
+    </Grid>
+</Page>

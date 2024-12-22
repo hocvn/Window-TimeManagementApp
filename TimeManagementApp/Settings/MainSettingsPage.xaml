@@ -78,7 +78,8 @@
                 <controls:SettingsCard x:Uid="account"
                                        HeaderIcon="{ui:FontIcon Glyph='&#xE77B;'}"
                                        IsEnabled="True"
-                                       IsClickEnabled="True">
+                                       IsClickEnabled="True"
+                                       Click="Account_Click">
                 </controls:SettingsCard>
 
             </StackPanel>

@@ -3,6 +3,9 @@
   <PropertyGroup>
   </PropertyGroup>
   <ItemGroup>
+    <Page Update="Account\AccountPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <None Update="App.xaml" />
     <Page Update="Music\MusicPage.xaml">
       <SubType>Designer</SubType>
