@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Diagnostics;
+using Microsoft.UI.Xaml.Navigation;
+using TimeManagementApp.Helper;
 using TimeManagementApp.Services;
 using TimeManagementApp.Timer;
 
@@ -9,7 +9,7 @@ using TimeManagementApp.Timer;
 namespace TimeManagementApp.Music
 {
     /// <summary>
-    /// This page uses to play lofi music in the background
+    /// This page uses to play lofi music in the background and have animation background.
     /// </summary>
     public sealed partial class MusicPage : Page
     {
@@ -65,12 +65,12 @@ namespace TimeManagementApp.Music
 
         private void ToggleMenuButton_Checked(object sender, RoutedEventArgs e)
         {
-            MainWindow.NavigationMenuHelper.IsNavigationMenuVisible = true;
+            ViewModel.OpenNavPane();
         }
 
         private void ToggleMenuButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            MainWindow.NavigationMenuHelper.IsNavigationMenuVisible = false;
+            ViewModel.HideNavPane();
         }
 
         private void StartTimerButton_Click(object sender, RoutedEventArgs e)

@@ -69,7 +69,7 @@
         </SplitView.Content>
 
         <SplitView.Pane>
-            <StackPanel Padding="20">
+            <StackPanel Padding="20" Background="{x:Bind app:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
 
                 <!--Header-->
                 <Grid Padding="5">

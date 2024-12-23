@@ -1,7 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Diagnostics;
 using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
@@ -11,9 +10,6 @@ using TimeManagementApp.Services;
 using TimeManagementApp.Settings;
 using TimeManagementApp.Calendar;
 using TimeManagementApp.Music;
-using System.Linq;
-using Microsoft.UI.Xaml.Media;
-using System.Collections.Generic;
 
 namespace TimeManagementApp
 {
@@ -21,57 +17,25 @@ namespace TimeManagementApp
     {
         public static readonly DateTime NullDateTime = new DateTime(1999, 1, 1, 1, 1, 1).ToUniversalTime();
         public static NavigationService NavigationService { get; set; } = new NavigationService();
-        public static NavigationMenuHelper NavigationMenuHelper { get; set; } = new NavigationMenuHelper();
 
         private bool _isFirstActivation = true;
 
         public MainWindow()
         {
             this.InitializeComponent();
-            UpdateUiStrings();
             NavigationService.Initialize(mainFrame);
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
-
-            // Listen for visibility changes
-            NavigationMenuHelper.NavigationMenuVisibilityChanged += OnNavigationMenuVisibilityChanged;
-
-            // Listen for IsPaneOpen changes
-            MainNavigationView.PaneOpened += OnPaneOpened;
-            MainNavigationView.PaneClosed += OnPaneClosed;
         }
 
-        private void OnPaneOpened(NavigationView sender, object args)
+        public void OpenNavPane()
         {
-            Debug.WriteLine("PaneOpened event triggered");
-            UpdateNavigationViewProperties();
+            MainNavigationView.IsPaneVisible = true;
         }
 
-        private void OnPaneClosed(NavigationView sender, object args)
+        public void HideNavPane()
         {
-            Debug.WriteLine("PaneClosed event triggered");
-            UpdateNavigationViewProperties();
-        }
-
-        private void OnNavigationMenuVisibilityChanged(object sender, EventArgs e)
-        {
-            Debug.WriteLine($"NavigationMenuVisibility changed: {NavigationMenuHelper.IsNavigationMenuVisible}");
-            UpdateNavigationViewProperties();
-        }
-
-        private void UpdateNavigationViewProperties()
-        {
-            if (NavigationMenuHelper.IsNavigationMenuVisible)
-            {
-                // Adjust width based on whether the pane is open or closed
-                MainNavigationView.Width = MainNavigationView.IsPaneOpen ? 200 : 48;
-            }
-            else
-            {
-                MainNavigationView.Width = 0;
-            }
-
-            Debug.WriteLine($"NavigationView Width: {MainNavigationView.Width}");
+            MainNavigationView.IsPaneVisible = false;
         }
 
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -125,54 +89,9 @@ namespace TimeManagementApp
             {
                 CurrentNavigationViewItem = "MusicPage";
                 pageType = typeof(MusicPage);
-                NavigationMenuHelper.IsNavigationMenuVisible = false;
             }
 
             NavigationService.Navigate(pageType);
-        }
-
-        public void RefreshMainWindow()
-        {
-            if (this.Content is Frame frame)
-            {
-                var currentPageType = frame.CurrentSourcePageType;
-                var currentPageParams = frame.BackStack.LastOrDefault()?.Parameter;
-
-                frame.Navigate(typeof(BlankPage));
-
-                frame.Navigate(currentPageType, currentPageParams);
-            }
-        }
-
-        private void UpdateUiStrings()
-        {
-            var rootFrame = mainFrame.Content as FrameworkElement;
-
-            if (rootFrame != null)
-            {
-                foreach (var element in EnumerateVisualTree(rootFrame))
-                {
-                    if (element is FrameworkElement frameworkElement)
-                    {
-                        frameworkElement.Language = Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride;
-                        frameworkElement.UpdateLayout();
-                    }
-                }
-            }
-        }
-
-        private static IEnumerable<DependencyObject> EnumerateVisualTree(DependencyObject root)
-        {
-            for (int i = 0, count = VisualTreeHelper.GetChildrenCount(root); i < count; i++)
-            {
-                var child = VisualTreeHelper.GetChild(root, i);
-                yield return child;
-
-                foreach (var descendant in EnumerateVisualTree(child))
-                {
-                    yield return descendant;
-                }
-            }
         }
     }
 }

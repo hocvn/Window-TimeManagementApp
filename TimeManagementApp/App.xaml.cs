@@ -1,9 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using TimeManagementApp.Global;
 using TimeManagementApp.Helper;
@@ -61,8 +58,6 @@ namespace TimeManagementApp
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(code);
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
             StorageHelper.SaveSetting("language", code);
-
-            UpdateUiStrings();
         }
 
         public static void NavigateWindow(Window window)
@@ -76,42 +71,25 @@ namespace TimeManagementApp
             _window.Close();
         }
 
+        public static void OpenNavPane()
+        {
+            if (_window is MainWindow mainWindow)
+            {
+                mainWindow.OpenNavPane();
+            }
+        }
+
+        public static void HideNavPane()
+        {
+            if (_window is MainWindow mainWindow)
+            {
+                mainWindow.HideNavPane();
+            }
+        }
+
         private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
         {
             throw new NotImplementedException();
         }
-
-        public static void UpdateUiStrings()
-        {
-            var rootFrame = _window.Content as FrameworkElement;
-
-            if (rootFrame != null)
-            {
-                foreach (var element in EnumerateVisualTree(rootFrame))
-                {
-                    if (element is FrameworkElement frameworkElement)
-                    {
-                        frameworkElement.Language = Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride;
-                        frameworkElement.UpdateLayout();
-                    }
-                }
-            }
-        }
-
-        private static IEnumerable<DependencyObject> EnumerateVisualTree(DependencyObject root)
-        {
-            for (int i = 0, count = VisualTreeHelper.GetChildrenCount(root); i < count; i++)
-            {
-                var child = VisualTreeHelper.GetChild(root, i);
-                yield return child;
-
-                foreach (var descendant in EnumerateVisualTree(child))
-                {
-                    yield return descendant;
-                }
-            }
-        }
-
-
     }
 }

@@ -66,5 +66,15 @@ namespace TimeManagementApp.Music
             mediaPlayer.IsLoopingEnabled = true;  // Loop the video
             mediaPlayer.Volume = 0; // Mute the video
         }
+
+        public void OpenNavPane()
+        {
+            App.OpenNavPane();
+        }
+
+        public void HideNavPane()
+        {
+            App.HideNavPane();
+        }
     }
 }

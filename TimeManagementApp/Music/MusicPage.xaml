@@ -9,6 +9,7 @@
     xmlns:controls="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     xmlns:timer="using:TimeManagementApp.Timer"
+    Loaded="ToggleMenuButton_Unchecked"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
