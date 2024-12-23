@@ -18,6 +18,7 @@ namespace TimeManagementApp.Music
         {
             this.InitializeComponent();
             SetAnimationBackground();
+            ViewModel.Init();
             AnimationBackground.SelectedIndex = ViewModel.CurrentAnimatedBackgroundIndex;
             Music.SelectedIndex = ViewModel.CurrentSongIndex;
         }

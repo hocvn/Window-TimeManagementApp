@@ -22,7 +22,6 @@ namespace TimeManagementApp.Timer
             //MainWindow.NavigationService.Navigate(typeof(SettingsTimerPage));
         }
 
-
         public void StartButton_Click(object sender, RoutedEventArgs e)
         {
             TimerViewModel.StartTimer();

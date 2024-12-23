@@ -12,6 +12,9 @@ using TimeManagementApp.Services;
 using TimeManagementApp.Settings;
 using TimeManagementApp.Calendar;
 using TimeManagementApp.Music;
+using System.Linq;
+using Microsoft.UI.Xaml.Media;
+using System.Collections.Generic;
 
 namespace TimeManagementApp
 {
@@ -26,6 +29,7 @@ namespace TimeManagementApp
         public MainWindow()
         {
             this.InitializeComponent();
+            UpdateUiStrings();
             NavigationService.Initialize(mainFrame);
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
@@ -126,6 +130,50 @@ namespace TimeManagementApp
             }
 
             NavigationService.Navigate(pageType);
+        }
+
+        public void RefreshMainWindow()
+        {
+            if (this.Content is Frame frame)
+            {
+                var currentPageType = frame.CurrentSourcePageType;
+                var currentPageParams = frame.BackStack.LastOrDefault()?.Parameter;
+
+                frame.Navigate(typeof(BlankPage));
+
+                frame.Navigate(currentPageType, currentPageParams);
+            }
+        }
+
+        private void UpdateUiStrings()
+        {
+            var rootFrame = mainFrame.Content as FrameworkElement;
+
+            if (rootFrame != null)
+            {
+                foreach (var element in EnumerateVisualTree(rootFrame))
+                {
+                    if (element is FrameworkElement frameworkElement)
+                    {
+                        frameworkElement.Language = Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride;
+                        frameworkElement.UpdateLayout();
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<DependencyObject> EnumerateVisualTree(DependencyObject root)
+        {
+            for (int i = 0, count = VisualTreeHelper.GetChildrenCount(root); i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(root, i);
+                yield return child;
+
+                foreach (var descendant in EnumerateVisualTree(child))
+                {
+                    yield return descendant;
+                }
+            }
         }
     }
 }

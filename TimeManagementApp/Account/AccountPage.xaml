@@ -79,6 +79,12 @@
                 <FontIcon Glyph="&#xF3B1;" />
                 <TextBlock x:Uid="signOutTextBlock" Margin="8,0,0,0"/>
             </StackPanel>
-        </Button> 
+        </Button>
+
+        <Button Grid.Row="1" Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="40">
+            <Button.Content>
+                <FontIcon Glyph="&#xE0A6;" />
+            </Button.Content>
+        </Button>
     </Grid>
 </Page>

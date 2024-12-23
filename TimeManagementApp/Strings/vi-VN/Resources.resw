@@ -603,4 +603,49 @@
   <data name="Current_password_is_incorrect" xml:space="preserve">
     <value>Mật khẩu hiện tại chưa chính xác</value>
   </data>
+  <data name="background1.Content" xml:space="preserve">
+    <value>Hình nền 1</value>
+  </data>
+  <data name="background2.Content" xml:space="preserve">
+    <value>Hình nền 2</value>
+  </data>
+  <data name="background3.Content" xml:space="preserve">
+    <value>Hình nền 3</value>
+  </data>
+  <data name="song1.Content" xml:space="preserve">
+    <value>Bài hát 1</value>
+  </data>
+  <data name="song2.Content" xml:space="preserve">
+    <value>Bài hát 2</value>
+  </data>
+  <data name="song3.Content" xml:space="preserve">
+    <value>Bài hát 3</value>
+  </data>
+  <data name="song4.Content" xml:space="preserve">
+    <value>Bài hát 4</value>
+  </data>
+  <data name="song5.Content" xml:space="preserve">
+    <value>Bài hát 5</value>
+  </data>
+  <data name="SongTitle1" xml:space="preserve">
+    <value>Bài hát 1</value>
+  </data>
+  <data name="SongTitle2" xml:space="preserve">
+    <value>Bài hát 2</value>
+  </data>
+  <data name="SongTitle3" xml:space="preserve">
+    <value>Bài hát 3</value>
+  </data>
+  <data name="SongTitle4" xml:space="preserve">
+    <value>Bài hát 4</value>
+  </data>
+  <data name="SongTitle5" xml:space="preserve">
+    <value>Bài hát 5</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_sign_out?" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn đăng xuất không?</value>
+  </data>
+  <data name="SIGN_OUT" xml:space="preserve">
+    <value>ĐĂNG XUẤT</value>
+  </data>
 </root>

@@ -1,6 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using TimeManagementApp.Global;
 using TimeManagementApp.Helper;
@@ -28,7 +31,7 @@ namespace TimeManagementApp
         public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
 
         /// <summary>
-        /// Invoked when the application is launched.
+        /// Invoked when the Time Management application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
@@ -58,6 +61,8 @@ namespace TimeManagementApp
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(code);
             Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = code;
             StorageHelper.SaveSetting("language", code);
+
+            UpdateUiStrings();
         }
 
         public static void NavigateWindow(Window window)
@@ -75,5 +80,38 @@ namespace TimeManagementApp
         {
             throw new NotImplementedException();
         }
+
+        public static void UpdateUiStrings()
+        {
+            var rootFrame = _window.Content as FrameworkElement;
+
+            if (rootFrame != null)
+            {
+                foreach (var element in EnumerateVisualTree(rootFrame))
+                {
+                    if (element is FrameworkElement frameworkElement)
+                    {
+                        frameworkElement.Language = Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride;
+                        frameworkElement.UpdateLayout();
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<DependencyObject> EnumerateVisualTree(DependencyObject root)
+        {
+            for (int i = 0, count = VisualTreeHelper.GetChildrenCount(root); i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(root, i);
+                yield return child;
+
+                foreach (var descendant in EnumerateVisualTree(child))
+                {
+                    yield return descendant;
+                }
+            }
+        }
+
+
     }
 }

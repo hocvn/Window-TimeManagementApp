@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <None Remove="Account\AccountPage.xaml" />
+    <None Remove="Assets\AppImage.jpg" />
     <None Remove="Assets\image_animation_loop_1.mp4" />
     <None Remove="Assets\image_animation_loop_2.mp4" />
     <None Remove="Assets\image_animation_loop_3.mp4" />
@@ -112,6 +113,9 @@
     <Page Update="Note\NoteMainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Content Update="Assets\AppImage.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\icons\afternoon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

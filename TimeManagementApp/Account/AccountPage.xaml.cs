@@ -18,8 +18,23 @@ namespace TimeManagementApp.Account
             ViewModel.Init();
         }
 
-        private void SignOutButton_Click(object sender, RoutedEventArgs e)
+        private async void SignOutButton_Click(object sender, RoutedEventArgs e)
         {
+            // Show dialog to ask the user if they want to sign out
+            var result = await Dialog.ShowContent
+            (
+                this.XamlRoot,
+                "SIGN_OUT".GetLocalized(),
+                "Are_you_sure_you_want_to_sign_out?".GetLocalized(),
+                "Yes".GetLocalized(),
+                "No".GetLocalized(),
+                null
+            );
+
+            if (result == ContentDialogResult.Secondary)
+            {
+                return;
+            }
             UserSingleton.Instance.SignOut();
             App.NavigateWindow(new LoginWindow());
         }
@@ -59,5 +74,12 @@ namespace TimeManagementApp.Account
             );
         }
 
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                MainWindow.NavigationService.GoBack();
+            }
+        }
     }
 }

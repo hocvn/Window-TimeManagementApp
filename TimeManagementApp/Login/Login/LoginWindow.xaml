@@ -8,8 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     
-    <Grid RequestedTheme="Light"
-          Background="{x:Bind local:App.BackgroundViewModel.WindowBackgroundBrush, Mode=OneWay}">
+    <Grid RequestedTheme="Light" Background="AliceBlue">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -20,21 +19,24 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="1" Grid.Row="0">
+        <StackPanel Grid.Column="2" Grid.Row="0" Margin="20 0 80 0">
             <Image Height="100" Width="100" Margin="0 60 0 0" Source="{StaticResource LoginImage}"/>
             <TextBlock x:Uid="signIn" FontSize="36" Margin="20, 10, 20, 40" TextAlignment="Center"/>
         </StackPanel>
 
+        <Image HorizontalAlignment="Center" VerticalAlignment="Center" Height="400" Grid.ColumnSpan="2" Grid.RowSpan="3" Source="{StaticResource AppImage}" />
+
         <RelativePanel
+            Margin="20 0 80 0"
             BorderBrush="DarkBlue" 
             BorderThickness="1"
             CornerRadius="20"
             Padding="16 16 16 20"
             Background="WhiteSmoke"
-            Grid.Column="1" 
+            Grid.Column="2" 
             Grid.Row="1" 
             Grid.RowSpan="1">
 
@@ -99,7 +101,7 @@
 
         </RelativePanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical">
+        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical" Margin="20 0 80 0">
             <!-- Register -->
             <HyperlinkButton 
                 x:Name="registerHyperLinkButton"

@@ -17,7 +17,7 @@
         
         <!--Area for PomodoroTimer-->
     <SplitView x:Name="SplitView" IsPaneOpen="False" PanePlacement="Right"
-           OpenPaneLength="320" CompactPaneLength="24" DisplayMode="Inline">
+           OpenPaneLength="360" CompactPaneLength="24" DisplayMode="Inline">
         <SplitView.Content>
             <Grid>
                 <!--Header-->
@@ -80,10 +80,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <SymbolIcon Symbol="Setting" Grid.Column="0"/>
-                    <TextBlock x:Uid="timerSettingTitle" FontSize="22" FontWeight="Bold" Grid.Column="1" Margin="30,17,0,0"/>
-                    <AppBarButton x:Uid="saveButton" Icon="Save" Click="SaveButton_Click" Grid.Column="2"/>
-                    <AppBarButton x:Uid="backButton" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
+                    <TextBlock x:Uid="timerSettingTitle" FontSize="20" FontWeight="Bold" Grid.Column="1" Margin="20,10,0,0"/>
+
                 </Grid>
 
 
@@ -95,7 +93,7 @@
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                    IsEnabled="True">
                             <Slider x:Name ="FocusTimeSlider" 
-                        Value="{x:Bind TimerViewModel.CurrentSettings.FocusTimeMinutes, Mode=OneWay}"
+                        Value="{x:Bind TimerViewModel.CurrentSettings.FocusTimeMinutes, Mode=TwoWay}"
                         Minimum="1" Maximum="60"/>
                         </controls:SettingsCard>
 
@@ -103,7 +101,7 @@
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                    IsEnabled="True">
                             <Slider x:Name ="ShortBreakSlider" 
-                        Value="{x:Bind TimerViewModel.CurrentSettings.ShortBreakMinutes, Mode=OneWay}"
+                        Value="{x:Bind TimerViewModel.CurrentSettings.ShortBreakMinutes, Mode=TwoWay}"
                         Minimum="1" Maximum="60"/>
                         </controls:SettingsCard>
 
@@ -111,15 +109,14 @@
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                    IsEnabled="True">
                             <Slider x:Name ="LongBreakSlider" 
-                        Value="{x:Bind TimerViewModel.CurrentSettings.LongBreakMinutes, Mode=OneWay}"
-                        Minimum="1" Maximum="60"/>
+                        Value="{x:Bind TimerViewModel.CurrentSettings.LongBreakMinutes, Mode=TwoWay}" Minimum="1" Maximum="60"/>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard x:Uid="timerNotification"
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE7ED;'}"                               
                                    IsEnabled="True">
                             <ToggleSwitch x:Name="NotificationToggleSwitch" Margin="10,0,0,0" 
-                              IsOn="{x:Bind TimerViewModel.CurrentSettings.IsNotificationOn, Mode=OneWay}"/>
+                              IsOn="{x:Bind TimerViewModel.CurrentSettings.IsNotificationOn, Mode=TwoWay}"/>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard x:Uid="selectTag"
@@ -134,7 +131,14 @@
 
                     </StackPanel>
                 </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Padding="20">
+                    <AppBarButton x:Uid="backButton" Icon="Back" Click="BackButton_Click" />
+                    <AppBarButton x:Uid="saveButton" Icon="Save" Click="SaveButton_Click" HorizontalAlignment="Right"/>
+                </StackPanel>
+
             </StackPanel>
+            
         </SplitView.Pane>
     </SplitView>
 </Page>
