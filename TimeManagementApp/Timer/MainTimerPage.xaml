@@ -25,18 +25,21 @@
                     <SymbolIcon Symbol="Clock"/>
                     <TextBlock x:Uid="timeTitle" FontSize="24" FontWeight="Bold" Margin="30,-3,0,0"/>
                 </StackPanel>
+
+
+                <!--Area for PomodoroTimer-->
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
                     <Grid Width="200" Height="200" Margin="0,100,0,0">
                         <!--first ellipse with stroke color base on current type-->
                         <Ellipse Stroke="{x:Bind TimerViewModel.StrokeColor, Mode=OneWay}"
-                                     StrokeThickness="{x:Bind TimerViewModel.StrokeThickness}"/>
+                         StrokeThickness="{x:Bind TimerViewModel.StrokeThickness}"/>
 
                         <!--second ellipse with white stroke that have empty parts base on time left-->
                         <Ellipse Stroke="White" 
-                                     StrokeThickness="{x:Bind TimerViewModel.StrokeThickness}"
-                                     StrokeDashArray="{x:Bind TimerViewModel.StrokeDashArray, Mode=OneWay}"
-                                     RenderTransformOrigin="0.5,0.5">
+                         StrokeThickness="{x:Bind TimerViewModel.StrokeThickness}"
+                         StrokeDashArray="{x:Bind TimerViewModel.StrokeDashArray, Mode=OneWay}"
+                         RenderTransformOrigin="0.5,0.5">
                             <Ellipse.RenderTransform>
                                 <RotateTransform Angle="-90"/>
                             </Ellipse.RenderTransform>
@@ -44,11 +47,11 @@
 
                         <!--binding current time, type and tag-->
                         <TextBlock Text="{x:Bind TimerViewModel.TimerText, Mode=OneWay}" FontSize="48" 
-                                       HorizontalAlignment="Center" Margin="0,60,0,0"/>
+                           HorizontalAlignment="Center" Margin="0,60,0,0"/>
                         <TextBlock Text="{x:Bind TimerViewModel.CurrentType, Mode=OneWay}" FontSize="20" 
-                                       HorizontalAlignment="Center" Margin="0,130,0,0"/>
+                           HorizontalAlignment="Center" Margin="0,130,0,0"/>
                         <TextBlock Text="{x:Bind TimerViewModel.CurrentSettings.Tag, Mode=OneWay}" FontSize="14" 
-                                       HorizontalAlignment="Center" Margin="0,40,0,0"/>
+                           HorizontalAlignment="Center" Margin="0,40,0,0"/>
                     </Grid>
 
                     <!--play, pause, reset timer features-->
@@ -81,7 +84,6 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock x:Uid="timerSettingTitle" FontSize="20" FontWeight="Bold" Grid.Column="1" Margin="20,10,0,0"/>
-
                 </Grid>
 
 

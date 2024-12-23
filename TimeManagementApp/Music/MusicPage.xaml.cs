@@ -87,7 +87,7 @@ namespace TimeManagementApp.Music
 
         private void SettingTimerButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.NavigationService.Navigate(typeof(MainTimerPage));
+            MainWindow.NavigationService.Navigate(typeof(SettingsTimerPage));
         }
     }
 }
