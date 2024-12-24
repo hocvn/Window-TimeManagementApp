@@ -13,4 +13,6 @@
     <BitmapImage x:Key="LoginImage" UriSource="ms-appx:///Assets/icons/Login.png" />
     <BitmapImage x:Key="LogoImage" UriSource="ms-appx:///Assets/icons/Logo.png" />
 
+    <BitmapImage x:Key="AppImage" UriSource="ms-appx:///Assets/AppImage.jpg" />
+
 </ResourceDictionary>

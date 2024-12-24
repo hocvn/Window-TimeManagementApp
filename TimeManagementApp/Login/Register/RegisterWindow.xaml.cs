@@ -14,29 +14,39 @@ namespace TimeManagementApp
         public class RegisterViewModel : INotifyPropertyChanged
         {
             public string ErrorMessage { get; set; }
-            private IDao dao { get; set; }
+
+            public string Username { get; set; }
+
+            public string Email { get; set; }
+
+            public string Password { get; set; }
+
+            public string ConfirmedPass { get; set; }
+
+
+            private IDao _dao { get; set; }
 
             public RegisterViewModel()
             {
-                dao = new SqlDao();
+                _dao = new SqlDao();
                 ErrorMessage = "";
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
-            public void SaveCredential(string username, string password, string email)
+            public void SaveCredential()
             {
-                dao.CreateUser(username, password, email);
+                _dao.CreateUser(Username, Password, Email);
             }
 
-            public bool IsUsernameInUse(string username)
+            public bool IsUsernameInUse()
             {
-                return dao.IsUsernameInUse(username);
+                return _dao.IsUsernameInUse(Username);
             }
 
-            public bool IsEmailInUse(string username)
+            public bool IsEmailInUse()
             {
-                return dao.IsEmailInUse(username);
+                return _dao.IsEmailInUse(Username);
             }
         }
 
@@ -52,12 +62,7 @@ namespace TimeManagementApp
 
         private async void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            string username = usernameTextBox.Text;
-            string email = emailTextBox.Text;
-            string password = passwordBox.Password;
-            string passwordConfirmed = passwordConfirmedBox.Password;
-
-            (bool isOk, string errorMess) = CheckingFormatHelper.CheckAll(username, email, password, passwordConfirmed);
+            (bool isOk, string errorMess) = CheckingFormatHelper.CheckAll(ViewModel.Username, ViewModel.Email, ViewModel.Password, ViewModel.ConfirmedPass);
 
             if (!isOk)
             {
@@ -65,19 +70,19 @@ namespace TimeManagementApp
                 return;
             }
             // Check if the username or email is already in use
-            if (ViewModel.IsUsernameInUse(username))
+            if (ViewModel.IsUsernameInUse())
             {
                 ViewModel.ErrorMessage = "Username_is_already_in_use".GetLocalized();
                 return;
             }
-            if (ViewModel.IsEmailInUse(email))
+            if (ViewModel.IsEmailInUse())
             {
                 ViewModel.ErrorMessage = "Email_is_already_in_use".GetLocalized();
                 return;
             }
 
             ViewModel.ErrorMessage = ""; // Sign up successfully
-            ViewModel.SaveCredential(username, password, email);
+            ViewModel.SaveCredential();
             StorageHelper.RemoveSetting("rememberUsername");
 
             // Display notification dialog

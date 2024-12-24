@@ -14,7 +14,7 @@
 
     <Grid>
         <StackPanel Padding="20">
-            
+
             <!--Header-->
             <Grid Padding="5">
                 <Grid.ColumnDefinitions>
@@ -33,11 +33,11 @@
 
             <!--Area for SettingsPanel-->
             <StackPanel Spacing="5" Padding="20">
-                
+
                 <StackPanel Spacing="5">
                     <controls:SettingsCard x:Uid="focusTimeMinutes"
                                            HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
-                                           IsEnabled="True">    
+                                           IsEnabled="True">
                         <Slider x:Name ="FocusTimeSlider" 
                                 Value="{x:Bind TimerViewModel.CurrentSettings.FocusTimeMinutes, Mode=OneWay}"
                                 Minimum="1" Maximum="60"/>
@@ -75,7 +75,7 @@
                             <ComboBoxItem x:Uid="reading"/>
                         </ComboBox>
                     </controls:SettingsCard>
-                    
+
                 </StackPanel>
             </StackPanel>
         </StackPanel>

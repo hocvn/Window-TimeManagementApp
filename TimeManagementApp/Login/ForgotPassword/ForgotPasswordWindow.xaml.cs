@@ -8,17 +8,22 @@ namespace TimeManagementApp.Login.ForgotPassword
     /// </summary>
     public sealed partial class ForgotPasswordWindow : Window
     {
+        private bool _isInitialNavigationDone = false;
+        
         public ForgotPasswordWindow()
         {
             this.InitializeComponent();
-            this.Title = "Time management";
             WindowInitHelper.SetWindowSize(this);
             WindowInitHelper.SetTitle(this, "Time management");
         }
 
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            rootFrame.Navigate(typeof(EmailPage));
+            if (!_isInitialNavigationDone)
+            {
+                rootFrame.Navigate(typeof(EmailPage));
+                _isInitialNavigationDone = true;
+            }
         }
     }
 }

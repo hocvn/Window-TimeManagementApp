@@ -28,7 +28,7 @@ namespace TimeManagementApp
         public static BackgroundViewModel BackgroundViewModel { get; private set; } = new BackgroundViewModel();
 
         /// <summary>
-        /// Invoked when the application is launched.
+        /// Invoked when the Time Management application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
@@ -69,6 +69,22 @@ namespace TimeManagementApp
         public static void CloseWindow()
         {
             _window.Close();
+        }
+
+        public static void OpenNavPane()
+        {
+            if (_window is MainWindow mainWindow)
+            {
+                mainWindow.OpenNavPane();
+            }
+        }
+
+        public static void HideNavPane()
+        {
+            if (_window is MainWindow mainWindow)
+            {
+                mainWindow.HideNavPane();
+            }
         }
 
         private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)

@@ -17,24 +17,26 @@ namespace TimeManagementApp.Login.ForgotPassword
         {
             public string Email { get; set; }
             public string ErrorMessage { get; set; }
-
-            private IDao dao { get; set; }
+            public string NewPass { get; set; }
+            public string ConfirmPass { get; set; }
+            private IDao _dao { get; set; }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
             public ResetPassViewModel()
             {
-                dao = new SqlDao();
+                _dao = new SqlDao();
                 ErrorMessage = "";
             }
 
             public string GetUsername()
             {
-                return dao.GetUsername(this.Email);
+                return _dao.GetUsername(Email);
             }
-            public void ResetPassword(string username, string password)
+            public void ResetPassword()
             {
-                dao.ResetPassword(username, password, this.Email);
+                string username = GetUsername();
+                _dao.ResetPassword(username, NewPass, Email);
             }
         }
 
@@ -62,10 +64,7 @@ namespace TimeManagementApp.Login.ForgotPassword
 
         private async void ResetPassButton_Click(object sender, RoutedEventArgs e)
         {
-            string password = passwordBox.Password;
-            string passwordConfirmed = passwordConfirmedBox.Password;
-
-            (bool isOk, string mess) = CheckingFormatHelper.CheckAll(password, passwordConfirmed);
+            (bool isOk, string mess) = CheckingFormatHelper.CheckAll(ViewModel.NewPass, ViewModel.ConfirmPass);
             if (isOk == false)
             {
                 ViewModel.ErrorMessage = mess;
@@ -73,8 +72,8 @@ namespace TimeManagementApp.Login.ForgotPassword
             }
             ViewModel.ErrorMessage = "";
 
-            string username = ViewModel.GetUsername();
-            ViewModel.ResetPassword(username, password);
+            
+            ViewModel.ResetPassword();
             StorageHelper.RemoveSetting("rememberUsername");
 
             var result = await Dialog.ShowContent

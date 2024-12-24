@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using CommunityToolkit.WinUI;
+using System.ComponentModel;
 using TimeManagementApp.Services;
 using Windows.Media.Core;
 using Windows.Media.Playback;
@@ -11,11 +12,11 @@ namespace TimeManagementApp.Music
 
         // Hardcoded music titles
         private readonly string[] musicTitle = {
-            "Song 1",
-            "Song 2",
-            "Song 3",
-            "Song 4",
-            "Song 5"
+            "SongTitle1".GetLocalized(),
+            "SongTitle2".GetLocalized(),
+            "SongTitle3".GetLocalized(),
+            "SongTitle4".GetLocalized(),
+            "SongTitle5".GetLocalized()
         };
 
         public int CurrentSongIndex { get; set; } = 0;
@@ -32,6 +33,13 @@ namespace TimeManagementApp.Music
         public int CurrentAnimatedBackgroundIndex { get; set; } = 0;
 
         private readonly MediaPlayer mediaPlayer = new();
+
+        public void Init()
+        {
+            CurrentSongIndex = 0;
+            CurrentSongTitle = musicTitle[0];
+            MusicService.SetSongIndex(0);
+        }
 
         public void TogglePlayPause()
         {
@@ -57,6 +65,16 @@ namespace TimeManagementApp.Music
             mediaPlayer.Source = MediaSource.CreateFromUri(new System.Uri(path));
             mediaPlayer.IsLoopingEnabled = true;  // Loop the video
             mediaPlayer.Volume = 0; // Mute the video
+        }
+
+        public void OpenNavPane()
+        {
+            App.OpenNavPane();
+        }
+
+        public void HideNavPane()
+        {
+            App.HideNavPane();
         }
     }
 }

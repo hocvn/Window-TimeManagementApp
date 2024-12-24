@@ -340,7 +340,7 @@
     <value>Mật khẩu của bạn đã được đặt lại thành công</value>
   </data>
   <data name="Invalid_code" xml:space="preserve">
-    <value>Mã không đúng, hãy nhập lại</value>
+    <value>Mã không đúng, chúng tôi sẽ gửi cho bạn mã mới</value>
   </data>
   <data name="Please_enter_this_code" xml:space="preserve">
     <value>Nhập đoạn mã này</value>
@@ -566,5 +566,89 @@
   </data>
   <data name="musicComboBox.PlaceholderText" xml:space="preserve">
     <value>Chọn bài hát</value>
+  </data>
+  <data name="accountTitle.Text" xml:space="preserve">
+    <value>Tài Khoản</value>
+  </data>
+  <data name="usernameTextBlock.Text" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="emailTextBlock.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="signOutTextBlock.Text" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="usernameTitle.Header" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="emailTitle.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="resetPassTitle.Header" xml:space="preserve">
+    <value>Đổi mật khẩu</value>
+  </data>
+  <data name="currentPassTitle.Header" xml:space="preserve">
+    <value>Nhập mật khẩu hiện tại</value>
+  </data>
+  <data name="enterNewPassAgainTitle.Header" xml:space="preserve">
+    <value>Nhập lại mật khẩu mới</value>
+  </data>
+  <data name="enterNewPassTitle.Header" xml:space="preserve">
+    <value>Nhập mật khẩu mới</value>
+  </data>
+  <data name="currentPassword.PlaceholderText" xml:space="preserve">
+    <value>Mật khẩu hiện tại</value>
+  </data>
+  <data name="Current_password_is_incorrect" xml:space="preserve">
+    <value>Mật khẩu hiện tại chưa chính xác</value>
+  </data>
+  <data name="background1.Content" xml:space="preserve">
+    <value>Hình nền 1</value>
+  </data>
+  <data name="background2.Content" xml:space="preserve">
+    <value>Hình nền 2</value>
+  </data>
+  <data name="background3.Content" xml:space="preserve">
+    <value>Hình nền 3</value>
+  </data>
+  <data name="song1.Content" xml:space="preserve">
+    <value>Bài hát 1</value>
+  </data>
+  <data name="song2.Content" xml:space="preserve">
+    <value>Bài hát 2</value>
+  </data>
+  <data name="song3.Content" xml:space="preserve">
+    <value>Bài hát 3</value>
+  </data>
+  <data name="song4.Content" xml:space="preserve">
+    <value>Bài hát 4</value>
+  </data>
+  <data name="song5.Content" xml:space="preserve">
+    <value>Bài hát 5</value>
+  </data>
+  <data name="SongTitle1" xml:space="preserve">
+    <value>Bài hát 1</value>
+  </data>
+  <data name="SongTitle2" xml:space="preserve">
+    <value>Bài hát 2</value>
+  </data>
+  <data name="SongTitle3" xml:space="preserve">
+    <value>Bài hát 3</value>
+  </data>
+  <data name="SongTitle4" xml:space="preserve">
+    <value>Bài hát 4</value>
+  </data>
+  <data name="SongTitle5" xml:space="preserve">
+    <value>Bài hát 5</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_sign_out?" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn đăng xuất không?</value>
+  </data>
+  <data name="SIGN_OUT" xml:space="preserve">
+    <value>ĐĂNG XUẤT</value>
+  </data>
+  <data name="otpPageInstruction.Text" xml:space="preserve">
+    <value>Chúng tôi đã gửi cho bạn mã xác nhận, hãy nhập mã xác nhận đó</value>
   </data>
 </root>
