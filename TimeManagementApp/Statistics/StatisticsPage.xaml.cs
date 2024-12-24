@@ -18,7 +18,6 @@ namespace TimeManagementApp.Statistics
             SetupPieChart();
             SetupLineChart();
             SetupTagBarChart();
-            SetupTimeAreaChart();
         }
 
         private void SetupPieChart()
@@ -29,10 +28,10 @@ namespace TimeManagementApp.Statistics
                 InsideLabelPosition = 0.8,
                 AngleSpan = 360,
                 StartAngle = 0,
-                OutsideLabelFormat = "{1}: {0}", // Label format: "percentage: Task"
-                InsideLabelFormat = null, // Use outside labels only
-                TextColor = OxyColors.Black, // Ensure text color is readable
-                FontSize = 12 // Adjust font size for better spacing
+                OutsideLabelFormat = "{1}: {0}",
+                InsideLabelFormat = null,
+                TextColor = OxyColors.Black,
+                FontSize = 12
             };
 
             foreach (var taskStat in _viewModel.TaskStatistics)
@@ -44,137 +43,107 @@ namespace TimeManagementApp.Statistics
                 });
             }
 
-            var model = new PlotModel { Title = "Task Statistics" };
+            var model = new PlotModel { Title = "Task Statistics", TitleFontSize = 14 };
             model.Series.Add(pieSeries);
-
-            // Adjust PlotMargins to ensure labels fit within the chart area
-            model.PlotMargins = new OxyThickness(-40, 20, 30, 20); // Adjust margins as needed
+            model.PlotMargins = new OxyThickness(40, 40, 40, 40);
 
             PieChartView.Model = model;
         }
 
         private void SetupLineChart()
         {
-            var model = new PlotModel { Title = "Tags Breakdown by Timestamp" };
-            var dateAxis = new DateTimeAxis
-            {
-                Position = AxisPosition.Bottom,
-                StringFormat = "dd/MM/yyyy"
-            };
-            model.Axes.Add(dateAxis);
+            var lineChartModel = new PlotModel { Title = "Focus Time by Timestamp and Tag", TitleFontSize = 14 };
 
-            foreach (var tagData in _viewModel.TagTimeSeriesData)
-            {
-                var lineSeries = new LineSeries
-                {
-                    Title = tagData.Tag, // Ensure each series has a title
-                    ItemsSource = tagData.DataPoints,
-                    DataFieldX = nameof(DataPoint.X),
-                    DataFieldY = nameof(DataPoint.Y),
-                    TrackerFormatString = "{0}\n{1}: {2:0.00} min" // Display values in minutes with 2 decimal places
-                };
-
-                model.Series.Add(lineSeries);
-            }
-
-            // Add a legend
             var legend = new Legend
             {
-                LegendPosition = LegendPosition.LeftTop,
                 LegendPlacement = LegendPlacement.Outside,
-                LegendBackground = OxyColors.White,
-                LegendBorder = OxyColors.Black
+                LegendPosition = LegendPosition.LeftTop,
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendBorder = OxyColors.Black,
+                LegendBorderThickness = 1
             };
-            model.Legends.Add(legend);
+            lineChartModel.Legends.Add(legend);
 
-            LineChartView.Model = model;
+            var focusSessions = _viewModel.Sessions.Where(s => s.Type == "Focus");
+
+            foreach (var tagGroup in focusSessions.GroupBy(s => s.Tag))
+            {
+                var lineSeries = new LineSeries { Title = tagGroup.Key };
+
+                var timeGroups = tagGroup.GroupBy(s => new { s.Timestamp.Date, s.Timestamp.Hour, s.Timestamp.Minute })
+                                          .Select(g => new { Time = g.Key, TotalDuration = g.Sum(s => s.Duration) })
+                                          .OrderBy(g => g.Time.Date)
+                                          .ThenBy(g => g.Time.Hour)
+                                          .ThenBy(g => g.Time.Minute);
+
+                foreach (var timeGroup in timeGroups)
+                {
+                    lineSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(timeGroup.Time.Date.AddHours(timeGroup.Time.Hour).
+                        AddMinutes(timeGroup.Time.Minute)), timeGroup.TotalDuration / 60.0)); // Convert to minutes
+                }
+
+                lineChartModel.Series.Add(lineSeries);
+            }
+
+            lineChartModel.Axes.Add(new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = "MM/dd/yyyy",
+            });
+
+            lineChartModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+            });
+
+            LineChartView.Model = lineChartModel;
         }
 
         private void SetupTagBarChart()
         {
-            var model = new PlotModel { Title = "Total Focus Time on Each Tag" };
-            var categoryAxis = new CategoryAxis
-            {
-                Position = AxisPosition.Left,
-                Key = "Tags"
-            };
-            categoryAxis.Labels.AddRange(_viewModel.TotalTimePerTag.Select(t => t.Tag).ToList());
-            model.Axes.Add(categoryAxis);
+            var tagBarChartModel = new PlotModel { Title = "Total Focus and Break Time by Tag", TitleFontSize = 14 };
 
-            var valueAxis = new LinearAxis
+            var legend = new Legend
             {
-                Position = AxisPosition.Bottom,
-                Title = "Total Time (minutes)", // Update to minutes
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
-                StringFormat = "0.00" // Display values with 2 decimal places
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.RightTop,
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendBorder = OxyColors.Black,
+                LegendBorderThickness = 1
             };
-            model.Axes.Add(valueAxis);
+            tagBarChartModel.Legends.Add(legend);
 
-            var barSeries = new BarSeries
-            {
-                Title = "Total Time",
-                LabelPlacement = LabelPlacement.Inside,
-                FillColor = OxyColor.FromRgb(135, 206, 250), // Light blue fill color
-                LabelFormatString = "{0:0.00} min" // Display values in minutes with 2 decimal places
-            };
+            var focusSeries = new BarSeries { Title = "Focus", StrokeColor = OxyColors.Purple, FillColor = OxyColors.Purple, StrokeThickness = 1 };
+            var breakSeries = new BarSeries { Title = "Break", StrokeColor = OxyColors.Orange, FillColor = OxyColors.Orange, StrokeThickness = 1 };
 
-            foreach (var tagTotal in _viewModel.TotalTimePerTag)
+            var tags = _viewModel.Sessions.Select(s => s.Tag).Distinct().ToList();
+
+            foreach (var tag in tags)
             {
-                barSeries.Items.Add(new BarItem { Value = tagTotal.TotalTime });
+                var focusTotal = _viewModel.Sessions.Where(s => s.Tag == tag && s.Type == "Focus").Sum(s => s.Duration) / 60.0; // Convert to minutes
+                var breakTotal = _viewModel.Sessions.Where(s => s.Tag == tag && s.Type == "Break").Sum(s => s.Duration) / 60.0; // Convert to minutes
+
+                focusSeries.Items.Add(new BarItem { Value = focusTotal });
+                breakSeries.Items.Add(new BarItem { Value = breakTotal });
             }
 
-            model.Series.Add(barSeries);
-            TagBarChartView.Model = model;
-        }
+            tagBarChartModel.Series.Add(focusSeries);
+            tagBarChartModel.Series.Add(breakSeries);
 
-        private void SetupTimeAreaChart()
-        {
-            var model = new PlotModel { Title = "Total Focus Time Over Periods" };
-            var categoryAxis = new CategoryAxis
-            {
-                Position = AxisPosition.Bottom,
-                Key = "Periods"
-            };
-            categoryAxis.Labels.AddRange(new[] { "Last Day", "Last Week", "Last Month" });
-            model.Axes.Add(categoryAxis);
-
-            var valueAxis = new LinearAxis
+            tagBarChartModel.Axes.Add(new CategoryAxis
             {
                 Position = AxisPosition.Left,
-                Title = "Total Time (minutes)", // Update to minutes
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
-                StringFormat = "0.00" // Display values with 2 decimal places
-            };
-            model.Axes.Add(valueAxis);
+                Key = "TagsAxis",
+                ItemsSource = tags
+            });
 
-            var areaSeries = new AreaSeries
+            tagBarChartModel.Axes.Add(new LinearAxis
             {
-                Title = "Total Time",
-                Fill = OxyColor.FromRgb(135, 206, 250)  // Light blue fill for the area
-            };
+                Position = AxisPosition.Bottom,
+                Title = "Duration (minutes)"
+            });
 
-            var timePeriods = new[]
-            {
-                new TimePeriod { Period = "Last Day", TotalTime = _viewModel.TotalTimeLastDay },
-                new TimePeriod { Period = "Last Week", TotalTime = _viewModel.TotalTimeLastWeek },
-                new TimePeriod { Period = "Last Month", TotalTime = _viewModel.TotalTimeLastMonth }
-            };
-
-            foreach (var period in timePeriods)
-            {
-                areaSeries.Points.Add(new DataPoint(categoryAxis.Labels.IndexOf(period.Period), period.TotalTime));
-            }
-
-            model.Series.Add(areaSeries);
-            TimeAreaChartView.Model = model;
+            TagBarChartView.Model = tagBarChartModel;
         }
-    }
-
-    public class TimePeriod
-    {
-        public string Period { get; set; }
-        public double TotalTime { get; set; }
     }
 }

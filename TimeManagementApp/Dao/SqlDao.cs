@@ -597,72 +597,75 @@ namespace TimeManagementApp.Dao
 
         // Timer ------------------------------------------------------------------------------------
 
-        public void SaveSession(FocusSession session)
+        public void SaveSession(Session session)
         {
             using (var connection = CreateConnection())
             {
                 var sql = @"
-                INSERT INTO FOCUS_SESSION (username, duration, tag, timestamp)
-                VALUES (@username, @duration, @tag, @timestamp)
-            ";
+                    INSERT INTO SESSION (username, duration, tag, timestamp, type)
+                    VALUES (@username, @duration, @tag, @timestamp, @type)
+                ";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@username", User.Username);
                 command.Parameters.AddWithValue("@duration", session.Duration); // Store duration as seconds
                 command.Parameters.AddWithValue("@tag", session.Tag);
                 command.Parameters.AddWithValue("@timestamp", session.Timestamp);
+                command.Parameters.AddWithValue("@type", session.Type);
                 command.ExecuteNonQuery();
             }
         }
 
-        public List<FocusSession> GetAllSessions()
+        public List<Session> GetAllSessions()
         {
-            var sessions = new List<FocusSession>();
+            var sessions = new List<Session>();
             using (var connection = CreateConnection())
             {
                 var sql = @"
-                SELECT session_id, duration, tag, timestamp
-                FROM FOCUS_SESSION
-                WHERE username = @username
-            ";
+                    SELECT session_id, duration, tag, timestamp, type
+                    FROM SESSION
+                    WHERE username = @username
+                ";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@username", User.Username);
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    sessions.Add(new FocusSession
+                    sessions.Add(new Session
                     {
                         Id = reader.GetInt32(0),
                         Duration = reader.GetInt32(1), // Retrieve duration as seconds
                         Tag = reader.GetString(2),
-                        Timestamp = reader.GetDateTime(3)
+                        Timestamp = reader.GetDateTime(3),
+                        Type = reader.GetString(4) // Retrieve the type
                     });
                 }
             }
             return sessions;
         }
 
-        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        public List<Session> GetAllSessionsWithTag(string tag)
         {
-            var sessions = new List<FocusSession>();
+            var sessions = new List<Session>();
             using (var connection = CreateConnection())
             {
                 var sql = @"
-                SELECT session_id, duration, tag, timestamp
-                FROM FOCUS_SESSION
-                WHERE username = @username AND tag = @tag
-            ";
+                    SELECT session_id, duration, tag, timestamp, type
+                    FROM SESSION
+                    WHERE username = @username AND tag = @tag
+                ";
                 var command = new SqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@username", User.Username);
                 command.Parameters.AddWithValue("@tag", tag);
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    sessions.Add(new FocusSession
+                    sessions.Add(new Session
                     {
                         Id = reader.GetInt32(0),
                         Duration = reader.GetInt32(1), // Retrieve duration as seconds
                         Tag = reader.GetString(2),
-                        Timestamp = reader.GetDateTime(3)
+                        Timestamp = reader.GetDateTime(3),
+                        Type = reader.GetString(4) // Retrieve the type
                     });
                 }
             }

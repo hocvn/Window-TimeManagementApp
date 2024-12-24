@@ -31,12 +31,13 @@ exports.up = async function(knex) {
             important BIT
         );
 
-        CREATE TABLE FOCUS_SESSION (
+        CREATE TABLE SESSION (
             session_id INT IDENTITY(1,1) PRIMARY KEY,
             username NVARCHAR(30) FOREIGN KEY REFERENCES [USER](username) ON DELETE NO ACTION,
             duration INT,  -- Store duration as seconds
             tag NVARCHAR(30),
-            timestamp DATETIME
+            timestamp DATETIME,
+            type NVARCHAR(10) -- "Focus" or "Break"
         );
     `);
 };
@@ -47,7 +48,7 @@ exports.up = async function(knex) {
  */
 exports.down = async function(knex) {
     await knex.raw(`
-        DROP TABLE FOCUS_SESSION;
+        DROP TABLE SESSION;
         DROP TABLE TASK;
         DROP TABLE NOTE;
         DROP TABLE [USER];

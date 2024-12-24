@@ -503,17 +503,17 @@ namespace TimeManagementApp.Dao
 
 
         // Timer ------------------------------------------------------------------------------------
-        public void SaveSession(FocusSession session)
+        public void SaveSession(Session session)
         {
             throw new NotImplementedException();
         }
 
-        public List<FocusSession> GetAllSessions()
+        public List<Session> GetAllSessions()
         {
             throw new NotImplementedException();
         }
 
-        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        public List<Session> GetAllSessionsWithTag(string tag)
         {
             throw new NotImplementedException();
         }

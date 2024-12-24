@@ -153,20 +153,19 @@ namespace TimeManagementApp.Timer
                         ShowNotification();
                     }
 
-                    if (CurrentType == TimerType.FocusTime)
+                    // save session
+                    var session = new Session
                     {
-                        // save focus session
-                        var session = new FocusSession
-                        {
-                            Duration = CurrentSettings.FocusTimeMinutes,
-                            Timestamp = DateTime.UtcNow,
-                            Tag = CurrentSettings.Tag,
-                        };
+                        Duration = (CurrentType == TimerType.FocusTime) ? CurrentSettings.FocusTimeMinutes :
+                            (CurrentType == TimerType.ShortBreak) ? CurrentSettings.ShortBreakMinutes : CurrentSettings.LongBreakMinutes,
+                        Timestamp = DateTime.UtcNow,
+                        Tag = CurrentSettings.Tag,
+                        Type = (CurrentType == TimerType.FocusTime) ? "Focus" : "Break"
+                    };
 
 
-                        IDao dao = new SqlDao();
-                        dao.SaveSession(session);
-                    }
+                    IDao dao = new SqlDao();
+                    dao.SaveSession(session);
 
                     SwitchToNextTimerType();
                     return;
