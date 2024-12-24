@@ -27,7 +27,7 @@
                 IsBackEnabled="False"
                 IsPaneVisible="True"
                 IsTabStop="True"
-                OpenPaneLength="240"
+                OpenPaneLength="220"
                 SelectionChanged="NavigationView_SelectionChanged"
                 Background="{x:Bind local:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
 

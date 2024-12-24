@@ -156,8 +156,8 @@ namespace TimeManagementApp.Timer
                     // save session
                     var session = new Session
                     {
-                        Duration = (CurrentType == TimerType.FocusTime) ? CurrentSettings.FocusTimeMinutes :
-                            (CurrentType == TimerType.ShortBreak) ? CurrentSettings.ShortBreakMinutes : CurrentSettings.LongBreakMinutes,
+                        Duration = (CurrentType == TimerType.FocusTime) ? CurrentSettings.FocusTimeMinutes * 60 :
+                            (CurrentType == TimerType.ShortBreak) ? CurrentSettings.ShortBreakMinutes * 60 : CurrentSettings.LongBreakMinutes * 60,
                         Timestamp = DateTime.UtcNow,
                         Tag = CurrentSettings.Tag,
                         Type = (CurrentType == TimerType.FocusTime) ? "Focus" : "Break"

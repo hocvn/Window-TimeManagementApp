@@ -89,7 +89,7 @@ namespace TimeManagementApp
 
         private void NotificationManager_NotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
         {
-            throw new NotImplementedException();
+            // do nothing
         }
     }
 }

@@ -45,8 +45,9 @@ namespace TimeManagementApp.Statistics
 
             var model = new PlotModel { Title = "Task Statistics", TitleFontSize = 14 };
             model.Series.Add(pieSeries);
-            model.PlotMargins = new OxyThickness(40, 40, 40, 40);
+            model.PlotMargins = new OxyThickness(50, 50, 50, 50);
 
+            model.Background = OxyColors.Transparent;
             PieChartView.Model = model;
         }
 
@@ -96,6 +97,7 @@ namespace TimeManagementApp.Statistics
                 Position = AxisPosition.Left,
             });
 
+            lineChartModel.Background = OxyColors.Transparent;
             LineChartView.Model = lineChartModel;
         }
 
@@ -143,6 +145,7 @@ namespace TimeManagementApp.Statistics
                 Title = "Duration (minutes)"
             });
 
+            tagBarChartModel.Background = OxyColors.Transparent;
             TagBarChartView.Model = tagBarChartModel;
         }
     }
