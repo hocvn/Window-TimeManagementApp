@@ -340,7 +340,7 @@
     <value>Mật khẩu của bạn đã được đặt lại thành công</value>
   </data>
   <data name="Invalid_code" xml:space="preserve">
-    <value>Mã không đúng, hãy nhập lại</value>
+    <value>Mã không đúng, chúng tôi sẽ gửi cho bạn mã mới</value>
   </data>
   <data name="Please_enter_this_code" xml:space="preserve">
     <value>Nhập đoạn mã này</value>
@@ -647,5 +647,8 @@
   </data>
   <data name="SIGN_OUT" xml:space="preserve">
     <value>ĐĂNG XUẤT</value>
+  </data>
+  <data name="otpPageInstruction.Text" xml:space="preserve">
+    <value>Chúng tôi đã gửi cho bạn mã xác nhận, hãy nhập mã xác nhận đó</value>
   </data>
 </root>

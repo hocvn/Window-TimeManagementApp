@@ -15,6 +15,8 @@ namespace TimeManagementApp
         public partial class LoginViewModel : INotifyPropertyChanged
         {
             public string ErrorMessage { get; set; }
+            public string Username { get; set; }
+            public string Password { get; set; }
             private IDao _dao { get; set; }
 
             public LoginViewModel()
@@ -25,14 +27,14 @@ namespace TimeManagementApp
 
             public event PropertyChangedEventHandler PropertyChanged;
 
-            public bool CheckCredentials(string username, string password)
+            public bool CheckCredentials()
             {
-                return _dao.CheckCredential(username, password);
+                return _dao.CheckCredential(Username, Password);
             }
 
-            public string GetPassword(string username)
+            public string GetPassword()
             {
-                return _dao.GetPassword(username);
+                return _dao.GetPassword(Username);
             }
         }
 
@@ -49,31 +51,32 @@ namespace TimeManagementApp
             if (!String.IsNullOrEmpty(rememberUsername))
             {
                 // Automatically fill in the username and password
-                usernameTextBox.Text = rememberUsername;
-                var rememberPassword = ViewModel.GetPassword(rememberUsername);
+                ViewModel.Username = rememberUsername;
+                var rememberPassword = ViewModel.GetPassword();
 
                 if (rememberPassword == null)
                 {
                     // The password is not stored
                     return;
                 }
-                passwordBox.Password = rememberPassword;
+                ViewModel.Password = rememberPassword;
                 rememberCheckBox.IsChecked = true;
+            }
+            else
+            {
+                rememberCheckBox.IsChecked = false;
             }
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            string username = usernameTextBox.Text;
-            string password = passwordBox.Password;
-
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
+            if (String.IsNullOrEmpty(ViewModel.Username) || String.IsNullOrEmpty(ViewModel.Password))
             {
                 ViewModel.ErrorMessage = "Please_enter_both_username_and_password".GetLocalized();
                 return;
             }
 
-            if (ViewModel.CheckCredentials(username, password) == false)
+            if (ViewModel.CheckCredentials() == false)
             {
                 ViewModel.ErrorMessage = "Invalid_username_or_password".GetLocalized();
                 return;
@@ -86,8 +89,7 @@ namespace TimeManagementApp
 
         private void RememberCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            var username = usernameTextBox.Text;
-            StorageHelper.SaveSetting("rememberUsername", username);
+            StorageHelper.SaveSetting("rememberUsername", ViewModel.Username);
         }
 
         private void RememberCheckBox_Unchecked(object sender, RoutedEventArgs e)

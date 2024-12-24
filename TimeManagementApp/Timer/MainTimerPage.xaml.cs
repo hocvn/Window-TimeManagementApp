@@ -19,7 +19,6 @@ namespace TimeManagementApp.Timer
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             SplitView.IsPaneOpen = true;
-            //MainWindow.NavigationService.Navigate(typeof(SettingsTimerPage));
         }
 
         public void StartButton_Click(object sender, RoutedEventArgs e)

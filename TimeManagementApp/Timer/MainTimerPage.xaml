@@ -95,7 +95,7 @@
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                    IsEnabled="True">
                             <Slider x:Name ="FocusTimeSlider" 
-                        Value="{x:Bind TimerViewModel.CurrentSettings.FocusTimeMinutes, Mode=TwoWay}"
+                        Value="{x:Bind TimerViewModel.CurrentSettings.FocusTimeMinutes, Mode=OneWay}"
                         Minimum="1" Maximum="60"/>
                         </controls:SettingsCard>
 
@@ -103,7 +103,7 @@
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                    IsEnabled="True">
                             <Slider x:Name ="ShortBreakSlider" 
-                        Value="{x:Bind TimerViewModel.CurrentSettings.ShortBreakMinutes, Mode=TwoWay}"
+                        Value="{x:Bind TimerViewModel.CurrentSettings.ShortBreakMinutes, Mode=OneWay}"
                         Minimum="1" Maximum="60"/>
                         </controls:SettingsCard>
 
@@ -111,14 +111,14 @@
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE823;'}"                               
                                    IsEnabled="True">
                             <Slider x:Name ="LongBreakSlider" 
-                        Value="{x:Bind TimerViewModel.CurrentSettings.LongBreakMinutes, Mode=TwoWay}" Minimum="1" Maximum="60"/>
+                        Value="{x:Bind TimerViewModel.CurrentSettings.LongBreakMinutes, Mode=OneWay}" Minimum="1" Maximum="60"/>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard x:Uid="timerNotification"
                                    HeaderIcon="{ui:FontIcon Glyph='&#xE7ED;'}"                               
                                    IsEnabled="True">
                             <ToggleSwitch x:Name="NotificationToggleSwitch" Margin="10,0,0,0" 
-                              IsOn="{x:Bind TimerViewModel.CurrentSettings.IsNotificationOn, Mode=TwoWay}"/>
+                              IsOn="{x:Bind TimerViewModel.CurrentSettings.IsNotificationOn, Mode=OneWay}"/>
                         </controls:SettingsCard>
 
                         <controls:SettingsCard x:Uid="selectTag"

@@ -340,7 +340,7 @@
     <value>Your password has been reset</value>
   </data>
   <data name="Invalid_code" xml:space="preserve">
-    <value>Invalid code</value>
+    <value>Invalid code, we will send you a new code</value>
   </data>
   <data name="Please_enter_this_code" xml:space="preserve">
     <value>Please enter this code</value>
@@ -647,5 +647,8 @@
   </data>
   <data name="SIGN_OUT" xml:space="preserve">
     <value>SIGN OUT</value>
+  </data>
+  <data name="otpPageInstruction.Text" xml:space="preserve">
+    <value>We have sent you an email code, please enter this authentication code</value>
   </data>
 </root>
