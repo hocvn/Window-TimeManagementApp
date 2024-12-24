@@ -3,8 +3,14 @@
   <PropertyGroup>
   </PropertyGroup>
   <ItemGroup>
+    <Page Update="Account\AccountPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <None Update="App.xaml" />
     <Page Update="Statistics\StatisticsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Timer\SettingsTimerPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Music\MusicPage.xaml">
@@ -14,9 +20,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Settings\MainSettingsPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Timer\SettingsTimerPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="ToDo\EditToDoPage.xaml">

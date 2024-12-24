@@ -2,7 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
-using System.Diagnostics;
+using TimeManagementApp.Account;
 using TimeManagementApp.Dao;
 using TimeManagementApp.Helper;
 
@@ -68,5 +68,9 @@ namespace TimeManagementApp.Settings
             _ = Windows.System.Launcher.LaunchUriAsync(uri);
         }
 
+        private void Account_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.NavigationService.Navigate(typeof(AccountPage), null);
+        }
     }
 }

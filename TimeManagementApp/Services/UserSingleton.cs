@@ -31,5 +31,12 @@ namespace TimeManagementApp.Services
         public string Username { get; set; }
         public string EncryptedPassword { get; set; }
         public string Email { get; set; }
+
+        public void SignOut()
+        {
+            Username = null;
+            EncryptedPassword = null;
+            Email = null;
+        }
     }
 }

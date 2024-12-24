@@ -263,9 +263,9 @@ namespace TimeManagementApp.Timer
             {
                 switch (CurrentSettings.Tag)
                 {
-                    case "work":
+                    case "Working" or "Đọc":
                         return 0;
-                    case "studying":
+                    case "Studying" or "Học":
                         return 1;
                     default:
                         return 2;

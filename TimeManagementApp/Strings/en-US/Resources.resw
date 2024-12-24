@@ -340,7 +340,7 @@
     <value>Your password has been reset</value>
   </data>
   <data name="Invalid_code" xml:space="preserve">
-    <value>Invalid code</value>
+    <value>Invalid code, we will send you a new code</value>
   </data>
   <data name="Please_enter_this_code" xml:space="preserve">
     <value>Please enter this code</value>
@@ -566,5 +566,89 @@
   </data>
   <data name="musicComboBox.PlaceholderText" xml:space="preserve">
     <value>Choose music</value>
+  </data>
+  <data name="accountTitle.Text" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="usernameTextBlock.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="emailTextBlock.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="signOutTextBlock.Text" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="usernameTitle.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="emailTitle.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="resetPassTitle.Header" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="currentPassTitle.Header" xml:space="preserve">
+    <value>Enter current password</value>
+  </data>
+  <data name="enterNewPassAgainTitle.Header" xml:space="preserve">
+    <value>Re-enter new password</value>
+  </data>
+  <data name="enterNewPassTitle.Header" xml:space="preserve">
+    <value>Enter new password</value>
+  </data>
+  <data name="currentPassword.PlaceholderText" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="Current_password_is_incorrect" xml:space="preserve">
+    <value>Current password is incorrect</value>
+  </data>
+  <data name="background1.Content" xml:space="preserve">
+    <value>Background 1</value>
+  </data>
+  <data name="background2.Content" xml:space="preserve">
+    <value>Background 2</value>
+  </data>
+  <data name="background3.Content" xml:space="preserve">
+    <value>Background 3</value>
+  </data>
+  <data name="song1.Content" xml:space="preserve">
+    <value>Song 1</value>
+  </data>
+  <data name="song2.Content" xml:space="preserve">
+    <value>Song 2</value>
+  </data>
+  <data name="song3.Content" xml:space="preserve">
+    <value>Song 3</value>
+  </data>
+  <data name="song4.Content" xml:space="preserve">
+    <value>Song 4</value>
+  </data>
+  <data name="song5.Content" xml:space="preserve">
+    <value>Song 5</value>
+  </data>
+  <data name="SongTitle1" xml:space="preserve">
+    <value>Song 1</value>
+  </data>
+  <data name="SongTitle2" xml:space="preserve">
+    <value>Song 2</value>
+  </data>
+  <data name="SongTitle3" xml:space="preserve">
+    <value>Song 3</value>
+  </data>
+  <data name="SongTitle4" xml:space="preserve">
+    <value>Song 4</value>
+  </data>
+  <data name="SongTitle5" xml:space="preserve">
+    <value>Song 5</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_sign_out?" xml:space="preserve">
+    <value>Are you sure you want to sign out?</value>
+  </data>
+  <data name="SIGN_OUT" xml:space="preserve">
+    <value>SIGN OUT</value>
+  </data>
+  <data name="otpPageInstruction.Text" xml:space="preserve">
+    <value>We have sent you an email code, please enter this authentication code</value>
   </data>
 </root>

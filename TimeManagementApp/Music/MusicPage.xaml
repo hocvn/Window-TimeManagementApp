@@ -9,6 +9,7 @@
     xmlns:controls="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     xmlns:timer="using:TimeManagementApp.Timer"
+    Loaded="ToggleMenuButton_Unchecked"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
@@ -42,7 +43,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="{x:Bind timer:PomodoroTimer.Instance.TimerText, Mode=OneWay}"
                                VerticalAlignment="Center"
-                               Foreground="White" FontWeight="ExtraBold" FontSize="80" />
+                               Foreground="White" FontWeight="ExtraBold" FontSize="90" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="StartTimerButton" Background="Transparent" Click="StartTimerButton_Click">
@@ -75,16 +76,16 @@
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <ComboBox x:Name="AnimationBackground" x:Uid="animationBackground" SelectionChanged="AnimationBackground_SelectionChanged">
-                        <x:String>Background 1</x:String>
-                        <x:String>Background 2</x:String>
-                        <x:String>Background 3</x:String>
+                        <ComboBoxItem x:Uid="background1"/>
+                        <ComboBoxItem x:Uid="background2"/>
+                        <ComboBoxItem x:Uid="background3"/>
                     </ComboBox>
                     <ComboBox x:Name="Music" x:Uid="musicComboBox" SelectionChanged="Music_SelectionChanged">
-                        <x:String>Song 1</x:String>
-                        <x:String>Song 2</x:String>
-                        <x:String>Song 3</x:String>
-                        <x:String>Song 4</x:String>
-                        <x:String>Song 5</x:String>
+                        <ComboBoxItem x:Uid="song1"/>
+                        <ComboBoxItem x:Uid="song2"/>
+                        <ComboBoxItem x:Uid="song3"/>
+                        <ComboBoxItem x:Uid="song4"/>
+                        <ComboBoxItem x:Uid="song5"/>
                     </ComboBox>
                 </StackPanel>
             </StackPanel>
