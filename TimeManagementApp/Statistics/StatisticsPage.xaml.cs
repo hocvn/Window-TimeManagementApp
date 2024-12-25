@@ -27,7 +27,7 @@ namespace TimeManagementApp.Statistics
             SetupPieChart();
             SetupLineChart();
             SetupTagBarChart();
-            SetupBreakTimeLineChart();
+            SetupFocusTimeBarChart();
         }
 
         private void SetupPieChart()
@@ -159,53 +159,61 @@ namespace TimeManagementApp.Statistics
             TagBarChartView.Model = tagBarChartModel;
         }
 
-        private void SetupBreakTimeLineChart()
+        private void SetupFocusTimeBarChart()
         {
-            var lineChartModel = new PlotModel { Title = "Break Time by Timestamp and Tag", TitleFontSize = 14 };
+            var barChartModel = new PlotModel { Title = "Average Focus Time by Timestamp", TitleFontSize = 14 };
 
+            var tags = _viewModel.Sessions.Select(s => s.Tag).Distinct().ToList();
+
+            var focusSeriesDay = new BarSeries { Title = "Focus - Last Day", FillColor = OxyColor.FromRgb(128, 0, 128), StackGroup = "1" }; // Purple
+            var focusSeriesWeek = new BarSeries { Title = "Focus - Last Week", FillColor = OxyColor.FromRgb(255, 0, 255), StackGroup = "2" }; // Magenta
+            var focusSeriesMonth = new BarSeries { Title = "Focus - Last Month", FillColor = OxyColor.FromRgb(0, 255, 255), StackGroup = "3" }; // Cyan
+
+            var now = DateTime.Now;
+
+            foreach (var tag in tags)
+            {
+                var focusLastDay = _viewModel.Sessions.Where(s => s.Tag == tag && s.Type == "Focus" && (now - s.Timestamp).TotalDays <= 1).
+                    DefaultIfEmpty().Average(s => s == null ? 0 : s.Duration) / 60.0; // Average duration in minutes
+                var focusLastWeek = _viewModel.Sessions.Where(s => s.Tag == tag && s.Type == "Focus" && (now - s.Timestamp).TotalDays <= 7).
+                    DefaultIfEmpty().Average(s => s == null ? 0 : s.Duration) / 60.0;
+                var focusLastMonth = _viewModel.Sessions.Where(s => s.Tag == tag && s.Type == "Focus" && (now - s.Timestamp).TotalDays <= 30).
+                    DefaultIfEmpty().Average(s => s == null ? 0 : s.Duration) / 60.0;
+
+                focusSeriesDay.Items.Add(new BarItem { Value = focusLastDay, CategoryIndex = tags.IndexOf(tag) });
+                focusSeriesWeek.Items.Add(new BarItem { Value = focusLastWeek, CategoryIndex = tags.IndexOf(tag) });
+                focusSeriesMonth.Items.Add(new BarItem { Value = focusLastMonth, CategoryIndex = tags.IndexOf(tag) });
+            }
+
+            barChartModel.Series.Add(focusSeriesDay);
+            barChartModel.Series.Add(focusSeriesWeek);
+            barChartModel.Series.Add(focusSeriesMonth);
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Left, Key = "TagsAxis", ItemsSource = tags };
+
+            var valueAxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                MinimumPadding = 0,
+                Title = "Average Duration (minutes)"
+            };
+
+            // Add legend
             var legend = new Legend
             {
                 LegendPlacement = LegendPlacement.Outside,
-                LegendPosition = LegendPosition.LeftTop,
-                LegendOrientation = LegendOrientation.Vertical,
+                LegendPosition = LegendPosition.TopCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
                 LegendBorder = OxyColors.Black,
                 LegendBorderThickness = 1
             };
-            lineChartModel.Legends.Add(legend);
+            barChartModel.Legends.Add(legend);
 
-            var breakSessions = _viewModel.Sessions.Where(s => s.Type == "Break");
+            barChartModel.Axes.Add(categoryAxis);
+            barChartModel.Axes.Add(valueAxis);
 
-            foreach (var tagGroup in breakSessions.GroupBy(s => s.Tag))
-            {
-                var lineSeries = new LineSeries { Title = tagGroup.Key };
-
-                var timeGroups = tagGroup.GroupBy(s => new { s.Timestamp.Date, s.Timestamp.Hour, s.Timestamp.Minute })
-                                          .Select(g => new { Time = g.Key, TotalDuration = g.Sum(s => s.Duration) })
-                                          .OrderBy(g => g.Time.Date)
-                                          .ThenBy(g => g.Time.Hour)
-                                          .ThenBy(g => g.Time.Minute);
-
-                foreach (var timeGroup in timeGroups)
-                {
-                    lineSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(timeGroup.Time.Date.AddHours(timeGroup.Time.Hour).AddMinutes(timeGroup.Time.Minute)), timeGroup.TotalDuration / 60.0)); // Convert to minutes
-                }
-
-                lineChartModel.Series.Add(lineSeries);
-            }
-
-            lineChartModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis
-            {
-                Position = AxisPosition.Bottom,
-                StringFormat = "MM/dd/yyyy",
-            });
-
-            lineChartModel.Axes.Add(new LinearAxis
-            {
-                Position = AxisPosition.Left,
-            });
-
-            lineChartModel.Background = OxyColors.Transparent;
-            BreakTimeLineChartView.Model = lineChartModel;
+            barChartModel.Background = OxyColors.Transparent;
+            FocusTimeBarChartView.Model = barChartModel;
         }
 
     }

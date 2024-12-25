@@ -32,11 +32,13 @@ namespace TimeManagementApp
         public void OpenNavPane()
         {
             MainNavigationView.IsPaneVisible = true;
+            mainFrame.Margin = new Thickness(0, 0, 0, 0);
         }
 
         public void HideNavPane()
         {
             MainNavigationView.IsPaneVisible = false;
+            mainFrame.Margin = new Thickness(-5, 0, 0, 0);
         }
 
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
