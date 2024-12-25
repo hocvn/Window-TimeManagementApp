@@ -10,6 +10,7 @@ using TimeManagementApp.Services;
 using TimeManagementApp.Settings;
 using TimeManagementApp.Calendar;
 using TimeManagementApp.Music;
+using TimeManagementApp.Statistics;
 
 namespace TimeManagementApp
 {
@@ -31,11 +32,13 @@ namespace TimeManagementApp
         public void OpenNavPane()
         {
             MainNavigationView.IsPaneVisible = true;
+            mainFrame.Margin = new Thickness(0, 0, 0, 0);
         }
 
         public void HideNavPane()
         {
             MainNavigationView.IsPaneVisible = false;
+            mainFrame.Margin = new Thickness(-5, 0, 0, 0);
         }
 
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -89,6 +92,11 @@ namespace TimeManagementApp
             {
                 CurrentNavigationViewItem = "MusicPage";
                 pageType = typeof(MusicPage);
+            }
+            else if (selectedItem.Name == NavItem_Statistics.Name)
+            {
+                CurrentNavigationViewItem = "StatisticsPage";
+                pageType = typeof(StatisticsPage);
             }
 
             NavigationService.Navigate(pageType);

@@ -27,7 +27,7 @@
                 IsBackEnabled="False"
                 IsPaneVisible="True"
                 IsTabStop="True"
-                OpenPaneLength="240"
+                OpenPaneLength="220"
                 SelectionChanged="NavigationView_SelectionChanged"
                 Background="{x:Bind local:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
 
@@ -73,12 +73,12 @@
                             ToolTipService.ToolTip="Music" 
                             Tag="MusicPage"/>
 
-                    <NavigationViewItem 
-                            x:Uid="statistics"
-                            Icon="PreviewLink"
-                            ToolTipService.ToolTip="Statistics"
-                            SelectsOnInvoked="False"/>
-                </NavigationView.MenuItems>
+                <NavigationViewItem 
+                    x:Name="NavItem_Statistics"
+                    x:Uid="statistics"
+                    Icon="PreviewLink"
+                    ToolTipService.ToolTip="Statistics"/>
+            </NavigationView.MenuItems>
 
                 <Frame x:Name="mainFrame"/>
             </NavigationView>

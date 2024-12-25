@@ -12,11 +12,11 @@ namespace TimeManagementApp.Music
 
         // Hardcoded music titles
         private readonly string[] musicTitle = {
-            "SongTitle1".GetLocalized(),
-            "SongTitle2".GetLocalized(),
-            "SongTitle3".GetLocalized(),
-            "SongTitle4".GetLocalized(),
-            "SongTitle5".GetLocalized()
+            "Song 1",
+            "Song 2",
+            "Song 3",
+            "Song 4",
+            "Song 5",
         };
 
         public int CurrentSongIndex { get; set; } = 0;

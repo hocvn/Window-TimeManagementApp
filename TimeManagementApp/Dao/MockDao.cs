@@ -503,66 +503,19 @@ namespace TimeManagementApp.Dao
 
 
         // Timer ------------------------------------------------------------------------------------
-        public void SaveSession(FocusSession session)
+        public void SaveSession(Session session)
         {
-            FileInfo fileInfo = new FileInfo(_filePath);
-
-            using (var package = new ExcelPackage(fileInfo))
-            {
-                var worksheet = package.Workbook.Worksheets.Count == 0
-                    ? package.Workbook.Worksheets.Add("FocusSessions")
-                    : package.Workbook.Worksheets[0];
-
-                int row = (worksheet.Dimension?.Rows ?? 0) + 1;
-
-                // Assign a new unique ID to the session
-                session.Id = row;
-
-                worksheet.Cells[row, 1].Value = session.Id;
-                worksheet.Cells[row, 2].Value = session.Duration.ToString();
-                worksheet.Cells[row, 3].Value = session.Timestamp.ToString("o"); // ISO 8601 format
-                worksheet.Cells[row, 4].Value = session.Tag;
-
-                package.Save();
-            }
+            throw new NotImplementedException();
         }
 
-        public List<FocusSession> GetAllSessions()
+        public List<Session> GetAllSessions()
         {
-            var sessions = new List<FocusSession>();
-
-            FileInfo fileInfo = new FileInfo(_filePath);
-            if (!fileInfo.Exists)
-            {
-                return sessions; // No file exists yet, return empty list
-            }
-
-            using (var package = new ExcelPackage(fileInfo))
-            {
-                var worksheet = package.Workbook.Worksheets[0];
-                if (worksheet.Dimension == null)
-                {
-                    return sessions;
-                }
-
-                for (int row = 1; row <= worksheet.Dimension.Rows; row++)
-                {
-                    var id = int.Parse(worksheet.Cells[row, 1].Value.ToString());
-                    var duration = TimeSpan.Parse(worksheet.Cells[row, 2].Value.ToString());
-                    var timestamp = DateTime.Parse(worksheet.Cells[row, 3].Value.ToString());
-                    var tag = worksheet.Cells[row, 4].Value.ToString();
-
-                    sessions.Add(new FocusSession { Id = id, Duration = duration, Timestamp = timestamp, Tag = tag });
-                }
-            }
-
-            return sessions;
+            throw new NotImplementedException();
         }
 
-        public List<FocusSession> GetAllSessionsWithTag(string tag)
+        public List<Session> GetAllSessionsWithTag(string tag)
         {
-            var sessions = GetAllSessions();
-            return sessions.Where(s => s.Tag == tag).ToList();
+            throw new NotImplementedException();
         }
 
 

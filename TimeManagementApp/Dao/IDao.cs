@@ -53,9 +53,9 @@ namespace TimeManagementApp.Dao
 
 
         // Timer ----------------------------------------------
-        void SaveSession(FocusSession session);
-        List<FocusSession> GetAllSessions();
-        List<FocusSession> GetAllSessionsWithTag(string tag);
+        void SaveSession(Session session);
+        List<Session> GetAllSessions();
+        List<Session> GetAllSessionsWithTag(string tag);
 
 
         // Background -----------------------------------------

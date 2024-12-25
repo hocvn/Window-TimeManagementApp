@@ -153,23 +153,19 @@ namespace TimeManagementApp.Timer
                         ShowNotification();
                     }
 
-                    if (CurrentType == TimerType.FocusTime)
+                    // save session
+                    var session = new Session
                     {
-                        // save focus session
-                        var session = new FocusSession
-                        {
-                            Duration = TimeSpan.FromMinutes(CurrentSettings.FocusTimeMinutes),
-                            Timestamp = DateTime.UtcNow,
-                            Tag = CurrentSettings.Tag,
-                        };
+                        Duration = (CurrentType == TimerType.FocusTime) ? CurrentSettings.FocusTimeMinutes * 60 :
+                            (CurrentType == TimerType.ShortBreak) ? CurrentSettings.ShortBreakMinutes * 60 : CurrentSettings.LongBreakMinutes * 60,
+                        Timestamp = DateTime.UtcNow,
+                        Tag = CurrentSettings.Tag,
+                        Type = (CurrentType == TimerType.FocusTime) ? "Focus" : "Break"
+                    };
 
 
-                        var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-                        var filePath = Path.Combine(directory.FullName, "sessions.xlsx");
-                        IDao dao = new MockDao(filePath);
-
-                        dao.SaveSession(session);
-                    }
+                    IDao dao = new SqlDao();
+                    dao.SaveSession(session);
 
                     SwitchToNextTimerType();
                     return;
@@ -267,9 +263,9 @@ namespace TimeManagementApp.Timer
             {
                 switch (CurrentSettings.Tag)
                 {
-                    case "work":
+                    case "Working" or "Đọc":
                         return 0;
-                    case "studying":
+                    case "Studying" or "Học":
                         return 1;
                     default:
                         return 2;
