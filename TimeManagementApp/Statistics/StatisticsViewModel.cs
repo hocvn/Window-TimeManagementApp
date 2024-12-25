@@ -33,8 +33,8 @@ namespace TimeManagementApp.Statistics
             var overdueCompleted = allTasks.Count(t => t.DueDateTime < now && t.IsCompleted);
             var notOverdue = allTasks.Count(t => t.DueDateTime >= now);
 
-            TaskStatistics.Add(new TaskStatistic("Overdue & Uncompleted", overdueNotCompleted, Colors.Red));
-            TaskStatistics.Add(new TaskStatistic("Overdue & Completed", overdueCompleted, Colors.Green));
+            TaskStatistics.Add(new TaskStatistic("Overdue, Uncompleted", overdueNotCompleted, Colors.Red));
+            TaskStatistics.Add(new TaskStatistic("Overdue, Completed", overdueCompleted, Colors.Green));
             TaskStatistics.Add(new TaskStatistic("Not Overdue", notOverdue, Colors.Blue));
         }
 

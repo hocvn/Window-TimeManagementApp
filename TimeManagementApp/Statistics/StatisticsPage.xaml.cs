@@ -1,9 +1,18 @@
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
 using Microsoft.UI.Xaml.Controls;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using LiveChartsCore.Kernel.Sketches;
+using LiveChartsCore.Defaults;
+using SkiaSharp;
+using LiveChartsCore.SkiaSharpView.Painting;
 
 namespace TimeManagementApp.Statistics
 {
@@ -18,6 +27,7 @@ namespace TimeManagementApp.Statistics
             SetupPieChart();
             SetupLineChart();
             SetupTagBarChart();
+            SetupBreakTimeLineChart();
         }
 
         private void SetupPieChart()
@@ -79,14 +89,14 @@ namespace TimeManagementApp.Statistics
 
                 foreach (var timeGroup in timeGroups)
                 {
-                    lineSeries.Points.Add(new DataPoint(DateTimeAxis.ToDouble(timeGroup.Time.Date.AddHours(timeGroup.Time.Hour).
+                    lineSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(timeGroup.Time.Date.AddHours(timeGroup.Time.Hour).
                         AddMinutes(timeGroup.Time.Minute)), timeGroup.TotalDuration / 60.0)); // Convert to minutes
                 }
 
                 lineChartModel.Series.Add(lineSeries);
             }
 
-            lineChartModel.Axes.Add(new DateTimeAxis
+            lineChartModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
                 StringFormat = "MM/dd/yyyy",
@@ -108,7 +118,7 @@ namespace TimeManagementApp.Statistics
             var legend = new Legend
             {
                 LegendPlacement = LegendPlacement.Outside,
-                LegendPosition = LegendPosition.RightTop,
+                LegendPosition = LegendPosition.RightBottom,
                 LegendOrientation = LegendOrientation.Vertical,
                 LegendBorder = OxyColors.Black,
                 LegendBorderThickness = 1
@@ -148,5 +158,55 @@ namespace TimeManagementApp.Statistics
             tagBarChartModel.Background = OxyColors.Transparent;
             TagBarChartView.Model = tagBarChartModel;
         }
+
+        private void SetupBreakTimeLineChart()
+        {
+            var lineChartModel = new PlotModel { Title = "Break Time by Timestamp and Tag", TitleFontSize = 14 };
+
+            var legend = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.LeftTop,
+                LegendOrientation = LegendOrientation.Vertical,
+                LegendBorder = OxyColors.Black,
+                LegendBorderThickness = 1
+            };
+            lineChartModel.Legends.Add(legend);
+
+            var breakSessions = _viewModel.Sessions.Where(s => s.Type == "Break");
+
+            foreach (var tagGroup in breakSessions.GroupBy(s => s.Tag))
+            {
+                var lineSeries = new LineSeries { Title = tagGroup.Key };
+
+                var timeGroups = tagGroup.GroupBy(s => new { s.Timestamp.Date, s.Timestamp.Hour, s.Timestamp.Minute })
+                                          .Select(g => new { Time = g.Key, TotalDuration = g.Sum(s => s.Duration) })
+                                          .OrderBy(g => g.Time.Date)
+                                          .ThenBy(g => g.Time.Hour)
+                                          .ThenBy(g => g.Time.Minute);
+
+                foreach (var timeGroup in timeGroups)
+                {
+                    lineSeries.Points.Add(new DataPoint(OxyPlot.Axes.DateTimeAxis.ToDouble(timeGroup.Time.Date.AddHours(timeGroup.Time.Hour).AddMinutes(timeGroup.Time.Minute)), timeGroup.TotalDuration / 60.0)); // Convert to minutes
+                }
+
+                lineChartModel.Series.Add(lineSeries);
+            }
+
+            lineChartModel.Axes.Add(new OxyPlot.Axes.DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = "MM/dd/yyyy",
+            });
+
+            lineChartModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+            });
+
+            lineChartModel.Background = OxyColors.Transparent;
+            BreakTimeLineChartView.Model = lineChartModel;
+        }
+
     }
 }
