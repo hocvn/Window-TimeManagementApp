@@ -1,5 +1,4 @@
 ﻿using Syncfusion.UI.Xaml.Kanban;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TimeManagementApp.Dao;
@@ -45,24 +44,20 @@ namespace TimeManagementApp.Board
         }
 
         /// <summary>
-        /// Determines the category of the task based on its properties.
+        /// Determines the category of the task based on its status.
         /// </summary>
         /// <param name="task">The task to determine the category for.</param>
         /// <returns>The category of the task.</returns>
         private string DetermineCategory(MyTask task)
         {
-            if (task.IsCompleted)
+            return task.Status switch
             {
-                return "Done";
-            }
-            else if (task.DueDateTime <= DateTime.Now)
-            {
-                return "In Progress";
-            }
-            else
-            {
-                return "To Do";
-            }
+                "Not Started" => "Not Started",
+                "In Progress" => "In Progress",
+                "Completed" => "Completed",
+                "On Hold" => "On Hold",
+                _ => "Not Started"
+            };
         }
 
         /// <summary>

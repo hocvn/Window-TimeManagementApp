@@ -135,6 +135,7 @@ namespace TimeManagementApp.ToDo
                 RepeatOption = repeatOption,
                 ReminderTime = reminderTime,
                 NoteId = SelectedTask.NoteId,
+                Status = SelectedTask.Status,
             };
         }
 

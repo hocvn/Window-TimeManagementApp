@@ -282,6 +282,7 @@ namespace TimeManagementApp.ToDo
                         RepeatOption = task.RepeatOption,
                         ReminderTime = task.ReminderTime,
                         NoteId = task.NoteId,
+                        Status = "Not Started",
                     };
 
                     tasksToAdd.Add(newTask); // Collect the new task

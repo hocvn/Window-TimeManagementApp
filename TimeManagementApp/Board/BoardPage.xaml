@@ -11,13 +11,14 @@
     xmlns:app="using:TimeManagementApp" 
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
-    <Grid>
+    <Grid x:Name="MainGrid" Loaded="MainGrid_Loaded" SizeChanged="MainGrid_SizeChanged">
         <kanban:SfKanban x:Name="kanban"
                  AutoGenerateColumns="False" 
                  ItemsSource="{Binding TaskDetails}">
-            <kanban:KanbanColumn HeaderText="To Do" Categories="To Do" />
+            <kanban:KanbanColumn HeaderText="Not Started" Categories="Not Started" />
             <kanban:KanbanColumn HeaderText="In Progress" Categories="In Progress" />
-            <kanban:KanbanColumn HeaderText="Done" Categories="Done" />
+            <kanban:KanbanColumn HeaderText="On Hold" Categories="On Hold" />
+            <kanban:KanbanColumn HeaderText="Completed" Categories="Completed" />
             <kanban:SfKanban.DataContext>
                 <local:BoardViewModel/>
             </kanban:SfKanban.DataContext>
