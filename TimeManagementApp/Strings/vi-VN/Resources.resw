@@ -651,4 +651,7 @@
   <data name="otpPageInstruction.Text" xml:space="preserve">
     <value>Chúng tôi đã gửi cho bạn mã xác nhận, hãy nhập mã xác nhận đó</value>
   </data>
+  <data name="board.Content" xml:space="preserve">
+    <value>Bảng</value>
+  </data>
 </root>

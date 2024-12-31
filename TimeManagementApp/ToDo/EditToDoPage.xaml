@@ -110,9 +110,9 @@
                             <StackPanel>
                                 <!-- Basic options -->
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton x:Uid="endOfToday" Margin="0,0,200,0" 
+                                    <RadioButton x:Uid="endOfToday" Margin="0,0,190,0" 
                                                  GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
-                                    <RadioButton x:Uid="tomorrowMorning"  Margin="0,0,200,0"
+                                    <RadioButton x:Uid="tomorrowMorning"  Margin="0,0,190,0"
                                                  GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
                                     <RadioButton x:Uid="nextWeekMorning" 
                                                  GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>

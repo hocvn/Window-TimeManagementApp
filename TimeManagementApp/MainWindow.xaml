@@ -78,6 +78,12 @@
                     x:Uid="statistics"
                     Icon="PreviewLink"
                     ToolTipService.ToolTip="Statistics"/>
+                    
+                <NavigationViewItem 
+                    x:Name="NavItem_Board"
+                    x:Uid="board"
+                    Icon="Keyboard"
+                    ToolTipService.ToolTip="Board"/>
             </NavigationView.MenuItems>
 
                 <Frame x:Name="mainFrame"/>
