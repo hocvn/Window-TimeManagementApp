@@ -161,6 +161,7 @@ namespace TimeManagementApp.ToDo
             _dao.InsertTask(task);
 
             LoadCurrentPage();
+            Tasks = _dao.GetAllTasks();
         }
 
         /// <summary>
