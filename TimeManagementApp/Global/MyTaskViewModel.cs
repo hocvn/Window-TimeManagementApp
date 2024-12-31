@@ -157,11 +157,10 @@ namespace TimeManagementApp.ToDo
         /// </summary>
         public void InsertTask(MyTask task)
         {
-            Tasks.Add(task);
             _dao.InsertTask(task);
 
-            LoadCurrentPage();
             Tasks = _dao.GetAllTasks();
+            LoadCurrentPage();
         }
 
         /// <summary>
