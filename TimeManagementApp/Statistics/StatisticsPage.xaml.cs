@@ -25,6 +25,7 @@ namespace TimeManagementApp.Statistics
             this.InitializeComponent();
             this.DataContext = _viewModel;
             SetupPieChart();
+            SetupTaskStatusPieChart();
             SetupLineChart();
             SetupTagBarChart();
             SetupFocusTimeBarChart();
@@ -35,11 +36,11 @@ namespace TimeManagementApp.Statistics
             var pieSeries = new PieSeries
             {
                 StrokeThickness = 2.0,
-                InsideLabelPosition = 0.8,
                 AngleSpan = 360,
                 StartAngle = 0,
-                OutsideLabelFormat = "{1}: {0}",
-                InsideLabelFormat = null,
+                InsideLabelFormat = "{1}",
+                InsideLabelPosition = 0.6,
+                AreInsideLabelsAngled = true,
                 TextColor = OxyColors.Black,
                 FontSize = 12
             };
@@ -53,12 +54,43 @@ namespace TimeManagementApp.Statistics
                 });
             }
 
-            var model = new PlotModel { Title = "Task Statistics", TitleFontSize = 14 };
+            var model = new PlotModel { Title = "Task Due Statistics", TitleFontSize = 14 };
             model.Series.Add(pieSeries);
-            model.PlotMargins = new OxyThickness(50, 50, 50, 50);
-
+            model.PlotMargins = new OxyThickness(35, 35, 35, 35);
             model.Background = OxyColors.Transparent;
+
             PieChartView.Model = model;
+        }
+
+        private void SetupTaskStatusPieChart()
+        {
+            var pieSeries = new PieSeries
+            {
+                StrokeThickness = 2.0,
+                AngleSpan = 360,
+                StartAngle = 0,
+                InsideLabelFormat = "{1}",
+                InsideLabelPosition = 0.6,
+                AreInsideLabelsAngled = true,
+                TextColor = OxyColors.Black,
+                FontSize = 12
+            };
+
+            foreach (var taskStat in _viewModel.TaskStatusStatistics)
+            {
+                pieSeries.Slices.Add(new PieSlice(taskStat.Name, taskStat.Value)
+                {
+                    Fill = OxyColor.FromRgb(taskStat.Color.R, taskStat.Color.G, taskStat.Color.B),
+                    IsExploded = false
+                });
+            }
+
+            var model = new PlotModel { Title = "Task Status Statistics", TitleFontSize = 14 };
+            model.Series.Add(pieSeries);
+            model.PlotMargins = new OxyThickness(35, 35, 35, 35);
+            model.Background = OxyColors.Transparent;
+
+            TaskStatusPieChartView.Model = model;
         }
 
         private void SetupLineChart()
@@ -68,7 +100,7 @@ namespace TimeManagementApp.Statistics
             var legend = new Legend
             {
                 LegendPlacement = LegendPlacement.Outside,
-                LegendPosition = LegendPosition.LeftTop,
+                LegendPosition = LegendPosition.RightTop,
                 LegendOrientation = LegendOrientation.Vertical,
                 LegendBorder = OxyColors.Black,
                 LegendBorderThickness = 1
@@ -118,7 +150,7 @@ namespace TimeManagementApp.Statistics
             var legend = new Legend
             {
                 LegendPlacement = LegendPlacement.Outside,
-                LegendPosition = LegendPosition.RightBottom,
+                LegendPosition = LegendPosition.LeftBottom,
                 LegendOrientation = LegendOrientation.Vertical,
                 LegendBorder = OxyColors.Black,
                 LegendBorderThickness = 1
