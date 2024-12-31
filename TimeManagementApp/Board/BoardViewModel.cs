@@ -1,4 +1,7 @@
-﻿using Syncfusion.UI.Xaml.Kanban;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Syncfusion.UI.Xaml.Kanban;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TimeManagementApp.Dao;
@@ -15,10 +18,6 @@ namespace TimeManagementApp.Board
             this.TaskDetails = this.GetTaskDetails();
         }
 
-        /// <summary>
-        /// Method to get the kanban model collections.
-        /// </summary>
-        /// <returns>The kanban model collections.</returns>
         private ObservableCollection<KanbanModel> GetTaskDetails()
         {
             IDao dao = new SqlDao();
@@ -31,10 +30,16 @@ namespace TimeManagementApp.Board
             {
                 taskDetail = new KanbanModel()
                 {
+                    Id = task.TaskId,
                     Title = task.TaskName,
                     Description = task.Description,
                     Category = DetermineCategory(task),
-                    Tags = DetermineTags(task)
+                    Tags = DetermineTags(task),
+                    IndicatorColorKey = DetermineKey(task),
+                    Image = new Image
+                    {
+                        Source = new BitmapImage(new Uri("ms-appx:///Assets/task.png"))
+                    }
                 };
 
                 taskDetails.Add(taskDetail);
@@ -43,11 +48,6 @@ namespace TimeManagementApp.Board
             return taskDetails;
         }
 
-        /// <summary>
-        /// Determines the category of the task based on its status.
-        /// </summary>
-        /// <param name="task">The task to determine the category for.</param>
-        /// <returns>The category of the task.</returns>
         private string DetermineCategory(MyTask task)
         {
             return task.Status switch
@@ -60,23 +60,30 @@ namespace TimeManagementApp.Board
             };
         }
 
-        /// <summary>
-        /// Determines the tags for the task.
-        /// </summary>
-        /// <param name="task">The task to determine the tags for.</param>
-        /// <returns>The list of tags for the task.</returns>
         private List<string> DetermineTags(MyTask task)
         {
             var tags = new List<string>();
+
+            tags.Add("Due: " + task.DueDateTime.ToString("MM/dd/yyyy"));
 
             if (task.IsImportant)
             {
                 tags.Add("Important");
             }
 
-            // Add more tags as needed
-
             return tags;
+        }
+
+        private object DetermineKey(MyTask task)
+        {
+            if (task.IsImportant)
+            {
+                return "Important";
+            }
+            else
+            {
+                return "Normal";
+            }
         }
     }
 }

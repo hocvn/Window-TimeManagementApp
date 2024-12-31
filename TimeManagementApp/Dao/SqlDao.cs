@@ -601,6 +601,44 @@ namespace TimeManagementApp.Dao
             return result;
         }
 
+        public MyTask GetTaskById(int id)
+        {
+            var connection = CreateConnection();
+            var result = new MyTask();
+
+            var sql = @"
+                select task.task_id, task.name, task.due_date, task.description, task.completed, 
+                       task.important, task.repeat_option, task.reminder, task.note_id, task.status
+                from [TASK] task
+                where task.task_id = @task_id and task.username = @username
+            ";
+
+            var command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@task_id", System.Data.SqlDbType.Int).Value = id;
+            command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar).Value = User.Username;
+
+            var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                result = new MyTask
+                {
+                    TaskId = reader.GetInt32(0),
+                    TaskName = reader.GetString(1),
+                    DueDateTime = reader.GetDateTime(2),
+                    Description = reader.GetString(3),
+                    IsCompleted = reader.GetBoolean(4),
+                    IsImportant = reader.GetBoolean(5),
+                    RepeatOption = reader.IsDBNull(6) ? null : reader.GetString(6),
+                    ReminderTime = reader.GetDateTime(7),
+                    NoteId = reader.IsDBNull(8) ? -1 : reader.GetInt32(8),
+                    Status = reader.GetString(9)
+                };
+            }
+
+            connection.Close();
+            return result;
+        }
+
 
         // Timer ------------------------------------------------------------------------------------
 

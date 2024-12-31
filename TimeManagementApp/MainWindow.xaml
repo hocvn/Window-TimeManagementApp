@@ -55,10 +55,10 @@
                             ToolTipService.ToolTip="Todo"/>
 
                     <NavigationViewItem 
-                            x:Name="NavItem_Timer"
-                            x:Uid="time"
-                            Icon="Clock"
-                            ToolTipService.ToolTip="Time"/>
+                            x:Name="NavItem_Board"
+                            x:Uid="board"
+                            Icon="ViewAll"
+                            ToolTipService.ToolTip="Board"/>
 
                     <NavigationViewItem 
                             x:Name="NavItem_Calendar"
@@ -67,24 +67,25 @@
                             ToolTipService.ToolTip="Calendar"/>
 
                     <NavigationViewItem 
+                            x:Name="NavItem_Timer"
+                            x:Uid="time"
+                            Icon="Clock"
+                            ToolTipService.ToolTip="Time"/>
+
+                    <NavigationViewItem 
                             x:Name="NavItem_Music"
                             x:Uid="music" 
                             Icon="Audio" 
                             ToolTipService.ToolTip="Music" 
                             Tag="MusicPage"/>
 
-                <NavigationViewItem 
-                    x:Name="NavItem_Statistics"
-                    x:Uid="statistics"
-                    Icon="PreviewLink"
-                    ToolTipService.ToolTip="Statistics"/>
-                    
-                <NavigationViewItem 
-                    x:Name="NavItem_Board"
-                    x:Uid="board"
-                    Icon="Keyboard"
-                    ToolTipService.ToolTip="Board"/>
-            </NavigationView.MenuItems>
+                    <NavigationViewItem 
+                        x:Name="NavItem_Statistics"
+                        x:Uid="statistics"
+                        Icon="PreviewLink"
+                        ToolTipService.ToolTip="Statistics"/>
+                   
+                </NavigationView.MenuItems>
 
                 <Frame x:Name="mainFrame"/>
             </NavigationView>

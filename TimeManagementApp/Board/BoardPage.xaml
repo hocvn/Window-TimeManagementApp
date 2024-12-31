@@ -13,15 +13,25 @@
 
     <Grid x:Name="MainGrid" Loaded="MainGrid_Loaded" SizeChanged="MainGrid_SizeChanged">
         <kanban:SfKanban x:Name="kanban"
-                 AutoGenerateColumns="False" 
-                 ItemsSource="{Binding TaskDetails}">
+                         AutoGenerateColumns="False" 
+                         ItemsSource="{Binding TaskDetails}"
+                         CardTapped="OnKanbanCardTapped"
+                         CardDragStarting="OnKanbanCardDragStarting"
+                         CardDrop="OnKanbanCardDrop">
+           
             <kanban:KanbanColumn HeaderText="Not Started" Categories="Not Started" />
             <kanban:KanbanColumn HeaderText="In Progress" Categories="In Progress" />
             <kanban:KanbanColumn HeaderText="On Hold" Categories="On Hold" />
             <kanban:KanbanColumn HeaderText="Completed" Categories="Completed" />
+            
             <kanban:SfKanban.DataContext>
                 <local:BoardViewModel/>
             </kanban:SfKanban.DataContext>
+
+            <kanban:SfKanban.IndicatorColorPalette>
+                <kanban:KanbanColorMapping Key="Important" Color="Red"/>
+                <kanban:KanbanColorMapping Key="Normal" Color="Blue"/>
+            </kanban:SfKanban.IndicatorColorPalette>
         </kanban:SfKanban>
     </Grid>
 </Page>
