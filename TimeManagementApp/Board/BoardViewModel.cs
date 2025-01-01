@@ -23,10 +23,24 @@ namespace TimeManagementApp.Board
             IDao dao = new SqlDao();
             var tasks = dao.GetAllTasks();
 
+            // Convert to List to sort
+            var taskList = new List<MyTask>(tasks);
+
+            // Sort tasks to ensure 'Important' tasks come before 'Normal' tasks
+            taskList.Sort((task1, task2) =>
+            {
+                if (task1.IsImportant && !task2.IsImportant)
+                    return -1;
+                else if (!task1.IsImportant && task2.IsImportant)
+                    return 1;
+                else
+                    return 0;
+            });
+
             var taskDetails = new ObservableCollection<KanbanModel>();
             KanbanModel taskDetail;
 
-            foreach (var task in tasks)
+            foreach (var task in taskList)
             {
                 taskDetail = new KanbanModel()
                 {
@@ -66,9 +80,9 @@ namespace TimeManagementApp.Board
 
             tags.Add("Due: " + task.DueDateTime.ToString("MM/dd/yyyy"));
 
-            if (task.IsImportant)
+            if (task.RepeatOption == "Daily" || task.RepeatOption == "Weekly" || task.RepeatOption == "Monthly")
             {
-                tags.Add("Important");
+                tags.Add(task.RepeatOption);
             }
 
             return tags;
