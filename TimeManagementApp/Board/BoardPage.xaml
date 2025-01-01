@@ -11,13 +11,15 @@
     xmlns:app="using:TimeManagementApp" 
     Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
 
-    <Grid x:Name="MainGrid" Loaded="MainGrid_Loaded" SizeChanged="MainGrid_SizeChanged">
+    <Grid x:Name="MainGrid" Loaded="MainGrid_Loaded" SizeChanged="MainGrid_SizeChanged" Background="Transparent">
         <kanban:SfKanban x:Name="kanban"
                          AutoGenerateColumns="False" 
                          ItemsSource="{Binding TaskDetails}"
+                         SwimlaneKey="IndicatorColorKey"
                          CardTapped="OnKanbanCardTapped"
                          CardDragStarting="OnKanbanCardDragStarting"
-                         CardDrop="OnKanbanCardDrop">
+                         CardDrop="OnKanbanCardDrop"
+                         Background="Transparent">
            
             <kanban:KanbanColumn HeaderText="Not Started" Categories="Not Started" />
             <kanban:KanbanColumn HeaderText="In Progress" Categories="In Progress" />

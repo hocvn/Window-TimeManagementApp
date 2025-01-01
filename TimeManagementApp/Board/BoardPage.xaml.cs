@@ -75,9 +75,11 @@ namespace TimeManagementApp.Board
         private void OnKanbanCardDrop(object sender, KanbanCardDropEventArgs e)
         {
             var targetStatus = e.TargetColumn.Categories.ToString();
+            var targetSwimlane = e.TargetSwimlane.ToString();
 
             CurrentDraggingTask.Status = targetStatus;
             CurrentDraggingTask.IsCompleted = (targetStatus == "Completed");
+            CurrentDraggingTask.IsImportant = (targetSwimlane == "Important");
 
             MyTaskViewModel.Instance.UpdateTask(CurrentDraggingTask);
         }
