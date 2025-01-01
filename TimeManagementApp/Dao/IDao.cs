@@ -50,6 +50,7 @@ namespace TimeManagementApp.Dao
         ObservableCollection<MyTask> GetTasksForDate(DateTime date);
         ObservableCollection<MyTask> GetTodayTask();
         ObservableCollection<MyTask> GetRepeatingTasks();
+        MyTask GetTaskById(int id);
 
 
         // Timer ----------------------------------------------

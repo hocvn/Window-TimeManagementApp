@@ -501,6 +501,11 @@ namespace TimeManagementApp.Dao
             return result;
         }
 
+        public MyTask GetTaskById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
 
         // Timer ------------------------------------------------------------------------------------
         public void SaveSession(Session session)

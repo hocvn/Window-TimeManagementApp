@@ -651,4 +651,7 @@
   <data name="otpPageInstruction.Text" xml:space="preserve">
     <value>We have sent you an email code, please enter this authentication code</value>
   </data>
+  <data name="board.Content" xml:space="preserve">
+    <value>Board</value>
+  </data>
 </root>

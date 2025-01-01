@@ -28,7 +28,8 @@ exports.up = async function(knex) {
             note_id INT NULL,  -- Allow NULL
             FOREIGN KEY (note_id) REFERENCES NOTE(note_id) ON DELETE SET NULL, 
             reminder DATETIME,
-            important BIT
+            important BIT,
+            status NVARCHAR(30)  -- New status column
         );
 
         CREATE TABLE SESSION (

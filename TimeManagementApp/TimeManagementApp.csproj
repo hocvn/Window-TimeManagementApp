@@ -48,6 +48,7 @@
     <None Remove="Assets\songs\chill_song_4.mp3" />
     <None Remove="Assets\songs\chill_song_5.mp3" />
     <None Remove="BlankPage.xaml" />
+    <None Remove="Board\BoardPage.xaml" />
     <None Remove="Calendar\CalendarPage.xaml" />
     <None Remove="Dao\appsettings.json" />
     <None Remove="Home\HomePage.xaml" />
@@ -101,6 +102,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="Quartz" Version="3.13.1" />
+    <PackageReference Include="Syncfusion.Kanban.WinUI" Version="28.1.36" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -239,6 +241,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PRIResource Remove="Strings\vi-VN\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Board\BoardPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Timer\SettingsTimerPage.xaml">

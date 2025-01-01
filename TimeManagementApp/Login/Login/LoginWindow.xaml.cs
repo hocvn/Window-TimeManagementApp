@@ -82,6 +82,14 @@ namespace TimeManagementApp
                 return;
             }
             // Username and password are correct
+            if (rememberCheckBox.IsChecked == true)
+            {
+                StorageHelper.SaveSetting("rememberUsername", ViewModel.Username);
+            }
+            else
+            {
+                StorageHelper.RemoveSetting("rememberUsername");
+            }
             ViewModel.ErrorMessage = "";
 
             App.NavigateWindow(new MainWindow());

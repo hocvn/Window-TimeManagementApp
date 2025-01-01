@@ -88,6 +88,7 @@ namespace TimeManagementApp.ToDo
                     Description = "",
                     NoteId = -1,
                     RepeatOption = "",
+                    Status = "Not Started",
                 };
 
                 ViewModel.InsertTask(newTask);
@@ -156,6 +157,7 @@ namespace TimeManagementApp.ToDo
             if (sender is AppBarButton button && button.CommandParameter is MyTask task)
             {
                 task.IsCompleted = (task.IsCompleted == true) ? false : true;
+                task.Status = (task.IsCompleted == true) ? "Completed" : "Not Started";
                 ViewModel.UpdateTask(task);
             }
         }

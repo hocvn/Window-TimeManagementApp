@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using TimeManagementApp.Board;
 using TimeManagementApp.Calendar;
 using TimeManagementApp.Dao;
 using TimeManagementApp.Helper;
@@ -135,6 +136,7 @@ namespace TimeManagementApp.ToDo
                 RepeatOption = repeatOption,
                 ReminderTime = reminderTime,
                 NoteId = SelectedTask.NoteId,
+                Status = SelectedTask.Status,
             };
         }
 
@@ -217,6 +219,10 @@ namespace TimeManagementApp.ToDo
             else if (MainWindow.CurrentNavigationViewItem == "HomePage")
             {
                 MainWindow.NavigationService.Navigate(typeof(HomePage));
+            }
+            else if (MainWindow.CurrentNavigationViewItem == "BoardPage")
+            {
+                MainWindow.NavigationService.Navigate(typeof(BoardPage));
             }
             else
             {

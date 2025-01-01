@@ -19,6 +19,7 @@ namespace TimeManagementApp.ToDo
         public string RepeatOption { get; set; }
         public DateTime ReminderTime { get; set; }
         public int NoteId { get; set; }
+        public string Status { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,6 +36,7 @@ namespace TimeManagementApp.ToDo
                 RepeatOption = this.RepeatOption,
                 ReminderTime = this.ReminderTime,
                 NoteId = this.NoteId,
+                Status = this.Status,
             };
         }
 
@@ -59,7 +61,8 @@ namespace TimeManagementApp.ToDo
                    t1.IsImportant == t2.IsImportant &&
                    t1.RepeatOption == t2.RepeatOption &&
                    RoundToNearestMinute(t1.ReminderTime) == RoundToNearestMinute(t2.ReminderTime) &&
-                   t1.NoteId == t2.NoteId;
+                   t1.NoteId == t2.NoteId &&
+                   t1.Status == t2.Status;
         }
 
     }
