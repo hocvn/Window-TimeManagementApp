@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Text;
-using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -20,10 +18,12 @@ using TimeManagementApp.Timer;
 using Microsoft.UI.Xaml.Media;
 using Windows.Foundation;
 using OfficeOpenXml;
-using System.Threading;
 
 namespace TimeManagementApp.Dao
 {
+    /// <summary>
+    /// This class is used to interact with the sample database.
+    /// </summary>
     public class MockDao : IDao
     {
         public MockDao()

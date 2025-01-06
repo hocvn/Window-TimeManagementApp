@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TimeManagementApp.Services
+﻿namespace TimeManagementApp.Services
 {
+    /// <summary>
+    /// This class is responsible for managing the user's information.
+    /// </summary>
     public class UserSingleton
     {
         private static UserSingleton _instance = null;

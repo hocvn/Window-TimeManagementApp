@@ -1,3 +1,9 @@
+# Thông tin cơ bản về database  
+
+ # Công cụ hỗ trợ database
+- SQLServer
+- Docker 
+ 
  # Cách chạy database 
 - Tải Docker desktop (nếu chạy commandline thì tải trên terminal)
 - Chạy container: Docker desktop -> chạy container hoặc command line ```docker start sqlcontainer```
@@ -22,3 +28,4 @@ Password: password (nằm ở file khác)
 
 # Tham khảo 
 https://medium.com/agilix/docker-express-running-a-local-sql-server-express-204890cff699
+https://tdquang7.notion.site/T-o-migration-cho-database-12d8139672a080cabe27d29f5da82c7f?pvs=4

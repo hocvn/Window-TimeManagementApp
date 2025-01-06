@@ -3,6 +3,9 @@ using Windows.Media.Playback;
 
 namespace TimeManagementApp.Services
 {
+    /// <summary>
+    /// This class is responsible for managing the music player.
+    /// </summary>
     public class MusicService
     {
         public static readonly MediaPlayer mediaPlayer;

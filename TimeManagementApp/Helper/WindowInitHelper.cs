@@ -1,13 +1,12 @@
 ﻿using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TimeManagementApp.Helper
 {
+    /// <summary>
+    /// This class is used to initialize the window size, position, and title.
+    /// </summary>
     internal class WindowInitHelper
     {
         internal static void SetWindowSize(Window window)

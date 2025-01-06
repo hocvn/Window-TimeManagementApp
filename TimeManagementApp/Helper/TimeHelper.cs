@@ -3,6 +3,9 @@ using System;
 
 namespace TimeManagementApp.Helper
 {
+    /// <summary>
+    /// This class is used to get the current time and date.
+    /// </summary>
     class TimeHelper
     {
         public static string GetTimeString()

@@ -4,8 +4,6 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using TimeManagementApp.Board;
 using TimeManagementApp.Calendar;
 using TimeManagementApp.Dao;
@@ -16,7 +14,7 @@ using TimeManagementApp.Note;
 namespace TimeManagementApp.ToDo
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page allows users to edit a task.
     /// </summary>
     public sealed partial class EditToDoPage : Page, INotifyPropertyChanged
     {

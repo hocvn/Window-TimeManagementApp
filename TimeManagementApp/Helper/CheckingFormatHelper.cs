@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace TimeManagementApp.Helper
 {
+    /// <summary>
+    /// This class is used to check the format of the input data.
+    /// </summary>
     public class CheckingFormatHelper
     {
         const int MAX_LENGTH = 50;

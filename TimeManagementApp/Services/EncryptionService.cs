@@ -6,6 +6,10 @@ using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Services
 {
+    /// <summary>
+    /// This class provides encryption and decryption services.
+    /// </summary>
+    
     public class EncryptionService
     {
         public (string EncryptedTextBase64, RSAParameters PrivateKey) Encrypt(string text)

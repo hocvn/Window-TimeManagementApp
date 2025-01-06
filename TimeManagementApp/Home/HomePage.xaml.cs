@@ -15,7 +15,7 @@ using System.IO;
 namespace TimeManagementApp.Home
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page is responsible for displaying the home page, including some today tasks and notes.
     /// </summary>
     public sealed partial class HomePage : Page
     {

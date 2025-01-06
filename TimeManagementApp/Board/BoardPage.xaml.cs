@@ -1,13 +1,14 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Syncfusion.UI.Xaml.Kanban;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using TimeManagementApp.Dao;
 using TimeManagementApp.ToDo;
 
 namespace TimeManagementApp.Board
 {
+    /// <summary>
+    /// This is the main page of the Board feature, responsible for displaying all tasks follow Kanban.
+    /// </summary>
     public sealed partial class BoardPage : Page
     {
         public MyTask CurrentDraggingTask { get; set; }
