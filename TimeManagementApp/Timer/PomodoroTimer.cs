@@ -1,22 +1,38 @@
-﻿using ABI.Windows.UI;
-using Microsoft.UI;
+﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.AppNotifications;
-using Microsoft.Windows.AppNotifications.Builder;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Notifications;
+using System.IO;
+using TimeManagementApp.Dao;
 
 namespace TimeManagementApp.Timer
 {
     public class PomodoroTimer : INotifyPropertyChanged
     {
+        // singleton
+        private static PomodoroTimer _instance;
+        private static readonly object _lock = new object();
+
+        public static PomodoroTimer Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new PomodoroTimer(new Settings(), TimerType.FocusTime);
+                    }
+                    return _instance;
+                }
+            }
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         // Basic properties
         public DispatcherTimer Timer { get; set; }
@@ -61,8 +77,8 @@ namespace TimeManagementApp.Timer
             ResetTimer();
         }
 
-        // Design Timer's stroke
 
+        // Design Timer's stroke
         public int StrokeThickness = 5;
 
         public DoubleCollection StrokeDashArray
@@ -97,8 +113,8 @@ namespace TimeManagementApp.Timer
             }
         }
 
-        // start, pause, reset the timer
 
+        // start, pause, reset the timer
         public void StartTimer()
         {
             if (!IsRunning)
@@ -131,38 +147,26 @@ namespace TimeManagementApp.Timer
                 if (Minutes == 0)
                 {
                     // timer end
-
                     if (CurrentSettings.IsNotificationOn == true)
                     {
                         // show notifications toast & sound
-
-                        string title = "Pomodoro Completed!";
-                        string message = "Time for a break!";
-
-                        if (CurrentType != TimerType.FocusTime)
-                        {
-                            title = "Break time ended!";
-                            message = "Time to focus!";
-                        }
-
-                        string toastXml = $@"
-                            <toast>
-                                <visual>
-                                    <binding template='ToastGeneric'>
-                                        <text>{title}</text>
-                                        <text>{message}</text>
-                                    </binding>
-                                </visual>
-                                <audio src='ms-appx:///Assets/notification.wav'/>
-                            </toast>";
-
-                        var toastDoc = new Windows.Data.Xml.Dom.XmlDocument();
-                        toastDoc.LoadXml(toastXml);
-
-                        var toast = new ToastNotification(toastDoc);
-                        ToastNotificationManager.CreateToastNotifier().Show(toast);
+                        ShowNotification();
                     }
-                    
+
+                    // save session
+                    var session = new Session
+                    {
+                        Duration = (CurrentType == TimerType.FocusTime) ? CurrentSettings.FocusTimeMinutes * 60 :
+                            (CurrentType == TimerType.ShortBreak) ? CurrentSettings.ShortBreakMinutes * 60 : CurrentSettings.LongBreakMinutes * 60,
+                        Timestamp = DateTime.UtcNow,
+                        Tag = CurrentSettings.Tag,
+                        Type = (CurrentType == TimerType.FocusTime) ? "Focus" : "Break"
+                    };
+
+
+                    IDao dao = new SqlDao();
+                    dao.SaveSession(session);
+
                     SwitchToNextTimerType();
                     return;
                 }
@@ -219,6 +223,53 @@ namespace TimeManagementApp.Timer
                     Minutes = CurrentSettings.LongBreakMinutes;
                     Seconds = 0;
                     break;
+            }
+        }
+
+
+        private void ShowNotification()
+        {
+            string title = "Pomodoro Completed!";
+            string message = "Time for a break!";
+
+            if (CurrentType != TimerType.FocusTime)
+            {
+                title = "Break time ended!";
+                message = "Time to focus!";
+            }
+
+            string toastXml = $@"
+                            <toast>
+                                <visual>
+                                    <binding template='ToastGeneric'>
+                                        <text>{title}</text>
+                                        <text>{message}</text>
+                                    </binding>
+                                </visual>
+                                <audio src='ms-appx:///Assets/notification.wav'/>
+                            </toast>";
+
+            var toastDoc = new Windows.Data.Xml.Dom.XmlDocument();
+            toastDoc.LoadXml(toastXml);
+
+            var notification = new AppNotification(toastDoc.GetXml());
+            AppNotificationManager.Default.Show(notification);
+        }
+
+
+        public int TagComboBoxIndex
+        {
+            get
+            {
+                switch (CurrentSettings.Tag)
+                {
+                    case "Working" or "Đọc":
+                        return 0;
+                    case "Studying" or "Học":
+                        return 1;
+                    default:
+                        return 2;
+                }
             }
         }
     }

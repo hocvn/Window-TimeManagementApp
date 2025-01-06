@@ -1,21 +1,40 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using TimeManagementApp.Helper;
+using TimeManagementApp.Services;
 
 namespace TimeManagementApp.Login.ForgotPassword
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page is responsible for sending OTP to user's email and check this OTP to identify user
     /// </summary>
     public sealed partial class OTPPage : Page
     {
-        public string Email { get; set; }
-        public string Otp { get; set; }
+        public class OtpViewModel : INotifyPropertyChanged
+        {
+            public string Email { get; set; }
+            public string Otp { get; set; }
+            public string ErrorMessage { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public bool ValidateOtp(string otp)
+            {
+                return otp == Otp;
+            }
+        }
+
+        public OtpViewModel ViewModel { get; set; } = new OtpViewModel();
+
         public OTPPage()
         {
             this.InitializeComponent();
-            Otp = GenerateOtp(6);
+            ViewModel.ErrorMessage = "";
+            ViewModel.Otp = OtpService.GenerateOtp();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -24,71 +43,50 @@ namespace TimeManagementApp.Login.ForgotPassword
             string email = e.Parameter as string;
             if (!string.IsNullOrEmpty(email))
             {
-                this.Email = email;
+                ViewModel.Email = email;
             }
+            _ = SendOtpEmailAsync();
         }
 
-        void Page_Loaded(object sender, RoutedEventArgs e)
+        public async Task SendOtpEmailAsync()
         {
-            //Otp = GenerateOtp(6);
-            //myTextBlock.Text = $"Please enter this code '{Otp}' below.";
-            //SendOtpEmail(this.Email, Otp);
-        }
+            var emailService = new EmailService();
+            string recipientEmail = ViewModel.Email;
+            string otp = ViewModel.Otp;
 
-        public string GenerateOtp(int length)
-        {
-            Random random = new Random();
-            string otp = "";
-            for (int i = 0; i < length; i++)
+            try
             {
-                otp += random.Next(0, 10).ToString();
+                await emailService.SendOtpAsync(recipientEmail, otp);
             }
-            return otp;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending OTP: {ex.Message}");
+            }
         }
-
-        //public void SendOtpEmail(string recipientEmail, string otp)
-        //{
-        //    var smtpClient = new SmtpClient("smtp.gmail.com")
-        //    {
-        //        Port = 587,
-        //        Credentials = new NetworkCredential("hocdothai2004@gmail.com", "your-app-password"),
-        //        EnableSsl = true,
-        //    };
-
-        //    var mailMessage = new MailMessage
-        //    {
-        //        From = new MailAddress("hocdothai2004@gmail.com"),
-        //        Subject = "Your OTP Code",
-        //        Body = $"Your OTP code is: {otp}",
-        //        IsBodyHtml = true,
-        //    };
-        //    mailMessage.To.Add(recipientEmail);
-
-        //    smtpClient.Send(mailMessage);
-        //}
 
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            //Frame.Navigate(typeof(ForgotPasswordPage1));
             Frame.GoBack();
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            if (otpTextBox.Text == Otp)
+            var otp = otpTextBox.Text;
+            if (ViewModel.ValidateOtp(otp))
             {
-                Frame.Navigate(typeof(ResetPasswordPage), this.Email);
+                Frame.Navigate(typeof(ResetPasswordPage), ViewModel.Email);
             }
             else
             {
-                errorMessage.Text = "Invalid OTP code";
+                ViewModel.ErrorMessage = "Invalid_code".GetLocalized();
+                _ = SendOtpEmailAsync();
             }
         }
 
         private void OtpTextBox_Focus(object sender, RoutedEventArgs e)
         {
-            errorMessage.Text = "";
+            ViewModel.ErrorMessage = "";
         }
     }
 }

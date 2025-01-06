@@ -1,0 +1,1 @@
+Chú ý: để chạy được seed cần để set username có trong database nếu không sẽ bị lỗi, vậy nên trước khi chạy seed:run thì hãy tạo 1 tài khoản trước và đặt username vào trong file username.txt, ví dụ trong username.txt là "hoc", vậy username của tài khoản được tạo dữ liệu là "hoc".

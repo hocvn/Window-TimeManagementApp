@@ -1,0 +1,657 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="backButtons.Content" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="email.PlaceholderText" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="signIn.Text" xml:space="preserve">
+    <value>SIGN IN</value>
+  </data>
+  <data name="signInButton.Content" xml:space="preserve">
+    <value>SIGN IN</value>
+  </data>
+  <data name="password.PlaceholderText" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="newPassword.PlaceholderText" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="remember.Content" xml:space="preserve">
+    <value>Remember</value>
+  </data>
+  <data name="signUp.Text" xml:space="preserve">
+    <value>SIGN UP</value>
+  </data>
+  <data name="signUpButton.Content" xml:space="preserve">
+    <value>SIGN UP</value>
+  </data>
+  <data name="username.PlaceholderText" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="nextButton.Content" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="recoverYourAccount.Text" xml:space="preserve">
+    <value>RECOVER YOUR ACCOUNT</value>
+  </data>
+  <data name="forgotPassword.Content" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="createNewAccount.Content" xml:space="preserve">
+    <value>Create new account</value>
+  </data>
+  <data name="reenterPassword.PlaceholderText" xml:space="preserve">
+    <value>Re-enter password</value>
+  </data>
+  <data name="emailPageIns.Text" xml:space="preserve">
+    <value>Enter your email so we can help you recover</value>
+  </data>
+  <data name="otp.PlaceholderText" xml:space="preserve">
+    <value>OTP</value>
+  </data>
+  <data name="forgotPasswordPageIns.Text" xml:space="preserve">
+    <value>Create your new password</value>
+  </data>
+  <data name="resetPasswordButton.Content" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="homeTitle.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="home.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="note.Content" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="noteTitle.Text" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="todo.Content" xml:space="preserve">
+    <value>Todo</value>
+  </data>
+  <data name="time.Content" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="timeTitle.Text" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="calendar.Content" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="group.Content" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="statistics.Content" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="setting.Text" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="search.PlaceholderText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="todayTasks.Text" xml:space="preserve">
+    <value>Today tasks</value>
+  </data>
+  <data name="taskTitle.Text" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="addNote.PlaceholderText" xml:space="preserve">
+    <value>Add a new note</value>
+  </data>
+  <data name="addNoteButton.Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="startButton.Label" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="pauseButton.Label" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="resetButton.Label" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="skipThisSessionButton.Label" xml:space="preserve">
+    <value>Skip this seesion</value>
+  </data>
+  <data name="changeSettingButton.Label" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="saveButton.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="timerSettingTitle.Text" xml:space="preserve">
+    <value>Timer setting</value>
+  </data>
+  <data name="backButton.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="focusTimeMinutes.Header" xml:space="preserve">
+    <value>Focus time minute</value>
+  </data>
+  <data name="shortBreakMinutes.Header" xml:space="preserve">
+    <value>Short break minutes</value>
+  </data>
+  <data name="longBreakMinutes.Header" xml:space="preserve">
+    <value>Long break minutes</value>
+  </data>
+  <data name="timerNotification.Header" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="selectTag.Header" xml:space="preserve">
+    <value>Select tag</value>
+  </data>
+  <data name="working.Content" xml:space="preserve">
+    <value>Working</value>
+  </data>
+  <data name="studying.Content" xml:space="preserve">
+    <value>Studying</value>
+  </data>
+  <data name="reading.Content" xml:space="preserve">
+    <value>Reading</value>
+  </data>
+  <data name="goodMorning" xml:space="preserve">
+    <value>Good morning</value>
+  </data>
+  <data name="goodAfternoon" xml:space="preserve">
+    <value>Good afternoon</value>
+  </data>
+  <data name="goodEvening" xml:space="preserve">
+    <value>Good evening</value>
+  </data>
+  <data name="Password_must_contain_at_least_one_uppercase_letter" xml:space="preserve">
+    <value>Password must contain at least one uppercase letter</value>
+  </data>
+  <data name="Password_must_contain_at_least_one_digit" xml:space="preserve">
+    <value>Password must contain at least one digit</value>
+  </data>
+  <data name="Password_must_contain_at_least_one_lowercase_letter" xml:space="preserve">
+    <value>Password must contain at least one lowercase letter</value>
+  </data>
+  <data name="Please_fill_out_your_email" xml:space="preserve">
+    <value>Please fill out your email</value>
+  </data>
+  <data name="Please_fill_out_a_valid_email_address_format" xml:space="preserve">
+    <value>Please fill out a valid email address format</value>
+  </data>
+  <data name="Password_confirmation_does_not_match_the_password" xml:space="preserve">
+    <value>Password confirmation does not match </value>
+  </data>
+  <data name="Please_fill_out_your_username" xml:space="preserve">
+    <value>Please fill out your username</value>
+  </data>
+  <data name="Username_must_have_characters_long_less_than" xml:space="preserve">
+    <value>Username must have characters less than</value>
+  </data>
+  <data name="Pasword_must_have_characters_long_more_than" xml:space="preserve">
+    <value>Password must have characters more than</value>
+  </data>
+  <data name="Pasword_must_have_characters_less_more_than" xml:space="preserve">
+    <value>Password must have characters less than</value>
+  </data>
+  <data name="Invalid_username_or_password" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="Please_enter_both_username_and_password" xml:space="preserve">
+    <value>Please enter both username and password</value>
+  </data>
+  <data name="Username_is_already_in_use" xml:space="preserve">
+    <value>Username is already in use</value>
+  </data>
+  <data name="Email_is_already_in_use" xml:space="preserve">
+    <value>Email is already in use</value>
+  </data>
+  <data name="SUCCESSFUL" xml:space="preserve">
+    <value>SUCCESSFUL</value>
+  </data>
+  <data name="Your_account_have_been_created" xml:space="preserve">
+    <value>Your account has been created</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="Email_you_entered_have_not_registered_yet" xml:space="preserve">
+    <value>Email you entered have not registered yet</value>
+  </data>
+  <data name="Your_password_has_been_reset" xml:space="preserve">
+    <value>Your password has been reset</value>
+  </data>
+  <data name="Invalid_code" xml:space="preserve">
+    <value>Invalid code, we will send you a new code</value>
+  </data>
+  <data name="Please_enter_this_code" xml:space="preserve">
+    <value>Please enter this code</value>
+  </data>
+  <data name="deleteNoteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="fontColor.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Font color</value>
+  </data>
+  <data name="boldButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bold</value>
+  </data>
+  <data name="italicButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Italic</value>
+  </data>
+  <data name="underlineButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="backNoteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="saveNoteButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Would_you_like_to_save_the_recent_note" xml:space="preserve">
+    <value>Would you like to save the recent note?</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Would_you_like_to_save" xml:space="preserve">
+    <value>Would you like to save?</value>
+  </data>
+  <data name="Delete_note" xml:space="preserve">
+    <value>Delete note</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_remove_this_note" xml:space="preserve">
+    <value>Are you sure you want to remove this note?</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Note_Name_cannot_be_empty" xml:space="preserve">
+    <value>Note name cannot be empty</value>
+  </data>
+  <data name="settingsTitle.Text" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="openLinkButton.Content" xml:space="preserve">
+    <value>Open link</value>
+  </data>
+  <data name="learnHowToUseApp.Content" xml:space="preserve">
+    <value>Learn how to use app</value>
+  </data>
+  <data name="supportTitle.Header" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="country.Header" xml:space="preserve">
+    <value>Language and region</value>
+  </data>
+  <data name="country.Description" xml:space="preserve">
+    <value>Language and time correspond to your region</value>
+  </data>
+  <data name="backgroundTheme.Header" xml:space="preserve">
+    <value>Background theme</value>
+  </data>
+  <data name="backgroundTheme.Description" xml:space="preserve">
+    <value>Choose your favorite background theme</value>
+  </data>
+  <data name="samplesTheme.Header" xml:space="preserve">
+    <value>Sample theme</value>
+  </data>
+  <data name="orYouCanUseYourOwnBackground.Header" xml:space="preserve">
+    <value>Or you can choose your own background theme</value>
+  </data>
+  <data name="database.Header" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="database.Description" xml:space="preserve">
+    <value>Choose database you want to connect</value>
+  </data>
+  <data name="account.Header" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="account.Description" xml:space="preserve">
+    <value>Reset password, log out</value>
+  </data>
+  <data name="previousButton.Content" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="fillInTheSpaceAndPressEnterToAddNewTask.PlaceholderText" xml:space="preserve">
+    <value>Fill in the space and press Enter to add new task</value>
+  </data>
+  <data name="insertTaskDueDateTime.PlaceholderText" xml:space="preserve">
+    <value>Due date</value>
+  </data>
+  <data name="updateTaskButton.Label" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="updateTask.Text" xml:space="preserve">
+    <value>Update task</value>
+  </data>
+  <data name="taskName.Text" xml:space="preserve">
+    <value>Task name</value>
+  </data>
+  <data name="startTime.Text" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="dueTime.Text" xml:space="preserve">
+    <value>Due time</value>
+  </data>
+  <data name="remindMe.Text" xml:space="preserve">
+    <value>Remind me</value>
+  </data>
+  <data name="laterToday.Content" xml:space="preserve">
+    <value>Later today</value>
+  </data>
+  <data name="tomorrow.Content" xml:space="preserve">
+    <value>Tomorrow</value>
+  </data>
+  <data name="nextWeek.Content" xml:space="preserve">
+    <value>Next week</value>
+  </data>
+  <data name="pickDateAndTime.Content" xml:space="preserve">
+    <value>Pick Date and Time</value>
+  </data>
+  <data name="repeat.Text" xml:space="preserve">
+    <value>Repeat</value>
+  </data>
+  <data name="addFile.Text" xml:space="preserve">
+    <value>Add file</value>
+  </data>
+  <data name="addNoteInTask.Text" xml:space="preserve">
+    <value>Add note</value>
+  </data>
+  <data name="browseTemplate.Content" xml:space="preserve">
+    <value>Browse Template</value>
+  </data>
+  <data name="sortByDueDate.Content" xml:space="preserve">
+    <value>Sort by Due Date</value>
+  </data>
+  <data name="sortByName.Content" xml:space="preserve">
+    <value>Sort by Name</value>
+  </data>
+  <data name="allTasks.Content" xml:space="preserve">
+    <value>All Tasks</value>
+  </data>
+  <data name="uncompletedTasks.Content" xml:space="preserve">
+    <value>Uncompleted Tasks</value>
+  </data>
+  <data name="completedTasks.Content" xml:space="preserve">
+    <value>Completed Tasks</value>
+  </data>
+  <data name="importantTasks.Content" xml:space="preserve">
+    <value>Important Tasks</value>
+  </data>
+  <data name="searchTextBoxPlaceHolder.PlaceholderText" xml:space="preserve">
+    <value>Type Search term and press Enter ...</value>
+  </data>
+  <data name="previousPage.Content" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="nextPage.Content" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="descriptionTitle.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="descriptionTextBox.PlaceholderText" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="nextWeekMorning.Content" xml:space="preserve">
+    <value>Next week morning</value>
+  </data>
+  <data name="endOfToday.Content" xml:space="preserve">
+    <value>End of Today</value>
+  </data>
+  <data name="tomorrowMorning.Content" xml:space="preserve">
+    <value>Tomorrow morning</value>
+  </data>
+  <data name="remindMeTitle.Header" xml:space="preserve">
+    <value>Remind me</value>
+  </data>
+  <data name="repeatTitle.Header" xml:space="preserve">
+    <value>Repeat</value>
+  </data>
+  <data name="addNoteTitle.Header" xml:space="preserve">
+    <value>Add note</value>
+  </data>
+  <data name="repeatOption_None.Content" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="repeatOption_Daily.Content" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="repeatOption_Weekly.Content" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
+  <data name="repeatOption_Monthly.Content" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="music.Content" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="animationBackground.PlaceholderText" xml:space="preserve">
+    <value>Choose background</value>
+  </data>
+  <data name="musicComboBox.PlaceholderText" xml:space="preserve">
+    <value>Choose music</value>
+  </data>
+  <data name="accountTitle.Text" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="usernameTextBlock.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="emailTextBlock.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="signOutTextBlock.Text" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="usernameTitle.Header" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="emailTitle.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="resetPassTitle.Header" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="currentPassTitle.Header" xml:space="preserve">
+    <value>Enter current password</value>
+  </data>
+  <data name="enterNewPassAgainTitle.Header" xml:space="preserve">
+    <value>Re-enter new password</value>
+  </data>
+  <data name="enterNewPassTitle.Header" xml:space="preserve">
+    <value>Enter new password</value>
+  </data>
+  <data name="currentPassword.PlaceholderText" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="Current_password_is_incorrect" xml:space="preserve">
+    <value>Current password is incorrect</value>
+  </data>
+  <data name="background1.Content" xml:space="preserve">
+    <value>Background 1</value>
+  </data>
+  <data name="background2.Content" xml:space="preserve">
+    <value>Background 2</value>
+  </data>
+  <data name="background3.Content" xml:space="preserve">
+    <value>Background 3</value>
+  </data>
+  <data name="song1.Content" xml:space="preserve">
+    <value>Song 1</value>
+  </data>
+  <data name="song2.Content" xml:space="preserve">
+    <value>Song 2</value>
+  </data>
+  <data name="song3.Content" xml:space="preserve">
+    <value>Song 3</value>
+  </data>
+  <data name="song4.Content" xml:space="preserve">
+    <value>Song 4</value>
+  </data>
+  <data name="song5.Content" xml:space="preserve">
+    <value>Song 5</value>
+  </data>
+  <data name="SongTitle1" xml:space="preserve">
+    <value>Song 1</value>
+  </data>
+  <data name="SongTitle2" xml:space="preserve">
+    <value>Song 2</value>
+  </data>
+  <data name="SongTitle3" xml:space="preserve">
+    <value>Song 3</value>
+  </data>
+  <data name="SongTitle4" xml:space="preserve">
+    <value>Song 4</value>
+  </data>
+  <data name="SongTitle5" xml:space="preserve">
+    <value>Song 5</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_sign_out?" xml:space="preserve">
+    <value>Are you sure you want to sign out?</value>
+  </data>
+  <data name="SIGN_OUT" xml:space="preserve">
+    <value>SIGN OUT</value>
+  </data>
+  <data name="otpPageInstruction.Text" xml:space="preserve">
+    <value>We have sent you an email code, please enter this authentication code</value>
+  </data>
+  <data name="board.Content" xml:space="preserve">
+    <value>Board</value>
+  </data>
+</root>

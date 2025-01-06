@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace TimeManagementApp.Note
 {
     public partial class MyNote 
     {
-        public MyNote(string id, string name)
+        public MyNote(int id, string name)
         {
             Id = id;
             Name = name;
+            Content = "";
         }
 
         public MyNote() {
-            Id = "";
+            Id = 0;
             Name = "";
+            Content = "";
         }
 
-        public String Id { get; set; }
-        public String Name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Content { get; set; }
     }
 }

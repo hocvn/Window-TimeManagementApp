@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="TimeManagementApp.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,95 +5,90 @@
     xmlns:local="using:TimeManagementApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Activated="MainWindow_Activated"
     mc:Ignorable="d">
 
-    <NavigationView 
-        x:Name="MainNavigationView"
-        RequestedTheme="Light"
-        Grid.Row="1"
-        PaneDisplayMode="Left"
-        OpenPaneLength="250"
+    <Frame>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        IsSettingsVisible="True"
-        IsBackButtonVisible="Collapsed"
-        IsBackEnabled="False"
-        IsTabStop="false"
-        SelectionChanged="NavigationView_SelectionChanged">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <NavigationView.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="AliceBlue" Offset="0.0" />
-                <GradientStop Color="CornflowerBlue" Offset="2.5" />
-            </LinearGradientBrush>
-        </NavigationView.Background>
+            <NavigationView 
+                x:Name="MainNavigationView"
+                RequestedTheme="Light"
+                PaneDisplayMode="Left"
+                IsSettingsVisible="True"
+                IsBackButtonVisible="Collapsed"
+                IsBackEnabled="False"
+                IsPaneVisible="True"
+                IsTabStop="True"
+                OpenPaneLength="220"
+                SelectionChanged="NavigationView_SelectionChanged"
+                Background="{x:Bind local:App.BackgroundViewModel.NavigationViewBackgroundBrush, Mode=OneWay}">
 
-        <NavigationView.MenuItems>
-            <NavigationViewItem 
-                Content="Home" 
-                Icon="Home" 
-                ToolTipService.ToolTip="Home"/>
-
-            <NavigationViewItem 
-                x:Name="NavItem_Note"
-                Content="Notes" 
-                Icon="Edit" 
-                ToolTipService.ToolTip="Note" 
-                Tag="NoteMainPage">
-            </NavigationViewItem>
-
-            <NavigationViewItem 
-                x:Name="NavItem_ToDo" 
-                Content="Todo"
-                Icon="Accept"
-                ToolTipService.ToolTip="Todo"/>
-
-            <NavigationViewItem 
-                x:Name="NavItem_Timer"
-                Content="Time"
-                Icon="Clock"
-                ToolTipService.ToolTip="Time"/>
-
-            <NavigationViewItem 
-                Content="Calendar"
-                Icon="Calendar"
-                ToolTipService.ToolTip="Calendar"/>
-
-            <NavigationViewItem 
-                Content="Group" 
-                Icon="People" 
-                ToolTipService.ToolTip="Document options" 
-                SelectsOnInvoked="False">
-
-                <NavigationViewItem.MenuItems>
+                <NavigationView.MenuItems>
                     <NavigationViewItem 
-                        Content="Group1" 
-                        Icon="NewFolder" 
-                        ToolTipService.ToolTip="Group1" 
-                        Tag="SamplePage5"/>
+                            x:Name="NavItem_Home"
+                            x:Uid="home"
+                            Icon="Home" 
+                            ToolTipService.ToolTip="Home"/>
 
                     <NavigationViewItem 
-                        Content="Group2" 
-                        Icon="OpenLocal" 
-                        ToolTipService.ToolTip="Group2" 
-                        Tag="SamplePage6"/>
-                </NavigationViewItem.MenuItems>
-            </NavigationViewItem>
+                            x:Name="NavItem_Note"
+                            x:Uid="note" 
+                            ToolTipService.ToolTip="Note" 
+                            Tag="NoteMainPage">
+                        <NavigationViewItem.Icon>
+                            <FontIcon Glyph="&#xE70B;"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
 
-            <NavigationViewItem 
-                Content="Statistics"
-                Icon="PreviewLink"
-                ToolTipService.ToolTip="Statistics"/>
+                    <NavigationViewItem 
+                            x:Name="NavItem_ToDo" 
+                            x:Uid="todo"
+                            Icon="Accept"
+                            ToolTipService.ToolTip="Todo"/>
 
-        </NavigationView.MenuItems>
+                    <NavigationViewItem 
+                            x:Name="NavItem_Board"
+                            x:Uid="board"
+                            Icon="ViewAll"
+                            ToolTipService.ToolTip="Board"/>
 
-        <NavigationView.AutoSuggestBox>
-            <AutoSuggestBox 
-                QueryIcon="Find" 
-                AutomationProperties.Name="Search"
-                PlaceholderText="Search"/>
-        </NavigationView.AutoSuggestBox>
+                    <NavigationViewItem 
+                            x:Name="NavItem_Calendar"
+                            x:Uid="calendar"
+                            Icon="Calendar"
+                            ToolTipService.ToolTip="Calendar"/>
 
+                    <NavigationViewItem 
+                            x:Name="NavItem_Timer"
+                            x:Uid="time"
+                            Icon="Clock"
+                            ToolTipService.ToolTip="Time"/>
 
-        <Frame x:Name="mainFrame" />
-    </NavigationView>
+                    <NavigationViewItem 
+                            x:Name="NavItem_Music"
+                            x:Uid="music" 
+                            Icon="Audio" 
+                            ToolTipService.ToolTip="Music" 
+                            Tag="MusicPage"/>
+
+                    <NavigationViewItem 
+                        x:Name="NavItem_Statistics"
+                        x:Uid="statistics"
+                        Icon="PreviewLink"
+                        ToolTipService.ToolTip="Statistics"/>
+                   
+                </NavigationView.MenuItems>
+
+                <Frame x:Name="mainFrame"/>
+            </NavigationView>
+        </Grid>
+    </Frame>
 </Window>

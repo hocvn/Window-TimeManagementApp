@@ -1,80 +1,113 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TimeManagementApp.ToDo;
-using System.ComponentModel;
 using System;
 
-namespace UnitTest
+namespace UnitTest.ToDoTests
 {
     [TestClass]
     public class MyTaskTests
     {
         [TestMethod]
-        public void Constructor_ShouldInitializeProperties()
+        public void Clone_WhenCalled_ShouldReturnExactCopy()
         {
             // Arrange
-            string taskName = "Test Task";
-            string taskDescription = "Test Description";
-            DateTime startDateTime = DateTime.Now;
-            DateTime dueDateTime = DateTime.Now.AddHours(1);
-
-            // Act
-            var task = new MyTask
+            var originalTask = new MyTask
             {
-                TaskName = taskName,
-                TaskDescription = taskDescription,
-                StartDateTime = startDateTime,
-                DueDateTime = dueDateTime
-            };
-
-            // Assert
-            Assert.AreEqual(taskName, task.TaskName);
-            Assert.AreEqual(taskDescription, task.TaskDescription);
-            Assert.AreEqual(startDateTime, task.StartDateTime);
-            Assert.AreEqual(dueDateTime, task.DueDateTime);
-        }
-
-        [TestMethod]
-        public void SetProperties_ShouldRaisePropertyChanged()
-        {
-            // Arrange
-            var task = new MyTask();
-            bool propertyChangedRaised = false;
-
-            task.PropertyChanged += (sender, args) => {
-                if (args.PropertyName == "TaskName")
-                {
-                    propertyChangedRaised = true;
-                }
+                TaskId = 1,
+                TaskName = "Test Task",
+                DueDateTime = DateTime.Now,
+                Description = "Test Description",
+                IsCompleted = false,
+                IsImportant = true,
+                RepeatOption = "Daily",
+                ReminderTime = DateTime.Now.AddHours(1),
+                NoteId = 1,
+                Status = "Pending"
             };
 
             // Act
-            task.TaskName = "New Task";
+            var clonedTask = (MyTask)originalTask.Clone();
 
             // Assert
-            Assert.IsTrue(propertyChangedRaised);
+            Assert.IsTrue(MyTask.IsEqual(originalTask, clonedTask));
         }
 
         [TestMethod]
-        public void SetProperties_ShouldUpdateValues()
+        public void IsEqual_WhenTasksAreEqual_ShouldReturnTrue()
         {
             // Arrange
-            var task = new MyTask();
-            string newTaskName = "Updated Task";
-            string newTaskDescription = "Updated Description";
-            DateTime newStartDateTime = DateTime.Now.AddHours(1);
-            DateTime newDueDateTime = DateTime.Now.AddHours(2);
+            var task1 = new MyTask
+            {
+                TaskId = 1,
+                TaskName = "Test Task",
+                DueDateTime = DateTime.Now,
+                Description = "Test Description",
+                IsCompleted = false,
+                IsImportant = true,
+                RepeatOption = "Daily",
+                ReminderTime = DateTime.Now.AddHours(1),
+                NoteId = 1,
+                Status = "Pending"
+            };
+
+            var task2 = new MyTask
+            {
+                TaskId = 1,
+                TaskName = "Test Task",
+                DueDateTime = DateTime.Now,
+                Description = "Test Description",
+                IsCompleted = false,
+                IsImportant = true,
+                RepeatOption = "Daily",
+                ReminderTime = DateTime.Now.AddHours(1),
+                NoteId = 1,
+                Status = "Pending"
+            };
 
             // Act
-            task.TaskName = newTaskName;
-            task.TaskDescription = newTaskDescription;
-            task.StartDateTime = newStartDateTime;
-            task.DueDateTime = newDueDateTime;
+            var result = MyTask.IsEqual(task1, task2);
 
             // Assert
-            Assert.AreEqual(newTaskName, task.TaskName);
-            Assert.AreEqual(newTaskDescription, task.TaskDescription);
-            Assert.AreEqual(newStartDateTime, task.StartDateTime);
-            Assert.AreEqual(newDueDateTime, task.DueDateTime);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsEqual_WhenTasksAreNotEqual_ShouldReturnFalse()
+        {
+            // Arrange
+            var task1 = new MyTask
+            {
+                TaskId = 1,
+                TaskName = "Test Task",
+                DueDateTime = DateTime.Now,
+                Description = "Test Description",
+                IsCompleted = false,
+                IsImportant = true,
+                RepeatOption = "Daily",
+                ReminderTime = DateTime.Now.AddHours(1),
+                NoteId = 1,
+                Status = "Pending"
+            };
+
+            var task2 = new MyTask
+            {
+                TaskId = 2,
+                TaskName = "Different Task",
+                DueDateTime = DateTime.Now.AddDays(1),
+                Description = "Different Description",
+                IsCompleted = true,
+                IsImportant = false,
+                RepeatOption = "Weekly",
+                ReminderTime = DateTime.Now.AddHours(2),
+                NoteId = 2,
+                Status = "Completed"
+            };
+
+            // Act
+            var result = MyTask.IsEqual(task1, task2);
+
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }

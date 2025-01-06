@@ -3,11 +3,43 @@
   <PropertyGroup>
   </PropertyGroup>
   <ItemGroup>
+    <Page Update="Account\AccountPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <None Update="App.xaml" />
+    <Page Update="Board\BoardPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Statistics\StatisticsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Timer\SettingsTimerPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Music\MusicPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Calendar\CalendarPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Settings\MainSettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ToDo\EditToDoPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="BlankPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\ImageResources.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Home\HomePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Note\NoteMainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Note\NotePage.xaml" />
     <Page Update="Login\ForgotPassword\ResetPasswordPage.xaml">
       <SubType>Designer</SubType>
     </Page>

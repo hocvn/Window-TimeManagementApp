@@ -1,17 +1,17 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace TimeManagementApp.Helper
 {
+    /// <summary>
+    /// This class is used to display dialog boxes.
+    /// </summary>
     public class Dialog
     {
         public static async Task<ContentDialogResult> ShowContent
-            (XamlRoot root, string title, string content, string primaryButtonText, string closeButtonText)
+            (XamlRoot root, string title, string content, string primaryButtonText, string secondaryButtonText, string closeButtonText)
         {
             ContentDialog contentDialog = new ContentDialog
             {
@@ -19,6 +19,7 @@ namespace TimeManagementApp.Helper
                 Title = title,
                 Content = content,
                 PrimaryButtonText = primaryButtonText,
+                SecondaryButtonText = secondaryButtonText,
                 CloseButtonText = closeButtonText,
             };
 

@@ -1,97 +1,65 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.Windows.AppNotifications;
-using TimeManagementApp.Helper;
 
 namespace TimeManagementApp.Timer
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page to display the pomodoro timer of the application, allow users to setting time and use the timer.
     /// </summary>
     public sealed partial class MainTimerPage : Page
     {
-        public PomodoroTimer ViewModel { get; set; }
+        public PomodoroTimer TimerViewModel { get; set; }
 
         public MainTimerPage()
         {
             this.InitializeComponent();
+            TimerViewModel = PomodoroTimer.Instance;
         }
 
-        // passing view model between navigations,
-        // so that timer can still run & notify when we are working on other features
-        protected override void OnNavigatedTo(NavigationEventArgs e) 
-        { 
-            if (e.Parameter is PomodoroTimer viewModel) 
-            { 
-                ViewModel = viewModel; 
-                DataContext = ViewModel; 
-            }
-            
-            base.OnNavigatedTo(e); 
-        }
-
-        // open settings panel
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SettingsPanel.Visibility == Visibility.Collapsed)
-            {
-                SettingsPanel.Visibility = Visibility.Visible;
-                TimerPanel.Margin = new Thickness(-200, 0, 0, 0);
-            }
+            SplitView.IsPaneOpen = true;
         }
-
-        // currently save settings on hard code, will save to files later
-        public void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.CurrentSettings.FocusTimeMinutes = (int)FocusTimeSlider.Value;
-            ViewModel.CurrentSettings.ShortBreakMinutes = (int)ShortBreakSlider.Value;
-            ViewModel.CurrentSettings.LongBreakMinutes = (int)LongBreakSlider.Value;
-
-            ViewModel.ResetTimer();
-
-            ViewModel.CurrentSettings.IsNotificationOn = NotificationToggleSwitch.IsOn;
-        }
-
-        // close settings panel
-        public void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            SettingsPanel.Visibility = Visibility.Collapsed;
-            TimerPanel.Margin = new Thickness(0, 0, 0, 0);
-        }
-
-        // start, pause and reset timer
 
         public void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.StartTimer();
+            TimerViewModel.StartTimer();
         }
 
         public void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.PauseTimer();
+            TimerViewModel.PauseTimer();
         }
 
         public void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.ResetTimer();
+            TimerViewModel.ResetTimer();
         }
 
-        // skip session
         public void SkipButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.SwitchToNextTimerType();
+            TimerViewModel.SwitchToNextTimerType();
+        }
+
+        public void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            TimerViewModel.CurrentSettings.FocusTimeMinutes = (int)FocusTimeSlider.Value;
+            TimerViewModel.CurrentSettings.ShortBreakMinutes = (int)ShortBreakSlider.Value;
+            TimerViewModel.CurrentSettings.LongBreakMinutes = (int)LongBreakSlider.Value;
+
+            TimerViewModel.ResetTimer();
+
+            TimerViewModel.CurrentSettings.IsNotificationOn = NotificationToggleSwitch.IsOn;
+
+            if (TagComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                TimerViewModel.CurrentSettings.Tag = selectedItem.Content.ToString();
+            }
+        }
+
+        public void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            SplitView.IsPaneOpen = false;
         }
     }
 }

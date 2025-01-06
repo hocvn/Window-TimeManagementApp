@@ -1,84 +1,74 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Security.Principal;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using TimeManagementApp.Helper;
-using System.Diagnostics;
-using CommunityToolkit.WinUI.Controls;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace TimeManagementApp.ToDo
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page allows users to manage their tasks: view, delete a task.
     /// </summary>
-    public sealed partial class MainToDoPage : Page, INotifyPropertyChanged
+    public sealed partial class MainToDoPage : Page
     {
         public MyTaskViewModel ViewModel { get; set; }
-        public MyTask CurrentSelectTask { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        /// <summary>
+        /// Initializes a new instance of the MainToDoPage class.
+        /// </summary>
         public MainToDoPage()
         {
             this.InitializeComponent();
-            ViewModel = new MyTaskViewModel();
+            ViewModel = MyTaskViewModel.Instance;
         }
 
-
-        private void TaskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Navigate to the EditToDoPage when a task is tapped.
+        /// </summary>
+        private void TaskItem_Click(object sender, ItemClickEventArgs e)
         {
-            CurrentSelectTask = MyTasksListBox.SelectedItem as MyTask;
+            var selectedTask = e.ClickedItem as MyTask;
+            MainWindow.NavigationService.Navigate(typeof(EditToDoPage), selectedTask.Clone());
         }
 
-
-        // currently use visibility to control, will use frame navigation later
-        private void TaskItem_Tapped(object sender, TappedRoutedEventArgs e)
+        /// <summary>
+        /// Update the task when navigating back from the EditToDoPage.
+        /// </summary>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (MyTasksListBox.SelectedItem != null)
+            if (e.Parameter is MyTask task)
             {
-                DeleteUpdateArea.Visibility = Visibility.Visible;
+                ViewModel.UpdateTask(task);
             }
-        }
-        private void CloseArea_Click(object sender, RoutedEventArgs e)
-        {
-            DeleteUpdateArea.Visibility = Visibility.Collapsed;
+
+            base.OnNavigatedTo(e);
         }
 
 
-        // insert new task when press Enter on textbox
+        /// <summary>
+        /// Insert a new task when the Enter key is pressed in the text box.
+        /// </summary>
         private async void InsertTask_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 if (String.IsNullOrEmpty(InsertTaskName.Text))
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, null, "OK");
                     return;
                 }
 
                 if (!InsertTaskDueDateTime.Date.HasValue)
                 {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, null, "OK");
                     return;
                 }
 
                 var startDateTime = DateTime.Now;
 
+                // Set the due date to the end of the day
                 var dueDateTime = new DateTime(
                     InsertTaskDueDateTime.Date.Value.Year, InsertTaskDueDateTime.Date.Value.Month, InsertTaskDueDateTime.Date.Value.Day,
                     23, 59, 00
@@ -87,34 +77,40 @@ namespace TimeManagementApp.ToDo
                 var newTask = new MyTask
                 {
                     TaskName = InsertTaskName.Text,
-                    TaskDescription = "My Description",
-                    StartDateTime = startDateTime,
-                    DueDateTime = dueDateTime
+                    DueDateTime = dueDateTime,
+                    IsCompleted = false,
+                    IsImportant = false,
+                    ReminderTime = MainWindow.NullDateTime,
+                    Description = "",
+                    NoteId = -1,
+                    RepeatOption = "",
+                    Status = "Not Started",
                 };
 
                 ViewModel.InsertTask(newTask);
 
-                DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, "OK");
+                // Clear the input fields after insertion
+                InsertTaskName.Text = null;
+                InsertTaskDueDateTime.Date = null;
+
+                await Dialog.ShowContent(this.XamlRoot, "Message", "Insert Task seccessfully!", null, null, "OK");
             }
         }
 
-
-        // delete a task
+        /// <summary>
+        /// Delete a task.
+        /// </summary>
         private async void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            var selectedTask = MyTasksListBox.SelectedItem as MyTask;
-
-            if (selectedTask != null)
+            if (sender is AppBarButton button && button.CommandParameter is MyTask taskToDelete)
             {
-                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", "Cancel");
+                var result = await Dialog.ShowContent(this.XamlRoot, "Warning", "Are you sure to delete this task?", "Delete", null, "Cancel");
 
                 if (result == ContentDialogResult.Primary)
                 {
-                    ViewModel.DeleteTask(selectedTask);
+                    ViewModel.DeleteTask(taskToDelete);
 
-                    DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, "OK");
+                    await Dialog.ShowContent(this.XamlRoot, "Message", "Delete Task seccessfully!", null, null, "OK");
                 }
                 else
                 {
@@ -123,55 +119,70 @@ namespace TimeManagementApp.ToDo
             }
         }
 
-
-        // update a task
-        private async void UpdateTask_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Navigate to the previous page of tasks.
+        /// </summary>
+        private void PreviousPage_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentSelectTask != null)
+            if (ViewModel.CurrentPage > 1)
             {
-                if (String.IsNullOrEmpty(UpdateTaskName.Text))
-                {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Task Name cannot be empty!", null, "OK");
-                    return;
-                }
-
-                if (!UpdateTaskStartDate.Date.HasValue || !UpdateTaskDueDate.Date.HasValue)
-                {
-                    await Dialog.ShowContent(this.XamlRoot, "Error", "Date cannot be empty!", null, "OK");
-                    return;
-                }
-
-                var startDateTime = new DateTime(
-                    UpdateTaskStartDate.Date.Value.Year,
-                    UpdateTaskStartDate.Date.Value.Month,
-                    UpdateTaskStartDate.Date.Value.Day,
-                    UpdateTaskStartTime.Time.Hours,
-                    UpdateTaskStartTime.Time.Minutes,
-                    UpdateTaskStartTime.Time.Seconds
-                );
-
-                var dueDateTime = new DateTime(
-                    UpdateTaskDueDate.Date.Value.Year,
-                    UpdateTaskDueDate.Date.Value.Month,
-                    UpdateTaskDueDate.Date.Value.Day,
-                    UpdateTaskDueTime.Time.Hours,
-                    UpdateTaskDueTime.Time.Minutes,
-                    UpdateTaskDueTime.Time.Seconds
-                );
-
-                var newTask = new MyTask
-                {
-                    TaskName = UpdateTaskName.Text,
-                    TaskDescription = UpdateTaskDescription.Text,
-                    StartDateTime = startDateTime,
-                    DueDateTime = dueDateTime
-                };
-
-                ViewModel.UpdateTask(CurrentSelectTask, newTask);
-
-                DeleteUpdateArea.Visibility = Visibility.Collapsed;
-                await Dialog.ShowContent(this.XamlRoot, "Message", "Update Task seccessfully!", null, "OK");
+                ViewModel.CurrentPage--;
+                ViewModel.LoadCurrentPage();
             }
         }
+
+        /// <summary>
+        /// Navigate to the next page of tasks.
+        /// </summary>
+        private void NextPage_Click(object sender, RoutedEventArgs e)
+        {
+            int maxPage = (int)Math.Ceiling((double)ViewModel.Tasks.Count / MyTaskViewModel.PageSize);
+
+            if (ViewModel.CurrentPage < maxPage)
+            {
+                ViewModel.CurrentPage++;
+                ViewModel.LoadCurrentPage();
+            }
+        }
+
+        /// <summary>
+        /// Toggle the completion status of a task.
+        /// </summary>
+        private void IsCompletedTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is AppBarButton button && button.CommandParameter is MyTask task)
+            {
+                task.IsCompleted = (task.IsCompleted == true) ? false : true;
+                task.Status = (task.IsCompleted == true) ? "Completed" : "Not Started";
+                ViewModel.UpdateTask(task);
+            }
+        }
+
+        /// <summary>
+        /// Toggle the importance status of a task.
+        /// </summary>
+        private void IsImportantTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is AppBarButton button && button.CommandParameter is MyTask task)
+            {
+                task.IsImportant = (task.IsImportant == true) ? false : true;
+                ViewModel.UpdateTask(task);
+            }
+        }
+
+
+        /// <summary>
+        /// Press Enter for faster seraching.
+        /// </summary>
+        private void SearchTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                var textBox = sender as TextBox;
+                ViewModel.SearchTerm = textBox.Text;
+                ViewModel.LoadCurrentPage();
+            }
+        }
+
     }
 }

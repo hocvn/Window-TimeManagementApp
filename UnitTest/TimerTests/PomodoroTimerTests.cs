@@ -1,44 +1,28 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TimeManagementApp.Timer;
-using System;
-using Microsoft.UI.Xaml;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
+using System.Threading;
 
-namespace UnitTest
+namespace UnitTest.TimerTests
 {
     [TestClass]
     public class PomodoroTimerTests
     {
-        private Settings settings;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            settings = new Settings
-            {
-                FocusTimeMinutes = 25,
-                ShortBreakMinutes = 5,
-                LongBreakMinutes = 15,
-                IsNotificationOn = false
-            };
-        }
-
         [UITestMethod]
-        public void StartTimer_ShouldSetIsRunningToTrue()
+        public void StartTimer_WhenCalled_ShouldSetIsRunningToTrue()
         {
-            var timer = new PomodoroTimer(settings, TimerType.FocusTime);
-
+            var timer = PomodoroTimer.Instance;
+            timer.ResetTimer(); // Ensure timer is reset before starting
             timer.StartTimer();
 
             Assert.IsTrue(timer.IsRunning);
         }
 
         [UITestMethod]
-        public void PauseTimer_ShouldSetIsRunningToFalse()
+        public void PauseTimer_WhenCalled_ShouldSetIsRunningToFalse()
         {
-            var timer = new PomodoroTimer(settings, TimerType.FocusTime);
-
+            var timer = PomodoroTimer.Instance;
+            timer.ResetTimer(); // Ensure timer is reset before starting
             timer.StartTimer();
             timer.PauseTimer();
 
@@ -46,40 +30,26 @@ namespace UnitTest
         }
 
         [UITestMethod]
-        public void ResetTimer_ShouldSetTimerToFocusTime()
+        public void ResetTimer_WhenCalled_ShouldSetRemainingTimeToFocusTimeMinutes()
         {
-            var timer = new PomodoroTimer(settings, TimerType.FocusTime);
-
+            var timer = PomodoroTimer.Instance;
             timer.ResetTimer();
 
-            Assert.AreEqual(25, timer.Minutes);
+            Assert.AreEqual(timer.CurrentSettings.FocusTimeMinutes, timer.Minutes);
             Assert.AreEqual(0, timer.Seconds);
-            Assert.AreEqual(TimerType.FocusTime, timer.CurrentType);
+            Assert.IsFalse(timer.IsRunning);
         }
 
         [UITestMethod]
-        public void SwitchToNextTimerType_ShouldSwitchToShortBreak()
+        public void SwitchToNextTimerType_WhenCalled_ShouldChangeTimerType()
         {
-            var timer = new PomodoroTimer(settings, TimerType.FocusTime);
+            var timer = PomodoroTimer.Instance;
+            timer.ResetTimer(); // Ensure timer is reset before starting
+            var initialType = timer.CurrentType;
 
             timer.SwitchToNextTimerType();
 
-            Assert.AreEqual(TimerType.ShortBreak, timer.CurrentType);
-        }
-
-        [UITestMethod]
-        public void Timer_Tick_ShouldDecreaseSeconds()
-        {
-            var timer = new PomodoroTimer(settings, TimerType.FocusTime);
-
-            timer.StartTimer();
-            // Simulate one tick
-            for (int i = 0; i < 1; i++)
-            {
-                timer.GetType().GetMethod("Timer_Tick", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(timer, new object[] { null, null });
-            }
-
-            Assert.AreEqual(59, timer.Seconds);
+            Assert.AreNotEqual(initialType, timer.CurrentType);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.ComponentModel;
 namespace TimeManagementApp.Note
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This is the main page of the Note feature, responsible for displaying all tasks.
     /// </summary>
     public sealed partial class NoteMainPage : Page
     {
@@ -20,42 +20,31 @@ namespace TimeManagementApp.Note
 
             public int TotalItems { get; set; }
 
+            private IDao _dao { get; set; }
+
             public event PropertyChangedEventHandler PropertyChanged;
 
             public void Init()
             {
-                IDao dao = new MockDao();
-                Notes = dao.GetAllNote();
-
+                _dao = new SqlDao();
+                Notes = _dao.GetAllNote();
                 TotalItems = Notes.Count;
             }
 
             public void AddNote(String newNoteName)
             {
-                // Create a new note with id is the time when user create it
-                String currentTime = TimeHelper.GetTime();
-                // Remove all spaces of the current time
-                var tokens = currentTime.Split(' ');
-                currentTime = tokens[0] + tokens[1] + tokens[2] + tokens[3] + tokens[4] + tokens[5];
-
-                MyNote newNote = new MyNote(currentTime, newNoteName);
-                RichEditBox editor = new RichEditBox();
-
-                IDao dao = new MockDao();
-                dao.SaveNote(editor, newNote);
-                // Update the note list
-                Notes.Insert(0, newNote);
-                dao.SaveNotes(Notes);
+                int id = _dao.CreateNote(newNoteName);
+                MyNote newNote = new MyNote(id, newNoteName);
                 // Update ViewModel
+                Notes.Insert(0, newNote);
                 TotalItems++;
             }
 
             public void DeleteNote(MyNote note)
             {
+                _dao.DeleteNote(note);
                 Notes.Remove(note);
                 TotalItems--;
-                IDao dao = new MockDao();
-                dao.SaveNotes(Notes);
             }
         }
 
@@ -70,10 +59,11 @@ namespace TimeManagementApp.Note
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is MyNote note)
+            if (e.Parameter is MyNote myNote)
             {
-                ViewModel.DeleteNote(note);
+                ViewModel.DeleteNote(myNote);
             }
+            NumberOfNote.Text = "Total".GetLocalized() + ": " + ViewModel.TotalItems.ToString();
         }
 
         private async void NewNoteButton_Click(object sender, RoutedEventArgs e)
@@ -82,14 +72,15 @@ namespace TimeManagementApp.Note
             // Check error when user add a new note
             if (newNoteName.Length == 0)
             {
-                var dialog = new ContentDialog()
-                {
-                    Title = "Error",
-                    Content = "Please enter a name for the new note",
-                    CloseButtonText = "Ok",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
+                await Dialog.ShowContent
+                (
+                    this.XamlRoot, 
+                    "Error".GetLocalized(), 
+                    "Note_Name_cannot_be_empty".GetLocalized(), 
+                    null, 
+                    null, 
+                    "OK".GetLocalized()
+                );
                 return;
             }
 
@@ -98,30 +89,28 @@ namespace TimeManagementApp.Note
 
         private void Note_ItemClick(object sender, ItemClickEventArgs e)
         {
-            MyNote clickedItem = e.ClickedItem as MyNote;
-            if (clickedItem != null)
-            {
-                Frame.Navigate(typeof(NotePage), clickedItem);
+            if (e.ClickedItem is MyNote clickedItem)
+            { 
+                MainWindow.NavigationService.Navigate(typeof(NotePage), clickedItem);
             }
         }
 
         private async void DeleteNoteButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog
-            {
-                Title = "Delete Note",
-                Content = "Are you sure you want to delete this note?",
-                PrimaryButtonText = "Delete",
-                CloseButtonText = "Cancel",
-                XamlRoot = this.XamlRoot
-            };
-            var result = await dialog.ShowAsync();
+            var result = await Dialog.ShowContent
+            (
+                this.XamlRoot, 
+                "Delete_note".GetLocalized(), 
+                "Are_you_sure_you_want_to_remove_this_note".GetLocalized(), 
+                "Yes".GetLocalized(), 
+                null, 
+                "No".GetLocalized()
+            );
             if (result == ContentDialogResult.Primary)
             {
                 var button = sender as Button;
-                MyNote note = button.DataContext as MyNote;
 
-                if (note != null)
+                if (button.DataContext is MyNote note)
                 {
                     ViewModel.DeleteNote(note);
                 }

@@ -3,13 +3,13 @@ using TimeManagementApp.Timer;
 using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
 
-namespace UnitTest
+namespace UnitTest.TimerTests
 {
     [TestClass]
     public class SettingsTests
     {
         [UITestMethod]
-        public void DefaultSettings_ShouldBeCorrect()
+        public void Constructor_DefaultSettings_ShouldBeCorrect()
         {
             var settings = new Settings();
 
@@ -17,16 +17,17 @@ namespace UnitTest
             Assert.AreEqual(5, settings.ShortBreakMinutes);
             Assert.AreEqual(10, settings.LongBreakMinutes);
             Assert.IsTrue(settings.IsNotificationOn);
+            Assert.AreEqual("Studying", settings.Tag);
         }
 
         [UITestMethod]
-        public void SettingProperties_ShouldRaisePropertyChanged()
+        public void PropertyChanged_FocusTimeMinutes_ShouldRaisePropertyChanged()
         {
             var settings = new Settings();
             bool propertyChangedRaised = false;
 
             settings.PropertyChanged += (sender, args) => {
-                if (args.PropertyName == "FocusTimeMinutes")
+                if (args.PropertyName == nameof(Settings.FocusTimeMinutes))
                 {
                     propertyChangedRaised = true;
                 }
@@ -38,7 +39,7 @@ namespace UnitTest
         }
 
         [UITestMethod]
-        public void SettingProperties_ShouldUpdateValues()
+        public void PropertyChanged_SettingProperties_ShouldUpdateValues()
         {
             var settings = new Settings();
 
@@ -46,11 +47,13 @@ namespace UnitTest
             settings.ShortBreakMinutes = 10;
             settings.LongBreakMinutes = 20;
             settings.IsNotificationOn = false;
+            settings.Tag = "Working";
 
             Assert.AreEqual(40, settings.FocusTimeMinutes);
             Assert.AreEqual(10, settings.ShortBreakMinutes);
             Assert.AreEqual(20, settings.LongBreakMinutes);
             Assert.IsFalse(settings.IsNotificationOn);
+            Assert.AreEqual("Working", settings.Tag);
         }
     }
 }

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="TimeManagementApp.ToDo.EditToDoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimeManagementApp.ToDo"
+    xmlns:helper="using:TimeManagementApp.Helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d"
+    xmlns:conv="using:TimeManagementApp.Converters"
+    xmlns:app="using:TimeManagementApp"
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+
+    <Page.Resources>
+        <conv:NoteIdToContentConverter x:Key="NoteIdToContentConverter"/>
+    </Page.Resources>
+
+    <Grid>
+        <StackPanel VerticalAlignment="Top" Padding="20">
+            <!--Header-->
+            <Grid Padding="5" Margin="0,-10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <SymbolIcon Symbol="Edit" Grid.Column="0"/>
+                <TextBlock Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}" FontSize="22" FontWeight="Bold" 
+                           Grid.Column="1" Margin="30,15,0,0"/>
+                <AppBarButton x:Uid="updateTaskButton" Icon="Save" Click="UpdateButton_Click" Grid.Column="2"/>
+                <AppBarButton x:Uid="backButton" Icon="Back" Click="BackButton_Click" Grid.Column="3"/>
+            </Grid>
+
+            <StackPanel Margin="20,10,15,0" Padding="5">
+
+                <!-- Update Task Section -->
+                <StackPanel>
+                    <!-- Update Task Name -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                                <TextBlock x:Uid="taskName"
+                                    Grid.Column="0" VerticalAlignment="Center"/>
+
+                        <TextBox x:Name="UpdateTaskName" PlaceholderText="Task Name" 
+                                             Grid.Column="1"
+                                             Text="{x:Bind SelectedTask.TaskName, Mode=OneWay}"/>
+                    </Grid>
+
+                    <!-- Update Task Description -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Uid="descriptionTitle" Grid.Column="0" VerticalAlignment="Center"/>
+
+                        <TextBox x:Name="UpdateTaskDescription" x:Uid="descriptionTextBox"
+                                             Grid.Column="1"
+                                             Text="{x:Bind SelectedTask.Description, Mode=OneWay}"/>
+                    </Grid>
+
+                    <!-- Update Due Date and Time -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="330"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                                <TextBlock x:Uid="dueTime"
+                                           Grid.Column="0" Margin="0,4,0,0"/>
+
+                        <DatePicker x:Name="UpdateTaskDueDate" 
+                                                Grid.Column="1"
+                                                Date="{x:Bind SelectedTask.DueDateTime, Mode=OneWay}"/>
+
+                        <TimePicker x:Name="UpdateTaskDueTime" 
+                                                Grid.Column="2"
+                                                Time="{x:Bind SelectedTask.DueDateTime.TimeOfDay, Mode=OneWay}"/>
+                    </Grid>
+
+                </StackPanel>
+
+
+                <!-- Set Reminder -->
+                <controls:SettingsExpander x:Uid="remindMeTitle"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE121;'}"
+                                           HorizontalAlignment="Stretch"
+                                           HorizontalContentAlignment="Stretch"
+                                           IsEnabled="True"
+                                           IsExpanded="True"
+                                           Margin="0,20,0,0">
+
+                    <ToggleSwitch IsOn="{x:Bind IsReminderOn, Mode=TwoWay}"/>
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard IsEnabled="{x:Bind IsReminderOn, Mode=OneWay}"
+                                               ContentAlignment="Left">
+                            <StackPanel>
+                                <!-- Basic options -->
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton x:Uid="endOfToday" Margin="0,0,190,0" 
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
+                                    <RadioButton x:Uid="tomorrowMorning"  Margin="0,0,190,0"
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
+                                    <RadioButton x:Uid="nextWeekMorning" 
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"/>
+                                </StackPanel>
+
+                                <!-- Pick date and time option -->
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton x:Uid="pickDateAndTime"
+                                                 GroupName="ReminderOptions" Checked="ReminderOption_Checked"
+                                                 IsChecked="{x:Bind IsPickingReminderTime, Mode=TwoWay}"/>
+
+                                    <DatePicker x:Name="CustomReminderDatePicker" IsEnabled="{x:Bind IsPickingReminderTime, Mode=OneWay}"
+                                                Margin="30,5,0,0"/>
+                                    <TimePicker x:Name="CustomReminderTimePicker" IsEnabled="{x:Bind IsPickingReminderTime, Mode=OneWay}"
+                                                Margin="20,5,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+
+                <!-- Repeat Option -->
+                <controls:SettingsCard x:Uid="repeatTitle"
+                                       HeaderIcon="{ui:FontIcon Glyph='&#xE8EE;'}"
+                                       HorizontalAlignment="Stretch"
+                                       HorizontalContentAlignment="Stretch">
+                    <ComboBox SelectedIndex="{x:Bind RepeatOptionSelectedIndex, Mode=TwoWay}">
+                        <ComboBoxItem x:Uid="repeatOption_None"/>
+                        <ComboBoxItem x:Uid="repeatOption_Daily"/>
+                        <ComboBoxItem x:Uid="repeatOption_Weekly"/>
+                        <ComboBoxItem x:Uid="repeatOption_Monthly"/>
+                    </ComboBox>
+                </controls:SettingsCard>
+
+
+                <!-- Note -->
+                <controls:SettingsExpander x:Uid="addNoteTitle"
+                                           HeaderIcon="{ui:FontIcon Glyph='&#xE70B;'}"
+                                           HorizontalAlignment="Stretch"
+                                           HorizontalContentAlignment="Stretch"
+                                           IsExpanded="True">
+
+                    <ComboBox x:Name="NoteComboBox" 
+                              ItemsSource="{x:Bind AllNotes, Mode=OneWay}" 
+                              DisplayMemberPath="Name" 
+                              SelectedValuePath="Id"
+                              SelectedValue="{x:Bind SelectedTask.NoteId, Mode=TwoWay}"/>
+
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard ContentAlignment="Left">
+                            <StackPanel>
+                                <!-- Note's content -->
+                                <TextBlock Text="{x:Bind SelectedTask.NoteId, 
+                                    Converter={StaticResource NoteIdToContentConverter}, Mode=OneWay}"/>
+                            </StackPanel>
+                        </controls:SettingsCard>
+                    </controls:SettingsExpander.Items>
+
+                </controls:SettingsExpander>
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

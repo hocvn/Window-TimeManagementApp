@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="TimeManagementApp.Board.BoardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimeManagementApp.Board"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:kanban="using:Syncfusion.UI.Xaml.Kanban"
+    xmlns:app="using:TimeManagementApp" 
+    Background="{x:Bind app:App.BackgroundViewModel.PageBackgroundBrush, Mode=OneWay}">
+
+    <Grid x:Name="MainGrid" Loaded="MainGrid_Loaded" SizeChanged="MainGrid_SizeChanged" Background="Transparent">
+        <kanban:SfKanban x:Name="kanban"
+                         AutoGenerateColumns="False" 
+                         ItemsSource="{Binding TaskDetails}"
+                         SwimlaneKey="IndicatorColorKey"
+                         CardTapped="OnKanbanCardTapped"
+                         CardDragStarting="OnKanbanCardDragStarting"
+                         CardDrop="OnKanbanCardDrop"
+                         Background="Transparent">
+           
+            <kanban:KanbanColumn HeaderText="Not Started" Categories="Not Started" />
+            <kanban:KanbanColumn HeaderText="In Progress" Categories="In Progress" />
+            <kanban:KanbanColumn HeaderText="On Hold" Categories="On Hold" />
+            <kanban:KanbanColumn HeaderText="Completed" Categories="Completed" />
+            
+            <kanban:SfKanban.DataContext>
+                <local:BoardViewModel/>
+            </kanban:SfKanban.DataContext>
+
+            <kanban:SfKanban.IndicatorColorPalette>
+                <kanban:KanbanColorMapping Key="Important" Color="Red"/>
+                <kanban:KanbanColorMapping Key="Normal" Color="Blue"/>
+            </kanban:SfKanban.IndicatorColorPalette>
+        </kanban:SfKanban>
+    </Grid>
+</Page>

@@ -1,89 +1,109 @@
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Printing;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using TimeManagementApp.Note;
 using TimeManagementApp.Timer;
 using TimeManagementApp.ToDo;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using TimeManagementApp.Home;
+using TimeManagementApp.Helper;
+using TimeManagementApp.Services;
+using TimeManagementApp.Settings;
+using TimeManagementApp.Calendar;
+using TimeManagementApp.Music;
+using TimeManagementApp.Statistics;
+using TimeManagementApp.Board;
 
 namespace TimeManagementApp
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainWindow : Window
     {
-        public PomodoroTimer TimerViewModel { get; set; } // use for passing timer between navigations
+        public static readonly DateTime NullDateTime = new DateTime(1999, 1, 1, 1, 1, 1).ToUniversalTime();
+        public static NavigationService NavigationService { get; set; } = new NavigationService();
+
+        private bool _isFirstActivation = true;
 
         public MainWindow()
         {
             this.InitializeComponent();
-            SetWindowSize();
-            this.Title = "Time management"; // app title
-            TimerViewModel = new PomodoroTimer(new Settings(), TimerType.FocusTime);
+            NavigationService.Initialize(mainFrame);
+            WindowInitHelper.SetWindowSize(this);
+            WindowInitHelper.SetTitle(this, "Time management");
         }
 
-        private void SetWindowSize()
+        public void OpenNavPane()
         {
-            var displayArea = DisplayArea.GetFromWindowId(AppWindow.Id, DisplayAreaFallback.Primary);
-            var screenWidth = displayArea.WorkArea.Width;
-            var screenHeight = displayArea.WorkArea.Height;
-
-            int width = (int)(screenWidth * 0.8);
-            int height = (int)(screenHeight * 0.8);
-
-            // Center the window
-            int middleX = (int)(screenWidth - width) / 2;
-            int middleY = (int)(screenHeight - height) / 2;
-
-            this.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(middleX, Math.Max(middleY - 100, 0), width, height));
+            MainNavigationView.IsPaneVisible = true;
         }
+
+        public void HideNavPane()
+        {
+            MainNavigationView.IsPaneVisible = false;
+        }
+
+        private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            if (_isFirstActivation)
+            {
+                _isFirstActivation = false;
+                MainNavigationView.SelectedItem = NavItem_Home;
+            }
+        }
+
+        public static string CurrentNavigationViewItem { get; set; }
 
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            FrameNavigationOptions navOptions = new FrameNavigationOptions();
-            navOptions.TransitionInfoOverride = args.RecommendedNavigationTransitionInfo;
-
-            if (sender.PaneDisplayMode == NavigationViewPaneDisplayMode.Top)
+            if (args.IsSettingsSelected)
             {
-                navOptions.IsNavigationStackEnabled = false;
+                NavigationService.Navigate(typeof(MainSettingsPage));
+                return;
             }
 
-            Type pageType = typeof(BlankPage);
             var selectedItem = (NavigationViewItem)args.SelectedItem;
 
-
-            if (selectedItem.Name == NavItem_ToDo.Name)
+            Type pageType = typeof(BlankPage);
+            if (selectedItem.Name == NavItem_Home.Name)
             {
+                CurrentNavigationViewItem = "HomePage";
+                pageType = typeof(HomePage);
+            }
+            else if (selectedItem.Name == NavItem_ToDo.Name)
+            {
+                CurrentNavigationViewItem = "MainToDoPage";
                 pageType = typeof(MainToDoPage);
             }
-            if (selectedItem.Name == NavItem_Timer.Name)
+            else if (selectedItem.Name == NavItem_Timer.Name)
             {
+                CurrentNavigationViewItem = "MainTimerPage";
                 pageType = typeof(MainTimerPage);
             }
             else if (selectedItem.Name == NavItem_Note.Name)
             {
+                CurrentNavigationViewItem = "NoteMainPage";
                 pageType = typeof(NoteMainPage);
-                _ = mainFrame.Navigate(pageType);
             }
-            else 
+            else if (selectedItem.Name == NavItem_Calendar.Name)
             {
-                // other nav
+                CurrentNavigationViewItem = "CalendarPage";
+                pageType = typeof(CalendarPage);
+            }
+            else if (selectedItem.Name == NavItem_Music.Name)
+            {
+                CurrentNavigationViewItem = "MusicPage";
+                pageType = typeof(MusicPage);
+            }
+            else if (selectedItem.Name == NavItem_Statistics.Name)
+            {
+                CurrentNavigationViewItem = "StatisticsPage";
+                pageType = typeof(StatisticsPage);
+            }
+            else if (selectedItem.Name == NavItem_Board.Name)
+            {
+                CurrentNavigationViewItem = "BoardPage";
+                pageType = typeof(BoardPage);
             }
 
-            mainFrame.NavigateToType(pageType, TimerViewModel, navOptions);
+            NavigationService.Navigate(pageType);
         }
     }
 }

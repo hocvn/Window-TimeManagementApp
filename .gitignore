@@ -3,3 +3,6 @@ bin
 obj
 *rtf*
 TestResults/
+node_modules/
+.env
+appsettings.json
