@@ -3,6 +3,9 @@ using System;
 
 namespace TimeManagementApp.Services
 {
+    /// <summary>
+    /// This class is responsible for navigating between pages.
+    /// </summary>
     public class NavigationService
     {
         private Frame _mainFrame;

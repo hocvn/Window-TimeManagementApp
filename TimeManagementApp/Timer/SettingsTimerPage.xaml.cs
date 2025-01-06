@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 namespace TimeManagementApp.Timer
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page is used to set the timer settings.
     /// </summary>
     public sealed partial class SettingsTimerPage : Page
     {

@@ -2,6 +2,10 @@
 
 namespace TimeManagementApp.Helper
 {
+    /// <summary>   
+    /// This class is used to save and retrieve settings from local storage.
+    /// </summary>
+
     public static class StorageHelper
     {
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;

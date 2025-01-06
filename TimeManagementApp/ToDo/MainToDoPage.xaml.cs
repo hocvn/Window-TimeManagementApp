@@ -1,19 +1,15 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using TimeManagementApp.Helper;
 
 
 namespace TimeManagementApp.ToDo
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page allows users to manage their tasks: view, delete a task.
     /// </summary>
     public sealed partial class MainToDoPage : Page
     {

@@ -1,21 +1,17 @@
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore;
 using Microsoft.UI.Xaml.Controls;
 using OxyPlot;
-using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using LiveChartsCore.Kernel.Sketches;
-using LiveChartsCore.Defaults;
-using SkiaSharp;
-using LiveChartsCore.SkiaSharpView.Painting;
 
 namespace TimeManagementApp.Statistics
 {
+
+    /// <summary>
+    /// This page displays statistics about tasks and focus time.
+    /// </summary>
     public sealed partial class StatisticsPage : Page
     {
         private readonly StatisticsViewModel _viewModel = new StatisticsViewModel();

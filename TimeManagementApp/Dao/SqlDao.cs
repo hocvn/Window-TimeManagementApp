@@ -15,6 +15,9 @@ using System.IO;
 
 namespace TimeManagementApp.Dao
 {
+    /// <summary>
+    /// This class is responsible for interacting with the SQL database.
+    /// </summary>
     public class SqlDao : IDao
     {
         public SqlDao() { }

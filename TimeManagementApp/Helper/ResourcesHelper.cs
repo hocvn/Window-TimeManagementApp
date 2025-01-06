@@ -2,6 +2,9 @@
 
 namespace TimeManagementApp.Helper
 {
+    /// <summary>
+    /// This class is used to get localized resources.
+    /// </summary>
     public static class ResourcesHelper
     {
         private static readonly ResourceLoader _resourceLoader = new();

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace TimeManagementApp.Helper
 {
+    /// <summary>
+    /// This class is used to display dialog boxes.
+    /// </summary>
     public class Dialog
     {
         public static async Task<ContentDialogResult> ShowContent

@@ -11,7 +11,7 @@ using System;
 namespace TimeManagementApp.Note
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page is responsible for displaying the details of a note.
     /// </summary>
     public sealed partial class NotePage : Page
     {
