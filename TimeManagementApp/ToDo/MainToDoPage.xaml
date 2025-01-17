@@ -186,7 +186,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <!-- Calendar Icon and DueDateTime -->
                                     <FontIcon Glyph="&#xE787;" FontSize="12" Margin="0,0,3,0"/>
-                                    <TextBlock Text="{x:Bind DueDateTime, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Bind TimeLeft, Mode=OneWay}" FontSize="12" VerticalAlignment="Center"/>
 
                                     <!-- Notification Icon and ReminderTime -->
                                     <FontIcon Glyph="&#xE7ED;" FontSize="12" Margin="20,0,3,0"

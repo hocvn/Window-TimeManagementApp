@@ -65,5 +65,17 @@ namespace TimeManagementApp.ToDo
                    t1.Status == t2.Status;
         }
 
+        public string TimeLeft
+        {
+            get
+            {
+                var timeSpan = DueDateTime - DateTime.Now;
+                if (timeSpan.TotalSeconds <= 0)
+                {
+                    return "Overdue";
+                }
+                return $"{timeSpan.Hours} hours {timeSpan.Minutes} minutes left";
+            }
+        }
     }
 }
